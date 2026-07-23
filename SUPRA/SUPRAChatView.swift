@@ -56,11 +56,48 @@ enum SUPRAChatExecutionState: Equatable {
     }
 }
 
+enum SUPRAChatRuntimeHealthState: Equatable {
+    case checking
+    case connected
+    case unavailable(String)
+
+    var title: String {
+        switch self {
+        case .checking: "Runtime · Checking"
+        case .connected: "Runtime · Connected"
+        case .unavailable: "Runtime · Unavailable"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .checking: "arrow.trianglehead.2.clockwise.rotate.90"
+        case .connected: "checkmark.circle.fill"
+        case .unavailable: "exclamationmark.triangle.fill"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .checking: .secondary
+        case .connected: .green
+        case .unavailable: .orange
+        }
+    }
+
+    var isConnected: Bool {
+        self == .connected
+    }
+}
+
 struct SUPRAChatView: View {
     @State private var mode: ChatMode = .ask
     @State private var prompt = ""
     @State private var messages: [ChatMessage] = []
     @State private var executionState: SUPRAChatExecutionState = .idle
+    @State private var runtimeHealth: SUPRAChatRuntimeHealthState = .checking
+    @State private var healthTask: Task<Void, Never>?
+    @State private var executionTask: Task<Void, Never>?
 
     private let runtime: any SUPRAChatRuntimeProtocol
 
@@ -75,6 +112,7 @@ struct SUPRAChatView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
+            runtimeHealthMessage
             Divider()
             conversation
             Divider()
@@ -82,6 +120,11 @@ struct SUPRAChatView: View {
         }
         .background(Color(nsColor: .windowBackgroundColor))
         .navigationTitle("SUPRA Chat")
+        .onAppear(perform: checkRuntimeHealth)
+        .onDisappear {
+            healthTask?.cancel()
+            executionTask?.cancel()
+        }
     }
 
     private var header: some View {
@@ -105,15 +148,38 @@ struct SUPRAChatView: View {
             .pickerStyle(.segmented)
             .frame(width: 220)
 
-            Label(executionState.title, systemImage: executionState.systemImage)
+            Label(runtimeHealth.title, systemImage: runtimeHealth.systemImage)
                 .font(.caption.weight(.medium))
-                .foregroundStyle(statusColor)
+                .foregroundStyle(runtimeHealth.color)
                 .padding(.horizontal, 11)
                 .padding(.vertical, 7)
                 .background(.quaternary, in: Capsule())
+
+            Label(executionState.title, systemImage: executionState.systemImage)
+                .font(.caption)
+                .foregroundStyle(statusColor)
         }
         .padding(.horizontal, 28)
         .padding(.vertical, 20)
+    }
+
+    @ViewBuilder
+    private var runtimeHealthMessage: some View {
+        if case .unavailable(let message) = runtimeHealth {
+            HStack(spacing: 12) {
+                Label(message, systemImage: "bolt.horizontal.circle")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Spacer(minLength: 8)
+
+                Button("Retry", action: checkRuntimeHealth)
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+            }
+            .padding(.horizontal, 28)
+            .padding(.bottom, 14)
+        }
     }
 
     private var conversation: some View {
@@ -190,7 +256,11 @@ struct SUPRAChatView: View {
                     .frame(minHeight: 44)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(trimmedPrompt.isEmpty || executionState == .running)
+            .disabled(
+                trimmedPrompt.isEmpty
+                || executionState == .running
+                || !runtimeHealth.isConnected
+            )
             .keyboardShortcut(.return, modifiers: [.command])
             .overlay {
                 if executionState == .running {
@@ -216,7 +286,9 @@ struct SUPRAChatView: View {
     }
 
     private func execute() {
-        guard !trimmedPrompt.isEmpty, executionState != .running else {
+        guard !trimmedPrompt.isEmpty,
+              executionState != .running,
+              runtimeHealth.isConnected else {
             return
         }
 
@@ -233,12 +305,13 @@ struct SUPRAChatView: View {
         prompt = ""
         executionState = .running
 
-        Task {
+        executionTask = Task {
             do {
                 let response = try await runtime.execute(
                     prompt: submittedPrompt,
                     mode: submittedMode
                 )
+                try Task.checkCancellation()
                 messages.append(
                     ChatMessage(
                         role: .runtime,
@@ -247,6 +320,8 @@ struct SUPRAChatView: View {
                     )
                 )
                 executionState = .success
+            } catch is CancellationError {
+                return
             } catch {
                 let detail = error.localizedDescription
                 messages.append(
@@ -257,6 +332,26 @@ struct SUPRAChatView: View {
                     )
                 )
                 executionState = .error(detail)
+                checkRuntimeHealth()
+            }
+        }
+    }
+
+    private func checkRuntimeHealth() {
+        healthTask?.cancel()
+        runtimeHealth = .checking
+
+        healthTask = Task {
+            do {
+                try await runtime.checkHealth()
+                try Task.checkCancellation()
+                runtimeHealth = .connected
+            } catch is CancellationError {
+                return
+            } catch {
+                runtimeHealth = .unavailable(
+                    "\(error.localizedDescription) Lancez le bridge, puis choisissez Retry."
+                )
             }
         }
     }
