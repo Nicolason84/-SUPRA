@@ -1,0 +1,2914 @@
+{
+  "alerts": [
+    {
+      "detail": "La façade reste opérationnelle, mais cette source n’a pas été trouvée dans les emplacements existants ciblés.",
+      "severity": "WARNING",
+      "title": "Source manquante : PRODUCT_REGISTRY"
+    }
+  ],
+  "backend_rewritten": false,
+  "capabilities": [
+    {
+      "id": "CAP_AD577C57038090D9",
+      "name": "ADAPTER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A5BFCDFE0AD6A7A5",
+      "name": "AI_PROMPT_PACK",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_86455169E6C933FB",
+      "name": "ALIASES_RESOLVE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_618C79503A3D1476",
+      "name": "ANY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C8E5998F6A3955C2",
+      "name": "API",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_80B8FFA129064C86",
+      "name": "APP_FACTORY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7DD251BBDA9C41BB",
+      "name": "AUDIT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_64C45D5BC06D5592",
+      "name": "AUDIT_CAPABILITIES_13",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F28BE86FA5B3F4BB",
+      "name": "AUTHORITY_ROLES_PERMISSIONS_MISSION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_ECF3DEC06A47D920",
+      "name": "AUTOPILOT_RUN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0C4E2EF5D82902F6",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0E53311DCFFB8CCC",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_12E19BAA13147400",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1420748B9AEDE48B",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2AEB9E7CCE296E8D",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_304410345A88CD80",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_51AB3555944B5C17",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_541AE55760B5148F",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5619AA1F0C15561F",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5A67B60FD988D4BC",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_638C057A7646C205",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_648F98D74C0F4052",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_697CD8F3ECC9B4F9",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_70A15E3212866C1B",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7851DE1305A4CC9C",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_850D645F8A56BCC2",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8ECEDB73590E832E",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A26DBBD58D70A8DE",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B02968996355459A",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B1310CEF8B9B2D00",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BF3A3E40924A302E",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C5A72888D911D51D",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_CE100606EBAFD6A7",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D176E1E38552F216",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D4534EF33DA9918B",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D7FB8B96BEC877BC",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D8511450ED1FD3A7",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E796B76E88157A78",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E7F12D21026E8A49",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EE12D877F72988A1",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F74748C75122F795",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FB2E6109B3E6DFA9",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FE03EC1E2AD06E8F",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FE0B9DDD2D136676",
+      "name": "AVAILABLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4AEB91B4800FA388",
+      "name": "BANK",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_039F6291AB990DC7",
+      "name": "BRANDING_PUBLISH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EF304FBEAB13FE6B",
+      "name": "BRIDGE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_ED3A324D05AA5842",
+      "name": "BRIDGE_RENDER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D7AB65759083F3DF",
+      "name": "BUILD_CAPABILITY_REGISTRY_COMPONENTS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E08B5D3768B2AF13",
+      "name": "CANNONICO",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_532B49D44E605344",
+      "name": "CANNONICO_CANON_ROUTING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3B6B8854BDEC1E7E",
+      "name": "CANO_CAPABILITIES_CAPABILITY_ID_CAP_DB7BBB31432694A4",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E979A06BE39C5D84",
+      "name": "CANONICAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_12F5D2B79040E4F7",
+      "name": "CANONICAL_NORMALIZE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_94BC99B81C61D911",
+      "name": "CANONICALIZATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_31D87CCDC3B989E6",
+      "name": "CAPABILITY_GRAPH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3FEE4BABECD8449E",
+      "name": "CAPABILITY_ID_CAP_DB7BBB31432694A4",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5047DB6BAF213A2E",
+      "name": "CAPITAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4B8397E893E0B60F",
+      "name": "COCKPIT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F12209D029C77BF5",
+      "name": "COMMUNICATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8FE72FB6963472BB",
+      "name": "COMPILER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1D9FDFCB51392CFA",
+      "name": "CONNECTOR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_56124FEF51638609",
+      "name": "DASHBOARD",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E2A660A7DE93D2C5",
+      "name": "DECISION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_96B11F882F0D4962",
+      "name": "DECISION_EVALUATE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BC9772EF6134F864",
+      "name": "DECOMPOSE_MISSION_TEXT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5C699BB0150222FD",
+      "name": "DEDUPLICATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_044E789E39723CA8",
+      "name": "DETECT_SYSTEM_DEFECTS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7575A6ED3324D0F5",
+      "name": "DISCOVERY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A45DD8C57DCC3BBF",
+      "name": "DUPLICATE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A32955FA41ACBCF2",
+      "name": "DUPLICATE_DETECT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0717718A780BA4F5",
+      "name": "DUPLICATE_DETECTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B3C5C91627BA8885",
+      "name": "EVENT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C0F115F0523FB9B0",
+      "name": "EVIDENCE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FE1482792327D18F",
+      "name": "EXECUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_507E32914DC915FC",
+      "name": "EXECUTIVE_APPROVE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4080383490419FFC",
+      "name": "EXTRACT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AABD53D1E09215FA",
+      "name": "EXTRACT_CAPABILITIES_PATH_NAME",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_588FF84A26CD1CAB",
+      "name": "EXTRACTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E0A6F4FDA22FA6BA",
+      "name": "FACTORY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0647B54AEA05D65C",
+      "name": "FILESYSTEM_HASH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_93033676F101C161",
+      "name": "FILESYSTEM_SCAN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_66D9C488B5FA766B",
+      "name": "FINANCE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_65E7564B3252E6DC",
+      "name": "FOLDER_PATH_INPUT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1B36EEED3B6BEF2D",
+      "name": "FORGE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_857F2157CB4CB8FB",
+      "name": "FORGE_GENERATE_WORKER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D814714034EB9E32",
+      "name": "FUSION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4EED6514B490F8E3",
+      "name": "GENERATOR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1163DB4B74D24F0B",
+      "name": "GET_CAPABILITIES",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F6AAC9D445AB169B",
+      "name": "GRAPH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_252F5FAD54A57451",
+      "name": "HERO_IMAGE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EA69FE17051B2D91",
+      "name": "INDEX",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_75767FAF24898378",
+      "name": "INGESTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8A869C6830442ADB",
+      "name": "KERNEL_GET_CAPABILITIES",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5A0BBCE35C13A0CE",
+      "name": "KERNEL_OVERRIDE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7DBEF783A890CC6B",
+      "name": "KNOWLEDGE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E8CEBC8488317503",
+      "name": "KNOWLEDGE_COMPILE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D671B61DFF2118AA",
+      "name": "KNOWLEDGE_GRAPH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_261AA5C467823561",
+      "name": "LANGUAGE_COMPILE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A93E1B6752E0039A",
+      "name": "LAUNCH_MEDIA_ASSETS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B1C2FFB0874A4FE7",
+      "name": "LAWS_VOTE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_241E4DB6FB2C76CE",
+      "name": "LEARNING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AB0730ACB114A4EF",
+      "name": "LEGAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_96EEEBBC226A4D63",
+      "name": "LEXICON_RESOLVE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1476A92E478C7FB9",
+      "name": "LINKEDIN_URL_ROUTING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BF2A5FE4BBCC3082",
+      "name": "LISTDICTSTR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3C2E4929E6ECE318",
+      "name": "LOCAL_FILE_PATH_INPUT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D9E39716EC0A11D6",
+      "name": "MARKET",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A266FE9C4D1DCF7D",
+      "name": "MEMORY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1BB1CC10025A6C01",
+      "name": "MEMORY_CONTEXT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7443CD1BCD361139",
+      "name": "METADATA_FIRST_EXTRACTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_54D1FF6E81ED8E23",
+      "name": "METADATA_SCAN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4DB59FA384F18A53",
+      "name": "MIGRATION_PLAN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_30E9A36262B2A1E8",
+      "name": "MIRROR_STATE_ANALYSIS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_78532B626E71177E",
+      "name": "MISSION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E4D67FCBDBAFFDDF",
+      "name": "MISSION_DECOMPOSE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AB09C6A8C8896278",
+      "name": "MISSION_PLAN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3953F7EEA41D0899",
+      "name": "MVP",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EEBDED6E8D9181C1",
+      "name": "NAME_AUTOPILOT_RUN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_145807F0AA1914D5",
+      "name": "NAMING_AUDIT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BDBF5364B066A79E",
+      "name": "NAMING_CANONICALIZE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_22308EBB7B1BC121",
+      "name": "NAMING_VALIDATE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4B50F7A8B17D493A",
+      "name": "NO_FAKE_READING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_25DDA981F7DB5905",
+      "name": "NON_DESTRUCTIVE_TRUE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C2FD58C653BB5A4D",
+      "name": "OBSERVABILITY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AB54C340DFFD503E",
+      "name": "OBSERVATORY_PUBLISH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FD96D1E1BBA4CF96",
+      "name": "ONE_NEXT_ACTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_594C0E2C224FF1B6",
+      "name": "ONTOLOGY_VALIDATE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8B66A0B3AD4E837F",
+      "name": "ORCHESTRATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8CD91B4D8C1C1D43",
+      "name": "ORCHESTRATOR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_82F3F26141A68C1F",
+      "name": "PAYMENTS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7E237E9C9065D038",
+      "name": "PDF_JSON_MD_TXT_ZIP_DETECTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C936167779C64FCA",
+      "name": "PODCAST_BRIEF",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_94F38C870E517C82",
+      "name": "PREVENT_FEATURE_SPRAWL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C1F8DB4B1C91223E",
+      "name": "PRICING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_80391686DD97E186",
+      "name": "PRODUCT_DISCOVERY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9926D20C83112B21",
+      "name": "PROJECTS_615",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_21C3628802B31DAB",
+      "name": "PROMO_VIDEO_LOCAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EAD3475554E06E6F",
+      "name": "PROPOSE_MINIMAL_COMPENSATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_88DC461D616E59CA",
+      "name": "PROTECT_HUMAN_ATTENTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2E81574C14DD9191",
+      "name": "PROVIDERS_USERS_NICOLASALONSO_NOVA_OS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0039B32050DD7097",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_01554504FF7DCE4F",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0171B7B77EA05BEC",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_017AB7CBB9727803",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_04E7987F3E560FFE",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0593C5E8FE78B9AA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_068F183DC8CA4309",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_077AE0ADF93B00FF",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_08D2B2930036E862",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0AEF271ADFC3142C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0C025ECA87FF8269",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0DE4EDE9EB8A7E8E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0F1FACCDCAF81C17",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0F3F6DD2C49A7E23",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0F464C7AFB57F84B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_11F9B72D10A2B04C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_13576FFB2A3A2F48",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_13F7519585D9A8F4",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1506E6298A7A7FB8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_151112C77E2475AD",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_160E9A1CED681092",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_180D5B2602994285",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1939960E3CC16E5C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1CBC023BBFEE9E71",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_20D0DF10679E848A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_21E6F4D96F336670",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2456ADF65EA79556",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_252C10D3516F7D79",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_26554698F6712749",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_26A0B54E32628FC3",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_29C519620B77FD9F",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2A23761CB0F2DE9E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2AD57973339B7AEB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2EA4E03AF7208A7B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2EC406F46B864798",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2FEC77C92A4D7C8E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_30AA687B1E08CB35",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_33E792E71265E003",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_344DAD058565508E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_35949F07412EDF24",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3752A62B19D34166",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_391EF6958817B21A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3AA3A4F176611638",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3ADC77C31C25D35D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3AFB24BB7F37EC1C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3C6195972CDB3910",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3F72D9B391C28F27",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_41939AA7E2483208",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_41C56DD3888E3B70",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4235E5BCDE1D1B36",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4697E3EEF72ACC7D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_47A951867E0BEA77",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_47B51457E3E24E05",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4DF7AEF5793594C3",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4E628A61393A25FA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5017E7973A0E6CF1",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_518034697FB4EEF5",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_54B76A3344C06961",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5683D730A9F724E8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_58BA30ADF5272EDC",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_59D1B3839C4D3C13",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5A4AFEC2C8D65EA7",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5A746B8E40785D41",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5B4A447BBC869BED",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5B90EEF429CCF36B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5BE4015D1747F574",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5E26BC8559F67A15",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5E300B51179828CB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5E9677D3B8615936",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_61C80BCC7FCA15C4",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_63737C20CE56ABC3",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_64D1F669B9848D5F",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_674DB6A703EAD189",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_67B4D182B7247B19",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_680984ECF2AF2828",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_68B41CB1141EC22C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_68F5239A7A0001BF",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_6A6D5F8BE2FE5B1D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_70E5A4E9BE49CA3E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_71C9C2AAEED23F71",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_724B1FEDAA3BBBCA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_72E7D1FF19E66084",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_76293C7DCF7D551D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_77C6F3EC1D7FD913",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_79F5A8EE18706A07",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7A47A3D5A601A609",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7C92D3B39ECB34CE",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7CDA8895DEF8C5EC",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7D31674477B4A135",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_808267DA99266F73",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8174ECC979CC141B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_82B51E0C50054EFC",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_83D7C386313AE9FE",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_851394AE99131AB8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_860A3D93389BDD00",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_877D63E342D70D11",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8EFC80D828569B27",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8FB4D8E591965F5B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9433E3E9876A9F1B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9891E5F508F12840",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_98D81E9EB34EEF38",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_990311D144C2DFCA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9927DC16B4AD527D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9B0A5652853F47D8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9B6BB76E7462A033",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9DC68FC570F98982",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9E4FA27D046D7CE6",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9F9D2CE4092C4C68",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A12D659DB7F764C0",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A240F9AA489EE504",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A5F6A169D0A6B62D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A765774235237911",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A90D39FADB1E9C65",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AB49F4FCB6893B6D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AB6B1600CC39B237",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AD2152BE1FB0ECD5",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AF2EEB48B1D1E8B5",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B105A2FD7651AF98",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B23C140C1C4965BD",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B3DC95CAF1879877",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B53CF138B48AF522",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B61899E29B530AE5",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B64A346A67FA2AF9",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B75C24F167BC145C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BA0CF94B0555616D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BA48D4D7521B40A2",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BD8D76C9FC1D464E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BFE6DBFAE5DE12C8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C07BCC520394F77A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C3907FD4705346E8",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C44296F3C4AC2E4B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C55A080807819287",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C65A607C4374E37F",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C9C95F2CFE930146",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C9CFE2577615FAE1",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_CAE4F1BEE701919E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_CB45B735DEF50B9D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_CF73858A35561262",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D60EA29C17ACBF42",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D680F4980C85897A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D7E5026472929E22",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D7E96044405F9D0B",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D89FB4AF05208D08",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D8EDC36950C49981",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DA376A259AB1648E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DA9DCEFC7EDF8FE9",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DDCD67055444128A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DE2151E7A7F072DA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DF70D60D1A945EEB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E03FF2F9C4F0688E",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E0B1CCDBB982E0CB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E38B072DB5F20463",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E4600D07874B732C",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E5C432654F95D15F",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E5DF55F0511500F7",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E8011FA6C4320C52",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_E9F3EA8ED4EDBD28",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EBAB2A42F5D91128",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_ECDC5104EBE06E5A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EEB69AFFC621C088",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EF634D565C870ACB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F0F033E95BFD1F60",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F168D3F24972D1A3",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F1EA47AD73F75B8D",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F2CDB1C40123AC23",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F31829D5BA4A1B56",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F55E87FC6D956872",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F5869628319555CB",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F6C9F0DBD24E0E5A",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F7E89F324C4623DA",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FAD9B8134D4159F6",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FFFC2C71CBAA5050",
+      "name": "PROVISIONAL_UNTIL_AUTHORITY_RESOLUTION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0B4D3DEAD8CF5C60",
+      "name": "REASONING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_6E5524BF5EA76750",
+      "name": "REDUCE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_85AAEE176B282AE1",
+      "name": "REGISTRY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A65DAE5CF11F38C6",
+      "name": "REGISTRY_RESOLVE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0876B4FC7CE904B0",
+      "name": "REPORT_VISUAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7CD406DD39959A95",
+      "name": "REPORTING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_0021EC158A497012",
+      "name": "RISK",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_645E4FC5442EA826",
+      "name": "RUNTIME",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C4336E3784BD311E",
+      "name": "RUNTIME_EXECUTE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_BB1D8653DA6A8DF5",
+      "name": "RUNTIME_MONITOR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F6075F134E6971C4",
+      "name": "SALES",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EF0A524E07664D8F",
+      "name": "SAMPLE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_AEBFC7165E9F228D",
+      "name": "SCHEMA_VALIDATE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_56F21695A65057F1",
+      "name": "SEARCH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C3A409AE6F7EBFB4",
+      "name": "SECURITY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_011DEFC82564E77B",
+      "name": "SELF_IMPROVEMENT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_830EF117E1386DFC",
+      "name": "SERVER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_8E1A5272BDD1D3E3",
+      "name": "SIGNAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5CCCD402752DB1BE",
+      "name": "SIMULATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F0EBF1B198471937",
+      "name": "SOCIAL_COVER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B2F6362FC512FF39",
+      "name": "STORAGE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C4A91FFEAFE63038",
+      "name": "STORAGE_ARCHIVE_ADVISOR",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F9F2E69F1E57D6F8",
+      "name": "STORAGE_AUTO_OPTIMIZER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F12F773B057BFCFC",
+      "name": "STORAGE_DUPLICATE_INTELLIGENCE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_40E9C202C77A6FAD",
+      "name": "STORAGE_FORECAST",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_06CEBFC5E9345902",
+      "name": "STORAGE_HEATMAP",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F87A57C93E80BB8A",
+      "name": "STORAGE_LIVE_GRAPH",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_09CFFB099209BBDA",
+      "name": "STORAGE_QUARANTINE",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_DA5F4C7654C67452",
+      "name": "STORAGE_RELIEF",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_C1B328FDF08F1158",
+      "name": "STORAGE_SAFE_RECOVERY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_EFFAF4110723ACDB",
+      "name": "TENDER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_5DE71B2143C86CD2",
+      "name": "TESTING",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_B2BFDD0782488BF4",
+      "name": "TEXT_SELECTION_ENABLED",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7143E14C3554DA81",
+      "name": "TIMESTAMP_1784153557_6219158",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_98571BE241C22ECB",
+      "name": "TWIN",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A3DCA815306A1EA2",
+      "name": "URL_INPUT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_95ACD29C2725C600",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_ARCHIVE_OLD_GO_SCRIPTS",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_035F1E87D01F3A4D",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_CANNONICO_MEMORY",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_53BDD3EA8549D5CE",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_G285_KNOWLEDGE_RECOGNITION_TOTAL",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1BF5492D004D95DD",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_IMAC_MOTHER_OS_REGISTRIES_AUTOPILOT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_F621485DB8372BE3",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_IMAC_MOTHER_OS_REGISTRIES_PUCHERO",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_9CDA82078275F7A8",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_MOTHER_OS_LOCAL_RUNTIME",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_A9D5B7E97310A02D",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_MOTHER_OS_SUPRA_PRESENCE_RUNTIME",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_702C6E80CB4A3526",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NICO_APP_IOS_NICO_APP_CLEAN_NICO_APP",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_FF000A70230EF1C3",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NICO_APP_IOS_NICO_APP_CLEAN_SUPRA_SELF",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_01D0C0919C97DFC1",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NICO_APP_V5_CANON",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_4A67144843E2FBF2",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NICO_APP_V5_CANON_ACTIVE_SCOPE_CANNONICO_V1",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_768DF32AF3324377",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NICO_APP_V5_CANON_ACTIVE_SCOPE_CANNONICO_V1_1",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_ED0E687FA6A2DB4E",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NOVA_ARCHITECT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1989D7171566D3DD",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NOVA_ARCHITECT_SUPRA_OS_V1",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_7DA471A3EFE992D6",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_NOVA_CORE_CANONICAL_RUNTIME_V1",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_18FFB647A665DF78",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_PUCHERO_PROFOND",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_3E14B9B1D8184BDC",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_SUPRA_PRIVATE_CORE_ULTIMA_RUNTIME",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_2BCFD544D1B192E1",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_TUV5_OPERATIVE_SYSTEM_AUTOPILOT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_88553832DE52F33D",
+      "name": "USERS_NICOLASALONSO_NOVA_OS_TUV5_OPERATIVE_SYSTEM_AUTOPILOT_LOOP",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_61B46388091B4368",
+      "name": "VERIFICATION",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_222826D883C4737A",
+      "name": "VISIBLE_COPIER_BUTTON_ON_SUPRA_BUBBLES",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_1DC316C29EA0D3A2",
+      "name": "WATCHER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_74680EA6AABB0DD2",
+      "name": "WORKER",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_97053ADE2E475D1B",
+      "name": "WORKER_ELECT",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D9159C897B17F1D5",
+      "name": "WORKERS_615",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "CAP_D072AA117DAB568B",
+      "name": "WORKFLOW",
+      "path": null,
+      "score": null,
+      "status": "VALIDATED"
+    }
+  ],
+  "freeze": {
+    "canonical_write": false,
+    "capabilities": 375,
+    "freeze_id": "SUPRA_PHASE12_UI_STATE_FREEZE_V8_20260719_151052",
+    "products": 0,
+    "projects": 9,
+    "registry_write": false,
+    "scope": "SWIFTUI_FACADE_RESOURCE",
+    "status": "FROZEN",
+    "ui_modules": 17
+  },
+  "generated_at": "20260719_151052",
+  "integration_state": {
+    "authority_approved": 375,
+    "authority_rejected": 2,
+    "canonical_write": false,
+    "capabilities_visible": 375,
+    "registry_write": false,
+    "runtime_validation": true,
+    "ui_resource_integrated": true,
+    "validated_at": "20260719_151052"
+  },
+  "memory_first": true,
+  "metrics": {
+    "capabilities": 375,
+    "memory_objects": 585273,
+    "products": 0,
+    "projects": 9,
+    "resources": 585273,
+    "sources_found": 9,
+    "sources_missing": 2,
+    "ui_modules": 17
+  },
+  "mode": "INTEGRATED_VALIDATED_FROZEN_UI_STATE",
+  "products": [],
+  "projects": [
+    {
+      "id": "OBSERVED_1",
+      "name": "CANON",
+      "path": "/Users/nicolasalonso/NOVA_OS/CANON",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_2",
+      "name": "SUPRA_HELENE.xcodeproj",
+      "path": "/Users/nicolasalonso/NOVA_OS/HELENE_APP_IOS/SUPRA_HELENE/SUPRA_HELENE.xcodeproj",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_3",
+      "name": "HUM_AI_NITY_SEED_DELIVERY",
+      "path": "/Users/nicolasalonso/NOVA_OS/HUM_AI_NITY_SEED_DELIVERY",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_4",
+      "name": "SUPRA_HELENE.xcodeproj",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP/SUPRA_HELENE.xcodeproj",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_5",
+      "name": "SUPRA_HELENE.xcodeproj",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_BACKUP_BEFORE_RENAME_20260531_120919/SUPRA_HELENE.xcodeproj",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_6",
+      "name": "ANDROID_HELENE_APP",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_CLEAN/ANDROID_HELENE_APP",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_7",
+      "name": "NICO_APP.xcodeproj",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_CLEAN/NICO_APP.xcodeproj",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_8",
+      "name": "V41_SAAS_CORE",
+      "path": "/Users/nicolasalonso/NOVA_OS/ONDUPACK_FRANCIA_2030/EI_0001_SPACEX/V41_SAAS_CORE/V41_SAAS_CORE",
+      "score": null,
+      "status": "OBSERVED"
+    },
+    {
+      "id": "OBSERVED_9",
+      "name": "OPERTUV5_SYSTEM_LOCAL",
+      "path": "/Users/nicolasalonso/NOVA_OS/OPERTUV5_SYSTEM_LOCAL",
+      "score": null,
+      "status": "OBSERVED"
+    }
+  ],
+  "remote_connection": {
+    "allowed_missions": [
+      "PING",
+      "STATUS",
+      "QUERY",
+      "GET_CONTEXT",
+      "LIST_AUTHORITIES",
+      "READ_ARTIFACT"
+    ],
+    "bridge_root": "/Users/nicolasalonso/NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1",
+    "freeze_mutation": false,
+    "id": "CHATGPT_SUPRA_PRIVATE_BRIDGE_V1",
+    "mailbox": "/Users/nicolasalonso/Library/CloudStorage/GoogleDrive-nicolas.alonsof84@gmail.com/Mon Drive/SUPRA_IMAC_MEMORY_GATEWAY/REMOTE",
+    "name": "ChatGPT ↔ SUPRA",
+    "public_port": false,
+    "remote_command_execution": false,
+    "source_mutation": false,
+    "status": "PAIRED_LOCAL",
+    "transport": "GOOGLE_DRIVE_PRIVATE_MAILBOX",
+    "updated_at": "2026-07-19T18:54:30.790009+00:00"
+  },
+  "schema": "SUPRA_EXECUTIVE_UI_MODEL_V1",
+  "sections": [
+    {
+      "count": 9,
+      "id": "executive",
+      "status": "READY",
+      "subtitle": "État canonique du système",
+      "system_image": "crown",
+      "title": "Executive"
+    },
+    {
+      "count": 9,
+      "id": "projects",
+      "status": "READY",
+      "subtitle": "Registre des projets existants",
+      "system_image": "folder",
+      "title": "Projects"
+    },
+    {
+      "count": 375,
+      "id": "capabilities",
+      "status": "VALIDATED",
+      "subtitle": "Capacités déclarées et vérifiées",
+      "system_image": "shippingbox",
+      "title": "Capabilities"
+    },
+    {
+      "count": 0,
+      "id": "products",
+      "status": "SOURCE_MISSING",
+      "subtitle": "Produits et actifs monétisables",
+      "system_image": "cube.box",
+      "title": "Products"
+    },
+    {
+      "count": 1,
+      "id": "runtime",
+      "status": "READY",
+      "subtitle": "Runtime backend existant",
+      "system_image": "bolt.circle",
+      "title": "Runtime"
+    },
+    {
+      "count": 0,
+      "id": "atlas",
+      "path": "/Users/nicolasalonso/NOVA_OS/PILOTE_ROOT_CANON/runtimes/ATLAS_RUNTIME",
+      "status": "CONNECTED",
+      "subtitle": "Cartographie canonique",
+      "system_image": "square.stack.3d.up",
+      "title": "Atlas"
+    },
+    {
+      "count": 585273,
+      "id": "memory",
+      "status": "READY",
+      "subtitle": "Index mémoire et ressources",
+      "system_image": "brain",
+      "title": "Memory"
+    },
+    {
+      "count": 17,
+      "id": "interface",
+      "status": "READY",
+      "subtitle": "Modules SwiftUI récupérés",
+      "system_image": "macwindow",
+      "title": "Interface"
+    }
+  ],
+  "sources": [
+    {
+      "authority": "CANONICAL",
+      "name": "MASTER_CANON",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_MASTER_CANON_COMPILER_V1_1/CURRENT",
+      "priority": 100,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "CANONICAL",
+      "name": "MASTER_CANON_CLI",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_MASTER_CANON_COMPILER_V1_1/canon.sh",
+      "priority": 100,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "REGISTRY",
+      "name": "PROJECT_REGISTRY",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_PROJECT_REGISTRY_V1_20260714_174127/02_REGISTRY/PROJECT_REGISTRY.json",
+      "priority": 96,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "REGISTRY",
+      "name": "CAPABILITY_REGISTRY",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_FACTORY_V1/REGISTRIES/CAPABILITY_REGISTRY.json",
+      "priority": 96,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "REGISTRY",
+      "name": "PRODUCT_REGISTRY",
+      "path": null,
+      "priority": 96,
+      "status": "MISSING"
+    },
+    {
+      "authority": "REGISTRY",
+      "name": "UI_MODULE_REGISTRY",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_CANNONICO_UI_OPERATING_SYSTEM_V1/CURRENT/UI_MODULE_REGISTRY.json",
+      "priority": 94,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "OBSERVED_EXISTING_SOURCE",
+      "name": "UI_OS_MANIFEST",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_CANNONICO_UI_OPERATING_SYSTEM_V1/CURRENT/UI_OS_MANIFEST.json",
+      "priority": 94,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "OBSERVED_EXISTING_SOURCE",
+      "name": "IMAC_MEMORY_INDEX",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_BUILD/MEMORY/IMAC_MEMORY_V1/RUNS/IMAC_MEMORY_INDEX_20260717_103215/02_OUTPUT/IMAC_MEMORY_INDEX.json",
+      "priority": 92,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "REGISTRY",
+      "name": "RESOURCE_REGISTRY",
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_BUILD/MEMORY/IMAC_MEMORY_V1/RUNS/IMAC_MEMORY_INDEX_20260717_103215/02_OUTPUT/RESOURCE_REGISTRY.json",
+      "priority": 92,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "OBSERVED_EXISTING_SOURCE",
+      "name": "ATLAS",
+      "path": "/Users/nicolasalonso/NOVA_OS/PILOTE_ROOT_CANON/runtimes/ATLAS_RUNTIME",
+      "priority": 90,
+      "status": "CONNECTED"
+    },
+    {
+      "authority": "OBSERVED_EXISTING_SOURCE",
+      "name": "RUNTIME",
+      "path": "/Users/nicolasalonso/NOVA_OS/NOVA_ARCHITECT/SUPRA_RUNTIME_V1",
+      "priority": 90,
+      "status": "CONNECTED"
+    }
+  ],
+  "swiftui_role": "FACADE_ONLY",
+  "system": {
+    "atlas_source": "/Users/nicolasalonso/NOVA_OS/PILOTE_ROOT_CANON/runtimes/ATLAS_RUNTIME",
+    "canonical_source": "/Users/nicolasalonso/NOVA_OS/SUPRA_MASTER_CANON_COMPILER_V1_1/CURRENT",
+    "name": "SUPRA",
+    "runtime_source": "/Users/nicolasalonso/NOVA_OS/NOVA_ARCHITECT/SUPRA_RUNTIME_V1",
+    "status": "READY",
+    "subtitle": "Executive Operating System"
+  }
+}

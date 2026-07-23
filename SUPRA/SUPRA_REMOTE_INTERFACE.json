@@ -1,0 +1,11 @@
+{
+  "schema": "SUPRA_REMOTE_INTERFACE_V1",
+  "status": "PAIRED_LOCAL",
+  "transport": "GOOGLE_DRIVE_PRIVATE_MAILBOX",
+  "bridge_root": "/Users/nicolasalonso/NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1",
+  "mailbox": "/Users/nicolasalonso/Library/CloudStorage/GoogleDrive-nicolas.alonsof84@gmail.com/Mon Drive/SUPRA_IMAC_MEMORY_GATEWAY/REMOTE",
+  "public_port": false,
+  "remote_command_execution": false,
+  "source_mutation": false,
+  "freeze_mutation": false
+}
