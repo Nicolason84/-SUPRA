@@ -15,12 +15,44 @@ struct ChatMessage: Identifiable, Equatable {
 
     let id: UUID
     let role: Role
+    let mode: ChatMode
     let content: String
 
-    init(id: UUID = UUID(), role: Role, content: String) {
+    init(
+        id: UUID = UUID(),
+        role: Role,
+        mode: ChatMode,
+        content: String
+    ) {
         self.id = id
         self.role = role
+        self.mode = mode
         self.content = content
+    }
+}
+
+enum SUPRAChatExecutionState: Equatable {
+    case idle
+    case running
+    case success
+    case error(String)
+
+    var title: String {
+        switch self {
+        case .idle: "Idle"
+        case .running: "Running"
+        case .success: "Success"
+        case .error: "Error"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .idle: "circle"
+        case .running: "arrow.trianglehead.2.clockwise.rotate.90"
+        case .success: "checkmark.circle.fill"
+        case .error: "exclamationmark.triangle.fill"
+        }
     }
 }
 
@@ -28,6 +60,17 @@ struct SUPRAChatView: View {
     @State private var mode: ChatMode = .ask
     @State private var prompt = ""
     @State private var messages: [ChatMessage] = []
+    @State private var executionState: SUPRAChatExecutionState = .idle
+
+    private let runtime: any SUPRAChatRuntimeProtocol
+
+    init() {
+        runtime = SUPRAChatRuntimeAdapter()
+    }
+
+    init(runtime: any SUPRAChatRuntimeProtocol) {
+        self.runtime = runtime
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,9 +105,9 @@ struct SUPRAChatView: View {
             .pickerStyle(.segmented)
             .frame(width: 220)
 
-            Label("Runtime placeholder", systemImage: "circle.dotted")
+            Label(executionState.title, systemImage: executionState.systemImage)
                 .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(statusColor)
                 .padding(.horizontal, 11)
                 .padding(.vertical, 7)
                 .background(.quaternary, in: Capsule())
@@ -107,7 +150,11 @@ struct SUPRAChatView: View {
                 .foregroundStyle(message.role == .user ? Color.accentColor : .secondary)
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(message.role == .user ? "YOU · \(mode.rawValue)" : "SUPRA RUNTIME")
+                Text(
+                    message.role == .user
+                        ? "YOU · \(message.mode.rawValue)"
+                        : "SUPRA RUNTIME · \(message.mode.rawValue)"
+                )
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(.secondary)
                 Text(message.content)
@@ -143,8 +190,14 @@ struct SUPRAChatView: View {
                     .frame(minHeight: 44)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(trimmedPrompt.isEmpty)
+            .disabled(trimmedPrompt.isEmpty || executionState == .running)
             .keyboardShortcut(.return, modifiers: [.command])
+            .overlay {
+                if executionState == .running {
+                    ProgressView()
+                        .controlSize(.small)
+                }
+            }
         }
         .padding(20)
         .background(.bar)
@@ -154,17 +207,58 @@ struct SUPRAChatView: View {
         prompt.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private func execute() {
-        guard !trimmedPrompt.isEmpty else { return }
+    private var statusColor: Color {
+        switch executionState {
+        case .success: .green
+        case .error: .red
+        default: .secondary
+        }
+    }
 
-        messages.append(ChatMessage(role: .user, content: trimmedPrompt))
+    private func execute() {
+        guard !trimmedPrompt.isEmpty, executionState != .running else {
+            return
+        }
+
+        let submittedPrompt = trimmedPrompt
+        let submittedMode = mode
+
         messages.append(
             ChatMessage(
-                role: .runtime,
-                content: "Runtime execution is not connected in this bootstrap."
+                role: .user,
+                mode: submittedMode,
+                content: submittedPrompt
             )
         )
         prompt = ""
+        executionState = .running
+
+        Task {
+            do {
+                let response = try await runtime.execute(
+                    prompt: submittedPrompt,
+                    mode: submittedMode
+                )
+                messages.append(
+                    ChatMessage(
+                        role: .runtime,
+                        mode: submittedMode,
+                        content: response
+                    )
+                )
+                executionState = .success
+            } catch {
+                let detail = error.localizedDescription
+                messages.append(
+                    ChatMessage(
+                        role: .runtime,
+                        mode: submittedMode,
+                        content: "Erreur runtime : \(detail)"
+                    )
+                )
+                executionState = .error(detail)
+            }
+        }
     }
 }
 
