@@ -136,6 +136,8 @@ struct SupraControlCenterView: View {
                     DecisionInboxView()
                 } else if destination == .missionCenter {
                     MissionCenterView()
+                } else if destination == .supraChat {
+                    SUPRAChatView()
                 } else {
                     ExecutivePlaceholderView(destination: destination)
                 }
@@ -251,6 +253,7 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
     case runtimeMonitor
     case evidenceExplorer
     case capabilityBrowser
+    case supraChat
 
     var id: Self { self }
 
@@ -261,6 +264,7 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .runtimeMonitor: "Runtime Monitor"
         case .evidenceExplorer: "Evidence Explorer"
         case .capabilityBrowser: "Capability Browser"
+        case .supraChat: "SUPRA Chat"
         }
     }
 
@@ -271,6 +275,7 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .runtimeMonitor: "waveform.path.ecg"
         case .evidenceExplorer: "doc.text.magnifyingglass"
         case .capabilityBrowser: "square.grid.2x2.fill"
+        case .supraChat: "bubble.left.and.bubble.right.fill"
         }
     }
 }

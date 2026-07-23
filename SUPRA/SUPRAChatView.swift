@@ -1,0 +1,176 @@
+import SwiftUI
+
+enum ChatMode: String, CaseIterable, Identifiable {
+    case ask = "ASK"
+    case plan = "PLAN"
+
+    var id: Self { self }
+}
+
+struct ChatMessage: Identifiable, Equatable {
+    enum Role {
+        case user
+        case runtime
+    }
+
+    let id: UUID
+    let role: Role
+    let content: String
+
+    init(id: UUID = UUID(), role: Role, content: String) {
+        self.id = id
+        self.role = role
+        self.content = content
+    }
+}
+
+struct SUPRAChatView: View {
+    @State private var mode: ChatMode = .ask
+    @State private var prompt = ""
+    @State private var messages: [ChatMessage] = []
+
+    var body: some View {
+        VStack(spacing: 0) {
+            header
+            Divider()
+            conversation
+            Divider()
+            composer
+        }
+        .background(Color(nsColor: .windowBackgroundColor))
+        .navigationTitle("SUPRA Chat")
+    }
+
+    private var header: some View {
+        HStack(spacing: 18) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("SUPRA CHAT")
+                    .font(.caption.weight(.bold))
+                    .tracking(1.5)
+                    .foregroundStyle(.secondary)
+                Text("Command workspace")
+                    .font(.title2.bold())
+            }
+
+            Spacer()
+
+            Picker("Chat mode", selection: $mode) {
+                ForEach(ChatMode.allCases) { chatMode in
+                    Text(chatMode.rawValue).tag(chatMode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 220)
+
+            Label("Runtime placeholder", systemImage: "circle.dotted")
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 11)
+                .padding(.vertical, 7)
+                .background(.quaternary, in: Capsule())
+        }
+        .padding(.horizontal, 28)
+        .padding(.vertical, 20)
+    }
+
+    private var conversation: some View {
+        ScrollView {
+            LazyVStack(spacing: 14) {
+                if messages.isEmpty {
+                    ContentUnavailableView {
+                        Label("Start a conversation", systemImage: "bubble.left.and.bubble.right")
+                    } description: {
+                        Text("Choose ASK or PLAN, then enter a prompt for SUPRA.")
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 330)
+                } else {
+                    ForEach(messages) { message in
+                        messageRow(message)
+                    }
+                }
+            }
+            .padding(28)
+            .frame(maxWidth: 900)
+            .frame(maxWidth: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func messageRow(_ message: ChatMessage) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            if message.role == .user {
+                Spacer(minLength: 80)
+            }
+
+            Image(systemName: message.role == .user ? "person.crop.circle.fill" : "bolt.horizontal.circle.fill")
+                .font(.title2)
+                .foregroundStyle(message.role == .user ? Color.accentColor : .secondary)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(message.role == .user ? "YOU · \(mode.rawValue)" : "SUPRA RUNTIME")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.secondary)
+                Text(message.content)
+                    .textSelection(.enabled)
+            }
+            .padding(14)
+            .background(
+                message.role == .user ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.10),
+                in: RoundedRectangle(cornerRadius: 14)
+            )
+
+            if message.role == .runtime {
+                Spacer(minLength: 80)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var composer: some View {
+        HStack(alignment: .bottom, spacing: 12) {
+            TextField("Ask SUPRA…", text: $prompt, axis: .vertical)
+                .textFieldStyle(.plain)
+                .lineLimit(1...5)
+                .padding(13)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(.quaternary))
+                .onSubmit(execute)
+
+            Button(action: execute) {
+                Label("Execute", systemImage: "paperplane.fill")
+                    .font(.headline)
+                    .padding(.horizontal, 8)
+                    .frame(minHeight: 44)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(trimmedPrompt.isEmpty)
+            .keyboardShortcut(.return, modifiers: [.command])
+        }
+        .padding(20)
+        .background(.bar)
+    }
+
+    private var trimmedPrompt: String {
+        prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func execute() {
+        guard !trimmedPrompt.isEmpty else { return }
+
+        messages.append(ChatMessage(role: .user, content: trimmedPrompt))
+        messages.append(
+            ChatMessage(
+                role: .runtime,
+                content: "Runtime execution is not connected in this bootstrap."
+            )
+        )
+        prompt = ""
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SUPRAChatView()
+    }
+    .frame(width: 980, height: 680)
+}
