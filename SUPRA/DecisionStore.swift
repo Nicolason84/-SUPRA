@@ -3,6 +3,12 @@ import Combine
 
 @MainActor
 final class DecisionStore: ObservableObject {
+    private static var sourceURL: URL {
+        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+            "NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/ARCHITECTURAL_DECISIONS.json"
+        )
+    }
+
     enum Filter: String, CaseIterable, Identifiable {
         case all = "All"
         case humanGateRequired = "Human Gate Required"
@@ -43,9 +49,12 @@ final class DecisionStore: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        // Internal data boundary. A real provider can replace this assignment
-        // without changing DecisionInboxView or its child views.
-        decisions = []
+        do {
+            decisions = try readDecisions(at: Self.sourceURL)
+        } catch {
+            decisions = []
+            errorMessage = error.localizedDescription
+        }
         isLoading = false
         applyPresentation()
     }
@@ -101,6 +110,47 @@ final class DecisionStore: ObservableObject {
         case .high: 1
         case .medium: 2
         case .low: 3
+        }
+    }
+
+    private func readDecisions(at url: URL) throws -> [Decision] {
+        let data = try Data(contentsOf: url, options: [.mappedIfSafe])
+        guard let root = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let records = root["decisions"] as? [[String: Any]]
+        else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+
+        let date = (root["generated_at"] as? String).flatMap(ISO8601DateFormatter().date) ?? .distantPast
+        let category = root["mission"] as? String ?? url.deletingLastPathComponent().lastPathComponent
+
+        return records.compactMap { record in
+            guard let sourceID = record["decision_id"] as? String,
+                  let title = record["decision"] as? String,
+                  let sourceStatus = record["status"] as? String
+            else { return nil }
+
+            let evidenceValue = record["evidence"].map(String.init(describing:))
+            let normalizedStatus = sourceStatus.uppercased()
+            let status: Decision.Status = normalizedStatus.contains("CONFIRMED") ? .approved : .inReview
+            let humanGate: Decision.HumanGate = normalizedStatus.contains("FOUNDER") ? .completed : .notRequired
+
+            return Decision(
+                id: UUID(),
+                title: title,
+                status: status,
+                priority: .medium,
+                category: category,
+                date: date,
+                humanGate: humanGate,
+                confidence: nil,
+                summary: sourceStatus,
+                evidence: evidenceValue.map {
+                    [Decision.Evidence(id: UUID(), title: sourceID, detail: $0, source: url.path)]
+                } ?? [],
+                nextActions: [],
+                history: [Decision.HistoryEntry(id: UUID(), date: date, title: sourceStatus, detail: sourceID)]
+            )
         }
     }
 }

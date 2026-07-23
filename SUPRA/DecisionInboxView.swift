@@ -36,6 +36,7 @@ struct DecisionInboxView: View {
                 )
             }
         }
+        .frame(minWidth: 900, minHeight: 600)
         .task { store.load() }
     }
 

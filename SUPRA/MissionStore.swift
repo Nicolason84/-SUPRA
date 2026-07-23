@@ -3,6 +3,11 @@ import Combine
 
 @MainActor
 final class MissionStore: ObservableObject {
+    private static var sourceURL: URL {
+        FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/INBOX", isDirectory: true)
+    }
+
     enum Filter: String, CaseIterable, Identifiable {
         case all = "All"
         case planned = "Planned"
@@ -44,9 +49,19 @@ final class MissionStore: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        // Local data boundary. A real provider can replace this assignment
-        // without changing MissionCenterView or its child views.
-        missions = []
+        do {
+            let urls = try FileManager.default.contentsOfDirectory(
+                at: Self.sourceURL,
+                includingPropertiesForKeys: [.isRegularFileKey],
+                options: [.skipsHiddenFiles]
+            )
+            missions = try urls
+                .filter { $0.pathExtension.lowercased() == "json" }
+                .map(readMission)
+        } catch {
+            missions = []
+            errorMessage = error.localizedDescription
+        }
         isLoading = false
         applyPresentation()
     }
@@ -107,5 +122,47 @@ final class MissionStore: ObservableObject {
         case .medium: 2
         case .low: 3
         }
+    }
+
+    private func readMission(at url: URL) throws -> Mission {
+        let data = try Data(contentsOf: url, options: [.mappedIfSafe])
+        guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let idValue = object["id"] as? String,
+              let id = UUID(uuidString: idValue),
+              let intent = object["intent"] as? String,
+              let state = object["state"] as? String
+        else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+
+        let title = intent.split(separator: "\n")
+            .map(String.init)
+            .first { $0.hasPrefix("MISSION_ID=") }?
+            .replacingOccurrences(of: "MISSION_ID=", with: "") ?? url.deletingPathExtension().lastPathComponent
+        let createdAt = (object["createdAt"] as? String).flatMap(ISO8601DateFormatter().date)
+        let normalizedState = state.uppercased()
+        let status: Mission.Status = switch normalizedState {
+        case "COMPLETED", "PASS": .completed
+        case "BLOCKED", "FAILED": .blocked
+        case "RUNNING", "ACTIVE", "PROCESSING": .active
+        default: .planned
+        }
+
+        return Mission(
+            id: id,
+            title: title,
+            status: status,
+            priority: .medium,
+            category: state,
+            owner: Self.sourceURL.lastPathComponent,
+            dueDate: nil,
+            progress: status == .completed ? 1 : 0,
+            summary: intent,
+            objectives: [],
+            tasks: [],
+            dependencies: [],
+            timeline: createdAt.map { [Mission.TimelineEntry(id: id, date: $0, title: state, detail: url.path)] } ?? [],
+            currentStatus: state
+        )
     }
 }

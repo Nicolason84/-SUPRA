@@ -42,7 +42,7 @@ struct SupraControlCenterView: View {
             VStack(alignment: .leading, spacing: 28) {
                 dashboardHeader
                 executiveSummary(snapshot)
-                quickActions
+                quickActions(snapshot)
                 runtimeHealth(snapshot)
                 recentActivity(snapshot)
             }
@@ -103,7 +103,7 @@ struct SupraControlCenterView: View {
         }
     }
 
-    private var quickActions: some View {
+    private func quickActions(_ snapshot: Snapshot) -> some View {
         dashboardSection("Quick Actions", systemImage: "bolt.fill") {
             LazyVGrid(columns: actionColumns, spacing: 14) {
                 ForEach(ExecutiveDestination.allCases) { destination in
@@ -138,6 +138,8 @@ struct SupraControlCenterView: View {
                     MissionCenterView()
                 } else if destination == .supraChat {
                     SUPRAChatView()
+                } else if destination == .runtimeMonitor {
+                    ExecutivePlaceholderView(destination: destination, snapshot: snapshot)
                 } else {
                     ExecutivePlaceholderView(destination: destination)
                 }
@@ -282,13 +284,27 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
 
 private struct ExecutivePlaceholderView: View {
     let destination: ExecutiveDestination
+    var snapshot: Snapshot?
 
     var body: some View {
-        ContentUnavailableView(
-            destination.title,
-            systemImage: destination.systemImage,
-            description: Text("This workspace is ready for its future product view.")
-        )
+        Group {
+            if destination == .runtimeMonitor, let snapshot {
+                List(snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]) { artifact in
+                    LabeledContent {
+                        Text(artifact.status)
+                    } label: {
+                        Label(artifact.name, systemImage: artifact.isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                            .foregroundStyle(artifact.isAvailable ? .green : .orange)
+                    }
+                }
+            } else {
+                ContentUnavailableView(
+                    destination.title,
+                    systemImage: destination.systemImage,
+                    description: Text("This workspace is ready for its future product view.")
+                )
+            }
+        }
         .navigationTitle(destination.title)
     }
 }
