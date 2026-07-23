@@ -1,0 +1,7 @@
+{
+  "rules": [
+    { "declaration": "SUPRATerminalMegabusBridge", "destination": "Bridges" },
+    { "declaration": "SUPRAStructureMode", "destination": "UI" },
+    { "declaration": "SUPRASection", "destination": "Models" }
+  ]
+}
