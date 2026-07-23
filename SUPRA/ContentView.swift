@@ -401,48 +401,6 @@ nonisolated enum SUPRASystemIntegrityLoader {
 
 // SUPRA_SYSTEM_INTEGRITY_V1_END
 
-enum SUPRAStructureMode: String, CaseIterable, Identifiable {
-    case hydrogen = "Hydrogen"
-    case atomium = "Atomium"
-    case arbo = "Arbo"
-    case orbital = "Orbital"
-    var id: String { rawValue }
-    var symbol: String {
-        switch self {
-        case .hydrogen: return "circle.hexagongrid.fill"
-        case .atomium: return "atom"
-        case .arbo: return "point.3.connected.trianglepath.dotted"
-        case .orbital: return "circle.dotted.and.circle"
-        }
-    }
-    var subtitle: String {
-        switch self {
-        case .hydrogen: return "Une intention · une prochaine action"
-        case .atomium: return "Acteurs, modules et relations"
-        case .arbo: return "Hiérarchie, lineage et dépendances"
-        case .orbital: return "Missions parallèles et convergence"
-        }
-    }
-}
-
-enum SUPRAHumanStage: String, CaseIterable, Identifiable {
-    case observe = "Observer"
-    case understand = "Comprendre"
-    case decide = "Décider"
-    case act = "Agir"
-    case learn = "Apprendre"
-    var id: String { rawValue }
-    var symbol: String {
-        switch self {
-        case .observe: return "eye.fill"
-        case .understand: return "brain.head.profile"
-        case .decide: return "arrow.triangle.branch"
-        case .act: return "bolt.fill"
-        case .learn: return "sparkles"
-        }
-    }
-}
-
 struct ContentView: View {
     @StateObject private var store = SUPRAExecutiveStore()
     @State private var selection: SUPRASection.ID? = "workspace"
