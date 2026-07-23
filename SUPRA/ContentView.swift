@@ -3621,65 +3621,8 @@ struct SUPRAMetrics: Codable {
     }
 }
 
-struct SUPRASection: Codable, Identifiable {
-    let id: String
-    let title: String
-    let systemImage: String
-    let subtitle: String
-    let count: Int
-    let status: String
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case systemImage = "system_image"
-        case subtitle
-        case count
-        case status
-    }
-}
 
-struct SUPRARecord: Codable, Identifiable {
-    let id: String
-    let name: String
-    let status: String
-    let path: String?
-    let score: Double?
-    let detail: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id, name, status, path, score, detail
-    }
-
-    init(id: String, name: String, status: String, path: String?, score: Double?, detail: String? = nil) {
-        self.id = id
-        self.name = name
-        self.status = status
-        self.path = path
-        self.score = score
-        self.detail = detail
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        status = try container.decode(String.self, forKey: .status)
-        path = try container.decodeIfPresent(String.self, forKey: .path)
-        score = try container.decodeIfPresent(Double.self, forKey: .score)
-        detail = try container.decodeIfPresent(String.self, forKey: .detail)
-    }
-}
-
-struct SUPRASource: Codable, Identifiable {
-    var id: String { name }
-
-    let name: String
-    let path: String?
-    let status: String
-    let authority: String?
-    let priority: Int?
-}
 
 struct SUPRAAlert: Codable, Identifiable {
     let id: String
