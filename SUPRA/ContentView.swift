@@ -6,7 +6,7 @@ import CryptoKit
 import CAnnoNicoContracts
 
 struct ContentView: View {
-    @StateObject private var store = SUPRAExecutiveStore()
+    @StateObject var store = SUPRAExecutiveStore()
     @State private var selection: SUPRASection.ID? = "workspace"
     @State private var chatDraft = ""
     @State private var pendingAction: SUPRAActionDefinition?
@@ -18,10 +18,10 @@ struct ContentView: View {
     @State private var operationalInspectorVisible = true
     @State private var sidebarAdvancedExpanded = false
     @State private var autopilotStarted = false
-    @State private var gabrielSnapshot = SUPRAGabrielConductorSnapshot.unavailable
-    @State private var gabrielBusy = false
-    @State private var structureMode: SUPRAStructureMode = .hydrogen
-    @State private var humanStage: SUPRAHumanStage = .observe
+    @State var gabrielSnapshot = SUPRAGabrielConductorSnapshot.unavailable
+    @State var gabrielBusy = false
+    @State var structureMode: SUPRAStructureMode = .hydrogen
+    @State var humanStage: SUPRAHumanStage = .observe
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var immersiveFocus = false
     @State private var circuitPurgeCount = 0
@@ -92,82 +92,6 @@ struct ContentView: View {
         }
     }
 
-
-    // SUPRA_MULTI_STRUCTURE_CLOSED_CIRCUIT_V1_BEGIN
-    private var structureNavigator: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            VStack(alignment: .leading, spacing: 6) {
-                Label(structureMode.rawValue, systemImage: structureMode.symbol).font(.title2.bold())
-                Text(structureMode.subtitle).font(.callout).foregroundStyle(.secondary)
-            }
-            Picker("Human journey", selection: $humanStage) {
-                ForEach(SUPRAHumanStage.allCases) { stage in
-                    Label(stage.rawValue, systemImage: stage.symbol).tag(stage)
-                }
-            }
-            .pickerStyle(.radioGroup)
-            Divider()
-            structureContext
-            Spacer()
-            Label("SUPRA agit · Nicolas décide", systemImage: "bolt.shield.fill")
-                .font(.caption.weight(.bold))
-        }
-        .padding(20)
-        .background(.thinMaterial)
-    }
-
-    @ViewBuilder
-    private var structureContext: some View {
-        switch structureMode {
-        case .hydrogen:
-            structureSummary("Intention", value: humanIntent)
-            structureSummary("Prochaine action", value: humanNextAction)
-        case .atomium:
-            structureMetric("Modules liés", value: cannonicoIntegrationSnapshot.references.count)
-            structureMetric("Gabriel workers", value: gabrielSnapshot.workers.count)
-            structureMetric("Décisions", value: operationalDecisionCandidates.count)
-        case .arbo:
-            structureMetric("Projects", value: store.model.projects.count)
-            structureMetric("Capabilities", value: store.model.capabilities.count)
-            structureMetric("Products", value: store.model.products.count)
-        case .orbital:
-            structureMetric("Mission slots", value: gabrielSnapshot.missionSlots)
-            structureMetric("Workers", value: gabrielSnapshot.workerProcesses)
-            structureMetric("Recovered modules", value: cannonicoRecoveredReferences.count)
-        }
-    }
-
-    private func structureSummary(_ title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title).font(.headline)
-            Text(value).font(.callout).foregroundStyle(.secondary)
-        }
-    }
-
-    private func structureMetric(_ title: String, value: Int) -> some View {
-        HStack {
-            Text(title)
-            Spacer()
-            Text(value.formatted()).font(.caption.monospacedDigit().weight(.semibold)).foregroundStyle(.secondary)
-        }
-    }
-
-    private var humanIntent: String {
-        switch humanStage {
-        case .observe: return "Voir ce qui change réellement."
-        case .understand: return "Relier les preuves et comprendre."
-        case .decide: return "Présenter une décision importante et explicable."
-        case .act: return "Exécuter le sûr et le réversible."
-        case .learn: return "Mémoriser et améliorer le prochain cycle."
-        }
-    }
-
-    private var humanNextAction: String {
-        if gabrielBusy { return "Gabriel conduit trois missions en parallèle." }
-        if store.chatBusy { return "SUPRA analyse les preuves." }
-        if !operationalDecisionCandidates.isEmpty { return "Examiner la première décision prioritaire." }
-        return "Laisser SUPRA poursuivre l’autopilot."
-    }
 
     @ViewBuilder
     private var structureDetail: some View {
@@ -688,7 +612,7 @@ struct ContentView: View {
     }
 
 
-    private var operationalDecisionCandidates: [SUPRARecord] {
+    var operationalDecisionCandidates: [SUPRARecord] {
         let records = store.model.projects
             + store.model.capabilities
             + store.model.products
@@ -708,11 +632,11 @@ struct ContentView: View {
     }
 
     // SUPRA_CANNONICO_SNAPSHOT_UI_V1_BEGIN
-    private var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
+    var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
         SUPRACAnnoNicoIntegration.snapshot()
     }
 
-    private var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
+    var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
         cannonicoIntegrationSnapshot.references.filter {
             $0.state == .recovered
         }
