@@ -3,9 +3,27 @@ import Combine
 
 @MainActor
 final class DecisionStore: ObservableObject {
-    private static var sourceURL: URL {
-        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+    private static func resolveSourceURL() -> URL {
+        let versionPath = "\(SUPRAEnvironmentResolver.shared.projectRoot)/version.json"
+        if let data = try? Data(contentsOf: URL(fileURLWithPath: versionPath)),
+           let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let sources = obj["sources"] as? [String: Any],
+           let decisions = sources["decisions"] as? [String: Any],
+           let path = decisions["path"] as? String {
+            let expanded = path.replacingOccurrences(of: "~", with: FileManager.default.homeDirectoryForCurrentUser.path)
+            let url = URL(fileURLWithPath: expanded)
+            if FileManager.default.fileExists(atPath: url.path) {
+                return url
+            }
+        }
+        let fallback = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
             "NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/ARCHITECTURAL_DECISIONS.json"
+        )
+        if FileManager.default.fileExists(atPath: fallback.path) {
+            return fallback
+        }
+        return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+            "NOVA_OS/SUPRA/ARCHITECTURAL_DECISIONS.json"
         )
     }
 
@@ -50,7 +68,7 @@ final class DecisionStore: ObservableObject {
         errorMessage = nil
 
         do {
-            decisions = try readDecisions(at: Self.sourceURL)
+            decisions = try readDecisions(at: Self.resolveSourceURL())
         } catch {
             decisions = []
             errorMessage = error.localizedDescription

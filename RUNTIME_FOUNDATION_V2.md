@@ -248,7 +248,39 @@ All Runtime services have been validated as starting correctly using the certifi
 
 ---
 
-*Next section: RUNTIME FOUNDATION V2 — PHASE 4 (Evolution Roadmap)*
+## 4. PROPOSAL A — EXECUTION COMPLETE
+
+### Migration Summary
+
+| File | Old Path | New Path | Status |
+|------|----------|----------|--------|
+| `SUPRARuntimeRegistry.swift` | Hardcoded `"/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/version.json"` | `SUPRAEnvironmentResolver.shared.projectRoot + "/version.json"` | **MIGRATED** |
+| `RuntimeGateway.swift` | Hardcoded `"/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/version.json"` | `SUPRAEnvironmentResolver.shared.projectRoot + "/version.json"` | **MIGRATED** |
+| `DecisionStore.swift` | Hardcoded `"/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/version.json"` | `SUPRAEnvironmentResolver.shared.projectRoot + "/version.json"` | **MIGRATED** |
+
+### Validation Results
+
+| Validation | Result |
+|-----------|--------|
+| Build | ✓ BUILD SUCCEEDED |
+| Code Signing | ✓ Valid on disk |
+| App Launch | ✓ Exit code 0 |
+| No regressions | ✓ All core artifacts accessible |
+| Hardcoded paths remaining in migrated files | 0 (confirmed via grep) |
+
+---
+
+## 5. UPDATED EXCEPTION INVENTORY
+
+After Proposal A, 3 files remain with hardcoded paths:
+
+| # | File | Hardcoded Target | Classification | Migration Priority |
+|---|------|-----------------|----------------|-------------------|
+| 1 | `ArtifactReader.swift` | LOT proofs, BUILD_STATUS, MANIFEST, ESTATE, INDEX at legacy NOVA_OS paths | Diagnostic | **2 (after A)** |
+| 2 | `RootCauseExplainerView.swift` | LOT proofs at legacy NOVA_OS paths | Diagnostic UI | **2 (after A)** |
+| 3 | `SUPRAGabrielConductorRuntime.swift` | PUCHERO, NICO_APP_V1, SUPRA_VIDEO_SWAP_V2, GABRIEL_CONDUCTOR paths | External Integration | **3 (deferred)** |
+
+*See RUNTIME_CONTRACT_V1.md Section 9.4 for full justification of each exception.*
 
 ---
 
