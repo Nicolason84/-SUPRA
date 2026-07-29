@@ -525,6 +525,7 @@ struct ExecutiveCockpit: View {
                     decisionCenter
                 }
                 integrationsSection
+                dashboardSection
                 executiveAlerts
                 timeline
             }
@@ -725,6 +726,15 @@ struct ExecutiveCockpit: View {
             G4IntegrationView()
         }
         .fadeIn(delay: 0.38)
+    }
+
+    // MARK: - Dashboard Section (G1)
+
+    private var dashboardSection: some View {
+        ExecutivePanel(title: "Project Dashboard", icon: "square.grid.2x2", color: .supraBlue) {
+            G1DashboardView()
+        }
+        .fadeIn(delay: 0.40)
     }
 }
 
