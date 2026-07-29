@@ -249,3 +249,166 @@ All Runtime services have been validated as starting correctly using the certifi
 ---
 
 *Next section: RUNTIME FOUNDATION V2 — PHASE 4 (Evolution Roadmap)*
+
+---
+
+## PHASE 4: EVOLUTION ROADMAP
+
+### 4.1 Remaining Hardcoded Path Inventory
+
+6 files contain hardcoded absolute paths that violate the Runtime Contract V1:
+
+| # | File | Hardcoded Target | Migration Risk | Value Impact |
+|---|------|-----------------|---------------|-------------|
+| 1 | `SUPRARuntimeRegistry.swift` | `version.json` at projectRoot | **LOW** — same path resolver returns | Medium — consistency |
+| 2 | `RuntimeGateway.swift` | `version.json` at projectRoot | **LOW** — same path resolver returns | Medium — consistency |
+| 3 | `DecisionStore.swift` | `version.json` at projectRoot | **LOW** — same path resolver returns | Medium — consistency |
+| 4 | `ArtifactReader.swift` | LOT proofs, BUILD_STATUS, MANIFEST, ESTATE, INDEX at legacy NOVA_OS paths | **MEDIUM** — diagnostic artifacts not yet at projectRoot | HIGH — enables full diagnostic dashboard |
+| 5 | `RootCauseExplainerView.swift` | LOT proofs at legacy NOVA_OS paths | **MEDIUM** — diagnostic artifacts not yet at projectRoot | HIGH — enables root cause analysis UI |
+| 6 | `SUPRAGabrielConductorRuntime.swift` | External tool paths (PUCHERO, NICO_APP_V1, etc.) | **HIGH** — external paths may change | LOW — integration only |
+
+### 4.2 Evolution Proposals
+
+#### Proposal A: Migrate Utility Files to Resolver (Priority 1)
+**Target**: SUPRARuntimeRegistry.swift, RuntimeGateway.swift, DecisionStore.swift
+**What**: Replace hardcoded `"/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/version.json"` with `SUPRAEnvironmentResolver.shared.projectRoot + "/version.json"`
+**Value**: Eliminates 3 of 6 remaining hardcoded paths. Consistency across all Runtime components.
+**Risk**: LOW — `version.json` is present at both the hardcoded path and the resolver-returned path. No functional change.
+**Components impacted**: 3 utility files
+**Contract V1 compatible**: YES — uses resolver where hardcoded path was identical to resolver output
+
+#### Proposal B: Migrate Diagnostic Artifacts to projectRoot (Priority 2)
+**Target**: ArtifactReader.swift, RootCauseExplainerView.swift, ContinuityManager.swift (loadArtifactDiagnostics)
+**What**: Copy LOT1-3 proofs, MANIFEST.json, ESTATE_STATE.json, INDEX.json to projectRoot/proofs/, projectRoot/MANIFEST.json, projectRoot/ESTATE_STATE.json, projectRoot/INDEX.json. Update ArtifactReader and RootCauseExplainerView to use `projectRoot` paths alongside legacy fallback. Update loadArtifactDiagnostics to use `projectRoot`.
+**Value**: Enables full diagnostic dashboard through canonical resolver. All 7 diagnostic artifacts discoverable via single source.
+**Risk**: MEDIUM — requires artifact file migration + code changes. Artifacts must exist at both locations during transition.
+**Components impacted**: 3 files + 6 artifact files (copy to new location)
+**Contract V1 compatible**: YES — extends artifact resolution to include diagnostic artifacts at projectRoot
+
+#### Proposal C: Migrate External Integration (Priority 3)
+**Target**: SUPRAGabrielConductorRuntime.swift
+**What**: Replace hardcoded external tool paths with resolver-based paths or configuration-driven paths (e.g., read from settings/project config).
+**Value**: Eliminates last hardcoded absolute path. Makes external tool paths configurable.
+**Risk**: HIGH — external tool installations may be at different paths on different machines. Requires configuration mechanism.
+**Components impacted**: 1 external integration + configuration system
+**Contract V1 compatible**: YES — but introduces new configuration concept (not yet in contract)
+
+#### Proposal D: Complete Hardcoded Path Elimination (Combined A+B+C)
+**Target**: All 6 exception files
+**What**: Execute Proposals A, B, and C together. Eliminate ALL remaining hardcoded paths in the codebase.
+**Value**: Complete elimination of hardcoded paths. Full Runtime Contract V1 compliance across entire repository.
+**Risk**: MEDIUM-HIGH — cumulative risk of all three proposals executed together.
+**Components impacted**: All 6 exception files + 6 artifact files
+**Contract V1 compatible**: YES
+
+### 4.3 Priority Ranking
+
+| Rank | Proposal | Expected Value | Risk | Compatibility | Recommendation |
+|------|----------|---------------|------|---------------|----------------|
+| **1** | **A: Migrate Utility Files** | Eliminates 3 hardcoded paths; consistency | LOW | Full | **RECOMMENDED FIRST** |
+| 2 | B: Migrate Diagnostic Artifacts | Enables full diagnostic dashboard | MEDIUM | Full | Recommended second |
+| 3 | C: Migrate External Integration | Eliminates last hardcoded path | HIGH | Partial | Deferred (requires config design) |
+| 4 | D: Complete Elimination | Full compliance | MEDIUM-HIGH | Full | Recommended when A+B+C complete |
+
+### 4.4 Single Priority Recommendation
+
+**Execute Proposal A (Migrate Utility Files) first.**
+
+Rationale:
+- Lowest risk (all 3 files read the same path the resolver would return)
+- Highest immediate value (3 of 6 hardcoded paths eliminated)
+- Zero functional impact (version.json already present at resolver-returned path)
+- Sets precedent for resolver usage pattern
+- Can be implemented in a single subagent session
+- Preserves Contract V1 without amendment
+
+Expected outcome after Proposal A:
+- 3 of 6 exception files eliminated
+- 0 remaining hardcoded paths for version.json resolution
+- Utility layer fully compliant with Runtime Contract V1
+- Paves the way for Proposal B (diagnostic artifacts migration)
+
+---
+
+## FINAL REPORT
+
+### 5.1 Runtime Foundation Status
+
+| Metric | Value |
+|--------|-------|
+| **Foundation Version** | V2 |
+| **Baseline Contract** | Runtime Contract V1 (Certified 2026-07-29) |
+| **Status** | **BASELINE LOCKED** |
+| **Certified Components** | 6 of 6 Runtime components compliant |
+| **Protected Components** | SUPRAEnvironmentResolver (IMMUTABLE) |
+| **Remaining Exceptions** | 6 files (3 utility, 2 diagnostic, 1 external integration) |
+| **Build Status** | BUILD SUCCEEDED |
+| **App Launch** | SUCCESS (exit code 0) |
+| **Code Signing** | VALID on disk |
+
+### 5.2 Dependency Graph Summary
+
+```
+SUPRAEnvironmentResolver (IMMMUTABLE foundation)
+├── ContinuityManager (TIGHT coupling)
+├── ExecutiveBootManager (TIGHT coupling)
+├── CAnnoNicoIntegrationBridge (MEDIUM coupling)
+├── SUPRAEnvironmentSnapshotStore (MEDIUM coupling)
+├── ContinuityView (INDIRECT via ContinuityManager)
+├── RuntimeDiagnosticsView (INDIRECT via ContinuityManager)
+├── SupraControlCenterView (INDIRECT via ArtifactReader)
+├── RootCauseExplainerView (INDIRECT via ArtifactReader)
+├── Exec Layer (ExecutiveBootManager → Executive* components)
+└── Mission Layer (INDEPENDENT of Foundation)
+```
+
+### 5.3 Validated Services
+
+All Runtime services validated via build + launch + artifact verification:
+
+| Service | Method | Result |
+|---------|--------|--------|
+| Build | xcodebuild | ✓ BUILD SUCCEEDED |
+| Code Signing | codesign -vvv | ✓ VALID on disk |
+| App Launch | open SUPRA.app | ✓ Exit code 0 |
+| Core Artifacts | File existence check | ✓ 7/7 present at projectRoot |
+| Continuity Loading | ContinuityManager.projectRoot | ✓ Using SUPRAEnvironmentResolver |
+| Executive Boot | ExecutiveBootManager.projectRoot | ✓ Using SUPRAEnvironmentResolver |
+| Runtime Root | SUPRAEnvironmentResolver.projectRoot | ✓ Canonical source confirmed |
+
+### 5.4 Remaining Documented Exceptions
+
+| File | Exception Type | Justification | Migration Priority |
+|------|---------------|---------------|-------------------|
+| SUPRARuntimeRegistry.swift | Utility (version.json) | Same path as resolver returns | **1 (immediate)** |
+| RuntimeGateway.swift | Utility (version.json) | Same path as resolver returns | **1 (immediate)** |
+| DecisionStore.swift | Utility (version.json) | Same path as resolver returns | **1 (immediate)** |
+| ArtifactReader.swift | Diagnostic (legacy artifact paths) | Artifacts not yet at projectRoot | **2 (after A)** |
+| RootCauseExplainerView.swift | Diagnostic UI (legacy proof paths) | Artifacts not yet at projectRoot | **2 (after A)** |
+| SUPRAGabrielConductorRuntime.swift | External Integration (external tool paths) | External tools may be at different paths | **3 (deferred)** |
+
+### 5.5 Proposed Next Capability
+
+**Priority 1: Utility Hardcoded Path Elimination**
+
+Migrate SUPRARuntimeRegistry.swift, RuntimeGateway.swift, and DecisionStore.swift to use SUPRAEnvironmentResolver.shared.projectRoot instead of hardcoded absolute paths.
+
+**Expected Value**: Highest immediate value with lowest risk. Eliminates 3 of 6 remaining hardcoded paths. Establishes resolver usage precedent for all future code.
+
+**Implementation Plan**:
+1. Replace `"/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/version.json"` with `SUPRAEnvironmentResolver.shared.projectRoot + "/version.json"` in all 3 files
+2. Rebuild and verify build succeeds
+3. Verify version.json is still accessible through resolver-returned path
+4. Update RUNTIME_FOUNDATION_V2.md exception table
+5. Commit as Evolution Pass 1
+
+### 5.6 Implementation Recommendation
+
+Execute Proposal A (Migrate Utility Files) as the first evolution pass. This is the highest-value, lowest-risk change that closes the largest portion of remaining hardcoded path violations while preserving the Stability of Contract V1. It requires no contract amendment — all changes use the resolver that is already the canonical source.
+
+---
+
+**RUNTIME FOUNDATION V2 — COMPLETE**
+
+One Runtime Foundation. One Runtime Contract. One Evolution Path.
+
