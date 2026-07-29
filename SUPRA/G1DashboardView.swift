@@ -59,8 +59,6 @@ struct G1DashboardView: View {
     private var loadedContent: some View {
         Group {
             if showContent {
-                header
-                    .transition(.opacity)
                 indicatorsBar
                     .transition(.opacity)
                 sectionGrid
