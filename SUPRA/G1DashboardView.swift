@@ -12,17 +12,15 @@ struct G1DashboardView: View {
     private let layout = DashboardGridLayout.default
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: layout.sectionSpacing) {
-                if isLoading {
-                    skeletonContent
-                } else {
-                    loadedContent
-                }
+        VStack(alignment: .leading, spacing: layout.sectionSpacing) {
+            if isLoading {
+                skeletonContent
+            } else {
+                loadedContent
             }
-            .padding(SUPRAOSDesignSystem.padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .padding(SUPRAOSDesignSystem.padding)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(SUPRAOSGradientBackground())
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
