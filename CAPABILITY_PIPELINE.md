@@ -107,8 +107,8 @@ Each increment is independently validated. No capability is delivered in a singl
 |----|-----------|----------|--------|----------|
 | G1 | Unified Project Dashboard | #1 | CERTIFIED | SUPRA-Builder |
 | G2 | Automated Health Monitoring | #0 | CERTIFIED | SUPRA-Builder |
-| G3 | Export & Reporting | #2 | NEXT | SUPRA-Builder |
-| G4 | Integration Dashboard | #3 | READY | SUPRA-Builder |
+| G3 | Export & Reporting | #2 | CERTIFIED | SUPRA-Builder |
+| G4 | Integration Dashboard | #3 | NEXT | SUPRA-Builder |
 | G5 | Capability Marketplace | #4 | DEFERRED | — |
 | G6 | Audit Trail | #5 | READY | SUPRA-Builder |
 | G7 | Smart Suggestions | #6 | READY | SUPRA-Builder |
