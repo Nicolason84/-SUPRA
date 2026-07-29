@@ -524,6 +524,7 @@ struct ExecutiveCockpit: View {
                     discoveryCenter
                     decisionCenter
                 }
+                integrationsSection
                 executiveAlerts
                 timeline
             }
@@ -715,6 +716,15 @@ struct ExecutiveCockpit: View {
                 }
             }
         }
+    }
+
+    // MARK: - Integrations Section (G4)
+
+    private var integrationsSection: some View {
+        ExecutivePanel(title: "Integrations", icon: "point.3.connected.trianglepath.dotted", color: .supraAccent) {
+            G4IntegrationView()
+        }
+        .fadeIn(delay: 0.38)
     }
 }
 
