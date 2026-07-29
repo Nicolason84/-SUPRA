@@ -132,6 +132,22 @@ final class HealthAnomalyDetector: ObservableObject {
         )
     }
 
+    func acknowledge(_ alertId: UUID) {
+        if let index = alerts.firstIndex(where: { $0.id == alertId }) {
+            alerts[index].acknowledged = true
+        }
+    }
+
+    func acknowledgeAll() {
+        for i in alerts.indices {
+            alerts[i].acknowledged = true
+        }
+    }
+
+    func clearAcknowledged() {
+        alerts.removeAll { $0.acknowledged }
+    }
+
     private func addAlert(_ alert: AlertModel) {
         if alert.title == "Duplicate suppressed" && alert.severity == .info { return }
         alerts.insert(alert, at: 0)

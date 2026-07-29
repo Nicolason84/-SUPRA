@@ -43,7 +43,7 @@ struct AlertModel: Identifiable, Equatable, Codable {
     let message: String
     let timestamp: Date
     let category: AlertCategory
-    let acknowledged: Bool
+    var acknowledged: Bool
 
     init(
         severity: AlertSeverity,
