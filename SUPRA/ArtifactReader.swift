@@ -17,15 +17,26 @@ struct ArtifactReader {
 
     private let fileManager: FileManager
 
-    private static let lotURLs = [
-        URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT1_INSTALLATION_PROOF.json"),
-        URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT2_INSTALLATION_PROOF.json"),
-        URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT3_INSTALLATION_PROOF.json")
-    ]
-    private static let buildURL = URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/_SYSTEM_BUILD/FULL_BUILD_20260605_120156/BUILD_STATUS.md")
-    private static let manifestURL = URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_UI_DATA_BINDER_V1/CURRENT/MANIFEST.json")
-    private static let desktopEstateURL = URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_CANNONICO_IMAC_ESTATE_V1/CURRENT/ESTATE_STATE.json")
-    private static let indexURL = URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json")
+    private static var lotURLs: [URL] {
+        let root = SUPRAEnvironmentResolver.shared.projectRoot
+        return [
+            URL(fileURLWithPath: "\(root)/proofs/LOT1_INSTALLATION_PROOF.json"),
+            URL(fileURLWithPath: "\(root)/proofs/LOT2_INSTALLATION_PROOF.json"),
+            URL(fileURLWithPath: "\(root)/proofs/LOT3_INSTALLATION_PROOF.json"),
+        ]
+    }
+    private static var buildURL: URL {
+        URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/BUILD_STATUS.md")
+    }
+    private static var manifestURL: URL {
+        URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/MANIFEST.json")
+    }
+    private static var desktopEstateURL: URL {
+        URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/ESTATE_STATE.json")
+    }
+    private static var indexURL: URL {
+        URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/INDEX.json")
+    }
 
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
@@ -83,9 +94,20 @@ struct ArtifactReader {
 
     private func jsonStatus(name: String, url: URL, preferredKeys: [String]) throws -> ArtifactStatus {
         guard let data = fileManager.contents(atPath: url.path) else {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: \(name) unreadable at \(url.path)")
             throw ReaderError.unreadable(name, url)
         }
-        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+        let object: [String: Any]
+        do {
+            guard let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: \(name) at \(url.path) is not a JSON object")
+                throw ReaderError.invalidJSON(name, url)
+            }
+            object = obj
+        } catch let error as ReaderError {
+            throw error
+        } catch {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: \(name) JSON parse error: \(error.localizedDescription)")
             throw ReaderError.invalidJSON(name, url)
         }
         let value = preferredKeys.compactMap { object[$0] }.first.map { String(describing: $0) }
@@ -94,14 +116,23 @@ struct ArtifactReader {
 
     private func optionalJSONStatus(name: String, url: URL) -> ArtifactStatus {
         guard fileManager.fileExists(atPath: url.path) else {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: Optional \(name) not found at \(url.path)")
             return status(name: name, url: url, value: "Unavailable", detail: "Optional artifact", available: false)
         }
-        return (try? jsonStatus(name: name, url: url, preferredKeys: ["status", "state", "version"]))
-            ?? status(name: name, url: url, value: "Unavailable", detail: "Optional artifact is unreadable", available: false)
+        do {
+            return try jsonStatus(name: name, url: url, preferredKeys: ["status", "state", "version"])
+        } catch {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: Optional \(name) unreadable: \(error.localizedDescription)")
+            return status(name: name, url: url, value: "Unavailable", detail: "Optional artifact is unreadable", available: false)
+        }
     }
 
     private func textStatus(name: String, url: URL) throws -> ArtifactStatus {
-        guard let text = try? String(contentsOf: url, encoding: .utf8) else {
+        let text: String
+        do {
+            text = try String(contentsOf: url, encoding: .utf8)
+        } catch {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: \(name) text read failed at \(url.path): \(error.localizedDescription)")
             throw ReaderError.unreadable(name, url)
         }
         let meaningful = text.split(separator: "\n")

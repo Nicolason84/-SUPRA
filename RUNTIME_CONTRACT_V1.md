@@ -145,6 +145,9 @@ The following files contain hardcoded absolute paths and are outside the Runtime
 | 2026-07-29 | Removed hardcoded paths from ExecutiveBootManager.swift | SUPRA-Builder |
 | 2026-07-29 | Added `projectRoot` computed property to SUPRAEnvironmentResolver | SUPRA-Builder |
 | 2026-07-29 | Frozen Runtime Contract V1 | SUPRA-Architect |
+| 2026-07-29 | Proposal A: Migrated SUPRARuntimeRegistry, RuntimeGateway, DecisionStore to SUPRAEnvironmentResolver | SUPRA-Builder |
+| 2026-07-29 | Proposal B: Migrated ArtifactReader and RootCauseExplainerView to SUPRAEnvironmentResolver | SUPRA-Builder |
+| 2026-07-29 | Proposal B: Copied 6 diagnostic artifacts to projectRoot | SUPRA-Builder |
 
 ---
 
