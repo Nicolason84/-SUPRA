@@ -149,7 +149,6 @@ struct G1DashboardView: View {
             ForEach(DashboardSectionOrder.defaultOrder) { section in
                 sectionCard(for: section)
             }
-            ExportSection()
         }
     }
 
