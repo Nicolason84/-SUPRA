@@ -15,6 +15,7 @@ struct CommandCenterView: View {
                     MissionView()
                     MultiMemoryView()
                     IntelligenceView()
+                    G4IntegrationView()
                 }
             }
             .padding(SUPRAOSDesignSystem.padding)
