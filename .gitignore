@@ -5,6 +5,7 @@
 DerivedData/
 .build/
 build/
+!/scripts/build/
 
 # Analyses / audits
 .analysis/
