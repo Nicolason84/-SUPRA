@@ -526,6 +526,7 @@ struct ExecutiveCockpit: View {
                 }
                 integrationsSection
                 dashboardSection
+                healthSection
                 executiveAlerts
                 timeline
             }
@@ -735,6 +736,15 @@ struct ExecutiveCockpit: View {
             G1DashboardView()
         }
         .fadeIn(delay: 0.40)
+    }
+
+    // MARK: - Health Section (G2)
+
+    private var healthSection: some View {
+        ExecutivePanel(title: "Health Monitoring", icon: "heart.text.square.fill", color: .supraGreen) {
+            HealthMonitorView()
+        }
+        .fadeIn(delay: 0.42)
     }
 }
 
