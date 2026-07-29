@@ -62,12 +62,14 @@ enum ServiceConnectionStatus: String, CaseIterable {
 
 // MARK: - IntegrationServiceStatus
 
-struct IntegrationServiceStatus {
+struct IntegrationServiceStatus: Identifiable {
     let type: IntegrationServiceType
     let isConnected: Bool
     let statusText: String
     let detailText: String?
     let lastUpdated: Date?
+
+    var id: String { type.rawValue }
 
     var connectionStatus: ServiceConnectionStatus {
         if isConnected { return .connected }
