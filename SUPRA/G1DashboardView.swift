@@ -168,7 +168,7 @@ struct G1DashboardView: View {
         case .intelligence:
             IntelligenceView()
         case .healthAlerts:
-            HealthMonitorView()
+            EmptyView()
         }
     }
 
