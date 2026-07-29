@@ -248,7 +248,7 @@ All Runtime services have been validated as starting correctly using the certifi
 
 ---
 
-## 4. PROPOSAL A — EXECUTION COMPLETE
+## 5. PROPOSAL A — EXECUTION COMPLETE
 
 ### Migration Summary
 
@@ -267,6 +267,63 @@ All Runtime services have been validated as starting correctly using the certifi
 | App Launch | ✓ Exit code 0 |
 | No regressions | ✓ All core artifacts accessible |
 | Hardcoded paths remaining in migrated files | 0 (confirmed via grep) |
+
+---
+
+## 6. PROPOSAL B — EXECUTION COMPLETE
+
+### Migration Summary
+
+| File | Migration | Hardcoded Paths Remaining | Status |
+|------|-----------|--------------------------|--------|
+| `ArtifactReader.swift` | Migrated 7 diagnostic artifact URLs to canonical Runtime Root | **0** | **MIGRATED** |
+| `RootCauseExplainerView.swift` | Migrated 3 LOT proof paths to canonical Runtime Root | **0** | **MIGRATED** |
+| `SUPRAGabrielConductorRuntime.swift` | Skipped — external tool integration paths | 4 | Deferred to Proposal C |
+
+### Diagnostic Artifact Migration
+
+6 diagnostic artifact files migrated to projectRoot to enable canonical resolution:
+
+| Artifact | Legacy Path | Now at projectRoot |
+|----------|-------------|-------------------|
+| LOT1_INSTALLATION_PROOF.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/` | `proofs/LOT1_INSTALLATION_PROOF.json` ✓ |
+| LOT2_INSTALLATION_PROOF.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/` | `proofs/LOT2_INSTALLATION_PROOF.json` ✓ |
+| LOT3_INSTALLATION_PROOF.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/` | `proofs/LOT3_INSTALLATION_PROOF.json` ✓ |
+| BUILD_STATUS.md | Already at projectRoot | `BUILD_STATUS.md` ✓ |
+| MANIFEST.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_UI_DATA_BINDER_V1/CURRENT/` | `MANIFEST.json` ✓ |
+| ESTATE_STATE.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_CANNONICO_IMAC_ESTATE_V1/CURRENT/` | `ESTATE_STATE.json` ✓ |
+| INDEX.json | `/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/` | `INDEX.json` ✓ |
+
+### Validation Results (Proposal B)
+
+| Validation | Result |
+|-----------|--------|
+| Build | ✓ BUILD SUCCEEDED (no new errors) |
+| Code Signing | ✓ Valid on disk |
+| App Launch | ✓ Exit code 0 (no regression) |
+| Diagnostic artifacts at projectRoot | ✓ 7/7 present |
+| ArtifactReader hardcoded paths | ✓ 0 (confirmed) |
+| RootCauseExplainerView hardcoded paths | ✓ 0 (confirmed) |
+| Canonical Runtime Root usage | ✓ Confirmed in both files |
+
+### Proposal B Impact
+
+- **Diagnostic dashboard** (RuntimeDiagnosticsView) now loads all diagnostic artifacts through canonical Runtime Root
+- **Root cause analysis** (RootCauseExplainerView) now uses canonical Runtime Root for LOT verification
+- **Artifact reader** (ArtifactReader) fully compliant with Runtime Contract V1
+- **Runtime Foundation** remains stable — no architectural changes, no new abstractions, no regressions
+
+---
+
+## 7. REMAINING EXCEPTION INVENTORY (Post-Proposal B)
+
+After Proposal A and Proposal B, only **1 file** remains with hardcoded paths:
+
+| # | File | Hardcoded Target | Classification | Migration Priority |
+|---|------|-----------------|----------------|-------------------|
+| 1 | `SUPRAGabrielConductorRuntime.swift` | PUCHERO, NICO_APP_V1, SUPRA_VIDEO_SWAP_V2, GABRIEL_CONDUCTOR | External Integration | **3 (deferred — Proposal C)** |
+
+*See RUNTIME_CONTRACT_V1.md Section 9.4 for full justification of the remaining exception.*
 
 ---
 

@@ -124,16 +124,16 @@ These artifacts currently exist only at legacy paths under `/Users/nicolasalonso
 - **No direct string interpolation of legacy paths** (e.g., `/Users/nicolasalonso/NOVA_OS/...`) in Runtime artifact loading.
 
 ### Exceptions (non-Runtime diagnostic/utility code)
-The following files contain hardcoded absolute paths and are outside the Runtime component audit scope. They should be migrated in a subsequent pass:
+The following files contain hardcoded absolute paths and are outside the Runtime component audit scope. They should be migrated in a subsequent pass.
 
-| File | Path Hardcoded | Classification |
-|------|---------------|----------------|
-| `SUPRARuntimeRegistry.swift` | `version.json` at projectRoot (same as resolver) | Utility |
-| `RuntimeGateway.swift` | `version.json` at projectRoot (same as resolver) | Utility |
-| `DecisionStore.swift` | `version.json` at projectRoot (same as resolver) | Utility |
-| `ArtifactReader.swift` | LOT proofs, BUILD_STATUS, MANIFEST, ESTATE, INDEX at legacy NOVA_OS paths | Diagnostic |
-| `RootCauseExplainerView.swift` | LOT proofs at legacy NOVA_OS paths | Diagnostic UI |
-| `SUPRAGabrielConductorRuntime.swift` | PUCHERO, NICO_APP_V1, SUPRA_VIDEO_SWAP_V2, GABRIEL_CONDUCTOR paths | External integration |
+| File | Path Hardcoded | Classification | Status |
+|------|---------------|----------------|--------|
+| ~~`SUPRARuntimeRegistry.swift`~~ | ~~`version.json` at projectRoot (same as resolver)~~ | ~~Utility~~ | **MIGRATED (Proposal A)** |
+| ~~`RuntimeGateway.swift`~~ | ~~`version.json` at projectRoot (same as resolver)~~ | ~~Utility~~ | **MIGRATED (Proposal A)** |
+| ~~`DecisionStore.swift`~~ | ~~`version.json` at projectRoot (same as resolver)~~ | ~~Utility~~ | **MIGRATED (Proposal A)** |
+| ~~`ArtifactReader.swift`~~ | ~~LOT proofs, BUILD_STATUS, MANIFEST, ESTATE, INDEX at legacy NOVA_OS paths~~ | ~~Diagnostic~~ | **MIGRATED (Proposal B)** |
+| ~~`RootCauseExplainerView.swift`~~ | ~~LOT proofs at legacy NOVA_OS paths~~ | ~~Diagnostic UI~~ | **MIGRATED (Proposal B)** |
+| `SUPRAGabrielConductorRuntime.swift` | PUCHERO, NICO_APP_V1, SUPRA_VIDEO_SWAP_V2, GABRIEL_CONDUCTOR paths | External integration | **Deferred (Proposal C)** |
 
 ---
 
