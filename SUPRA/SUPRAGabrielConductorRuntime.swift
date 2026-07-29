@@ -47,61 +47,89 @@ struct SUPRAGabrielConductorSnapshot: Codable, Sendable {
         case run
     }
 
-    static let unavailable = SUPRAGabrielConductorSnapshot(
-        status: "NOT RUN",
-        generatedAt: nil,
-        visibleConductor: "GABRIEL",
-        finalAuthority: "SUPRA",
-        missionSlots: 3,
-        workerProcesses: 3,
-        uiInstances: 1,
-        sharedSourceMode: "READ_ONLY",
-        outputMode: "ISOLATED_RUNS",
-        workers: [
-            SUPRAGabrielWorkerSnapshot(
-                id: "GABRIEL_WORKER_PUCHERO",
-                title: "PUCHERO Memory Worker",
-                mission: "Memory, proof and lineage consolidation",
-                source: "/Users/nicolasalonso/NOVA_OS/PUCHERO",
-                status: "WAITING",
-                analysis: nil,
-                outputDir: nil
-            ),
-            SUPRAGabrielWorkerSnapshot(
-                id: "GABRIEL_WORKER_NICO_APP",
-                title: "NICO_APP Human Interface Worker",
-                mission: "Human interface and personal context consolidation",
-                source: "/Users/nicolasalonso/NOVA_OS/NICO_APP_V1",
-                status: "WAITING",
-                analysis: nil,
-                outputDir: nil
-            ),
-            SUPRAGabrielWorkerSnapshot(
-                id: "GABRIEL_WORKER_VIDEO_SWAP",
-                title: "Video Swap Media Worker",
-                mission: "Media transformation capability consolidation",
-                source: "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V2",
-                status: "WAITING",
-                analysis: nil,
-                outputDir: nil
-            )
-        ],
-        run: nil
-    )
+    static var unavailable: SUPRAGabrielConductorSnapshot {
+        SUPRAGabrielConductorSnapshot(
+            status: "NOT RUN",
+            generatedAt: nil,
+            visibleConductor: "GABRIEL",
+            finalAuthority: "SUPRA",
+            missionSlots: 3,
+            workerProcesses: 3,
+            uiInstances: 1,
+            sharedSourceMode: "READ_ONLY",
+            outputMode: "ISOLATED_RUNS",
+            workers: [
+                SUPRAGabrielWorkerSnapshot(
+                    id: "GABRIEL_WORKER_PUCHERO",
+                    title: "PUCHERO Memory Worker",
+                    mission: "Memory, proof and lineage consolidation",
+                    source: SUPRAGabrielConductorRuntime.pucheroSource,
+                    status: "WAITING",
+                    analysis: nil,
+                    outputDir: nil
+                ),
+                SUPRAGabrielWorkerSnapshot(
+                    id: "GABRIEL_WORKER_NICO_APP",
+                    title: "NICO_APP Human Interface Worker",
+                    mission: "Human interface and personal context consolidation",
+                    source: SUPRAGabrielConductorRuntime.nicoAppSource,
+                    status: "WAITING",
+                    analysis: nil,
+                    outputDir: nil
+                ),
+                SUPRAGabrielWorkerSnapshot(
+                    id: "GABRIEL_WORKER_VIDEO_SWAP",
+                    title: "Video Swap Media Worker",
+                    mission: "Media transformation capability consolidation",
+                    source: SUPRAGabrielConductorRuntime.videoSwapSource,
+                    status: "WAITING",
+                    analysis: nil,
+                    outputDir: nil
+                )
+            ],
+            run: nil
+        )
+    }
 }
 
 enum SUPRAGabrielConductorRuntime {
-    nonisolated private static let runtimePath =
-        "/Users/nicolasalonso/NOVA_OS/GABRIEL_PARALLEL_MISSION_CONDUCTOR_V1/RUNTIME/gabriel_parallel_conductor.py"
+    private static func ensureResolved() {
+        SUPRAEnvironmentResolver.shared.resolve()
+    }
 
-    private static let snapshotPath =
+    static var gabrielRuntimePath: String {
+        ensureResolved()
+        return SUPRAEnvironmentResolver.shared.path(for: "gabrielConductorRoot")
+            ?? NSHomeDirectory() + "/NOVA_OS/GABRIEL_PARALLEL_MISSION_CONDUCTOR_V1/RUNTIME"
+    }
+
+    static var gabrielSnapshotPath: String {
         FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent(
                 "NOVA_OS/GABRIEL_PARALLEL_MISSION_CONDUCTOR_V1/CURRENT/OUTPUTS/GABRIEL_CONSOLIDATION.json"
-            )
+            ).path
+    }
+
+    static var pucheroSource: String {
+        ensureResolved()
+        return SUPRAEnvironmentResolver.shared.path(for: "pucheroRoot")
+            ?? NSHomeDirectory() + "/NOVA_OS/PUCHERO"
+    }
+
+    static var nicoAppSource: String {
+        ensureResolved()
+        return SUPRAEnvironmentResolver.shared.path(for: "nicoAppRoot")
+            ?? NSHomeDirectory() + "/NOVA_OS/NICO_APP_V1"
+    }
+
+    static var videoSwapSource: String {
+        ensureResolved()
+        return SUPRAEnvironmentResolver.shared.path(for: "videoSwapRoot")
+            ?? ""
+    }
 
     static func load() -> SUPRAGabrielConductorSnapshot {
-        guard let data = try? Data(contentsOf: snapshotPath),
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: gabrielSnapshotPath)),
               let snapshot = try? JSONDecoder().decode(
                   SUPRAGabrielConductorSnapshot.self,
                   from: data
@@ -117,7 +145,7 @@ enum SUPRAGabrielConductorRuntime {
         await Task.detached(priority: .userInitiated) {
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-            process.arguments = [runtimePath, "run"]
+            process.arguments = [gabrielRuntimePath + "/gabriel_parallel_conductor.py", "run"]
             process.standardOutput = Pipe()
             process.standardError = Pipe()
 

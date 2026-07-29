@@ -35,6 +35,7 @@ final class SUPRAEnvironmentResolver: ObservableObject {
             ("pucheroRoot", "Puchero Root", ["PUCHERO"]),
             ("nicoAppRoot", "Nico App Root", ["NICO_APP_V1"]),
             ("videoSwapRoot", "Video Swap Root", ["SUPRA_VIDEO_SWAP_V2"]),
+            ("gabrielConductorRoot", "Gabriel Conductor Root", ["GABRIEL_PARALLEL_MISSION_CONDUCTOR_V1"]),
             ("desktop", "Desktop", ["Desktop"]),
             ("documents", "Documents", ["Documents"]),
             ("downloads", "Downloads", ["Downloads"]),
