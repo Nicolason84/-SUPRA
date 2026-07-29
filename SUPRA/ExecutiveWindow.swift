@@ -527,6 +527,7 @@ struct ExecutiveCockpit: View {
                 integrationsSection
                 dashboardSection
                 healthSection
+                exportSection
                 executiveAlerts
                 timeline
             }
@@ -745,6 +746,15 @@ struct ExecutiveCockpit: View {
             HealthMonitorView()
         }
         .fadeIn(delay: 0.42)
+    }
+
+    // MARK: - Export Section (G3)
+
+    private var exportSection: some View {
+        ExecutivePanel(title: "Export & Reporting", icon: "square.and.arrow.up", color: .supraOrange) {
+            ExportSection()
+        }
+        .fadeIn(delay: 0.44)
     }
 }
 
