@@ -42,6 +42,11 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
     /// Connected services
     @Published public private(set) var connectedServices: [String: Bool] = [:]
 
+    // MARK: - Mission Summary (Bridge to Snapshot Bus)
+
+    /// Lightweight mission data populated from MissionStore, published via the Snapshot Bus.
+    @Published public private(set) var missionsSummary: ExecutiveContextSnapshot.MissionsSummary = .initial
+
     // MARK: - Internal
 
     private var contextTimer: Timer?
@@ -119,21 +124,53 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
     }
 
     private func detectMissions() async {
-        // Look for mission indicators in the filesystem
-        let missionDir = fileManager.currentDirectoryPath + "/Missions"
-        var fileExists: ObjCBool = false
-        if fileManager.fileExists(atPath: missionDir, isDirectory: &fileExists), fileExists.boolValue {
-            do {
-                let contents = try fileManager.contentsOfDirectory(atPath: missionDir)
-                let activeMissions = contents.filter { $0.hasSuffix(".md") || $0.hasSuffix(".json") }
-                if !activeMissions.isEmpty {
-                    availableContexts["missions"] = "\(activeMissions.count) mission files"
-                    currentMission = activeMissions.first
-                }
-            } catch {
-                availableContexts["missions"] = "error reading missions"
-            }
-        }
+        // Read missions from MissionStore (the canonical write-side service)
+        let missionStore = SUPRACompositionRoot.shared.missionStore
+        missionStore.load()
+
+        let missions = missionStore.missions
+        let currentMissionItem = missionStore.currentMission
+        currentMission = currentMissionItem?.title
+
+        let autoMissions = missionStore.autoMissions
+        let supervisionMissions = missionStore.supervisionMissions
+        let humanMissions = missionStore.humanMissions
+        let visibleMissions = missionStore.visibleMissions
+
+        // Build the summary for the Snapshot Bus
+        // (pre-compute values to help Swift's type-checker)
+        let total = missions.count
+        let active = missions.filter { $0.status == .active }.count
+        let planned = missions.filter { $0.status == .planned }.count
+        let completed = missions.filter { $0.status == .completed }.count
+        let blocked = missions.filter { $0.status == .blocked }.count
+        let auto = autoMissions.count
+        let supervised = supervisionMissions.count
+        let human = humanMissions.count
+
+        let currentSummary = currentMissionItem.map { ExecutiveContextSnapshot.MissionSummaryItem.from(mission: $0) }
+        let autoSummary = autoMissions.map { ExecutiveContextSnapshot.MissionSummaryItem.from(mission: $0) }
+        let supervisedSummary = supervisionMissions.map { ExecutiveContextSnapshot.MissionSummaryItem.from(mission: $0) }
+        let humanSummary = humanMissions.map { ExecutiveContextSnapshot.MissionSummaryItem.from(mission: $0) }
+        let visibleSummary = visibleMissions.map { ExecutiveContextSnapshot.MissionSummaryItem.from(mission: $0) }
+
+        self.missionsSummary = ExecutiveContextSnapshot.MissionsSummary(
+            totalCount: total,
+            activeCount: active,
+            plannedCount: planned,
+            completedCount: completed,
+            blockedCount: blocked,
+            autoCount: auto,
+            supervisionCount: supervised,
+            humanCount: human,
+            current: currentSummary,
+            autoMissions: autoSummary,
+            supervisionMissions: supervisedSummary,
+            humanMissions: humanSummary,
+            visibleMissions: visibleSummary
+        )
+
+        availableContexts["missions"] = "\(missions.count) missions (\(autoMissions.count) auto, \(supervisionMissions.count) supervised, \(humanMissions.count) human)"
     }
 
     private func detectProviders() async {

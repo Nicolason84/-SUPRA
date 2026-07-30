@@ -1,8 +1,20 @@
 import SwiftUI
 
+// MARK: - Mission Center View
+//
+// Reconnected to the Snapshot Bus (Ω6) per PROJECT PHOENIX.
+// Reads mission summary from ExecutiveSnapshotBus.shared.latestSnapshot
+// instead of accessing MissionStore directly for read operations.
+// MissionStore remains the write-side service for mission creation/execution.
+
 struct MissionCenterView: View {
+    @StateObject private var bus = ExecutiveSnapshotBus.shared
     @EnvironmentObject private var store: MissionStore
-    @State private var selection: Mission.ID?
+    @State private var selection: String?
+
+    private var summary: ExecutiveContextSnapshot.MissionsSummary {
+        bus.latestSnapshot.context.missionsSummary
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -31,19 +43,29 @@ struct MissionCenterView: View {
         }
         .frame(minWidth: 900, minHeight: 600)
         .task {
+            // Ensure MissionStore is loaded for write operations
             store.load()
-            if selection == nil {
-                selection = store.currentMission?.id ?? store.visibleMissions.first?.id
+            // Default selection from snapshot bus summary
+            if selection == nil, let current = summary.current {
+                selection = current.id
+            } else if selection == nil, let first = summary.visibleMissions.first {
+                selection = first.id
             }
         }
-        .onChange(of: store.visibleMissions) { _, missions in
+        .onChange(of: summary.visibleMissions) { _, missions in
             guard selection == nil else { return }
             selection = missions.first?.id
         }
     }
 
+    /// Resolve full Mission from MissionStore for the detail view.
+    /// MissionStore remains the canonical source for deep mission detail.
     private var selectedMission: Mission? {
-        store.missions.first { $0.id == selection } ?? store.currentMission
+        if let selection {
+            store.missions.first { $0.id.uuidString == selection }
+        } else {
+            store.currentMission
+        }
     }
 }
 

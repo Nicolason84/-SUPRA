@@ -1,12 +1,15 @@
 import SwiftUI
 
+// MARK: - Mission Surface View
+//
+// Reconnected to the Snapshot Bus (Ω6) per PROJECT PHOENIX.
+// Reads mission data from ExecutiveSnapshotBus.shared.latestSnapshot
+// instead of direct service access. MissionStore is retained only for
+// write operations (create, execute, refresh).
+
 struct MissionSurfaceView: View {
-    @EnvironmentObject private var store: MissionStore
-    @StateObject private var pipeline = SUPRAExecutionPipeline.shared
-    @StateObject private var missionBroker = SUPRAMissionBroker.shared
-    @StateObject private var decisionEngine = SUPRADecisionEngine.shared
-    @StateObject private var sovereignty = InferenceSovereigntyRuntime.shared
-    @Binding var selection: Mission.ID?
+    @StateObject private var bus = ExecutiveSnapshotBus.shared
+    @Binding var selection: String?
 
     @State private var objective = ""
     @State private var businessContext = ""
@@ -15,6 +18,14 @@ struct MissionSurfaceView: View {
     @State private var risk: Mission.Risk = .medium
     @State private var isSubmitting = false
     private let isRunningTests = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+
+    private var summary: ExecutiveContextSnapshot.MissionsSummary {
+        bus.latestSnapshot.context.missionsSummary
+    }
+
+    private var store: MissionStore {
+        SUPRACompositionRoot.shared.missionStore
+    }
 
     var body: some View {
         ScrollView {
@@ -32,7 +43,7 @@ struct MissionSurfaceView: View {
         .background(Color.supraBackground)
         .onAppear {
             if selection == nil {
-                selection = store.currentMission?.id ?? store.visibleMissions.first?.id
+                selection = summary.current?.id ?? summary.visibleMissions.first?.id
             }
             if !isRunningTests {
                 store.refreshEvolution()
@@ -114,24 +125,24 @@ struct MissionSurfaceView: View {
     }
 
     private var currentMissionGrid: some View {
-        let mission = store.currentMission
+        let mission = summary.current
         return VStack(alignment: .leading, spacing: 12) {
             sectionTitle("Current Mission", systemImage: "scope")
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 180), spacing: 12)], spacing: 12) {
                 statCard("Current Mission", mission?.title ?? "No mission", "flag.fill", .supraAccent)
-                statCard("Executive Decision", mission?.executiveDecision ?? decisionEngine.lastDecision?.reasoning ?? "Awaiting mission", "checkmark.seal.fill", .supraOrange)
+                statCard("Executive Decision", mission?.executiveDecision ?? "Awaiting mission", "checkmark.seal.fill", .supraOrange)
                 statCard("Current Progress", mission.map { "\($0.progress.formatted(.percent.precision(.fractionLength(0))))" } ?? "0%", "chart.bar.fill", .supraBlue)
                 statCard("Current Step", mission?.currentStep ?? "Mission not started", "point.3.connected.trianglepath.dotted", .supraTeal)
-                statCard("Current Evidence", "\(mission?.evidence.count ?? 0) items", "doc.text.magnifyingglass", .supraPurple)
-                statCard("Current Risk", mission?.risk.rawValue ?? risk.rawValue, "exclamationmark.triangle.fill", .supraRed)
+                statCard("Current Evidence", "\(mission?.evidenceCount ?? 0) items", "doc.text.magnifyingglass", .supraPurple)
+                statCard("Current Risk", mission?.risk ?? "Medium", "exclamationmark.triangle.fill", .supraRed)
                 statCard("Current Blocker", mission?.blocker ?? "None", "hand.raised.fill", mission?.blocker == nil ? .supraGreen : .supraRed)
-                statCard("Current Executor", mission?.executor ?? "SUPRAExecutionPipeline", "cpu.fill", .supraAccent)
-                statCard("Current Provider", mission?.currentProvider ?? sovereignty.lastDecision?.selectedProvider?.rawValue ?? "Auto", "network", .supraTeal)
-                statCard("Current Model", mission?.currentModel ?? sovereignty.lastDecision?.selectedModel ?? "Auto", "brain.head.profile", .supraPurple)
+                statCard("Current Executor", "SUPRAExecutionPipeline", "cpu.fill", .supraAccent)
+                statCard("Current Provider", mission?.currentProvider ?? "Auto", "network", .supraTeal)
+                statCard("Current Model", mission?.currentModel ?? "Auto", "brain.head.profile", .supraPurple)
                 statCard("Remaining Time", mission?.estimatedRemainingMinutes.map { "\($0) min" } ?? "—", "timer", .supraBlue)
                 statCard("Expected Outcome", mission?.expectedOutcome ?? "Mission output, evidence and next mission", "sparkles", .supraGreen)
                 statCard("Next Action", mission?.nextMission ?? "Prepare a mission to see the next action", "arrow.right.circle.fill", .supraOrange)
-                statCard("Mission Health", mission?.health.rawValue ?? "Ready", "heart.text.square.fill", .supraGreen)
+                statCard("Mission Health", mission?.health ?? "Ready", "heart.text.square.fill", .supraGreen)
             }
         }
     }
@@ -140,9 +151,9 @@ struct MissionSurfaceView: View {
         VStack(alignment: .leading, spacing: 12) {
             sectionTitle("Mission Queue", systemImage: "list.bullet.rectangle.portrait")
             HStack(alignment: .top, spacing: 12) {
-                queueCard(title: "Automatic", missions: store.autoMissions, color: .supraGreen)
-                queueCard(title: "Supervised", missions: store.supervisionMissions, color: .supraOrange)
-                queueCard(title: "Human", missions: store.humanMissions, color: .supraRed)
+                queueCard(title: "Automatic", missions: summary.autoMissions, color: .supraGreen)
+                queueCard(title: "Supervised", missions: summary.supervisionMissions, color: .supraOrange)
+                queueCard(title: "Human", missions: summary.humanMissions, color: .supraRed)
             }
         }
     }
@@ -191,7 +202,7 @@ struct MissionSurfaceView: View {
                             Button("Queue Mission") {
                                 Task {
                                     if let id = await store.createMission(from: draft) {
-                                        selection = id
+                                        selection = id.uuidString
                                     }
                                 }
                             }
@@ -217,6 +228,7 @@ struct MissionSurfaceView: View {
             VStack(alignment: .leading, spacing: 10) {
                 sectionTitle("Recent Lessons", systemImage: "lightbulb.fill")
                 missionPanel {
+                    // Deep detail still accessed via MissionStore
                     let lessons = store.currentMission?.lessonsLearned ?? []
                     if lessons.isEmpty {
                         Text("Lessons will appear after mission execution.")
@@ -237,12 +249,12 @@ struct MissionSurfaceView: View {
             VStack(alignment: .leading, spacing: 10) {
                 sectionTitle("Mission History", systemImage: "clock.arrow.circlepath")
                 missionPanel {
-                    if store.visibleMissions.isEmpty {
+                    if summary.visibleMissions.isEmpty {
                         Text("No mission history yet.")
                             .font(.system(size: 12))
                             .foregroundStyle(Color.supraTextSecondary)
                     } else {
-                        ForEach(store.visibleMissions.prefix(8)) { mission in
+                        ForEach(Array(summary.visibleMissions.prefix(8))) { mission in
                             Button {
                                 selection = mission.id
                             } label: {
@@ -256,7 +268,7 @@ struct MissionSurfaceView: View {
                                             .font(.system(size: 12, weight: .semibold))
                                             .foregroundStyle(Color.supraText)
                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                        Text("\(mission.lifecycle.rawValue) · \(mission.authority.rawValue)")
+                                        Text("\(mission.lifecycle) · \(mission.authority)")
                                             .font(.system(size: 10))
                                             .foregroundStyle(Color.supraTextSecondary)
                                         if let nextMission = mission.nextMission {
@@ -278,7 +290,7 @@ struct MissionSurfaceView: View {
         }
     }
 
-    private func queueCard(title: String, missions: [Mission], color: Color) -> some View {
+    private func queueCard(title: String, missions: [ExecutiveContextSnapshot.MissionSummaryItem], color: Color) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(title)
@@ -384,7 +396,7 @@ struct MissionSurfaceView: View {
                 ]
             )
             if let id {
-                selection = id
+                selection = id.uuidString
                 objective = ""
                 businessContext = ""
                 technicalContext = ""
@@ -395,12 +407,13 @@ struct MissionSurfaceView: View {
         }
     }
 
-    private func color(for status: Mission.Status) -> Color {
-        switch status {
-        case .planned: .supraTextTertiary
-        case .active: .supraAccent
-        case .blocked: .supraRed
-        case .completed: .supraGreen
+    private func color(for status: String) -> Color {
+        switch status.lowercased() {
+        case "planned": .supraTextTertiary
+        case "active": .supraAccent
+        case "blocked": .supraRed
+        case "completed": .supraGreen
+        default: .supraTextTertiary
         }
     }
 }

@@ -87,14 +87,115 @@ public struct ExecutiveContextSnapshot: Sendable, Codable, Equatable {
         public let memoryPressure: String
         public let networkStatus: String
 
+        // MARK: - Mission Summary (Bridge to Mission Center)
+
+        public let missionsSummary: MissionsSummary
+
         public static let initial = ContextSnapshot(
             currentMission: nil,
             currentDecision: nil,
             activeProviders: [],
             systemLoad: 0,
             memoryPressure: "unknown",
-            networkStatus: "unknown"
+            networkStatus: "unknown",
+            missionsSummary: .initial
         )
+    }
+
+    // MARK: - Missions Summary
+
+    /// Lightweight, Codable mission data for views — populated by the
+    /// Context Engine from MissionStore, distributed via the Snapshot Bus.
+    /// Views read this instead of accessing MissionStore directly.
+    public struct MissionsSummary: Sendable, Codable, Equatable {
+        // Aggregates
+        public let totalCount: Int
+        public let activeCount: Int
+        public let plannedCount: Int
+        public let completedCount: Int
+        public let blockedCount: Int
+        public let autoCount: Int
+        public let supervisionCount: Int
+        public let humanCount: Int
+
+        // Current / active mission (full detail for the grid)
+        public let current: MissionSummaryItem?
+
+        // Queue lists
+        public let autoMissions: [MissionSummaryItem]
+        public let supervisionMissions: [MissionSummaryItem]
+        public let humanMissions: [MissionSummaryItem]
+        public let visibleMissions: [MissionSummaryItem]
+
+        public static let initial = MissionsSummary(
+            totalCount: 0,
+            activeCount: 0,
+            plannedCount: 0,
+            completedCount: 0,
+            blockedCount: 0,
+            autoCount: 0,
+            supervisionCount: 0,
+            humanCount: 0,
+            current: nil,
+            autoMissions: [],
+            supervisionMissions: [],
+            humanMissions: [],
+            visibleMissions: []
+        )
+    }
+
+    /// Individual mission item carried in the snapshot.
+    /// Covers all fields used by MissionSurfaceView's stat cards and queue lists.
+    public struct MissionSummaryItem: Sendable, Codable, Equatable, Identifiable {
+        public let id: String
+        public let title: String
+        public let objective: String
+        public let phase: String
+        public let status: String
+        public let lifecycle: String
+        public let authority: String
+        public let priority: String
+        public let risk: String
+        public let health: String
+        public let progress: Double
+        public let currentStep: String
+        public let currentStatus: String
+        public let currentProvider: String?
+        public let currentModel: String?
+        public let estimatedRemainingMinutes: Int?
+        public let expectedOutcome: String?
+        public let executiveDecision: String?
+        public let nextMission: String?
+        public let blocker: String?
+        public let evidenceCount: Int
+        public let updatedAt: Date?
+
+        static func from(mission: Mission) -> MissionSummaryItem {
+            MissionSummaryItem(
+                id: mission.id.uuidString,
+                title: mission.title,
+                objective: mission.objective,
+                phase: mission.currentStep,
+                status: mission.status.rawValue,
+                lifecycle: mission.lifecycle.rawValue,
+                authority: mission.authority.rawValue,
+                priority: mission.priority.rawValue,
+                risk: mission.risk.rawValue,
+                health: mission.health.rawValue,
+                progress: mission.progress,
+                currentStep: mission.currentStep,
+                currentStatus: mission.currentStatus,
+                currentProvider: mission.currentProvider,
+                currentModel: mission.currentModel,
+                estimatedRemainingMinutes: mission.estimatedRemainingMinutes,
+                expectedOutcome: mission.expectedOutcome,
+                executiveDecision: mission.executiveDecision,
+                nextMission: mission.nextMission,
+                blocker: mission.blocker,
+                evidenceCount: mission.evidence.count,
+                updatedAt: mission.identity.updatedAt
+            )
+        }
     }
 
     // MARK: - Digital Twin (Ω8)
@@ -268,7 +369,8 @@ public final class ExecutiveSnapshotBuilder: Sendable {
             activeProviders: context.activeProviders,
             systemLoad: context.systemLoad,
             memoryPressure: context.memoryPressure,
-            networkStatus: context.networkStatus
+            networkStatus: context.networkStatus,
+            missionsSummary: context.missionsSummary
         )
     }
 
