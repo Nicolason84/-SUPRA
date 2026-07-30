@@ -1,0 +1,163 @@
+{
+  "kernel_registry": {
+    "format_version": "NOVA_ERA_KERNEL_V2",
+    "kernel_name": "Executive Runtime Kernel — PROJECT PHOENIX",
+    "description": "The living, breathing kernel of SUPRA's Executive Runtime. Built through PROJECT PHOENIX reconstruction. This is the single Source of Truth, powered by Executive Context Snapshots, Event Bus, and the ŒIL Perception Layer.",
+    "created_at": "2026-07-29T00:00:00Z",
+    "updated_at": "2026-07-30T00:00:00Z",
+    "status": "ACTIVE",
+    "verdict": "RECONSTRUCTION",
+    "authority": "CONSTITUTIONAL — PROJECT PHOENIX",
+    "root_cause": "PROJECT PHOENIX — Executive Runtime Reconstruction (2026-07-30)",
+    "phoenix": {
+      "version": "2.0.0",
+      "branch": "executive-runtime-v2",
+      "components": {
+        "omega_01": { "name": "Executive Runtime Core", "file": "Phoenix/ExecutiveRuntimeCore.swift", "status": "RECONSTRUCTED" },
+        "omega_02": { "name": "Vision Engine", "file": "Phoenix/VisionEngine.swift", "status": "RECONSTRUCTED" },
+        "omega_03": { "name": "Presence Engine", "file": "Phoenix/PresenceEngine.swift", "status": "RECONSTRUCTED" },
+        "omega_04": { "name": "Context Engine", "file": "Phoenix/ContextEngine.swift", "status": "RECONSTRUCTED" },
+        "omega_05": { "name": "Executive Context Snapshot", "file": "Phoenix/ExecutiveContextSnapshot.swift", "status": "RECONSTRUCTED" },
+        "omega_06": { "name": "Executive Snapshot Bus", "file": "Phoenix/ExecutiveSnapshotBus.swift", "status": "RECONSTRUCTED" },
+        "omega_07": { "name": "Executive Event Bus", "file": "Phoenix/ExecutiveEventBus.swift", "status": "RECONSTRUCTED" },
+        "omega_08": { "name": "Digital Twin Runtime", "file": "Phoenix/DigitalTwinRuntime.swift", "status": "RECONSTRUCTED" },
+        "omega_09": { "name": "Identity Runtime", "file": "Phoenix/IdentityRuntime.swift", "status": "RECONSTRUCTED" },
+        "omega_10": { "name": "ŒIL Perception Layer", "file": "Phoenix/OeilPerceptionLayer.swift", "status": "RECONSTRUCTED" }
+      },
+      "orchestrator": { "name": "PhoenixRuntime", "file": "Phoenix/PhoenixRuntime.swift", "status": "RECONSTRUCTED" },
+      "views": {
+        "oeil": { "name": "ŒIL View", "file": "Phoenix/OeilView.swift", "status": "RECONSTRUCTED" }
+      }
+    },
+    "schema": {
+      "version": "1.0.0",
+      "schemas": {
+        "mission": {
+          "file": "schemas/mission.schema.json",
+          "description": "Mission lifecycle object"
+        },
+        "decision": {
+          "file": "schemas/decision.schema.json",
+          "description": "Architectural and operational decision object"
+        },
+        "proof": {
+          "file": "schemas/proof.schema.json",
+          "description": "Evidence and proof object"
+        },
+        "adr": {
+          "file": "schemas/adr.schema.json",
+          "description": "Architecture Decision Record object"
+        },
+        "component": {
+          "file": "schemas/component.schema.json",
+          "description": "Living component object"
+        },
+        "dependency": {
+          "file": "schemas/dependency.schema.json",
+          "description": "Dependency relationship object"
+        },
+        "snapshot": {
+          "file": "schemas/snapshot.schema.json",
+          "description": "State snapshot object"
+        },
+        "event": {
+          "file": "schemas/event.schema.json",
+          "description": "Event journal entry object"
+        },
+        "next_action": {
+          "file": "schemas/next_action.schema.json",
+          "description": "Next action object"
+        },
+        "runtime_state": {
+          "file": "schemas/runtime_state.schema.json",
+          "description": "Runtime state object"
+        }
+      }
+    },
+    "contracts": {
+      "read": {
+        "file": "contracts/read_contracts.json",
+        "description": "Read contracts — all agents may read"
+      },
+      "write": {
+        "file": "contracts/write_contracts.json",
+        "description": "Write contracts — only SUPRA-Builder may write"
+      },
+      "internal_api": {
+        "file": "contracts/internal_api.json",
+        "description": "Internal API contracts for agent-kernel interaction"
+      }
+    },
+    "versioning": {
+      "strategy": "semantic_versioning",
+      "format": "MAJOR.MINOR.PATCH",
+      "rules": {
+        "major": "Breaking changes to schema or contract",
+        "minor": "Backward-compatible additions",
+        "patch": "Backward-compatible bug fixes"
+      },
+      "registry": "registry/version_history.json"
+    },
+    "storage": {
+      "root": ".kernel/",
+      "layers": {
+        "missions": "memory/missions/",
+        "decisions": "memory/decisions/",
+        "proofs": "memory/proofs/",
+        "adrs": "memory/adrs/",
+        "components": "memory/components/",
+        "dependencies": "memory/dependencies/",
+        "snapshots": "memory/snapshots/",
+        "events": "memory/events/",
+        "runtime": "runtime/",
+        "knowledge_graph": "graph/",
+        "projections": "projections/"
+      }
+    },
+    "projections": {
+      "read_models": {
+        "mission_index": {
+          "file": "projections/mission_index.json",
+          "description": "Read-optimized mission index"
+        },
+        "decision_index": {
+          "file": "projections/decision_index.json",
+          "description": "Read-optimized decision index"
+        },
+        "proof_index": {
+          "file": "projections/proof_index.json",
+          "description": "Read-optimized proof index"
+        },
+        "component_index": {
+          "file": "projections/component_index.json",
+          "description": "Read-optimized component index"
+        },
+        "event_journal": {
+          "file": "projections/event_journal.jsonl",
+          "description": "Append-only event journal"
+        },
+        "next_actions": {
+          "file": "projections/next_actions.json",
+          "description": "Aggregated next actions"
+        }
+      }
+    },
+    "audit": {
+      "enabled": true,
+      "log": "memory/audit_trail.jsonl",
+      "checks": {
+        "integrity": "SHA-256 checksums on all immutable entries",
+        "lineage": "Full lineage tracking for every object",
+        "access_log": "All read/write operations logged with agent identity"
+      }
+    },
+    "kernel_identity": {
+      "node_id": "supra-node-macbook-pro-de-nicolaslocal",
+      "kernel_version": "1.0.0",
+      "schema_version": "1.0.0",
+      "constitution": "SUPRA_EXECUTIVE_OS_CONSTITUTION_V1",
+      "constitution_version": "1.0.0",
+      "kernel_decision": "DÉCISION D'ARCHITECTURE — NOVA ERA (2026-07-29)"
+    }
+  }
+}
