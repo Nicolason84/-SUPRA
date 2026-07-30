@@ -1,0 +1,229 @@
+{
+  "observer": "GO_SUPRA_OBSERVER_V8",
+  "mode": "READ_ONLY",
+  "generated": "2026-07-23T09:48:09.478660Z",
+  "workspace": [
+    {
+      "uuid": "20B095C1300A331E0040C04F",
+      "folder": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA",
+      "exists": true,
+      "inventory": {
+        "swift": 29,
+        "plist": 0,
+        "assets": 0,
+        "storyboards": 0,
+        "xibs": 0,
+        "json": 5,
+        "md": 0,
+        "pdf": 0
+      },
+      "files": [
+        {
+          "path": ".DS_Store",
+          "extension": "",
+          "size": 8196
+        },
+        {
+          "path": "ArtifactReader.swift",
+          "extension": ".swift",
+          "size": 5915
+        },
+        {
+          "path": "Assets.xcassets/.DS_Store",
+          "extension": "",
+          "size": 6148
+        },
+        {
+          "path": "Assets.xcassets/AccentColor.colorset/Contents.json",
+          "extension": ".json",
+          "size": 123
+        },
+        {
+          "path": "Assets.xcassets/AppIcon.appiconset/Contents.json",
+          "extension": ".json",
+          "size": 904
+        },
+        {
+          "path": "Assets.xcassets/Contents.json",
+          "extension": ".json",
+          "size": 63
+        },
+        {
+          "path": "CAnnoNicoIntegrationBridge.swift",
+          "extension": ".swift",
+          "size": 1089
+        },
+        {
+          "path": "ContentView.swift",
+          "extension": ".swift",
+          "size": 155453
+        },
+        {
+          "path": "ContentView.swift.BACKUP_V5_20260718_080641",
+          "extension": ".backup_v5_20260718_080641",
+          "size": 25232
+        },
+        {
+          "path": "ContentView.swift.before_ollama_swift6_20260720_160224",
+          "extension": ".before_ollama_swift6_20260720_160224",
+          "size": 52575
+        },
+        {
+          "path": "ControlCenterStore.swift",
+          "extension": ".swift",
+          "size": 701
+        },
+        {
+          "path": "Decision.swift",
+          "extension": ".swift",
+          "size": 1490
+        },
+        {
+          "path": "DecisionDetailView.swift",
+          "extension": ".swift",
+          "size": 4011
+        },
+        {
+          "path": "DecisionInboxView.swift",
+          "extension": ".swift",
+          "size": 2977
+        },
+        {
+          "path": "DecisionRow.swift",
+          "extension": ".swift",
+          "size": 1537
+        },
+        {
+          "path": "DecisionStore.swift",
+          "extension": ".swift",
+          "size": 5191
+        },
+        {
+          "path": "Mission.swift",
+          "extension": ".swift",
+          "size": 1620
+        },
+        {
+          "path": "MissionCenterView.swift",
+          "extension": ".swift",
+          "size": 2951
+        },
+        {
+          "path": "MissionDetailView.swift",
+          "extension": ".swift",
+          "size": 3815
+        },
+        {
+          "path": "MissionRow.swift",
+          "extension": ".swift",
+          "size": 1555
+        },
+        {
+          "path": "MissionStore.swift",
+          "extension": ".swift",
+          "size": 5448
+        },
+        {
+          "path": "SUPRAApp.swift",
+          "extension": ".swift",
+          "size": 233
+        },
+        {
+          "path": "SUPRAGabrielConductorRuntime.swift",
+          "extension": ".swift",
+          "size": 4226
+        },
+        {
+          "path": "SUPRA_EXECUTIVE_UI_MODEL.json",
+          "extension": ".json",
+          "size": 69631
+        },
+        {
+          "path": "SUPRA_REMOTE_INTERFACE.json",
+          "extension": ".json",
+          "size": 454
+        },
+        {
+          "path": "Snapshot.swift",
+          "extension": ".swift",
+          "size": 611
+        },
+        {
+          "path": "SupraControlCenterView.swift",
+          "extension": ".swift",
+          "size": 12214
+        },
+        {
+          "path": "_EXTRACTION_PLAN/.DS_Store",
+          "extension": "",
+          "size": 6148
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Core/.DS_Store",
+          "extension": "",
+          "size": 6148
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Core/Evidence/SUPRAMissionEvidenceLoader.swift",
+          "extension": ".swift",
+          "size": 6915
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Core/Integrity/SUPRASystemIntegrityLoader.swift",
+          "extension": ".swift",
+          "size": 2031
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Core/Megabus/SUPRATerminalMegabusBridge.swift",
+          "extension": ".swift",
+          "size": 2472
+        },
+        {
+          "path": "_EXTRACTION_PLAN/EXTRACTION_REPORT.txt",
+          "extension": ".txt",
+          "size": 356
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRAAlert.swift",
+          "extension": ".swift",
+          "size": 5938
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRAExecutiveModel.swift",
+          "extension": ".swift",
+          "size": 10463
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRAMetrics.swift",
+          "extension": ".swift",
+          "size": 581
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRARecord.swift",
+          "extension": ".swift",
+          "size": 1118
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRASection.swift",
+          "extension": ".swift",
+          "size": 403
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRASource.swift",
+          "extension": ".swift",
+          "size": 225
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Models/SUPRASystem.swift",
+          "extension": ".swift",
+          "size": 474
+        },
+        {
+          "path": "_EXTRACTION_PLAN/Store/SUPRAExecutiveStore.swift",
+          "extension": ".swift",
+          "size": 7504
+        }
+      ]
+    }
+  ]
+}

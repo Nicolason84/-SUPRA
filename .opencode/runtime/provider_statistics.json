@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "description": "Compiled statistics per provider across all execution history.",
+  "last_updated": "2026-07-24T00:21:00Z",
+  "providers": {
+    "opencode-zen": {
+      "total_missions": 2,
+      "success_rate": 1.0,
+      "avg_duration_seconds": 120.0,
+      "total_duration_seconds": 240,
+      "total_cost": 0,
+      "cost_estimate": "free",
+      "usage_frequency": 0.67,
+      "reliability": 1.0,
+      "avg_confidence": 0.93,
+      "avg_quality": 7.0,
+      "specialty_domains": ["architecture", "compliance", "analysis", "planning"],
+      "models_available": 1,
+      "models_total": 1,
+      "availability_pct": 100.0,
+      "fallbacks_needed": 0,
+      "trend": "stable_high_performance"
+    },
+    "ollama": {
+      "total_missions": 1,
+      "success_rate": 1.0,
+      "avg_duration_seconds": 30.0,
+      "total_duration_seconds": 30,
+      "total_cost": 0,
+      "cost_estimate": "free",
+      "usage_frequency": 0.33,
+      "reliability": 1.0,
+      "avg_confidence": 0.62,
+      "avg_quality": 7.0,
+      "specialty_domains": ["review", "lightweight_analysis"],
+      "models_available": 1,
+      "models_total": 7,
+      "availability_pct": 14.3,
+      "fallbacks_needed": 0,
+      "trend": "underutilized_potential"
+    },
+    "openai": {
+      "total_missions": 0,
+      "success_rate": null,
+      "avg_duration_seconds": null,
+      "total_duration_seconds": 0,
+      "total_cost": 0,
+      "cost_estimate": "paid",
+      "usage_frequency": 0.0,
+      "reliability": 0.0,
+      "avg_confidence": null,
+      "avg_quality": null,
+      "specialty_domains": [],
+      "models_available": 0,
+      "models_total": 2,
+      "availability_pct": 0.0,
+      "fallbacks_needed": 0,
+      "trend": "inactive"
+    }
+  },
+  "recommendations": [
+    "Increase ollama model pool — only 1/7 models available, limiting multi-model routing",
+    "Configure OpenAI API key — 0% availability prevents using the third provider tier",
+    "Monitor opencode-zen load — 67% usage on single model; bottleneck risk as missions grow"
+  ]
+}

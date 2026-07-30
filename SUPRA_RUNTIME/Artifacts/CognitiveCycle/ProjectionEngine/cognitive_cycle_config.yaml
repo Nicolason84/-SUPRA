@@ -1,0 +1,50 @@
+canonical:
+  id: "can:knowledge:cognitive-cycle-demo-001"
+  name: "SUPRA Cognitive Cycle Demonstration"
+  version: "V1"
+  confidence: 0.91
+  coherence: 0.92
+  validated: true
+  nambrohora_ref: 4
+
+stages:
+  - id: "tuv5"
+    name: "TUV5 — Comprendre"
+    order: 1
+    input: "conversation, idée, document, code, décision"
+    output: "Knowledge Package V1"
+    validated: true
+    tick: 1
+  - id: "puchero"
+    name: "PUCHERO — Mûrir"
+    order: 2
+    input: "Knowledge Package"
+    output: "Knowledge Candidate"
+    validated: true
+    tick: 2
+  - id: "canonico"
+    name: "CANNoNICO — Canoniser"
+    order: 3
+    input: "Knowledge Candidate"
+    output: "Canonical Knowledge Object"
+    validated: true
+    tick: 3
+  - id: "projection"
+    name: "ProjectionEngine — Projeter"
+    order: 4
+    input: "Canonical Knowledge Object"
+    output: "Projections in 8 formats"
+    validated: true
+    tick: 4
+  - id: "runtime"
+    name: "Runtime — Interpréter"
+    order: 5
+    input: "Projections"
+    output: "Execution Proof with Feedback"
+    validated: true
+    tick: 5
+
+trace:
+  - "can:knowledge:tuv5-package"
+  - "can:knowledge:puchero-candidate"
+  - "can:knowledge:cognitive-cycle-demo-001"

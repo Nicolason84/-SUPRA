@@ -1,0 +1,14 @@
+{
+  "schema":"supra.observation.build-status.v1",
+  "observedAt":"2026-07-30T01:07:00+02:00",
+  "status":"PASS",
+  "command":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_OBSERVATION_DERIVED build",
+  "exitCode":0,
+  "buildResult":"BUILD SUCCEEDED",
+  "compilerErrors":0,
+  "compilerWarnings":74,
+  "unresolvedSymbols":[],
+  "packageResolution":"PASS",
+  "derivedData":"/private/tmp/SUPRA_OBSERVATION_DERIVED",
+  "evidenceLog":"/private/tmp/SUPRA_OBSERVATION_BUILD.log"
+}

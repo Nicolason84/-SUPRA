@@ -1,0 +1,16 @@
+{
+  "product": "SUPRA_UI_DATA_BINDER_V1",
+  "status": "ACTIVE",
+  "architecture": "ADAPTER_REGISTRY + CANONICAL_VIEW_MODEL + DECLARATIVE_DOM_BINDING",
+  "source_endpoint": "/api/state",
+  "adapters": {
+    "LIBRARY": "ACTIVE",
+    "RUNTIME": "REGISTERED_STUB",
+    "KERNEL": "REGISTERED_STUB",
+    "DECISION_TWIN": "REGISTERED_STUB",
+    "GENERIC": "ACTIVE"
+  },
+  "source_mutation": false,
+  "runtime_execution": false,
+  "new_port": false
+}

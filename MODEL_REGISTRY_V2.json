@@ -1,0 +1,348 @@
+{
+  "schema": "MODEL_REGISTRY_V2",
+  "version": "V2",
+  "certified": "2026-07-29",
+  "authority": "FACTORY_04_KNOWLEDGE",
+  "source_markdown": "SUPRA_MODEL_REGISTRY_V1.md",
+  "description": "Machine-readable model registry for SUPRA-Router runtime consumption",
+
+  "providers": [
+    {
+      "id": "ollama",
+      "name": "Ollama",
+      "type": "local",
+      "detection": "ollama list",
+      "cost": "free",
+      "status": "connected",
+      "endpoint": "http://127.0.0.1:11434/v1",
+      "auth_required": false,
+      "models": [
+        {
+          "id": "qwen3-coder:latest",
+          "name": "Qwen 3 Coder",
+          "size_gb": 18,
+          "context_window": 16384,
+          "output_limit": 2048,
+          "capabilities": ["swift", "code_generation", "architecture", "code_review", "refactoring", "analysis"],
+          "quality_scores": {
+            "swift": 8.5,
+            "architecture": 8.0,
+            "code_generation": 8.5,
+            "code_review": 8.0,
+            "refactoring": 8.0,
+            "analysis": 7.5,
+            "research": 6.0,
+            "documentation": 7.0
+          },
+          "status": "available",
+          "is_primary": true,
+          "fallback_order": 1,
+          "latency_ms_avg": 4500,
+          "last_health_check": "2026-07-29T07:00:00Z"
+        },
+        {
+          "id": "qwen3:4b-instruct",
+          "name": "Qwen 3 4B Instruct",
+          "size_gb": 2.5,
+          "context_window": 32768,
+          "output_limit": 2048,
+          "capabilities": ["analysis", "research", "documentation", "quick_tasks"],
+          "quality_scores": {
+            "swift": 5.5,
+            "architecture": 5.0,
+            "code_generation": 5.5,
+            "code_review": 5.0,
+            "refactoring": 5.0,
+            "analysis": 6.5,
+            "research": 6.0,
+            "documentation": 6.0
+          },
+          "status": "available",
+          "is_primary": false,
+          "fallback_order": 2,
+          "latency_ms_avg": 1200,
+          "last_health_check": "2026-07-29T07:00:00Z"
+        },
+        {
+          "id": "qwen3:4b",
+          "name": "Qwen 3 4B",
+          "size_gb": 2.5,
+          "context_window": 32768,
+          "output_limit": 2048,
+          "capabilities": ["analysis", "research", "quick_tasks"],
+          "quality_scores": {
+            "swift": 5.0,
+            "architecture": 4.5,
+            "code_generation": 5.0,
+            "code_review": 4.5,
+            "refactoring": 4.5,
+            "analysis": 6.0,
+            "research": 5.5,
+            "documentation": 5.5
+          },
+          "status": "available",
+          "is_primary": false,
+          "fallback_order": 3,
+          "latency_ms_avg": 1000,
+          "last_health_check": "2026-07-29T07:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "opencode-zen",
+      "name": "OpenCode Zen",
+      "type": "internal",
+      "detection": "automatic",
+      "cost": "free",
+      "status": "available",
+      "endpoint": "opencode://internal",
+      "auth_required": false,
+      "models": [
+        {
+          "id": "deepseek-v4-flash-free",
+          "name": "DeepSeek V4 Flash Free",
+          "size_gb": null,
+          "context_window": 131072,
+          "output_limit": 4096,
+          "capabilities": ["research", "documentation", "analysis", "architecture"],
+          "quality_scores": {
+            "swift": 7.0,
+            "architecture": 7.5,
+            "code_generation": 7.0,
+            "code_review": 7.0,
+            "refactoring": 6.5,
+            "analysis": 8.0,
+            "research": 8.5,
+            "documentation": 8.0
+          },
+          "status": "available",
+          "is_primary": false,
+          "fallback_order": 4,
+          "latency_ms_avg": 800,
+          "last_health_check": "2026-07-29T07:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic Claude",
+      "type": "api",
+      "detection": "manual",
+      "cost": "paid",
+      "status": "not_configured",
+      "endpoint": "https://api.anthropic.com/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "claude-sonnet-4-6",
+          "name": "Claude Sonnet 4",
+          "size_gb": null,
+          "context_window": 200000,
+          "output_limit": 8192,
+          "capabilities": ["swift", "architecture", "code_generation", "research", "analysis"],
+          "quality_scores": {
+            "swift": 9.5,
+            "architecture": 9.5,
+            "code_generation": 9.5,
+            "code_review": 9.0,
+            "refactoring": 9.0,
+            "analysis": 9.0,
+            "research": 9.0,
+            "documentation": 9.0
+          },
+          "status": "not_configured",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": null
+        }
+      ]
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "type": "api",
+      "detection": "manual",
+      "cost": "paid",
+      "status": "disconnected",
+      "endpoint": "https://api.openai.com/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "gpt-4o",
+          "name": "GPT-4o",
+          "size_gb": null,
+          "context_window": 128000,
+          "output_limit": 4096,
+          "capabilities": ["swift", "architecture", "code_generation", "research", "analysis"],
+          "quality_scores": {
+            "swift": 8.5,
+            "architecture": 8.5,
+            "code_generation": 8.5,
+            "code_review": 8.0,
+            "refactoring": 8.0,
+            "analysis": 8.0,
+            "research": 8.0,
+            "documentation": 8.0
+          },
+          "status": "disconnected",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": "2026-07-24T01:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "google",
+      "name": "Google Gemini",
+      "type": "api",
+      "detection": "manual",
+      "cost": "free_tier",
+      "status": "not_configured",
+      "endpoint": "https://generativelanguage.googleapis.com/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "gemini-2.0-flash",
+          "name": "Gemini 2.0 Flash",
+          "size_gb": null,
+          "context_window": 1000000,
+          "output_limit": 8192,
+          "capabilities": ["research", "documentation", "analysis", "architecture"],
+          "quality_scores": {
+            "swift": 7.0,
+            "architecture": 7.5,
+            "code_generation": 7.0,
+            "code_review": 6.5,
+            "refactoring": 6.5,
+            "analysis": 7.5,
+            "research": 7.5,
+            "documentation": 7.5
+          },
+          "status": "not_configured",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": null
+        }
+      ]
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "type": "api",
+      "detection": "manual",
+      "cost": "free",
+      "status": "not_configured",
+      "endpoint": "https://api.groq.com/openai/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "llama3-70b-8192",
+          "name": "Llama 3 70B",
+          "size_gb": null,
+          "context_window": 8192,
+          "output_limit": 4096,
+          "capabilities": ["research", "analysis", "documentation"],
+          "quality_scores": {
+            "swift": 6.5,
+            "architecture": 7.0,
+            "code_generation": 6.5,
+            "code_review": 6.5,
+            "refactoring": 6.0,
+            "analysis": 7.5,
+            "research": 7.5,
+            "documentation": 7.0
+          },
+          "status": "not_configured",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": null
+        }
+      ]
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "type": "api",
+      "detection": "manual",
+      "cost": "paid",
+      "status": "not_configured",
+      "endpoint": "https://api.mistral.ai/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "mistral-large",
+          "name": "Mistral Large",
+          "size_gb": null,
+          "context_window": 128000,
+          "output_limit": 4096,
+          "capabilities": ["analysis", "research", "documentation"],
+          "quality_scores": {
+            "swift": 7.0,
+            "architecture": 7.0,
+            "code_generation": 7.0,
+            "code_review": 6.5,
+            "refactoring": 6.5,
+            "analysis": 7.5,
+            "research": 7.5,
+            "documentation": 7.0
+          },
+          "status": "not_configured",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": null
+        }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "type": "api",
+      "detection": "manual",
+      "cost": "free_tier",
+      "status": "not_configured",
+      "endpoint": "https://api.deepseek.com/v1",
+      "auth_required": true,
+      "models": [
+        {
+          "id": "deepseek-coder",
+          "name": "DeepSeek Coder",
+          "size_gb": null,
+          "context_window": 128000,
+          "output_limit": 4096,
+          "capabilities": ["swift", "code_generation", "refactoring", "analysis"],
+          "quality_scores": {
+            "swift": 8.0,
+            "architecture": 7.5,
+            "code_generation": 8.0,
+            "code_review": 7.5,
+            "refactoring": 7.5,
+            "analysis": 7.0,
+            "research": 7.0,
+            "documentation": 7.0
+          },
+          "status": "not_configured",
+          "is_primary": false,
+          "fallback_order": null,
+          "latency_ms_avg": null,
+          "last_health_check": null
+        }
+      ]
+    }
+  ],
+
+  "recommendation": {
+    "primary": "ollama/qwen3-coder:latest",
+    "fallback_chain": [
+      "ollama/qwen3:4b-instruct",
+      "ollama/qwen3:4b",
+      "opencode-zen/deepseek-v4-flash-free"
+    ],
+    "strategy": "automatic_provider_selection",
+    "strategy_doc": "PROVIDER_RESILIENCE.md"
+  }
+}

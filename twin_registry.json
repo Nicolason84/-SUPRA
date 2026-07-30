@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-30T12:20:35Z",
+  "twins": [
+    {
+      "id": "twin_workspace_supra",
+      "type": "workspace",
+      "name": "SUPRA Workspace",
+      "sourceType": "workspace",
+      "sourceId": "workspace_supra",
+      "confidence": 1.0,
+      "authority": "founder",
+      "status": "active"
+    },
+    {
+      "id": "twin_knowledge_graph",
+      "type": "knowledge",
+      "name": "Knowledge Graph",
+      "sourceType": "knowledge_graph",
+      "sourceId": "knowledge_graph_v2",
+      "confidence": 0.95,
+      "authority": "architect",
+      "status": "active"
+    },
+    {
+      "id": "twin_runtime_supra",
+      "type": "runtime",
+      "name": "SUPRA Runtime",
+      "sourceType": "workspace",
+      "sourceId": "runtime_supra",
+      "confidence": 0.85,
+      "authority": "builder",
+      "status": "active"
+    },
+    {
+      "id": "twin_project_SUPRA",
+      "type": "project",
+      "name": "SUPRA",
+      "sourceType": "workspace",
+      "sourceId": "project_SUPRA",
+      "confidence": 0.85,
+      "authority": "executive",
+      "status": "active"
+    }
+  ]
+}

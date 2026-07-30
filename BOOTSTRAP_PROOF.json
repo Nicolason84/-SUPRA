@@ -1,0 +1,57 @@
+{
+  "activationSequence": [
+    {
+      "detail": "Bootstrap service creation started",
+      "state": "CREATE_SERVICES",
+      "timestamp": "2026-07-29T12:00:00Z"
+    },
+    {
+      "detail": "Binding bootstrap dependencies",
+      "state": "BIND_DEPENDENCIES",
+      "timestamp": "2026-07-29T12:00:00Z"
+    },
+    {
+      "detail": "Canonical bootstrap references published",
+      "state": "PUBLISH_REFERENCES",
+      "timestamp": "2026-07-29T12:00:00Z"
+    },
+    {
+      "detail": "Runtime activation started",
+      "state": "ACTIVATE_RUNTIME",
+      "timestamp": "2026-07-29T12:00:00Z"
+    },
+    {
+      "detail": "Runtime ready",
+      "state": "RUNTIME_READY",
+      "timestamp": "2026-07-29T12:00:00Z"
+    }
+  ],
+  "bootstrapDurationMs": 0,
+  "dependencyDepth": 3,
+  "detectedCycles": [],
+  "generatedAt": "2026-07-29T12:00:00Z",
+  "initializationOrder": [
+    "RuntimeDataService",
+    "RuntimeMonitor",
+    "MultiMemoryStore",
+    "SUPRAIntelligenceEngine",
+    "SUPRAMissionObserver",
+    "MissionOpportunityEngine",
+    "MissionEvolutionEngine",
+    "MissionStore",
+    "DecisionStore",
+    "SUPRARuntimeEvents",
+    "ControlTowerState",
+    "SUPRARuntimeKernel"
+  ],
+  "servicesRequiringLateBinding": [
+    "MissionEvolutionEngine",
+    "MissionOpportunityEngine",
+    "MissionStore",
+    "MultiMemoryStore",
+    "SUPRAIntelligenceEngine",
+    "SUPRAMissionObserver"
+  ],
+  "totalServices": 12,
+  "validationResult": "PASS"
+}

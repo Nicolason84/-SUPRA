@@ -1,0 +1,101 @@
+{
+  "version": "1.0.0",
+  "description": "Rules for delegating tasks to specific OpenCode agents based on task type, context, and agent availability.",
+  "rules": [
+    {
+      "id": "DEL_001",
+      "name": "Architecture delegation",
+      "condition": "task_type == 'architecture' AND agent_available('SUPRA-Architect')",
+      "action": "delegate_to('SUPRA-Architect', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 10,
+      "rationale": "Architecture tasks require highest reasoning quality. Only Architect agent has architecture capability."
+    },
+    {
+      "id": "DEL_002",
+      "name": "Implementation delegation",
+      "condition": "task_type == 'implementation' AND agent_available('SUPRA-Builder')",
+      "action": "delegate_to('SUPRA-Builder', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 10,
+      "rationale": "Builder is the sole write agent. All file mutations go through Builder."
+    },
+    {
+      "id": "DEL_003",
+      "name": "Review delegation",
+      "condition": "task_type == 'review' AND agent_available('SUPRA-Reviewer')",
+      "action": "delegate_to('SUPRA-Reviewer', 'ollama', 'qwen3:4b')",
+      "priority": 8,
+      "rationale": "Reviewer on Ollama provides adequate quality (0.65) at free cost. Preserves opencode-zen capacity."
+    },
+    {
+      "id": "DEL_004",
+      "name": "Audit delegation",
+      "condition": "task_type == 'audit_compliance' AND agent_available('SUPRA-Auditor')",
+      "action": "delegate_to('SUPRA-Auditor', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 9,
+      "rationale": "Audit requires deep analysis. OpenCode Zen has highest analysis capability (0.92)."
+    },
+    {
+      "id": "DEL_005",
+      "name": "Exploration delegation",
+      "condition": "task_type == 'exploration' AND agent_available('SUPRA-Explorer')",
+      "action": "delegate_to('SUPRA-Explorer', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 7,
+      "rationale": "Explorer has navigation/search capabilities. Can run in subagent_task mode."
+    },
+    {
+      "id": "DEL_006",
+      "name": "Research delegation",
+      "condition": "task_type == 'research' AND agent_available('SUPRA-Research')",
+      "action": "delegate_to('SUPRA-Research', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 7,
+      "rationale": "Research has webfetch+websearch. Required for external investigation."
+    },
+    {
+      "id": "DEL_007",
+      "name": "Runtime validation delegation",
+      "condition": "task_type == 'runtime_validation' AND agent_available('SUPRA-Runtime')",
+      "action": "delegate_to('SUPRA-Runtime', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 8,
+      "rationale": "Runtime agent has bash for execution analysis and diagnostics."
+    },
+    {
+      "id": "DEL_008",
+      "name": "Refactoring analysis delegation",
+      "condition": "task_type == 'refactoring_analysis' AND agent_available('SUPRA-Refactor')",
+      "action": "delegate_to('SUPRA-Refactor', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 8,
+      "rationale": "Refactor agent specialized in safe refactoring analysis. Read-only."
+    },
+    {
+      "id": "DEL_009",
+      "name": "Routing delegation",
+      "condition": "task_type == 'routing' AND agent_available('SUPRA-Router')",
+      "action": "delegate_to('SUPRA-Router', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 10,
+      "rationale": "Router selects providers/models/agents for each mission."
+    },
+    {
+      "id": "DEL_010",
+      "name": "Fallback: underloaded agent",
+      "condition": "task_type NOT IN known_types OR NOT agent_available(preferred_agent)",
+      "action": "delegate_to('SUPRA-Explorer', 'opencode-zen', 'deepseek-v4-flash-free')",
+      "priority": 1,
+      "rationale": "Explorer is the default fallback for unmatched task types."
+    },
+    {
+      "id": "DEL_011",
+      "name": "Load balancing: multi-agent parallel",
+      "condition": "concurrent_tasks > 1 AND task_type IN ['audit_compliance', 'review', 'exploration']",
+      "action": "distribute_across_available(agent_pool)",
+      "priority": 6,
+      "rationale": "Auditor and Reviewer support up to 2 concurrent tasks. Distribute to reduce wait time."
+    }
+  ],
+  "delegation_flow": {
+    "step1": "resolve_runtime_binding(task_type)",
+    "step2": "check_agent_availability(agent_id)",
+    "step3": "if available → delegate",
+    "step4": "if NOT available → check_fallback(agent_id)",
+    "step5": "if no fallback → queue_until_available(task_id)"
+  }
+}

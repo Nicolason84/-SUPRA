@@ -1,0 +1,15 @@
+{
+  "mission": "GO_SUPRA_EXCLUDE_EXTRACTION_PLAN_FROM_BUILD_V1",
+  "timestamp": "2026-07-23T14:36:19.546049",
+  "project": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj/project.pbxproj",
+  "excluded_path": "SUPRA/_EXTRACTION_PLAN",
+  "mode": "SYNCHRONIZED_GROUP",
+  "changes": [
+    "created_exception_set",
+    "attached_exception_set"
+  ],
+  "status": "PATCHED",
+  "build": "FAILED",
+  "rollback": "COMPLETED",
+  "build_log": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_EXCLUDE_EXTRACTION_PLAN_BUILD.log"
+}

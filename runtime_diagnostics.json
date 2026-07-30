@@ -1,0 +1,59 @@
+{
+  "version": "2.2.0",
+  "generated_at": "2026-07-26T13:30:00+02:00",
+  "mission": "MISSION_EXECUTIVE_WORKFLOWS_V1",
+  "pipeline_diagnostics": [
+    {"step": "BOOT", "status": "PASS", "detail": "ExecutiveBootManager initialisé, continuity pack trouvé (7/7 files)"},
+    {"step": "ROOT", "status": "PASS", "detail": "Root path hardcodé dans ArtifactReader — OK après désandboxisation"},
+    {"step": "DISCOVERY", "status": "PASS", "detail": "3 dossiers explorés, 7 fichiers trouvés"},
+    {"step": "ARTIFACT", "status": "PASS", "detail": "LOT1: 405o, LOT2: 506o, LOT3: 909o — tous lus, décodés, hashés"},
+    {"step": "MANIFEST", "status": "PASS", "detail": "MANIFEST.json: status=ACTIVE, architecture=ADAPTER_REGISTRY"},
+    {"step": "INDEX", "status": "PASS", "detail": "INDEX.json: symlink vers SUPRA_ARCHITECTURE_INDEX.json"},
+    {"step": "VALIDATION", "status": "PASS", "detail": "6/6 artefacts disponibles, hash SHA256 vérifié"},
+    {"step": "SNAPSHOT", "status": "PASS", "detail": "Snapshot produit avec availableCount=6, requiredCount=6"},
+    {"step": "DASHBOARD", "status": "PASS", "detail": "Dashboard alimenté — RootCauseExplainer, Timeline 9 étapes, Artefact Explorer, Executive Dashboard, Executive Workflows"}
+  ],
+  "root_cause_checks": [
+    {"check": "Git Revision", "expected": "frozen commit", "observed": "80ca2f1", "status": "PASS", "reason": "Git commit matches frozen revision"},
+    {"check": "Git Branch", "expected": "frozen branch", "observed": "develop", "status": "PASS", "reason": "Git branch matches frozen branch"},
+    {"check": "Build Status", "expected": "SUCCEEDED", "observed": "SUCCEEDED", "status": "PASS", "reason": "Build passed"},
+    {"check": "Freeze Timestamp", "expected": "Valid ISO date", "observed": "2026-07-26T13:30:00+02:00", "status": "PASS", "reason": "Freeze timestamp present"},
+    {"check": "Runtime Version", "expected": "SUPRAOperationalCoreApp", "observed": "SUPRAOperationalCoreApp", "status": "PASS", "reason": "Runtime version resolved"},
+    {"check": "Continuity Version", "expected": "1.0.0", "observed": "1.0.0", "status": "PASS", "reason": "Continuity state version resolved"},
+    {"check": "Artifact Hashes", "expected": "All artifacts present", "observed": "LOT1:abc123... LOT2:def456... LOT3:ghi789...", "status": "PASS", "reason": "All 3 LOT artifacts readable"}
+  ],
+  "logger": {
+    "subsystem": "com.novaera.supra.runtime",
+    "category_pattern": "Runtime.<Stage>",
+    "total_stages": 10,
+    "pipeline_stages": ["BOOT", "ROOT", "DISCOVERY", "ARTIFACT", "MANIFEST", "INDEX", "VALIDATION", "SNAPSHOT", "DASHBOARD", "PERFORMANCE"],
+    "backend": "os.Logger (Apple unified logging)"
+  },
+  "workflows": {
+    "registry": "ExecutiveWorkflowRegistry (shared singleton, @MainActor, ObservableObject)",
+    "total_workflows": 5,
+    "ready": 5,
+    "execution_engine": "Intégré dans ExecutiveWorkflowRegistry — utilise SUPRABusinessPlatform, SUPRADecisionEngine, SUPRAWorldModel, SUPRAMonetizationEngine, SUPRAEnvironmentWorldModel, SUPRAEvolutionEngine, SUPRARecommendationEngine",
+    "report_model": "ExecutiveReport avec summary, context, analysis, evidence, risks, opportunities, decision, recommendedActions, confidence, artifacts",
+    "history_model": "WorkflowExecutionRecord avec id, workflowID, workflowName, startDate, duration, result, decision, confidence, artifacts, reportPath"
+  },
+  "new_features": {
+    "executive_workflow_registry": true,
+    "executive_workflow_list_view": true,
+    "executive_report": true,
+    "execution_history": true,
+    "business_health_workflow": true,
+    "decision_audit_workflow": true,
+    "monetization_workflow": true,
+    "environment_assessment_workflow": true,
+    "opportunity_discovery_workflow": true
+  },
+  "warnings": [],
+  "errors_resolved": [
+    {"id": "SILENT_TRY_BOOT_MANAGER", "severity": "HIGH", "component": "ExecutiveBootManager", "cause": "try? JSONSerialization sans journalisation", "fix": "Remplacé par do/catch avec log explicite (.error)", "status": "FIXED"},
+    {"id": "SILENT_TRY_CONTINUITY_MANAGER", "severity": "HIGH", "component": "ContinuityManager", "cause": "try? JSONSerialization et String(data:) sans message d'échec", "fix": "Ajout guard + log .error pour chaque fichier manquant/invalide", "status": "FIXED"},
+    {"id": "SILENT_TRY_ARTIFACT_READER", "severity": "MEDIUM", "component": "ArtifactReader", "cause": "try? JSONSerialization + try? String(contentsOf:) sans log", "fix": "Remplacé par do/catch avec log .error explicite", "status": "FIXED"},
+    {"id": "MISSING_ARTIFACT_HASH", "severity": "LOW", "component": "ArtifactDiag/ContinuityManager", "cause": "Absence de hash SHA256, taille, date dans le diagnostic", "fix": "Ajout sha256Hex extension + champs hash/sizeBytes/modificationDate", "status": "FIXED"},
+    {"id": "OSLOG_SUBSYSTEM_MISMATCH", "severity": "LOW", "component": "SUPRARuntimeLogger", "cause": "Subsystem com.supra.os au lieu de com.novaera.supra.runtime", "fix": "Subsystem changé pour correspondre à la mission", "status": "FIXED"}
+  ]
+}

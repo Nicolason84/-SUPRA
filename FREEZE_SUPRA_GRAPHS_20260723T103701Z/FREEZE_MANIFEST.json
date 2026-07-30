@@ -1,0 +1,32 @@
+{
+  "freeze": "SUPRA_GRAPH_CHAIN",
+  "generated_utc": "20260723T103701Z",
+  "status": "VALIDATED",
+  "artifacts": {
+    "dependency": {
+      "producer": "GO_SUPRA_DEPENDENCY_GRAPH_V4",
+      "file": "SUPRA_DEPENDENCY_GRAPH.json"
+    },
+    "symbol": {
+      "producer": "GO_SUPRA_SYMBOL_GRAPH_V2",
+      "file": "SUPRA_SYMBOL_GRAPH.json"
+    },
+    "runtime": {
+      "producer": "GO_SUPRA_RUNTIME_GRAPH_V2",
+      "file": "SUPRA_RUNTIME_GRAPH.json"
+    }
+  },
+  "validated_counts": {
+    "files": 18,
+    "symbols": 743,
+    "nodes": 770,
+    "edges": 320162,
+    "entrypoints": 1,
+    "views": 18,
+    "stores": 4,
+    "models": 27,
+    "runtimes": 4,
+    "bridges": 2,
+    "readers": 2
+  }
+}

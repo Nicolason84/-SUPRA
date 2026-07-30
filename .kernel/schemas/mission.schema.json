@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/mission.schema.json",
+  "title": "Mission",
+  "description": "A mission is a bounded unit of work with a clear objective, lifecycle, and traceability to decisions and proofs.",
+  "type": "object",
+  "required": ["id", "title", "status", "priority", "created_at", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the mission"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Schema version this object conforms to"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title of the mission"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the mission objective"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PLANNED", "ACTIVE", "BLOCKED", "COMPLETED", "CANCELLED", "FAILED"],
+      "description": "Current lifecycle status of the mission"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+      "description": "Priority level for scheduling"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category classification (e.g., architecture, runtime, knowledge)"
+    },
+    "owner": {
+      "type": "string",
+      "description": "Agent type responsible for this mission"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of mission creation"
+    },
+    "started_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when mission started execution"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when mission completed"
+    },
+    "due_date": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional deadline for the mission"
+    },
+    "progress": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Progress fraction (0.0 to 1.0)"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "is_completed"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "is_completed": { "type": "boolean" }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "IN_PROGRESS", "COMPLETED", "BLOCKED", "FAILED"]
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "title"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "date": { "type": "string", "format": "date-time" },
+          "title": { "type": "string" },
+          "detail": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "current_status": {
+      "type": "string",
+      "description": "Free-text current status description"
+    },
+    "report": {
+      "type": ["string", "null"],
+      "description": "Link to mission report"
+    },
+    "execution_error": {
+      "type": ["string", "null"],
+      "description": "Error message if mission failed"
+    },
+    "related_decisions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of decisions related to this mission"
+    },
+    "related_proofs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of proofs related to this mission"
+    },
+    "related_snapshots": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of snapshots related to this mission"
+    },
+    "next_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of next actions derived from this mission"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the object content for integrity verification"
+    }
+  }
+}

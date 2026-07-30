@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "description": "Current execution state of all system components. Tracks active, pending, and completed work.",
+  "system_state": "idle",
+  "active_missions": [],
+  "completed_missions": [],
+  "job_states": {
+    "job_001": {"state": "QUEUED", "phase": "queue"},
+    "job_002": {"state": "QUEUED", "phase": "queue"},
+    "job_003": {"state": "QUEUED", "phase": "queue"}
+  },
+  "worker_states": {
+    "worker_architect": "idle",
+    "worker_auditor": "idle",
+    "worker_reviewer": "idle",
+    "worker_explorer": "idle",
+    "worker_research": "idle",
+    "worker_builder": "idle"
+  },
+  "pipeline_stage": null,
+  "last_updated": "2026-07-24T00:30:00Z"
+}

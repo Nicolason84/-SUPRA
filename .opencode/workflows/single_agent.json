@@ -1,0 +1,23 @@
+{
+  "id": "single_agent",
+  "description": "Single agent executes the entire mission sequentially",
+  "stages": [
+    {
+      "id": "agent_execution",
+      "type": "execute",
+      "parallel": false,
+      "consensus": false,
+      "description": "Primary agent executes the task with its assigned model"
+    },
+    {
+      "id": "validation",
+      "type": "validate",
+      "parallel": false,
+      "consensus": false,
+      "description": "Validate output against mission criteria"
+    }
+  ],
+  "mode": "sequential",
+  "fallback": true,
+  "use_case": ["quick_fix", "documentation", "simple_implementation", "research_query"]
+}

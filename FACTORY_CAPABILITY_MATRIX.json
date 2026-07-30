@@ -1,0 +1,17 @@
+{
+  "schema":"supra.factory.capability-matrix.v1",
+  "generatedAt":"2026-07-30T00:00:00Z",
+  "factories":[
+    {"id":"FACTORY_01_ARCHITECTURE","owner":"SUPRA-Architect","capability":"Structural truth and dependency governance","implementation":"FACTORIES/FACTORY_01_ARCHITECTURE","certifiedOutputs":["ARCHITECTURE_MAP.md","DEPENDENCY_GRAPH.md","EXECUTION_GRAPH.md","SYSTEM_TOPOLOGY.md"],"evidence":"BOOTSTRAP_VALIDATION.json","status":"OPERATIONAL"},
+    {"id":"FACTORY_02_DISCOVERY","owner":"SUPRA-Explorer","capability":"Repository and module discovery","implementation":"FACTORIES/FACTORY_02_DISCOVERY","certifiedOutputs":["DISCOVERY_REPORT.md","MODULE_INDEX.json","DUPLICATE_REPORT.md"],"evidence":"FACTORIES/FACTORY_02_DISCOVERY/outputs/EXECUTION_REPORT.md","status":"OPERATIONAL"},
+    {"id":"FACTORY_03_RUNTIME","owner":"SUPRA-Runtime / SUPRA-Builder","capability":"Build, execute, and validate runtime behaviour","implementation":"SUPRA/SUPRARuntimeLoop.swift","certifiedOutputs":["BUILD_REPORT.md","VALIDATION_REPORT.md","EXECUTION_REPORT.md"],"evidence":"STATUS.json","status":"OPERATIONAL"},
+    {"id":"FACTORY_04_KNOWLEDGE","owner":"SUPRA-Research / SUPRA-Explorer","capability":"Canonical knowledge and evidence modelling","implementation":"SUPRA/KnowledgeGraph.swift","certifiedOutputs":["CANONICAL_MODEL.json"],"evidence":"SUPRA_KNOWLEDGE_GRAPH_V2_REPORT.md","status":"PARTIAL"},
+    {"id":"FACTORY_05_MEMORY","owner":"SUPRA-Auditor / SUPRA-Builder","capability":"Cross-session continuity and mission memory","implementation":"SUPRA/WorkspaceMemory.swift","certifiedOutputs":["MEMORY_STATE.json"],"evidence":"FACTORIES/FACTORY_05_MEMORY/outputs/MEMORY_STATE.json","status":"PARTIAL"},
+    {"id":"FACTORY_06_PROOF","owner":"SUPRA-Auditor","capability":"Assertion proof and artefact certification","implementation":"FACTORIES/FACTORY_06_PROOF","certifiedOutputs":["CERTIFICATION_REPORT.md"],"evidence":"FACTORIES/FACTORY_06_PROOF/outputs/CERTIFICATION_REPORT.md","status":"OPERATIONAL"},
+    {"id":"FACTORY_07_QUALITY","owner":"SUPRA-Reviewer / SUPRA-Auditor","capability":"Regression, consistency, and quality gates","implementation":"FACTORIES/FACTORY_07_QUALITY","certifiedOutputs":["QUALITY_REPORT.md"],"evidence":"FACTORIES/FACTORY_07_QUALITY/outputs/QUALITY_REPORT.md","status":"OPERATIONAL"},
+    {"id":"FACTORY_08_DOCUMENTATION","owner":"SUPRA-Builder","capability":"Derived documentation and operating contracts","implementation":"FACTORIES/FACTORY_08_DOCUMENTATION","certifiedOutputs":["AGENTS.md","BOOT_SEQUENCE.md","CERTIFIED_ENTRYPOINT.md"],"evidence":"AGENTS.md","status":"OPERATIONAL"},
+    {"id":"FACTORY_09_EXECUTION","owner":"SUPRA-Router","capability":"Plans, DAGs, queues, and sequencing","implementation":"FACTORIES/supra-pipeline.sh","certifiedOutputs":["EXECUTION_PLAN.md","EXECUTION_DAG.md","FACTORY_QUEUE.md"],"evidence":"FACTORIES/FACTORY_09_EXECUTION/outputs/EXECUTION_PLAN.md","status":"PARTIAL"},
+    {"id":"FACTORY_10_EXECUTIVE","owner":"SUPRA-Architect / Executive","capability":"Executive decision and next-mission governance","implementation":"FACTORIES/FACTORY_10_EXECUTIVE/outputs/NEXT_DECISION.md","certifiedOutputs":["EXECUTIVE_REPORT.md","NEXT_DECISION.md"],"evidence":"FACTORIES/FACTORY_10_EXECUTIVE/outputs/NEXT_DECISION.md","status":"OPERATIONAL"}
+  ],
+  "summary":{"total":10,"operational":7,"partial":3,"missing":0}
+}

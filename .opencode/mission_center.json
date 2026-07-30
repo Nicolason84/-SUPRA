@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "name": "SUPRA Mission Center",
+  "description": "Central orchestration hub enforcing single-writer rule. All mutations pass through SUPRA-Builder.",
+  "roles": [
+    {
+      "id": "executive",
+      "name": "Executive",
+      "agent": "SUPRA-Architect",
+      "description": "Receives the mission, decides strategy, produces high-level plan",
+      "access": "read_only",
+      "actions": ["classify_mission", "decide_strategy", "approve_plan"]
+    },
+    {
+      "id": "planner",
+      "name": "Planner",
+      "agent": "SUPRA-Router",
+      "description": "Decomposes mission into sub-missions, creates execution plan",
+      "access": "read_only",
+      "actions": ["decompose_mission", "create_sub_missions", "define_dependencies"]
+    },
+    {
+      "id": "router",
+      "name": "Router",
+      "agent": "SUPRA-Router",
+      "description": "Selects agents, providers, and models for each sub-mission",
+      "access": "read_only",
+      "actions": ["select_agent", "select_provider", "select_model", "assign_workflow"]
+    },
+    {
+      "id": "explorer",
+      "name": "Explorer",
+      "agent": "SUPRA-Explorer",
+      "description": "Navigates codebase, maps structure, gathers context",
+      "access": "read_only",
+      "actions": ["navigate", "search", "map", "locate"],
+      "parallel": true
+    },
+    {
+      "id": "auditor",
+      "name": "Auditor",
+      "agent": "SUPRA-Auditor",
+      "description": "Analyzes code, checks compliance, verifies integrity",
+      "access": "read_only",
+      "actions": ["analyze", "audit", "verify", "check_compliance"],
+      "parallel": true
+    },
+    {
+      "id": "research",
+      "name": "Research",
+      "agent": "SUPRA-Research",
+      "description": "Performs technical research and investigation",
+      "access": "read_only",
+      "actions": ["research", "investigate", "document"],
+      "parallel": true
+    },
+    {
+      "id": "benchmark",
+      "name": "Benchmark",
+      "agent": "SUPRA-Research",
+      "description": "Benchmarks models and agents for performance",
+      "access": "read_only",
+      "actions": ["benchmark", "measure", "compare"],
+      "parallel": true
+    },
+    {
+      "id": "comparator",
+      "name": "Comparator",
+      "agent": "SUPRA-Reviewer",
+      "description": "Compares results from parallel read agents",
+      "access": "read_only",
+      "actions": ["compare", "rank", "score", "identify_best"]
+    },
+    {
+      "id": "fusion",
+      "name": "Fusion",
+      "agent": "SUPRA-Architect",
+      "description": "Merges analyses, resolves conflicts, produces unified output",
+      "access": "read_only",
+      "actions": ["merge", "resolve_conflicts", "synthesize"]
+    },
+    {
+      "id": "validator",
+      "name": "Validator",
+      "agent": "SUPRA-Auditor",
+      "description": "Validates coherence and consistency of final output",
+      "access": "read_only",
+      "actions": ["validate", "check_consistency", "approve"]
+    },
+    {
+      "id": "builder",
+      "name": "Builder",
+      "agent": "SUPRA-Builder",
+      "description": "EXCLUSIVE write agent. Applies mutations, creates files, modifies code.",
+      "access": "write_only",
+      "actions": ["create_file", "modify_file", "delete_file", "build", "prepare_commit"]
+    }
+  ],
+  "access_control": {
+    "write_agents": ["SUPRA-Builder"],
+    "read_only_agents": ["SUPRA-Architect", "SUPRA-Auditor", "SUPRA-Reviewer", "SUPRA-Explorer", "SUPRA-Research", "SUPRA-Runtime", "SUPRA-Refactor", "SUPRA-Router"],
+    "rule": "Only SUPRA-Builder may create, modify, or delete files. All other agents are strictly read-only.",
+    "enforcement": "builder_guard.json",
+    "violation_action": "Block and log. Route mutation request through Mission Center to SUPRA-Builder."
+  }
+}

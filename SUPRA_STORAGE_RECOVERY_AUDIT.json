@@ -1,0 +1,144 @@
+{
+  "observer": "GO_SUPRA_STORAGE_RECOVERY_AUDIT_V2",
+  "mode": "READ_ONLY",
+  "storage": {
+    "free_gib": 10.22,
+    "target_free_gib": 25,
+    "missing_gib": 14.78,
+    "rebuildable_cache_gib": 6.99,
+    "project_root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA"
+  },
+  "safe_candidates": [
+    {
+      "name": "XCODE_DEVICE_SUPPORT",
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/iOS DeviceSupport",
+      "exists": true,
+      "size_bytes": 5940547584,
+      "size_gib": 5.53,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "XCODE_DERIVED_DATA",
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData",
+      "exists": true,
+      "size_bytes": 1157181440,
+      "size_gib": 1.08,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "CORE_SIMULATOR",
+      "path": "/Users/nicolasalonso/Library/Developer/CoreSimulator",
+      "exists": true,
+      "size_bytes": 403603456,
+      "size_gib": 0.38,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "XCODE_CACHE",
+      "path": "/Users/nicolasalonso/Library/Caches/com.apple.dt.Xcode",
+      "exists": true,
+      "size_bytes": 2191360,
+      "size_gib": 0.0,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "SWIFTPM_CACHE",
+      "path": "/Users/nicolasalonso/Library/Caches/org.swift.swiftpm",
+      "exists": true,
+      "size_bytes": 528384,
+      "size_gib": 0.0,
+      "rebuildable_cache": true
+    }
+  ],
+  "candidates": [
+    {
+      "name": "DESKTOP",
+      "path": "/Users/nicolasalonso/Desktop",
+      "exists": true,
+      "size_bytes": 34209497088,
+      "size_gib": 31.86,
+      "rebuildable_cache": false
+    },
+    {
+      "name": "USER_CACHES",
+      "path": "/Users/nicolasalonso/Library/Caches",
+      "exists": true,
+      "size_bytes": 18835247104,
+      "size_gib": 17.54,
+      "rebuildable_cache": false
+    },
+    {
+      "name": "XCODE_DEVICE_SUPPORT",
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/iOS DeviceSupport",
+      "exists": true,
+      "size_bytes": 5940547584,
+      "size_gib": 5.53,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "MOVIES",
+      "path": "/Users/nicolasalonso/Movies",
+      "exists": true,
+      "size_bytes": 4953845760,
+      "size_gib": 4.61,
+      "rebuildable_cache": false
+    },
+    {
+      "name": "DOWNLOADS",
+      "path": "/Users/nicolasalonso/Downloads",
+      "exists": true,
+      "size_bytes": 2186866688,
+      "size_gib": 2.04,
+      "rebuildable_cache": false
+    },
+    {
+      "name": "XCODE_DERIVED_DATA",
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData",
+      "exists": true,
+      "size_bytes": 1157181440,
+      "size_gib": 1.08,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "CORE_SIMULATOR",
+      "path": "/Users/nicolasalonso/Library/Developer/CoreSimulator",
+      "exists": true,
+      "size_bytes": 403603456,
+      "size_gib": 0.38,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "XCODE_CACHE",
+      "path": "/Users/nicolasalonso/Library/Caches/com.apple.dt.Xcode",
+      "exists": true,
+      "size_bytes": 2191360,
+      "size_gib": 0.0,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "SWIFTPM_CACHE",
+      "path": "/Users/nicolasalonso/Library/Caches/org.swift.swiftpm",
+      "exists": true,
+      "size_bytes": 528384,
+      "size_gib": 0.0,
+      "rebuildable_cache": true
+    },
+    {
+      "name": "TRASH",
+      "path": "/Users/nicolasalonso/.Trash",
+      "exists": true,
+      "size_bytes": 8192,
+      "size_gib": 0.0,
+      "rebuildable_cache": false
+    },
+    {
+      "name": "XCODE_ARCHIVES",
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/Archives",
+      "exists": false,
+      "size_bytes": 0,
+      "size_gib": 0.0,
+      "rebuildable_cache": false
+    }
+  ],
+  "verdict": "MANUAL_STORAGE_REVIEW_REQUIRED"
+}

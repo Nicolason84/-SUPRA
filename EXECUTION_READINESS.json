@@ -1,0 +1,22 @@
+{
+  "schema":"supra.observation.execution-readiness.v1",
+  "observedAt":"2026-07-30T14:27:41+02:00",
+  "status":"READY",
+  "xcodeProject":"PASS",
+  "packageResolution":"PASS",
+  "indexing":"PASS",
+  "build":"PASS",
+  "tests":"PASS",
+  "digitalTwinSynchronization":"PASS",
+  "constitutionRealityDiff":"PASS",
+  "readinessCriteria":{
+    "projectOpens":"PASS",
+    "packagesResolve":"PASS",
+    "indexingCompletes":"PASS",
+    "buildPasses":"PASS",
+    "testsPass":"PASS",
+    "twinSynchronized":"PASS",
+    "projectionsConsistent":"PASS"
+  },
+  "factualBasis":["Full SUPRATests validation passed with exit code 0 and zero failed tests.","Twin source artefacts and GLOBAL_VIEW.json were regenerated from the current observation.","The build produced 74 warnings and zero errors.","Xcode produced a non-empty Index.noindex/DataStore with 2674 records.","Package.resolved is present and Xcode package resolution exited 0 with the local package resolved."]
+}

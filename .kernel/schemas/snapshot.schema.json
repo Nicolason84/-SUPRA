@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/snapshot.schema.json",
+  "title": "Snapshot",
+  "description": "A point-in-time capture of the Executive Memory state for recovery, audit, and time-travel queries.",
+  "type": "object",
+  "required": ["id", "type", "timestamp", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the snapshot"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["FULL", "INCREMENTAL", "MISSION", "RUNTIME", "KERNEL", "WORKSPACE"],
+      "description": "Type of snapshot"
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable label for the snapshot"
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Detailed description of what this snapshot captures"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the snapshot"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["SCHEDULED", "MANUAL", "MISSION_START", "MISSION_END", "DECISION", "GATE_PASS", "ERROR", "RECOVERY"],
+      "description": "What triggered this snapshot"
+    },
+    "triggered_by": {
+      "type": "string",
+      "description": "Agent, mission ID, or process that triggered the snapshot"
+    },
+    "scope": {
+      "type": "object",
+      "required": ["missions", "decisions", "proofs", "components", "events"],
+      "properties": {
+        "missions": { "type": "array", "items": { "type": "string" } },
+        "decisions": { "type": "array", "items": { "type": "string" } },
+        "proofs": { "type": "array", "items": { "type": "string" } },
+        "components": { "type": "array", "items": { "type": "string" } },
+        "events": { "type": "array", "items": { "type": "string" } },
+        "runtime_state": { "type": "boolean" },
+        "knowledge_graph": { "type": "boolean" }
+      },
+      "description": "Object IDs included in this snapshot"
+    },
+    "storage": {
+      "type": "object",
+      "required": ["path", "size_bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "description": "Filesystem path to snapshot data" },
+        "size_bytes": { "type": "integer", "description": "Size of snapshot in bytes" },
+        "sha256": { "type": "string", "description": "SHA-256 checksum of snapshot data" }
+      },
+      "description": "Storage metadata"
+    },
+    "parent_snapshot": {
+      "type": ["string", "null"],
+      "description": "ID of parent snapshot for incremental chains"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the snapshot object"
+    }
+  }
+}

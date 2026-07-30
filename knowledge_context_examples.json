@@ -1,0 +1,93 @@
+[
+  {
+    "example" : true,
+    "expectedCount" : 16,
+    "expectedTypes" : [
+      "file",
+      "git_commit",
+      "decision",
+      "report",
+      "conversation",
+      "pdf",
+      "freeze"
+    ],
+    "explanation" : "8 fichiers Swift liés à RuntimeMonitor, 2 commits ayant modifié ces fichiers, 1 décision sur l'architecture, 1 rapport de mission, 3 conversations, 1 PDF, 2 freezes",
+    "keywords" : [
+      "runtime",
+      "monitor",
+      "swift",
+      "cockpit"
+    ],
+    "question" : "Réparer RuntimeMonitor"
+  },
+  {
+    "example" : true,
+    "expectedCount" : 8,
+    "expectedTypes" : [
+      "report",
+      "decision",
+      "git_commit",
+      "conversation"
+    ],
+    "explanation" : "Mission initiale (SUPRA_WORKSPACE_INTELLIGENCE_V1), décision architecturale, commits de création, rapports de conception",
+    "keywords" : [
+      "workspace",
+      "intelligence",
+      "mission",
+      "v1"
+    ],
+    "question" : "Pourquoi Workspace Intelligence existe ?"
+  },
+  {
+    "example" : true,
+    "expectedCount" : 12,
+    "expectedTypes" : [
+      "git_commit",
+      "file"
+    ],
+    "explanation" : "Commits modifiant CockpitNavigation, RuntimeDataService, RuntimeMonitor et les vues associées",
+    "keywords" : [
+      "cockpit",
+      "navigation",
+      "runtime",
+      "view",
+      "swift"
+    ],
+    "question" : "Quels sont les commits liés au Cockpit ?"
+  },
+  {
+    "example" : true,
+    "expectedCount" : 10,
+    "expectedTypes" : [
+      "freeze",
+      "freeze_manifest",
+      "git_tag"
+    ],
+    "explanation" : "5 freezes identifiés sur le Desktop, chacun avec son manifeste et son tag associé",
+    "keywords" : [
+      "freeze",
+      "supra",
+      "manifest"
+    ],
+    "question" : "Quels freezes existent pour SUPRA ?"
+  },
+  {
+    "example" : true,
+    "expectedCount" : 6,
+    "expectedTypes" : [
+      "report",
+      "decision",
+      "audit",
+      "evidence"
+    ],
+    "explanation" : "Rapports SUPRA_EXECUTIVE_*, décisions sur le provider, preuves de niveau 5",
+    "keywords" : [
+      "provider",
+      "runtime",
+      "decision",
+      "report",
+      "level"
+    ],
+    "question" : "Quels rapports et décisions concernent le Provider Runtime ?"
+  }
+]

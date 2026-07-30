@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 2
+  },
+  "services": [
+    {
+      "id": "SVC-001",
+      "identifier": "RuntimeDataService",
+      "path": "SUPRA/RuntimeDataService.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "class",
+      "concurrency": "@MainActor",
+      "pattern": "ObservableObject",
+      "consumers": [
+        "DashboardView",
+        "MissionGraphView",
+        "MissionCenterView",
+        "MissionDetailView",
+        "RuntimeView",
+        "RuntimeMonitor",
+        "SettingsView",
+        "WorkerPoolView",
+        "CockpitNavigation",
+        "OpenCodeClient",
+        "JSONRuntimeSource",
+        "SupraControlCenterView"
+      ],
+      "data_sources": [
+        "runtime_trace.json",
+        "delegation_trace.json",
+        "runtime_metrics.json",
+        "agent_execution.json",
+        "execution_graph.json",
+        "mission_graph_metrics.json",
+        "provider_metrics.json",
+        "dashboard_snapshot.json"
+      ]
+    },
+    {
+      "id": "SVC-002",
+      "identifier": "WorkspaceStatisticsService",
+      "path": "SUPRA/WorkspaceStatistics.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "class",
+      "concurrency": "@MainActor",
+      "pattern": "ObservableObject",
+      "consumers": [
+        "WorkspaceExplorer"
+      ],
+      "data_sources": [
+        "WorkspaceIndex"
+      ]
+    }
+  ]
+}

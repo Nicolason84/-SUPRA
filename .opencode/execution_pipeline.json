@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "name": "SUPRA Mission Execution Pipeline",
+  "description": "Sequential and parallel stages for executing a mission through the Mission Center.",
+  "pipeline": [
+    {
+      "stage": 1,
+      "name": "Mission Intake",
+      "role": "System",
+      "description": "Mission is received and validated for completeness",
+      "parallel": false,
+      "output": "mission_manifest"
+    },
+    {
+      "stage": 2,
+      "name": "Executive",
+      "role": "SUPRA-Architect",
+      "description": "Executive receives the mission, classifies intent, decides strategy, produces high-level plan",
+      "parallel": false,
+      "access": "read_only",
+      "output": "mission_strategy"
+    },
+    {
+      "stage": 3,
+      "name": "Planner",
+      "role": "SUPRA-Router",
+      "description": "Planner decomposes the mission into sub-missions with dependencies and priority",
+      "parallel": false,
+      "access": "read_only",
+      "output": "execution_plan"
+    },
+    {
+      "stage": 4,
+      "name": "Router",
+      "role": "SUPRA-Router",
+      "description": "Router selects agents, providers, and models for each sub-mission",
+      "parallel": false,
+      "access": "read_only",
+      "output": "routing_assignments"
+    },
+    {
+      "stage": 5,
+      "name": "Parallel Read Agents",
+      "roles": ["SUPRA-Explorer", "SUPRA-Auditor", "SUPRA-Research", "SUPRA-Runtime"],
+      "description": "Read agents execute in parallel. Each produces independent analysis.",
+      "parallel": true,
+      "access": "read_only",
+      "output": "agent_results[]"
+    },
+    {
+      "stage": 6,
+      "name": "Comparator",
+      "role": "SUPRA-Reviewer",
+      "description": "Comparator collects results from parallel agents and compares/ranks them",
+      "parallel": false,
+      "access": "read_only",
+      "output": "comparison_report"
+    },
+    {
+      "stage": 7,
+      "name": "Fusion",
+      "role": "SUPRA-Architect",
+      "description": "Fusion merges analyses, resolves conflicts, produces unified output",
+      "parallel": false,
+      "access": "read_only",
+      "output": "fused_output"
+    },
+    {
+      "stage": 8,
+      "name": "Validator",
+      "role": "SUPRA-Auditor",
+      "description": "Validator checks coherence and consistency of fused output",
+      "parallel": false,
+      "access": "read_only",
+      "output": "validation_report"
+    },
+    {
+      "stage": 9,
+      "name": "Builder",
+      "role": "SUPRA-Builder",
+      "description": "EXCLUSIVE write stage. Builder applies all mutations from the validated plan.",
+      "parallel": false,
+      "access": "write_only",
+      "output": "mutations_applied"
+    },
+    {
+      "stage": 10,
+      "name": "Final Validation",
+      "role": "SUPRA-Auditor",
+      "description": "Final validation of applied mutations",
+      "parallel": false,
+      "access": "read_only",
+      "output": "final_report"
+    }
+  ],
+  "execution_modes": {
+    "sequential": "Stages 1-4-6-7-8-9-10 are strictly sequential",
+    "parallel": "Stage 5 runs all read agents in parallel",
+    "conditional": "Comparator, Fusion, Validator can be skipped if single-agent execution"
+  },
+  "state_machine": {
+    "states": ["QUEUED", "PLANNED", "EXECUTING", "READ_PHASE", "COMPARING", "FUSING", "VALIDATING", "BUILDING", "COMPLETED", "FAILED"],
+    "initial": "QUEUED",
+    "terminal": ["COMPLETED", "FAILED"]
+  }
+}

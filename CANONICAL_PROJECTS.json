@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 14
+  },
+  "projects": [
+    {
+      "id": "PROJ-001",
+      "identifier": "SUPRA",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "develop",
+      "canonical": true,
+      "duplicate": null,
+      "replacement": null,
+      "type": "application",
+      "build": "PASS"
+    },
+    {
+      "id": "PROJ-002",
+      "identifier": "SUPRA_AST_PLATFORM",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_AST_PLATFORM",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "standalone",
+      "canonical": true,
+      "duplicate": null,
+      "replacement": null,
+      "type": "package"
+    },
+    {
+      "id": "PROJ-003",
+      "identifier": "CAnnoNicoIntegrationPackage",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/Packages/CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "local",
+      "canonical": true,
+      "duplicate": null,
+      "replacement": null,
+      "type": "package"
+    },
+    {
+      "id": "PROJ-004",
+      "identifier": "NICO_APP",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/NICO_APP_V1",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "v1",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": "NICO_APP_CLEAN",
+      "type": "application"
+    },
+    {
+      "id": "PROJ-005",
+      "identifier": "NICO_APP_CLEAN",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/NICO_APP_CLEAN",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "clean",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": null,
+      "type": "application"
+    },
+    {
+      "id": "PROJ-006",
+      "identifier": "HELENE_APP",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/HELENE_APP_V1",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "v1",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": null,
+      "type": "application"
+    },
+    {
+      "id": "PROJ-007",
+      "identifier": "SUPRA_VIDEO_SWAP_V3",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_VIDEO_SWAP_V3",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "v3",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": null,
+      "type": "application"
+    },
+    {
+      "id": "PROJ-008",
+      "identifier": "SUPRA_VIDEO_SWAP_APP_V1",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_VIDEO_SWAP_V1",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "v1",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": "SUPRA_VIDEO_SWAP_V3",
+      "type": "application"
+    },
+    {
+      "id": "PROJ-009",
+      "identifier": "SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "status": "archived",
+      "owner": "nicolasalonso",
+      "version": "v1_archive",
+      "canonical": false,
+      "duplicate": true,
+      "replacement": "SUPRA_VIDEO_SWAP_APP_V1",
+      "type": "archive"
+    },
+    {
+      "id": "PROJ-010",
+      "identifier": "NOVA_BUILD_SYSTEM",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/NOVA_BUILD_SYSTEM",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "latest",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": null,
+      "type": "build_system"
+    },
+    {
+      "id": "PROJ-011",
+      "identifier": "COHERENCE_ENGINE",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/COHERENCE_ENGINE_V1",
+      "status": "abandoned",
+      "owner": "nicolasalonso",
+      "version": "v1",
+      "canonical": false,
+      "duplicate": false,
+      "replacement": null,
+      "type": "engine"
+    },
+    {
+      "id": "PROJ-012",
+      "identifier": "SUPRA_BISECT",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_BISECT",
+      "status": "abandoned",
+      "owner": "nicolasalonso",
+      "version": "bisect",
+      "canonical": false,
+      "duplicate": true,
+      "replacement": "SUPRA",
+      "type": "bisect"
+    },
+    {
+      "id": "PROJ-013",
+      "identifier": "SUPRA_RECOVERY",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY_*",
+      "status": "abandoned",
+      "owner": "nicolasalonso",
+      "version": "4_variants",
+      "canonical": false,
+      "duplicate": true,
+      "replacement": "SUPRA",
+      "type": "recovery"
+    },
+    {
+      "id": "PROJ-014",
+      "identifier": "SUPRA_TEMP",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_TEMP",
+      "status": "abandoned",
+      "owner": "nicolasalonso",
+      "version": "temp",
+      "canonical": false,
+      "duplicate": true,
+      "replacement": "SUPRA",
+      "type": "temp"
+    }
+  ]
+}

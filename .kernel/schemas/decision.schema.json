@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/decision.schema.json",
+  "title": "Decision",
+  "description": "A decision is a formal architectural or operational choice with evidence, authority, and traceability.",
+  "type": "object",
+  "required": ["id", "title", "status", "priority", "date", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the decision"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title of the decision"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the decision"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PROPOSED", "ANALYZED", "RECOMMENDED", "PENDING_AUTHORITY", "APPROVED", "REJECTED", "EXECUTING", "IMPLEMENTED", "VERIFIED", "CLOSED", "DEFERRED", "SUPERSEDED", "REVOKED", "BLOCKED"],
+      "description": "Current lifecycle status of the decision"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+    },
+    "category": {
+      "type": "string",
+      "description": "Category classification"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the decision was made"
+    },
+    "human_gate": {
+      "type": "string",
+      "enum": ["REQUIRED", "COMPLETED", "NOT_REQUIRED"],
+      "description": "Whether human confirmation was required"
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence level of the decision (0.0 to 1.0)"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Brief summary of the decision"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "detail"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "detail": { "type": "string" },
+          "source": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "owner": { "type": ["string", "null"] },
+          "due_date": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "title"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "date": { "type": "string", "format": "date-time" },
+          "title": { "type": "string" },
+          "detail": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "related_missions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of missions related to this decision"
+    },
+    "related_proofs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of proofs supporting this decision"
+    },
+    "related_adr": {
+      "type": ["string", "null"],
+      "description": "ID of the ADR associated with this decision"
+    },
+    "authority": {
+      "type": ["string", "null"],
+      "description": "Agent or authority that approved this decision"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum for integrity verification"
+    }
+  }
+}

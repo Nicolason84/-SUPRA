@@ -1,0 +1,21 @@
+{
+  "service": "health",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Health Service — measures overall SUPRA state, publishes health indicators, detects degradations",
+  "responsibilities": [
+    "mesurer l'état global de SUPRA",
+    "publier des indicateurs de santé",
+    "détecter les dégradations"
+  ],
+  "indicators": {
+    "disk_space_gb": {"threshold_warning": 10, "threshold_critical": 5},
+    "build_success_rate": {"threshold_warning": 0.8, "threshold_critical": 0.5},
+    "provider_availability": {"threshold_warning": 1, "threshold_critical": 0},
+    "runtime_response_ms": {"threshold_warning": 5000, "threshold_critical": 15000},
+    "workspace_integrity": {"threshold_warning": 0.9, "threshold_critical": 0.7}
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/health/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

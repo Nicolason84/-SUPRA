@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "description": "Explicit read/write permissions matrix. Enforces that only SUPRA-Builder can mutate files.",
+  "agents": {
+    "SUPRA-Architect": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "webfetch"],
+      "denied_operations": ["edit", "write", "create", "delete", "bash (write)"],
+      "reason": "Executive and Fusion roles. No write capability needed."
+    },
+    "SUPRA-Builder": {
+      "access_mode": "write_only",
+      "allowed_operations": ["read", "edit", "write", "create", "delete", "bash", "lsp", "glob", "grep"],
+      "denied_operations": [],
+      "reason": "SOLE mutation agent. All file changes go through Builder."
+    },
+    "SUPRA-Auditor": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp"],
+      "denied_operations": ["edit", "write", "create", "delete", "bash"],
+      "reason": "Auditor and Validator roles. Read-only analysis."
+    },
+    "SUPRA-Reviewer": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp"],
+      "denied_operations": ["edit", "write", "create", "delete", "bash"],
+      "reason": "Comparator role. Review is read-only by nature."
+    },
+    "SUPRA-Explorer": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "task"],
+      "denied_operations": ["edit", "write", "create", "delete", "bash"],
+      "reason": "Explorer role. Navigation is inherently read-only."
+    },
+    "SUPRA-Research": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "webfetch", "websearch"],
+      "denied_operations": ["edit", "write", "create", "delete", "bash"],
+      "reason": "Research and Benchmark roles. Information gathering only."
+    },
+    "SUPRA-Runtime": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "bash"],
+      "denied_operations": ["edit", "write", "create", "delete"],
+      "reason": "Runtime diagnostics. Bash allowed for execution analysis only."
+    },
+    "SUPRA-Refactor": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "bash"],
+      "denied_operations": ["edit", "write", "create", "delete"],
+      "reason": "Refactoring analysis only. Mutations delegated to Builder."
+    },
+    "SUPRA-Router": {
+      "access_mode": "read_only",
+      "allowed_operations": ["read", "grep", "glob", "lsp", "bash", "webfetch"],
+      "denied_operations": ["edit", "write", "create", "delete"],
+      "reason": "Planner and Router roles. Selects, routes, does not write."
+    }
+  },
+  "write_request_protocol": {
+    "description": "When a read-only agent needs a file mutation, it must:",
+    "steps": [
+      "1. Submit a write request to the Mission Center",
+      "2. Specify: target file, mutation type (create/modify/delete), content/change",
+      "3. Mission Center validates the request",
+      "4. Request is forwarded to SUPRA-Builder for execution",
+      "5. Builder applies the mutation and reports back"
+    ]
+  },
+  "violation_handling": {
+    "detection": "Any attempt by a non-Builder agent to call edit/write/create/delete operations",
+    "action": "Block the operation, log the violation, notify Mission Center",
+    "recovery": "Route the intended mutation to SUPRA-Builder via the write request protocol"
+  }
+}

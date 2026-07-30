@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:51:02Z",
+  "nodes": [
+    {
+      "id": "universe_root",
+      "name": "NOVA Universe",
+      "type": "universe",
+      "group": "universe",
+      "size": 80,
+      "color": "#2C3E50",
+      "childCount": 4
+    },
+    {
+      "id": "twin_workspace_supra",
+      "name": "SUPRA Workspace",
+      "type": "workspace",
+      "group": "twin",
+      "size": 40,
+      "color": "#4A90D9",
+      "childCount": 0
+    },
+    {
+      "id": "twin_knowledge_graph",
+      "name": "Knowledge Graph",
+      "type": "knowledge",
+      "group": "twin",
+      "size": 40,
+      "color": "#4A90D9",
+      "childCount": 0
+    },
+    {
+      "id": "twin_runtime_supra",
+      "name": "SUPRA Runtime",
+      "type": "runtime",
+      "group": "twin",
+      "size": 40,
+      "color": "#4A90D9",
+      "childCount": 0
+    },
+    {
+      "id": "twin_project_SUPRA",
+      "name": "SUPRA",
+      "type": "project",
+      "group": "twin",
+      "size": 40,
+      "color": "#4A90D9",
+      "childCount": 0
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_0",
+      "sourceId": "universe_root",
+      "targetId": "twin_workspace_supra",
+      "type": "contains",
+      "weight": 1.0
+    },
+    {
+      "id": "edge_1",
+      "sourceId": "universe_root",
+      "targetId": "twin_knowledge_graph",
+      "type": "contains",
+      "weight": 1.0
+    },
+    {
+      "id": "edge_2",
+      "sourceId": "universe_root",
+      "targetId": "twin_runtime_supra",
+      "type": "contains",
+      "weight": 1.0
+    },
+    {
+      "id": "edge_3",
+      "sourceId": "universe_root",
+      "targetId": "twin_project_SUPRA",
+      "type": "contains",
+      "weight": 1.0
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "memory": "MEMORY_ARCHIVES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "ARC-001",
+      "name": "_DESKTOP_CLEAN_ARCHIVE_20260630_122028",
+      "path": "/Users/nicolasalonso/Desktop/_DESKTOP_CLEAN_ARCHIVE_20260630_122028",
+      "type": "desktop_archive",
+      "size_mb": 4.4,
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Archive de ménage du Bureau datant du 30 juin 2026"
+    },
+    {
+      "uuid": "ARC-002",
+      "name": "SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V1_ARCHIVE_20260715_140116",
+      "type": "project_archive",
+      "size_kb": 212,
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Archive de VideoSwap V1 originale"
+    },
+    {
+      "uuid": "ARC-003",
+      "name": "SUPRA_PROJECTS",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_PROJECTS",
+      "type": "reference_archive",
+      "size_mb": 13,
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Dossier de projets de référence"
+    },
+    {
+      "uuid": "ARC-004",
+      "name": "SUPRA_ARCHIVE",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_ARCHIVE",
+      "type": "empty_archive",
+      "size_kb": 0,
+      "status": "empty",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "ARC-005",
+      "name": "STORAGE_AUDIT_20260723_093501",
+      "path": "/Users/nicolasalonso/Desktop/STORAGE_AUDIT_20260723_093501",
+      "type": "audit_artifact",
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    }
+  ]
+}

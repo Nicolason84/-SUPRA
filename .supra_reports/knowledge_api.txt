@@ -1,0 +1,18 @@
+11:    private var providers: [KnowledgeProvider] = []
+15:    func registerProvider(_ provider: KnowledgeProvider) {
+16:        providers.append(provider)
+19:    func build(sourceObjects: [KnowledgeObject] = [], sourceRelations: [KnowledgeRelation] = []) async {
+23:        for provider in providers {
+24:            let discovered = await provider.discover()
+27:            let providedRels = await provider.relations()
+43:    func object(by id: String) -> KnowledgeObject? { objectIndex[id] }
+45:    func neighbors(of id: String) -> [KnowledgeObject] {
+50:    func objects(of type: KnowledgeObjectType) -> [KnowledgeObject] {
+54:    func objects(from source: KnowledgeSourceType) -> [KnowledgeObject] {
+58:    func related(to id: String, via type: RelationType) -> [KnowledgeObject] {
+63:    func path(from sourceId: String, to targetId: String) -> [KnowledgeObject] {
+86:    func query(_ type: KnowledgeObjectType? = nil, source: KnowledgeSourceType? = nil, project: String? = nil, tag: String? = nil, status: String? = nil) -> [KnowledgeObject] {
+96:    private func deduplicate(_ objects: [KnowledgeObject]) -> [KnowledgeObject] {
+101:    private func deduplicateRelations(_ relations: [KnowledgeRelation]) -> [KnowledgeRelation] {
+106:    private func addInverseRelations(_ relations: [KnowledgeRelation]) -> [KnowledgeRelation] {
+123:    private func buildAdjacency() {

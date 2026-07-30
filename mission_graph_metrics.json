@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "mission": "Analyser complètement le dépôt SUPRA",
+  "type": "performance_metrics",
+  "generated_at": "2026-07-24T01:00:00Z",
+  "graph_metrics": {
+    "total_nodes": 10,
+    "total_edges": 9,
+    "graph_density": 0.1,
+    "avg_degree": 1.8,
+    "max_degree": 6,
+    "diameter": 4,
+    "width": 6
+  },
+  "parallelization_metrics": {
+    "sequential_duration": 585,
+    "optimized_duration": 270,
+    "speedup_factor": 2.17,
+    "parallel_efficiency": 0.54,
+    "max_parallelism": 6,
+    "avg_parallelism": 2.5
+  },
+  "critical_path_metrics": {
+    "critical_path_duration": 270,
+    "shortest_path_duration": 200,
+    "bottleneck_task": "T9 (Analyse architecturale, 120s)",
+    "bottleneck_contribution_pct": 44.4,
+    "paths_examined": 6
+  },
+  "resource_metrics": {
+    "opencode_zen_utilization": {
+      "tasks_assigned": 9,
+      "total_duration": 525,
+      "parallel_tasks_peak": 4,
+      "utilization_pct": 64.8
+    },
+    "ollama_utilization": {
+      "tasks_assigned": 1,
+      "total_duration": 30,
+      "parallel_tasks_peak": 1,
+      "utilization_pct": 11.1
+    }
+  },
+  "task_classification": {
+    "parallelizable": 6,
+    "dependent": 4,
+    "optional": 1,
+    "blocking": 2,
+    "critical": 4,
+    "non_critical": 6
+  },
+  "level_assessment": {
+    "dag_runtime": true,
+    "dependency_engine": true,
+    "critical_path_analysis": true,
+    "automatic_parallelization": true,
+    "optimized_scheduling": true,
+    "notes": "Planner a détecté automatiquement 6 tâches parallélisables (G1), 2 tâches dépendantes parallèles (G2), et 2 tâches séquentielles (G3, G4). Chemin critique identifié : T1→T4→T9→T10 (270s). Speedup de 2.17x vs séquentiel."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "observer": "GO_SUPRA_SYMLINK_OVERLAY_BUILD_V1",
+  "mode": "SOURCE_READ_ONLY",
+  "checks": {
+    "exit_code_zero": true,
+    "errors_zero": true,
+    "package_resolved": true,
+    "extraction_plan_absent": true,
+    "product_generated": true
+  },
+  "build": {
+    "exit_code": 0,
+    "status": "SUCCEEDED",
+    "error_count": 0,
+    "warning_count": 1,
+    "package_error_count": 0,
+    "extraction_plan_count": 0,
+    "product_generated": true,
+    "product_path": "/var/folders/cs/0xjkxgxd6wq040s_6vnq6my80000gn/T/supra-symlink-overlay.UxMhlM/DerivedData/Build/Products/Debug/SUPRA.app",
+    "errors": [],
+    "warnings": [
+      "/var/folders/cs/0xjkxgxd6wq040s_6vnq6my80000gn/T/supra-symlink-overlay.UxMhlM/SUPRA/SUPRA/ContentView.swift:3796:17: warning: reference to captured var 'self' in concurrently-executing code; this is an error in the Swift 6 language mode"
+    ],
+    "package_errors": [],
+    "extraction_plan_evidence": []
+  },
+  "verdict": "PASS"
+}

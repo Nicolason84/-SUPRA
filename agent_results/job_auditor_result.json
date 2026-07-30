@@ -1,0 +1,23 @@
+{
+  "job_id": "job_002",
+  "job_name": "Compliance Audit",
+  "agent": "SUPRA-Auditor",
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "agents_with_write_access": ["SUPRA-Builder"],
+  "agents_total": 9,
+  "read_only_correct": true,
+  "guard_coverage": "partial",
+  "write_protocol_complete": false,
+  "compliance_score": 0.89,
+  "violations": [
+    "SUPRA-Refactor bash permission mismatch: AGENTS.md and agent_permissions.json allow bash, but opencode.json denies it",
+    "SUPRA-Runtime and SUPRA-Refactor have no defined roles in mission_center.json roles list (missing from pipeline workflow) though they appear in access_control.read_only_agents",
+    "builder_guard.json write_operations list includes patch/rename/move/chmod but agent_permissions.json denied_operations for all read-only agents only list edit/write/create/delete — incomplete mirroring",
+    "validation_stamp mechanism referenced in builder_guard.json guard_003 is not defined anywhere — no schema, no creation logic, no verification procedure",
+    "builder_guard.json write_operations does not include 'bash' — read-only agents with bash access (SUPRA-Runtime, SUPRA-Router) could theoretically mutate files indirectly via shell commands (echo/cp/mv/rm)",
+    "write_request_protocol lacks failure handling: no timeout, no escalation, no fallback if Mission Center is unavailable or validation fails",
+    "SUPRA-Architect denied_operations uses 'bash (write)' format while all other agents use 'bash' — inconsistent naming"
+  ],
+  "audit_details": "Audited 7 configuration files (mission_center.json, agent_permissions.json, builder_guard.json, agent_registry.json, opencode.json, AGENTS.md, job_scheduler.json). Single-writer rule is consistently enforced across all files: only SUPRA-Builder has write permissions. All 8 read-only agents have edit/write/create/delete denied. builder_guard.json defines 8 write operations and 4 guard rules. Write request protocol exists in both agent_permissions.json (5 steps) and builder_guard.json (8 steps + schema) but lacks failure recovery. 7 violations found: 1 inconsistency in SUPRA-Refactor bash config, 2 agents missing from mission_center pipeline roles, 1 incomplete permission mirroring, 1 undefined validation stamp, 1 bash indirect write gap, 1 missing failure handling in protocol, 1 naming inconsistency. Score: 0.89 — strong enforcement architecture with documentation and edge-case gaps."
+}

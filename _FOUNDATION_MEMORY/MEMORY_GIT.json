@@ -1,0 +1,93 @@
+{
+  "memory": "MEMORY_GIT",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "GIT-001",
+      "name": "SUPRA",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/.git",
+      "branch": "develop",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": [],
+      "relations": ["GIT-002", "GIT-003", "GIT-004", "GIT-005", "GIT-006"]
+    },
+    {
+      "uuid": "GIT-002",
+      "name": "NICO_APP",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "GIT-003",
+      "name": "NICO_APP_CLEAN",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_CLEAN/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "GIT-004",
+      "name": "HELENE_SUPRA_HELENE",
+      "path": "/Users/nicolasalonso/NOVA_OS/HELENE_APP_IOS/SUPRA_HELENE/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "GIT-005",
+      "name": "NOVA_BUILD_SYSTEM",
+      "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "GIT-006",
+      "name": "COHERENCE_ENGINE_V1",
+      "path": "/Users/nicolasalonso/NOVA_LABS/COHERENCE_ENGINE_V1/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "GIT-007",
+      "name": "NICO_APP_IOS_BACKUP",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_BACKUP_BEFORE_RENAME_20260531_120919/.git",
+      "type": "git_repo",
+      "owner": "nicolasalonso",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    }
+  ],
+  "summary": {
+    "total_git_repos": 8,
+    "active": 5,
+    "abandoned": 2,
+    "note": "8 dépôts Git détectés sur l'ensemble des espaces de développement"
+  }
+}

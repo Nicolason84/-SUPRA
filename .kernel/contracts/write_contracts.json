@@ -1,0 +1,114 @@
+{
+  "write_contracts": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "description": "Write contracts for Kernel modification. Only SUPRA-Builder is authorized to write; all other agents are STRICTLY READ ONLY.",
+    "single_writer_rule": {
+      "authorized_agent": "SUPRA-Builder",
+      "reason": "Single Writer Rule ensures data integrity and prevents unauthorized mutations. All other agents may ONLY read.",
+      "permissions": {
+        "create": ["missions", "decisions", "proofs", "adrs", "components", "events", "snapshots"],
+        "update": ["missions", "decisions", "proofs", "adrs", "components", "events", "snapshots"],
+        "delete": ["missions", "decisions", "proofs", "adrs", "components", "events", "snapshots"],
+        "publish": ["events", "proofs", "next_actions"],
+        "validate": ["all"],
+        "audit": ["all"],
+        "export": ["canonique_data"]
+      }
+    },
+    "access_controls": {
+      "all_agents": {
+        "allowed": false,
+        "error": "READ ONLY - Write operations forbidden",
+        "route": "If write required, route to SUPRA-Builder via opencode"
+      },
+      "privileged_agents": {
+        "allowed": false,
+        "error": "READ ONLY - No write permissions even for privileged agents",
+        "note": "Single Writer Rule overrides all other permissions"
+      }
+    },
+    "write_patterns": {
+      "commands": [
+        "WRITE:/kernel/registry/missions",
+        "UPDATE:/kernel/registry/missions/*",
+        "DELETE:/kernel/registry/missions/*",
+        "WRITE:/kernel/registry/decisions",
+        "UPDATE:/kernel/registry/decisions/*",
+        "DELETE:/kernel/registry/decisions/*",
+        "WRITE:/kernel/registry/proofs",
+        "UPDATE:/kernel/registry/proofs/*",
+        "DELETE:/kernel/registry/proofs/*",
+        "WRITE:/kernel/registry/adrs",
+        "UPDATE:/kernel/registry/adrs/*",
+        "DELETE:/kernel/registry/adrs/*",
+        "WRITE:/kernel/registry/components",
+        "UPDATE:/kernel/registry/components/*",
+        "DELETE:/kernel/registry/components/*",
+        "WRITE:/kernel/registry/events",
+        "UPDATE:/kernel/registry/events/*",
+        "DELETE:/kernel/registry/events/*",
+        "WRITE:/kernel/registry/snapshots",
+        "UPDATE:/kernel/registry/snapshots/*",
+        "DELETE:/kernel/registry/snapshots/*",
+        "WRITE:/kernel/runtime/state",
+        "UPDATE:/kernel/runtime/state/*"
+      ],
+      "validation_requirements": {
+        "before_write": "Proof required for all write operations",
+        "after_write": "SHA-256 checksum validation",
+        "audit_trail": "All writes logged with agent identity, timestamp, SHA-256"
+      }
+    },
+    "security": {
+      "write_authentication": "JWT via opencode-zen with agent role validation",
+      "authorization": "strict RBAC based on agent registry, with single override for SUPRA-Builder",
+      "audit_log": "memory/audit_trail.jsonl - append-only record of ALL writes with full context",
+      "integrity": {
+        "sha256_check": "required for all write operations",
+        "lineage_tracking": "each write must reference source decision/evidence",
+        "rollback_capability": "only possible via explicit human-gate decision"
+      }
+    },
+    "validation_workflow": {
+      "write_approval": {
+        "level_1": "Agent writes to register ✓",
+        "level_2": "Proof published for write ✓",
+        "level_3": "Executive approval (if applicable) ✓",
+        "level_4": "Audit verification ✓"
+      },
+      "gate_dependencies": {
+        "INPUT_GATE": "Required registry entries exist",
+        "EXECUTION_GATE": "Write operation follows pattern",
+        "OUTPUT_GATE": "Verification completed"
+      }
+    },
+    "versioning": {
+      "requirement": "All writes must include schema_version",
+      "lock_contention": "Register is lock-free append-only for reads, with Write Lock for SUPRA-Builder",
+      "conflict_resolution": "Linear append (no overwrite), changes create new version entries"
+    },
+    "violation_handling": {
+      "non_builder_write": {
+        "detection": "any write attempt by non-SUPRA-Builder is an immediate BLOCK",
+        "action": "BLOCK operation, route to Builder, log violation",
+        "consequence": "Agent access may be suspended until proof of compliance"
+      },
+      "proof_missing": {
+        "action": "Block write, escalate to Builder",
+        "consequence": "Write cannot proceed without evidence"
+      }
+    },
+    "proof_required_for": [
+      "ANY mutation of kernel register data",
+      "ANY creation of ADR",
+      "ANY modification of decision",
+      "ANY update of component",
+      "ANY deletion of proof",
+      "ANY modification of runtime state"
+    ],
+    "builder_oversight": {
+      "review_required": "All builder writes require post-facto architectural review",
+      "approval_needed": "Writes impacting constitution or governance require Executive approval"
+    }
+  }
+}

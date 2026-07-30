@@ -1,0 +1,186 @@
+{
+  "memory": "MEMORY_SERVICES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "SVC-001",
+      "name": "MissionStore",
+      "project": "SUPRA",
+      "file": "SUPRA/MissionStore.swift",
+      "type": "observable_store",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "used_by": ["MissionCenterView", "MissionDetailView"]
+    },
+    {
+      "uuid": "SVC-002",
+      "name": "DecisionStore",
+      "project": "SUPRA",
+      "file": "SUPRA/DecisionStore.swift",
+      "type": "observable_store",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "used_by": ["DecisionInboxView", "DecisionDetailView"]
+    },
+    {
+      "uuid": "SVC-003",
+      "name": "ControlCenterStore",
+      "project": "SUPRA",
+      "file": "SUPRA/ControlCenterStore.swift",
+      "type": "observable_store",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "used_by": ["SupraControlCenterView"]
+    },
+    {
+      "uuid": "SVC-004",
+      "name": "RuntimeDataService",
+      "project": "SUPRA",
+      "file": "SUPRA/RuntimeDataService.swift",
+      "type": "service",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-005",
+      "name": "RuntimeGateway",
+      "project": "SUPRA",
+      "file": "SUPRA/RuntimeGateway.swift",
+      "type": "service",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-006",
+      "name": "RuntimeMonitor",
+      "project": "SUPRA",
+      "file": "SUPRA/RuntimeMonitor.swift",
+      "type": "service",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-007",
+      "name": "RuntimeConnectionState",
+      "project": "SUPRA",
+      "file": "SUPRA/RuntimeConnectionState.swift",
+      "type": "state_machine",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-008",
+      "name": "RuntimeEventSource",
+      "project": "SUPRA",
+      "file": "SUPRA/RuntimeEventSource.swift",
+      "type": "event_source",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-009",
+      "name": "ConversationKnowledgeProvider",
+      "project": "SUPRA",
+      "file": "SUPRA/ConversationKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-010",
+      "name": "DecisionKnowledgeProvider",
+      "project": "SUPRA",
+      "file": "SUPRA/DecisionKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-011",
+      "name": "GitKnowledgeProvider",
+      "project": "SUPRA",
+      "file": "SUPRA/GitKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-012",
+      "name": "PDFKnowledgeProvider",
+      "project": "SUPRA",
+      "file": "SUPRA/PDFKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-013",
+      "name": "ReportKnowledgeProvider",
+      "project": "SUPRA",
+      "file": "SUPRA/ReportKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-014",
+      "name": "KnowledgeProvider (protocol)",
+      "project": "SUPRA",
+      "file": "SUPRA/KnowledgeProvider.swift",
+      "type": "protocol",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-015",
+      "name": "WorkspaceGovernor",
+      "project": "SUPRA",
+      "file": "SUPRA/WorkspaceGovernor.swift",
+      "type": "service",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "SVC-016",
+      "name": "WorkspaceIndexer",
+      "project": "SUPRA",
+      "file": "SUPRA/WorkspaceIndexer.swift",
+      "type": "service",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    }
+  ]
+}

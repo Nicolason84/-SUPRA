@@ -1,0 +1,53 @@
+{
+  "memory": "MEMORY_CLEANUP",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "CLN-001", "action": "Nettoyer DerivedData Xcode", "priority": "high", "effort": "low", "gain_gb": 28, "type": "cleanup", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-002", "action": "Archiver logs recovery Bureau", "priority": "high", "effort": "low", "gain_mb": 236, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-003", "action": "Archiver SUPRA_TEMP", "priority": "high", "effort": "low", "gain_mb": 33, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-004", "action": "Archiver FREEZE_SUPRA_* dans _SUPRA_BACKUPS", "priority": "high", "effort": "low", "gain_mb": 12, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-005", "action": "Renommer backups .bak hors chemin compilation", "priority": "high", "effort": "low", "type": "rename", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-006", "action": "Archiver SUPRA_VIDEO_SWAP_V1", "priority": "medium", "effort": "low", "gain_mb": 20, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-007", "action": "Archiver SUPRA_PROJECTS", "priority": "medium", "effort": "low", "gain_mb": 13, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-008", "action": "Fusionner SUPRA_RECOVERY différences", "priority": "medium", "effort": "high", "type": "merge", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-009", "action": "Choisir NICO_APP vs NICO_APP_CLEAN", "priority": "medium", "effort": "high", "gain_gb": 5.3, "type": "consolidate", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-010", "action": "Déplacer SUPRA_BISECT", "priority": "medium", "effort": "low", "gain_mb": 17, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-011", "action": "Archiver _DESKTOP_CLEAN_ARCHIVE", "priority": "low", "effort": "low", "gain_mb": 4.4, "type": "archive", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-012", "action": "Nettoyer DerivedData Xcode (récurrent)", "priority": "low", "effort": "low", "gain_gb": 28, "type": "recurring", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    },
+    {
+      "uuid": "CLN-013", "action": "Consolider SUPRA_HELENE standalone", "priority": "low", "effort": "medium", "type": "consolidate", "status": "pending", "canonical": false, "archive": false, "reusable": false
+    }
+  ],
+  "summary": {
+    "total_actions": 13,
+    "high_priority": 5,
+    "medium_priority": 5,
+    "low_priority": 3,
+    "estimated_total_recoverable": "~28.3 GB + DerivedData récurrent"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "capabilities": {
+    "architecture": {
+      "description": "System architecture design and ADR production",
+      "agents": ["SUPRA-Architect"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/qwen2.5-coder:14b"],
+      "required_tools": ["read", "grep", "glob", "lsp", "webfetch"]
+    },
+    "swift": {
+      "description": "Swift code implementation and generation",
+      "agents": ["SUPRA-Builder", "SUPRA-Refactor"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/qwen2.5-coder:14b", "ollama/deepseek-coder-v2:16b"],
+      "required_tools": ["read", "edit", "bash", "lsp"]
+    },
+    "refactoring": {
+      "description": "Safe code refactoring without functional changes",
+      "agents": ["SUPRA-Refactor", "SUPRA-Builder"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/qwen2.5-coder:14b", "ollama/deepseek-coder-v2:16b"],
+      "required_tools": ["read", "edit", "lsp"]
+    },
+    "analysis": {
+      "description": "Static code analysis, security audit, compliance",
+      "agents": ["SUPRA-Auditor"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/qwen2.5-coder:14b", "ollama/mixtral:8x7b"],
+      "required_tools": ["read", "grep", "glob", "lsp"]
+    },
+    "research": {
+      "description": "Technical research, investigation, documentation",
+      "agents": ["SUPRA-Research", "SUPRA-Explorer"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/llama3.1:70b", "ollama/qwen2.5:32b"],
+      "required_tools": ["read", "grep", "glob", "webfetch", "websearch"]
+    },
+    "documentation": {
+      "description": "Code documentation, README, API docs",
+      "agents": ["SUPRA-Builder", "SUPRA-Research", "SUPRA-Explorer"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/mixtral:8x7b", "ollama/llama3.1:70b"],
+      "required_tools": ["read", "edit", "grep", "glob"]
+    },
+    "debugging": {
+      "description": "Bug diagnosis, crash analysis, issue investigation",
+      "agents": ["SUPRA-Runtime", "SUPRA-Research"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/deepseek-coder-v2:16b", "ollama/qwen2.5-coder:14b"],
+      "required_tools": ["read", "grep", "glob", "bash", "lsp"]
+    },
+    "review": {
+      "description": "Code review with structured feedback",
+      "agents": ["SUPRA-Reviewer", "SUPRA-Auditor"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/qwen2.5-coder:14b"],
+      "required_tools": ["read", "grep", "glob", "lsp"]
+    },
+    "runtime": {
+      "description": "Runtime behavior analysis and performance",
+      "agents": ["SUPRA-Runtime"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/deepseek-coder-v2:16b"],
+      "required_tools": ["read", "grep", "glob", "bash", "lsp"]
+    },
+    "routing": {
+      "description": "Mission classification and agent assignment",
+      "agents": ["SUPRA-Router"],
+      "models": ["anthropic/claude-sonnet-4-6"],
+      "required_tools": ["read", "edit", "bash", "grep", "glob"]
+    },
+    "navigation": {
+      "description": "Codebase navigation and structural mapping",
+      "agents": ["SUPRA-Explorer"],
+      "models": ["anthropic/claude-sonnet-4-6", "ollama/llama3.1:70b"],
+      "required_tools": ["read", "grep", "glob", "lsp", "task"]
+    }
+  },
+  "task_mappings": {
+    "architecture": ["architecture"],
+    "swift_implementation": ["swift", "documentation"],
+    "refactoring": ["refactoring", "analysis"],
+    "security_audit": ["analysis"],
+    "code_review": ["review", "analysis"],
+    "bug_fix": ["debugging", "swift"],
+    "research": ["research", "navigation"],
+    "documentation": ["documentation", "navigation"],
+    "performance": ["runtime", "analysis"],
+    "crash_diagnosis": ["runtime", "debugging"],
+    "routing_decision": ["routing"]
+  },
+  "$schema": "supra://registry/capability_registry"
+}

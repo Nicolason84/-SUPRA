@@ -1,0 +1,16 @@
+./SUPRA/ConversationMemoryStore.swift:61:    private var knowledgeGraph: KnowledgeGraph?
+./SUPRA/ConversationMemoryStore.swift:75:    func configure(knowledgeGraph: KnowledgeGraph, decisionStore: DecisionStore, missionStore: MissionStore) {
+./SUPRA/ConversationMemoryStore.swift:110:        connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:133:            connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:278:    private func connectToKnowledgeGraph() {
+./SUPRA/KnowledgeStatistics.swift:6:    @Published var stats: KnowledgeGraphStatistics?
+./SUPRA/KnowledgeStatistics.swift:9:    func compute(from graph: KnowledgeGraph) -> KnowledgeGraphStatistics {
+./SUPRA/KnowledgeStatistics.swift:43:        stats = KnowledgeGraphStatistics(
+./SUPRA/KnowledgeContextEngine.swift:9:    private var graph: KnowledgeGraph?
+./SUPRA/KnowledgeContextEngine.swift:11:    func connect(to graph: KnowledgeGraph) {
+./SUPRA/KnowledgeContextEngine.swift:100:    private func findTargetCandidates(graph: KnowledgeGraph, contextType: KnowledgeObjectType?, keywords: [String]) -> [ScoredObject] {
+./SUPRA/KnowledgeObject.swift:38:struct KnowledgeGraphData: Codable {
+./SUPRA/KnowledgeObject.swift:42:    let statistics: KnowledgeGraphStatistics
+./SUPRA/KnowledgeObject.swift:45:struct KnowledgeGraphStatistics: Codable {
+./SUPRA/WorkspaceKnowledgeGraph.swift:5:final class WorkspaceKnowledgeGraph: ObservableObject {
+./SUPRA/KnowledgeGraph.swift:5:final class KnowledgeGraph: ObservableObject {

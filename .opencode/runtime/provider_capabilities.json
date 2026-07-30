@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "capability_map": {
+    "reasoning": {
+      "description": "Logical reasoning and chain-of-thought",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.95 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.70 }
+      ]
+    },
+    "code": {
+      "description": "Code generation, analysis, and refactoring",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.90 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.65 }
+      ]
+    },
+    "analysis": {
+      "description": "Static analysis, audit, and compliance checking",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.92 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.68 }
+      ]
+    },
+    "planning": {
+      "description": "Task decomposition and execution planning",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.93 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.60 }
+      ]
+    },
+    "architecture": {
+      "description": "System architecture and design decisions",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.94 }
+      ]
+    },
+    "routing": {
+      "description": "Mission routing and agent selection",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.96 }
+      ]
+    },
+    "classification": {
+      "description": "Text classification and pattern matching",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.91 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.72 }
+      ]
+    },
+    "review": {
+      "description": "Code review and quality assessment",
+      "providers": [
+        { "id": "opencode-zen", "models": ["deepseek-v4-flash-free"], "score": 0.89 },
+        { "id": "ollama", "models": ["qwen3:4b"], "score": 0.62 }
+      ]
+    }
+  },
+  "model_profiles": {
+    "opencode-zen/deepseek-v4-flash-free": {
+      "quality": 0.92,
+      "speed": "fast",
+      "cost": "free",
+      "context": 131072,
+      "strengths": ["reasoning", "code", "analysis", "planning", "architecture"]
+    },
+    "ollama/qwen3:4b": {
+      "quality": 0.65,
+      "speed": "fast",
+      "cost": "free",
+      "context": 32768,
+      "strengths": ["reasoning", "code", "analysis", "classification"]
+    }
+  }
+}

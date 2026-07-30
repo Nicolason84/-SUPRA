@@ -1,0 +1,230 @@
+{
+  "version": "1.0.0",
+  "schema": "SUPRA_RUNTIME_SERVICES_REGISTRY_V1",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_updated": "2026-07-29T05:00:00+02:00",
+  "service_count": 9,
+  "services": {
+    "workspace": {
+      "name": "Workspace Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/workspace/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/workspace/impl/workspace_service.sh",
+      "config": "SUPRA_RUNTIME/Services/workspace/config/",
+      "tests": "SUPRA_RUNTIME/Services/workspace/tests/",
+      "responsibilities": [
+        "connaître tous les chemins officiels",
+        "empêcher les écritures hors gouvernance",
+        "organiser automatiquement les artefacts"
+      ],
+      "mapped_scripts": [
+        "scripts/audit/SUPRA_REPO_DIAG.sh",
+        "scripts/audit/GO_SUPRA_FIND_ACTIVE_PROJECT.sh"
+      ],
+      "governance_rules": {
+        "no_hardcoded_paths": true,
+        "no_direct_filesystem_manipulation": true,
+        "single_write_point": true,
+        "zones_enforced": true
+      }
+    },
+    "storage": {
+      "name": "Storage Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/storage/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/storage/impl/storage_service.sh",
+      "config": "SUPRA_RUNTIME/Services/storage/config/",
+      "tests": "SUPRA_RUNTIME/Services/storage/tests/",
+      "responsibilities": [
+        "surveiller l'espace disque",
+        "détecter les doublons",
+        "identifier les caches régénérables",
+        "proposer et exécuter des nettoyages sûrs"
+      ],
+      "mapped_scripts": [
+        "scripts/audit/GO_SUPRA_STORAGE_AUDIT_V1.sh"
+      ],
+      "governance_rules": {
+        "thresholds_from_manifest": true,
+        "safe_cleanup_only": true,
+        "reversible_first": true
+      }
+    },
+    "provider": {
+      "name": "Provider Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/provider/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/provider/impl/provider_service.sh",
+      "config": "SUPRA_RUNTIME/Services/provider/config/",
+      "tests": "SUPRA_RUNTIME/Services/provider/tests/",
+      "responsibilities": [
+        "inventorier les fournisseurs IA",
+        "sélectionner automatiquement le provider le plus adapté",
+        "gérer les stratégies de repli"
+      ],
+      "mapped_scripts": [
+        "scripts/opencode/opencode_diagnostic.sh",
+        "scripts/opencode/opencode_model_audit.sh",
+        "scripts/opencode/SUPRA_OPENCODE_SAFE_START.sh"
+      ],
+      "governance_rules": {
+        "no_hardcoded_providers": true,
+        "fallback_chain_enforced": true,
+        "selection_by_capability": true
+      }
+    },
+    "build": {
+      "name": "Build Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/build/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/build/impl/build_service.sh",
+      "config": "SUPRA_RUNTIME/Services/build/config/",
+      "tests": "SUPRA_RUNTIME/Services/build/tests/",
+      "responsibilities": [
+        "centraliser les builds",
+        "gérer les caches",
+        "superviser DerivedData",
+        "produire des artefacts reproductibles"
+      ],
+      "mapped_scripts": [
+        "scripts/build/GO_SUPRA_BUILD_MATRIX.sh"
+      ],
+      "governance_rules": {
+        "reproducible_by_default": true,
+        "cache_managed_by_runtime": true,
+        "derived_data_supervised": true
+      }
+    },
+    "diagnostics": {
+      "name": "Diagnostics Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/diagnostics/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/diagnostics/impl/diagnostics_service.sh",
+      "config": "SUPRA_RUNTIME/Services/diagnostics/config/",
+      "tests": "SUPRA_RUNTIME/Services/diagnostics/tests/",
+      "responsibilities": [
+        "exécuter des diagnostics permanents",
+        "produire des preuves",
+        "expliquer les anomalies",
+        "recommander les prochaines actions"
+      ],
+      "mapped_scripts": [
+        "scripts/runtime/GO_SUPRA_RUNTIME_DOCTOR_V1.sh",
+        "scripts/opencode/opencode_debug.sh",
+        "scripts/opencode/opencode_diagnostic.sh",
+        "scripts/opencode/opencode_clean_config.sh"
+      ],
+      "governance_rules": {
+        "evidence_required": true,
+        "anomalies_explained": true,
+        "actions_recommended": true
+      }
+    },
+    "health": {
+      "name": "Health Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/health/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/health/impl/health_service.sh",
+      "config": "SUPRA_RUNTIME/Services/health/config/",
+      "tests": "SUPRA_RUNTIME/Services/health/tests/",
+      "responsibilities": [
+        "mesurer l'état global de SUPRA",
+        "publier des indicateurs de santé",
+        "détecter les dégradations"
+      ],
+      "mapped_scripts": [
+        "scripts/runtime/SUPRA_MEMORY_FIRST.sh",
+        "SUPRA_NODE_STATUS.sh"
+      ],
+      "governance_rules": {
+        "indicators_published": true,
+        "degradation_detected": true,
+        "health_score_tracked": true
+      }
+    },
+    "snapshot": {
+      "name": "Snapshot Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/snapshot/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/snapshot/impl/snapshot_service.sh",
+      "config": "SUPRA_RUNTIME/Services/snapshot/config/",
+      "tests": "SUPRA_RUNTIME/Services/snapshot/tests/",
+      "responsibilities": [
+        "gérer les snapshots",
+        "assurer leur cohérence",
+        "permettre les retours arrière contrôlés"
+      ],
+      "mapped_scripts": [
+        "scripts/runtime/GO_SUPRA_KERNEL_V1_1_CLASSIFY_AND_LIVE_RUNTIME.sh"
+      ],
+      "governance_rules": {
+        "consistency_checked": true,
+        "retention_enforced": true,
+        "hash_verified": true
+      }
+    },
+    "recovery": {
+      "name": "Recovery Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/recovery/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/recovery/impl/recovery_service.sh",
+      "config": "SUPRA_RUNTIME/Services/recovery/config/",
+      "tests": "SUPRA_RUNTIME/Services/recovery/tests/",
+      "responsibilities": [
+        "restaurer automatiquement un état cohérent",
+        "gérer les procédures de récupération",
+        "garantir la continuité opérationnelle"
+      ],
+      "mapped_scripts": [
+        "scripts/recovery/SUPRA_SAFE_MODE.sh",
+        "scripts/recovery/SUPRA_REPAIR_SAFE_MODE.sh",
+        "scripts/recovery/GO_SUPRA_RESTORE_BUILD_V1.sh",
+        "scripts/recovery/GO_SUPRA_TOTAL_RECOVERY_AUDIT.sh"
+      ],
+      "governance_rules": {
+        "procedures_tiered": true,
+        "automatic_restore": true,
+        "continuity_guaranteed": true
+      }
+    },
+    "governance": {
+      "name": "Governance Service",
+      "version": "1.0.0",
+      "status": "active",
+      "manifest": "SUPRA_RUNTIME/Services/governance/manifest.json",
+      "implementation": "SUPRA_RUNTIME/Services/governance/impl/governance_service.sh",
+      "config": "SUPRA_RUNTIME/Services/governance/config/",
+      "tests": "SUPRA_RUNTIME/Services/governance/tests/",
+      "responsibilities": [
+        "appliquer les politiques du Runtime",
+        "contrôler les Runtime Services",
+        "garantir la cohérence globale"
+      ],
+      "mapped_scripts": [
+        "SUPRA_RUNTIME.sh",
+        "scripts/audit/GO_SUPRA_GLOBAL_AUDIT.sh"
+      ],
+      "governance_rules": {
+        "no_hardcoded_paths": true,
+        "no_direct_filesystem_manipulation": true,
+        "intention_based_expressions": true,
+        "runtime_decides_implementation": true,
+        "single_write_point": true
+      }
+    }
+  },
+  "service_dependencies": {
+    "health": ["workspace", "storage"],
+    "diagnostics": ["workspace", "storage", "provider", "build"],
+    "recovery": ["snapshot", "workspace", "storage"],
+    "governance": ["workspace", "storage", "provider", "build", "diagnostics", "health", "snapshot", "recovery"]
+  }
+}

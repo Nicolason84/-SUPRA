@@ -1,0 +1,39 @@
+{
+  "service": "workspace",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Workspace Service — manages all official paths, enforces governance boundaries, and organizes artifacts automatically",
+  "responsibilities": [
+    "connaître tous les chemins officiels",
+    "empêcher les écritures hors gouvernance",
+    "organiser automatiquement les artefacts"
+  ],
+  "paths": {
+    "root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+    "source": "SUPRA/",
+    "tests": "SUPRATests/",
+    "docs": "docs/",
+    "governance": "Governance/",
+    "freeze": "Freeze/",
+    "packages": "Packages/",
+    "artifacts": "Artifacts/",
+    "inbox": "Inbox/",
+    "outbox": "Outbox/",
+    "missions": "Missions/",
+    "runtime": "SUPRA_RUNTIME/",
+    "reports": "Reports/",
+    "logs": "Logs/",
+    "evidence": "Evidence/",
+    "kernel": ".kernel/",
+    "opencode": ".opencode/"
+  },
+  "zones": {
+    "protected": ["SUPRA/", "SUPRATests/", ".kernel/", ".opencode/"],
+    "active": ["Inbox/", "Outbox/", "Missions/"],
+    "temporary": ["Artifacts/exports/", "Artifacts/diagnostics/"],
+    "read_only": ["Freeze/", "Governance/"]
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/workspace/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

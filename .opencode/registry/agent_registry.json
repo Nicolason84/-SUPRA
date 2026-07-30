@@ -1,0 +1,113 @@
+{
+  "agents": [
+    {
+      "id": "SUPRA-Architect",
+      "role": "Architecture design and ADR production — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch"],
+      "capabilities": ["architecture", "design", "adr", "structural_analysis", "executive", "fusion"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Builder",
+      "role": "Code implementation and generation — WRITE ONLY (sole mutation agent)",
+      "permissions": ["read", "edit", "bash", "lsp", "glob", "grep"],
+      "capabilities": ["code_generation", "testing", "bug_fixing", "write", "mutation"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "write_only"
+    },
+    {
+      "id": "SUPRA-Auditor",
+      "role": "Static code analysis and compliance checking — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "capabilities": ["analysis", "security_audit", "compliance", "code_review_static", "validator"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Reviewer",
+      "role": "Code review with actionable feedback — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "capabilities": ["review", "code_quality", "performance_analysis", "comparator"],
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "fallback_provider": "opencode-zen",
+      "fallback_model": "deepseek-v4-flash-free",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Explorer",
+      "role": "Codebase navigation and comprehension — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp", "task"],
+      "capabilities": ["navigation", "search", "mapping", "documentation"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Research",
+      "role": "Technical research and investigation — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch", "websearch"],
+      "capabilities": ["research", "investigation", "documentation", "bug_analysis"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Runtime",
+      "role": "Runtime analysis and crash diagnostics — READ ONLY",
+      "permissions": ["read", "grep", "glob", "lsp", "bash"],
+      "capabilities": ["runtime", "debugging", "analysis"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Refactor",
+      "role": "Safe code refactoring analysis — READ ONLY (mutations via Builder)",
+      "permissions": ["read", "grep", "glob", "lsp", "bash"],
+      "capabilities": ["refactoring", "analysis"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    },
+    {
+      "id": "SUPRA-Router",
+      "role": "Mission routing, provider selection, and agent orchestration — READ ONLY (selects, does not write)",
+      "permissions": ["read", "grep", "glob", "lsp", "bash", "webfetch"],
+      "capabilities": ["routing", "classification", "orchestration", "planning", "provider_selection", "planner"],
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "fallback_provider": "ollama",
+      "fallback_model": "qwen3:4b",
+      "status": "available",
+      "access_mode": "read_only"
+    }
+  ],
+  "$schema": "supra://registry/agent_registry"
+}

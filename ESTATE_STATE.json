@@ -1,0 +1,35 @@
+{
+  "status": "READY",
+  "scan_root": "/System/Volumes/Data",
+  "started_at_epoch": 1784238869,
+  "completed_at": "2026-07-17T00:06:22.328495+02:00",
+  "duration_seconds": 712.94,
+  "objects": 4903076,
+  "canonical_objects": 4645720,
+  "bytes": 491502515797,
+  "errors": 0,
+  "type_distribution": {
+    "DIRECTORY": 831614,
+    "EXECUTABLE": 47737,
+    "FILE": 2237608,
+    "SOURCE_CODE": 352094,
+    "BUILD_ARTIFACT": 12367,
+    "PROJECT_ROOT": 4217,
+    "DOCUMENTATION": 123431,
+    "MANIFEST": 4778,
+    "CONFIGURATION": 1016223,
+    "MEDIA": 95234,
+    "INTERFACE": 119079,
+    "DATASET": 3220,
+    "ARCHIVE": 24244,
+    "FREEZE": 31230
+  },
+  "kind_distribution": {
+    "DIRECTORY": 850351,
+    "SYMLINK": 56110,
+    "FILE": 3996615
+  },
+  "project_candidates": 8666,
+  "priority_queue_size": 5000,
+  "source_mutation": false
+}

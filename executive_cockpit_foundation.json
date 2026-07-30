@@ -1,0 +1,143 @@
+{
+  "version": "1.0.0",
+  "buildDate": "2026-07-23T23:43:35Z",
+  "cockpitVersion": "SUPRA Executive Cockpit Next Gen v1.0.0",
+  "tabs": [
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "icon": "square.grid.2x2",
+      "enabled": true
+    },
+    {
+      "id": "missions",
+      "label": "Missions",
+      "icon": "flag",
+      "enabled": true
+    },
+    {
+      "id": "runtime",
+      "label": "Runtime",
+      "icon": "gear",
+      "enabled": true
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge Graph",
+      "icon": "brain.head.profile",
+      "enabled": true
+    },
+    {
+      "id": "memory",
+      "label": "Executive Memory",
+      "icon": "memorychip",
+      "enabled": true
+    },
+    {
+      "id": "timeline",
+      "label": "Timeline",
+      "icon": "clock",
+      "enabled": true
+    },
+    {
+      "id": "search",
+      "label": "Global Search",
+      "icon": "magnifyingglass",
+      "enabled": true
+    },
+    {
+      "id": "governance",
+      "label": "Governance",
+      "icon": "shield",
+      "enabled": true
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "icon": "wrench",
+      "enabled": true
+    }
+  ],
+  "state": {
+    "kernelInitialized": true,
+    "objectCount": 838,
+    "sourceCount": 6,
+    "relationshipCount": 1307,
+    "governanceIssueCount": 10,
+    "lastBuildDate": "2026-07-23T23:43:35Z",
+    "themes": [
+      "dark",
+      "light",
+      "system"
+    ],
+    "defaultTheme": "dark",
+    "animationsEnabled": true,
+    "liveUpdatesEnabled": true
+  },
+  "widgets": [
+    {
+      "id": "dashboard_stats",
+      "tab": "dashboard",
+      "title": "System Statistics",
+      "type": "stats",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "dashboard_timeline",
+      "tab": "dashboard",
+      "title": "Recent Activity",
+      "type": "timeline",
+      "order": 2,
+      "enabled": true
+    },
+    {
+      "id": "knowledge_graph",
+      "tab": "knowledge",
+      "title": "Interactive Graph",
+      "type": "graph",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "memory_browser",
+      "tab": "memory",
+      "title": "Memory Explorer",
+      "type": "browser",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "timeline_full",
+      "tab": "timeline",
+      "title": "Complete Timeline",
+      "type": "timeline",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "search_global",
+      "tab": "search",
+      "title": "Universal Search",
+      "type": "search",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "governance_list",
+      "tab": "governance",
+      "title": "Governance Issues",
+      "type": "list",
+      "order": 1,
+      "enabled": true
+    },
+    {
+      "id": "runtime_status",
+      "tab": "runtime",
+      "title": "Runtime Status",
+      "type": "status",
+      "order": 1,
+      "enabled": true
+    }
+  ]
+}

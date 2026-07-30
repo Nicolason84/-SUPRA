@@ -1,0 +1,37 @@
+import SwiftUI
+
+@main
+struct SUPRAOperationalCoreApp: App {
+    @StateObject private var state = SUPRACommandCenterState.shared
+    @StateObject private var governor = SUPRAResourceGovernor.shared
+    @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
+
+    var body: some Scene {
+        WindowGroup {
+            SUPRAOSProductRootView()
+                .environmentObject(state)
+                .environmentObject(TwinUniverse.shared)
+                .onAppear {
+                    governor.startMonitoring()
+                    let monitor = RuntimeMonitor(dataService: RuntimeDataService())
+                    monitor.start()
+                    let towerState = ControlTowerState(dataService: RuntimeDataService())
+                    towerState.load()
+                    state.configure(towerState: towerState, monitor: monitor)
+                    state.loadMissions()
+                    snapshotStore.refreshIfNeeded()
+                    SUPRABackgroundScheduler.shared.start()
+                    SUPRAResourceIntelligenceEngine.shared.start()
+                    SUPRAEvolutionEngine.shared.observe()
+                    SUPRAMacPotential.shared.compute()
+                    SUPRAEnvironmentWorldModel.shared.startAutoRefresh()
+                    SUPRARecommendationEngine.shared.analyze()
+                    SUPRAPassiveRefreshCoordinator.shared.start()
+                    ConversationMemoryStore.shared.startAutoRefresh()
+                }
+        }
+        .windowStyle(.titleBar)
+        .windowResizability(.contentSize)
+        .defaultSize(width: 1400, height: 900)
+    }
+}

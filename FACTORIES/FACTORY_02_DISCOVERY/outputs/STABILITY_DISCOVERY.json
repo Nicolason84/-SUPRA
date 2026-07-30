@@ -1,0 +1,306 @@
+{
+  "schema_version": "STABILITY_DISCOVERY_V1",
+  "generated_on": "2026-07-29",
+  "authority": "FACTORY_02_DISCOVERY",
+  "mission_id": "SUPRA-RUNTIME-STABILITY-002",
+  "mission_stage": "STAGE_1_DISCOVERY",
+  "status": "VALIDATED",
+  "inputs": [
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/RUNTIME_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/MODULE_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/DEPENDENCY_GRAPH.json"
+  ],
+  "scope_rule": "Consumed only canonical discovery artefacts. No rediscovery. No regeneration. No overwrite of inputs.",
+  "stability_domains": [
+    {
+      "domain": "health",
+      "status": "partially_discovered",
+      "components": [
+        {
+          "name": "Provider Runtime",
+          "path": "SUPRA/ProviderRuntime.swift",
+          "kind": "adjacent-runtime-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.provider_runtime",
+          "role": "Existing runtime-adjacent surface likely to expose provider availability and execution health.",
+          "boundary_note": "Provider-specific governance remains outside Stability Faculty ownership.",
+          "confidence": "medium"
+        },
+        {
+          "name": "Runtime Event Modeling Cluster",
+          "paths": [
+            "SUPRA/RuntimeEvent.swift",
+            "SUPRA/RuntimeEventSource.swift",
+            "SUPRA/SUPRARuntimeEvents.swift"
+          ],
+          "kind": "observability-surface",
+          "evidence": "MODULE_INDEX.duplicate_systems[category=runtime event modeling]",
+          "role": "Existing event surfaces relevant to runtime health signaling and observability.",
+          "boundary_note": "Duplicated surfaces indicate signaling exists but is not yet consolidated into a Stability Faculty contract.",
+          "confidence": "high"
+        }
+      ],
+      "not_canonically_discovered": [
+        "Dedicated HealthMonitor component",
+        "Dedicated RuntimeStatus contract",
+        "Dedicated health policy document"
+      ]
+    },
+    {
+      "domain": "metrics",
+      "status": "limited_discovery",
+      "components": [
+        {
+          "name": "Runtime Event Modeling Cluster",
+          "paths": [
+            "SUPRA/RuntimeEvent.swift",
+            "SUPRA/RuntimeEventSource.swift",
+            "SUPRA/SUPRARuntimeEvents.swift"
+          ],
+          "kind": "signal-surface",
+          "evidence": "MODULE_INDEX.duplicate_systems[category=runtime event modeling]",
+          "role": "Existing runtime signal surfaces that could feed a future metrics faculty boundary.",
+          "boundary_note": "No canonical metrics collector was explicitly discovered.",
+          "confidence": "medium"
+        },
+        {
+          "name": "Kernel Store",
+          "path": ".kernel",
+          "kind": "state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.kernel]",
+          "role": "Canonical runtime support surface that can host persistent operational state required by metrics retention.",
+          "boundary_note": "Persistence surface exists; metrics semantics are not yet canonically defined.",
+          "confidence": "medium"
+        }
+      ],
+      "not_canonically_discovered": [
+        "Dedicated MetricsCollector component",
+        "Metrics schema",
+        "Metrics retention rules"
+      ]
+    },
+    {
+      "domain": "recovery",
+      "status": "partially_discovered",
+      "components": [
+        {
+          "name": "Runtime Filesystem",
+          "path": "SUPRA_RUNTIME",
+          "kind": "runtime-state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=SUPRA_RUNTIME]",
+          "role": "Existing mission and artifact state surface relevant to runtime recovery.",
+          "boundary_note": "Surface exists; recovery orchestration is not canonically separated yet.",
+          "confidence": "high"
+        },
+        {
+          "name": "Kernel Store",
+          "path": ".kernel",
+          "kind": "runtime-state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.kernel]",
+          "role": "Existing contracts, providers, storage, and registry surface relevant to restart continuity.",
+          "boundary_note": "State surface exists; recovery ownership remains undefined.",
+          "confidence": "high"
+        },
+        {
+          "name": "Build Recovery Artifacts",
+          "path": ".restore_build",
+          "kind": "recovery-artifact-surface",
+          "evidence": "MODULE_INDEX.obsolete_or_non_runtime_systems[path=.restore_build]",
+          "role": "Historical recovery artifact area proving recovery-oriented material already exists in the repository.",
+          "boundary_note": "Classified as recovery artifacts, not as active runtime architecture.",
+          "confidence": "high"
+        }
+      ],
+      "not_canonically_discovered": [
+        "Dedicated RecoveryManager component",
+        "Explicit recovery protocol",
+        "Recovery validation contract"
+      ]
+    },
+    {
+      "domain": "checkpoint",
+      "status": "not_canonically_discovered",
+      "components": [],
+      "closest_existing_surfaces": [
+        {
+          "name": "Runtime Filesystem",
+          "path": "SUPRA_RUNTIME",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=SUPRA_RUNTIME]"
+        },
+        {
+          "name": "Kernel Store",
+          "path": ".kernel",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.kernel]"
+        }
+      ],
+      "not_canonically_discovered": [
+        "Dedicated CheckpointManager component",
+        "Checkpoint frequency policy",
+        "Checkpoint compatibility rules"
+      ]
+    },
+    {
+      "domain": "persistence",
+      "status": "discovered",
+      "components": [
+        {
+          "name": "Mission Store",
+          "path": "SUPRA/MissionStore.swift",
+          "kind": "mission-state-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.mission_store",
+          "role": "Existing mission persistence surface adjacent to runtime continuity.",
+          "boundary_note": "Mission ownership remains outside Stability Faculty; Stability may depend on it but must not absorb it.",
+          "confidence": "high"
+        },
+        {
+          "name": "Runtime Filesystem",
+          "path": "SUPRA_RUNTIME",
+          "kind": "filesystem-state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=SUPRA_RUNTIME]",
+          "role": "Existing persistent runtime directory structure.",
+          "boundary_note": "Persistence surface exists without canonical checkpoint contract.",
+          "confidence": "high"
+        },
+        {
+          "name": "Kernel Store",
+          "path": ".kernel",
+          "kind": "kernel-state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.kernel]",
+          "role": "Existing kernel-backed persistence and registry surface.",
+          "boundary_note": "Stability can depend on this surface but should not redefine kernel ownership.",
+          "confidence": "high"
+        },
+        {
+          "name": "OpenCode Runtime",
+          "path": ".opencode",
+          "kind": "agent-runtime-state-surface",
+          "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.opencode]",
+          "role": "Existing agent runtime state surface relevant to continuity across assistant/runtime sessions.",
+          "boundary_note": "Agent runtime persists state but is not itself the Stability Faculty.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "domain": "execution",
+      "status": "discovered",
+      "components": [
+        {
+          "name": "SUPRA Application Target",
+          "path": "SUPRA.xcodeproj",
+          "kind": "runtime-entry-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.project",
+          "role": "Canonical executable build surface for the runtime.",
+          "boundary_note": "Build governance remains outside Stability scope.",
+          "confidence": "high"
+        },
+        {
+          "name": "Active Runtime Entrypoint",
+          "path": "SUPRA/SUPRAOperationalCoreApp.swift",
+          "kind": "entrypoint",
+          "evidence": "RUNTIME_INDEX.primary_runtime.active_entrypoints[0]",
+          "role": "Canonical boot entry for runtime execution.",
+          "boundary_note": "Execution boot exists; Stability should observe it, not replace it.",
+          "confidence": "high"
+        },
+        {
+          "name": "Composition Root",
+          "path": "SUPRA/SUPRACompositionRoot.swift",
+          "kind": "wiring-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.composition_root",
+          "role": "Canonical dependency assembly surface for the runtime.",
+          "boundary_note": "Future Stability contracts must integrate here architecturally, not by redefining unrelated modules.",
+          "confidence": "high"
+        },
+        {
+          "name": "Runtime Kernel",
+          "path": "SUPRA/SUPRARuntimeKernel.swift",
+          "kind": "runtime-core-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.runtime_kernel",
+          "role": "Canonical runtime core surface adjacent to stability orchestration.",
+          "boundary_note": "Kernel remains foundational runtime ownership, not Stability Faculty ownership.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "domain": "monitoring",
+      "status": "partially_discovered",
+      "components": [
+        {
+          "name": "Runtime Event Modeling Cluster",
+          "paths": [
+            "SUPRA/RuntimeEvent.swift",
+            "SUPRA/RuntimeEventSource.swift",
+            "SUPRA/SUPRARuntimeEvents.swift"
+          ],
+          "kind": "monitoring-signal-surface",
+          "evidence": "MODULE_INDEX.duplicate_systems[category=runtime event modeling]",
+          "role": "Existing runtime signaling surfaces relevant to monitoring responsibilities.",
+          "boundary_note": "Monitoring exists as scattered signals rather than a single Stability contract.",
+          "confidence": "high"
+        },
+        {
+          "name": "Provider Runtime",
+          "path": "SUPRA/ProviderRuntime.swift",
+          "kind": "provider-monitoring-adjacent-surface",
+          "evidence": "RUNTIME_INDEX.primary_runtime.provider_runtime",
+          "role": "Existing provider-facing runtime surface relevant to provider status monitoring.",
+          "boundary_note": "Provider implementation is outside mission scope; only monitoring adjacency is discovered here.",
+          "confidence": "medium"
+        }
+      ],
+      "not_canonically_discovered": [
+        "Dedicated ContextMonitor component",
+        "Dedicated MissionMonitor component",
+        "Dedicated ProviderMonitor component"
+      ]
+    }
+  ],
+  "cross_domain_findings": [
+    {
+      "finding": "No dedicated Stability Faculty is canonically discovered as an existing isolated module, package, or factory output.",
+      "evidence": "RUNTIME_INDEX.primary_runtime + MODULE_INDEX.modules + DEPENDENCY_GRAPH.nodes",
+      "impact": "Stage 2 must define architecture by consolidating adjacent runtime surfaces rather than adding parallel systems."
+    },
+    {
+      "finding": "Runtime signaling is duplicated across multiple event surfaces.",
+      "evidence": "MODULE_INDEX.duplicate_systems[category=runtime event modeling]",
+      "impact": "Stability architecture must unify observability responsibilities before adding new monitoring contracts."
+    },
+    {
+      "finding": "Persistence and recovery surfaces exist, but checkpoint-specific architecture is not canonically discovered.",
+      "evidence": "RUNTIME_INDEX.runtime_support_surfaces + MODULE_INDEX.obsolete_or_non_runtime_systems[path=.restore_build]",
+      "impact": "Checkpoint and recovery rules must be designed explicitly in later stages."
+    },
+    {
+      "finding": "Mission, provider, build, and knowledge-adjacent surfaces already exist and must remain separate from Stability ownership.",
+      "evidence": "RUNTIME_INDEX.primary_runtime.mission_store + RUNTIME_INDEX.primary_runtime.provider_runtime + MODULE_INDEX.duplicate_systems[category=knowledge graph/runtime knowledge] + RUNTIME_INDEX.build_surfaces",
+      "impact": "Stage 2 boundaries must prevent architectural overlap."
+    }
+  ],
+  "validated_paths": [
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/RUNTIME_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/MODULE_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/DEPENDENCY_GRAPH.json",
+    ".kernel",
+    ".opencode",
+    ".restore_build",
+    "SUPRA",
+    "SUPRA.xcodeproj",
+    "SUPRA/MissionStore.swift",
+    "SUPRA/ProviderRuntime.swift",
+    "SUPRA/RuntimeEvent.swift",
+    "SUPRA/RuntimeEventSource.swift",
+    "SUPRA/SUPRACompositionRoot.swift",
+    "SUPRA/SUPRAOperationalCoreApp.swift",
+    "SUPRA/SUPRAApp.swift",
+    "SUPRA/SUPRARuntimeEvents.swift",
+    "SUPRA/SUPRARuntimeKernel.swift",
+    "SUPRA_RUNTIME"
+  ],
+  "missing_paths": [],
+  "stage_termination": {
+    "status": "STOP",
+    "next_authorized_action": "Await Stage 1 validation acknowledgement and Executive approval before Stage 2."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "service": "recovery",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Recovery Service — automatically restores a consistent state, manages recovery procedures, guarantees operational continuity",
+  "responsibilities": [
+    "restaurer automatiquement un état cohérent",
+    "gérer les procédures de récupération",
+    "garantir la continuité opérationnelle"
+  ],
+  "recovery_levels": {
+    "level_1": "restore_from_last_snapshot",
+    "level_2": "rebuild_derived_data",
+    "level_3": "full_workspace_recovery",
+    "level_4": "node_reinstall"
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/recovery/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

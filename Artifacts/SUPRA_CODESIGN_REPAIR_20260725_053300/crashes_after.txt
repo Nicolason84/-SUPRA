@@ -1,0 +1,4 @@
+/Users/nicolasalonso/Library/Logs/DiagnosticReports/SUPRA-2026-07-24-183858.ips
+/Users/nicolasalonso/Library/Logs/DiagnosticReports/SUPRA-2026-07-24-183914.ips
+/Users/nicolasalonso/Library/Logs/DiagnosticReports/SUPRA-2026-07-25-035223.ips
+/Users/nicolasalonso/Library/Logs/DiagnosticReports/SUPRA-2026-07-25-035237.ips

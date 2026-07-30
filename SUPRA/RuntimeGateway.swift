@@ -31,7 +31,7 @@ enum RuntimeGatewayEvent: Codable {
     }
 }
 
-struct RuntimeStatus: Codable {
+struct GatewayRuntimeStatus: Codable {
     let isRunning: Bool
     let activeMissions: Int
     let activeWorkers: Int
@@ -44,7 +44,7 @@ struct RuntimeStatus: Codable {
 final class RuntimeGateway: ObservableObject {
     static let shared = RuntimeGateway()
 
-    @Published var status: RuntimeStatus?
+    @Published var status: GatewayRuntimeStatus?
     @Published var events: [RuntimeGatewayEvent] = []
     @Published var isConnected = false
 

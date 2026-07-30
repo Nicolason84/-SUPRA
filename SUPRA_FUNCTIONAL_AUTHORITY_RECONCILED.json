@@ -1,0 +1,263 @@
+{
+  "observer": "GO_SUPRA_FUNCTIONAL_AUTHORITY_RECONCILER_V1",
+  "mode": "READ_ONLY",
+  "authority": {
+    "architecture_freeze": "FREEZE_SUPRA_GRAPHS_20260723T103701Z",
+    "architecture_status": "VALIDATED",
+    "status": "VALIDATED"
+  },
+  "inputs": {
+    "architecture_index": {
+      "file": "SUPRA_ARCHITECTURE_INDEX.json",
+      "sha256": "632565a9dc5b75d72efd56b4cbdab66edd80d076a601bd620dc1767eaec12261"
+    },
+    "functional_flow": {
+      "file": "SUPRA_FUNCTIONAL_FLOW.json",
+      "sha256": "0821bb45aaab4dcbbcc7cdbf1acfe6fa08def25a9fc02e39f962026ca04f41bb"
+    },
+    "functional_flow_check": {
+      "file": "SUPRA_FUNCTIONAL_FLOW_CHECK.json",
+      "sha256": "df8c7136f5cfce52770b46f260bd3d15936d2d7d15393c3d377c054fb5c0fc80"
+    },
+    "bridge_classification": {
+      "file": "SUPRA_BRIDGE_FUNCTIONAL_CLASSIFICATION.json",
+      "sha256": "1dd3eb25a5e616b8db27f0b4da88a41c8a6b29baf2af6eca3c24165c2534a482"
+    }
+  },
+  "summary": {
+    "files": 18,
+    "types": 94,
+    "functions": 86,
+    "edges": 704,
+    "authorities": 7,
+    "confirmed_authorities": 7,
+    "unresolved_authorities": 0,
+    "functional_bridges": 1,
+    "active_warnings": 0,
+    "superseded_warnings": 1
+  },
+  "authorities": [
+    {
+      "layer": "entrypoints",
+      "authority": "APPLICATION_ENTRY",
+      "source": "SUPRA_FUNCTIONAL_FLOW.json",
+      "members": [
+        "file:SUPRA/SUPRAApp.swift"
+      ],
+      "member_count": 1,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "views",
+      "authority": "PRESENTATION",
+      "source": "SUPRA_FUNCTIONAL_FLOW.json",
+      "members": [
+        "type:ContentView",
+        "type:DecisionDetailView",
+        "type:DecisionInboxView",
+        "type:DecisionRow",
+        "type:ExecutivePlaceholderView",
+        "type:MissionCenterView",
+        "type:MissionDetailView",
+        "type:MissionRow",
+        "type:SUPRAActionCard",
+        "type:SUPRAArchitectureLiveView",
+        "type:SUPRAAuthorityLiveView",
+        "type:SUPRADecisionInboxLiveView",
+        "type:SUPRADetailPage",
+        "type:SUPRAHeader",
+        "type:SUPRALiveBoardsRootView",
+        "type:SUPRAStatusCard",
+        "type:SUPRAStorageLiveView",
+        "type:SUPRASystemLiveView",
+        "type:SUPRAWorkspaceLiveView",
+        "type:SupraControlCenterView"
+      ],
+      "member_count": 20,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "stores",
+      "authority": "STATE_COORDINATION",
+      "source": "SUPRA_FUNCTIONAL_FLOW.json",
+      "members": [
+        "type:ControlCenterStore",
+        "type:DecisionStore",
+        "type:MissionStore",
+        "type:SUPRAExecutiveStore",
+        "type:SUPRALiveBoardsModel"
+      ],
+      "member_count": 5,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "models",
+      "authority": "DOMAIN_MODEL",
+      "source": "FUNCTIONAL_AND_ARCHITECTURE_UNION",
+      "members": [
+        "symbol:SUPRA/ContentView.swift:1127:var:operationalDecisionCandidates",
+        "symbol:SUPRA/ContentView.swift:1149:var:cannonicoIntegrationSnapshot",
+        "symbol:SUPRA/ContentView.swift:1164:var:cannonicoIntegrationMissionPrompt",
+        "symbol:SUPRA/ContentView.swift:2181:let:humanDecision",
+        "symbol:SUPRA/ContentView.swift:294:func:removePlaceholderMissionEvidence",
+        "symbol:SUPRA/ContentView.swift:3113:let:requiredMissionEvidence",
+        "symbol:SUPRA/ContentView.swift:3118:let:loadedMissionEvidence",
+        "symbol:SUPRA/ContentView.swift:3756:struct:SUPRALiveSnapshot",
+        "symbol:SUPRA/ContentView.swift:4031:struct:SUPRADecisionInboxLiveView",
+        "symbol:SUPRA/ContentView.swift:459:var:gabrielSnapshot",
+        "symbol:SUPRA/Decision.swift:2:struct:Decision",
+        "symbol:SUPRA/DecisionDetailView.swift:2:struct:DecisionDetailView",
+        "symbol:SUPRA/DecisionInboxView.swift:2:struct:DecisionInboxView",
+        "symbol:SUPRA/DecisionInboxView.swift:66:var:selectedDecision",
+        "symbol:SUPRA/DecisionRow.swift:2:struct:DecisionRow",
+        "symbol:SUPRA/DecisionStore.swift:115:func:readDecisions",
+        "symbol:SUPRA/DecisionStore.swift:5:class:DecisionStore",
+        "symbol:SUPRA/Mission.swift:2:struct:Mission",
+        "symbol:SUPRA/MissionCenterView.swift:2:struct:MissionCenterView",
+        "symbol:SUPRA/MissionCenterView.swift:66:var:selectedMission",
+        "symbol:SUPRA/MissionDetailView.swift:2:struct:MissionDetailView",
+        "symbol:SUPRA/MissionRow.swift:2:struct:MissionRow",
+        "symbol:SUPRA/MissionStore.swift:126:func:readMission",
+        "symbol:SUPRA/MissionStore.swift:5:class:MissionStore",
+        "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:22:struct:SUPRAGabrielConductorSnapshot",
+        "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:2:struct:SUPRAGabrielWorkerSnapshot",
+        "symbol:SUPRA/Snapshot.swift:12:struct:Snapshot",
+        "type:Decision",
+        "type:Mission",
+        "type:SUPRAExecutiveModel",
+        "type:SUPRAGabrielConductorSnapshot",
+        "type:SUPRAGabrielWorkerSnapshot",
+        "type:SUPRALiveBoardsModel",
+        "type:SUPRALiveSnapshot",
+        "type:Snapshot"
+      ],
+      "member_count": 35,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "bridges",
+      "authority": "INTEGRATION_BRIDGE",
+      "source": "SUPRA_BRIDGE_FUNCTIONAL_CLASSIFICATION.json",
+      "members": [
+        "SUPRA/CAnnoNicoIntegrationBridge.swift:6:SUPRACAnnoNicoIntegration"
+      ],
+      "member_count": 1,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "runtimes",
+      "authority": "RUNTIME_EXECUTION",
+      "source": "FUNCTIONAL_AND_ARCHITECTURE_UNION",
+      "members": [
+        "symbol:SUPRA/ContentView.swift:3004:enum:SUPRAActionRuntime",
+        "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:22:struct:SUPRAGabrielConductorSnapshot",
+        "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:26:let:visibleConductor",
+        "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:92:enum:SUPRAGabrielConductorRuntime",
+        "type:SUPRAActionRuntime",
+        "type:SUPRAGabrielConductorRuntime",
+        "type:SUPRAGabrielConductorSnapshot"
+      ],
+      "member_count": 7,
+      "status": "CONFIRMED"
+    },
+    {
+      "layer": "readers",
+      "authority": "EVIDENCE_READER",
+      "source": "FUNCTIONAL_AND_ARCHITECTURE_UNION",
+      "members": [
+        "symbol:SUPRA/ArtifactReader.swift:2:struct:ArtifactReader",
+        "symbol:SUPRA/ArtifactReader.swift:4:enum:ReaderError",
+        "type:ArtifactReader",
+        "type:ReaderError"
+      ],
+      "member_count": 4,
+      "status": "CONFIRMED"
+    }
+  ],
+  "methodology_deltas": {
+    "views": {
+      "structural_count": 18,
+      "functional_count": 20,
+      "delta": 2,
+      "classification": "METHODOLOGY_DIFFERENCE"
+    },
+    "stores": {
+      "structural_count": 4,
+      "functional_count": 5,
+      "delta": 1,
+      "classification": "METHODOLOGY_DIFFERENCE"
+    },
+    "models": {
+      "structural_count": 27,
+      "functional_count": 8,
+      "delta": -19,
+      "classification": "METHODOLOGY_DIFFERENCE"
+    },
+    "runtimes": {
+      "structural_count": 4,
+      "functional_count": 3,
+      "delta": -1,
+      "classification": "METHODOLOGY_DIFFERENCE"
+    },
+    "bridges": {
+      "structural_count": 2,
+      "functional_count": 0,
+      "delta": -2,
+      "classification": "METHODOLOGY_DIFFERENCE"
+    },
+    "readers": {
+      "structural_count": 2,
+      "functional_count": 2,
+      "delta": 0,
+      "classification": "MATCH"
+    }
+  },
+  "bridge_authority": [
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:6:SUPRACAnnoNicoIntegration",
+      "name": "SUPRACAnnoNicoIntegration",
+      "kind": "enum",
+      "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 6,
+      "classification": "FUNCTIONAL_BRIDGE",
+      "confidence": 0.5,
+      "methods": [
+        "snapshot"
+      ],
+      "properties": [
+        "nicoAppSource",
+        "packageID",
+        "pucheroSource",
+        "recoveredCount",
+        "videoSwapSource"
+      ],
+      "signals": {
+        "name_contains_cannonico": true,
+        "file_contains_bridge": true,
+        "file_contains_cannonico": true,
+        "source_contains_bridge": false,
+        "source_contains_cannonico": true,
+        "source_contains_runtime": false,
+        "source_contains_event": false,
+        "source_contains_message": false,
+        "source_contains_encode": false,
+        "source_contains_decode": false,
+        "source_contains_send": false,
+        "source_contains_receive": false
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "code": "BRIDGE_CLASSIFICATION_MISSING",
+      "message": "Un fichier Bridge existe mais aucune couche bridge n'a été classée.",
+      "files": [
+        "SUPRA/CAnnoNicoIntegrationBridge.swift"
+      ],
+      "status": "SUPERSEDED",
+      "superseded_by": "GO_SUPRA_BRIDGE_FUNCTIONAL_CLASSIFIER_V1"
+    }
+  ],
+  "unresolved_layers": [],
+  "verdict": "VALIDATED"
+}

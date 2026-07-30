@@ -1,0 +1,49 @@
+{
+  "fallbacks": {
+    "anthropic/claude-sonnet-4-6": {
+      "primary": "anthropic/claude-sonnet-4-6",
+      "fallback_chain": ["ollama/llama3.1:70b", "ollama/qwen2.5-coder:14b", "ollama/deepseek-coder-v2:16b", "ollama/codellama:13b"],
+      "timeout_ms": 30000,
+      "retry_count": 2
+    },
+    "ollama/llama3.1:70b": {
+      "primary": "ollama/llama3.1:70b",
+      "fallback_chain": ["ollama/qwen2.5-coder:14b", "ollama/deepseek-coder-v2:16b", "ollama/codellama:13b"],
+      "timeout_ms": 90000,
+      "retry_count": 1
+    },
+    "ollama/qwen2.5-coder:14b": {
+      "primary": "ollama/qwen2.5-coder:14b",
+      "fallback_chain": ["ollama/deepseek-coder-v2:16b", "ollama/codellama:13b"],
+      "timeout_ms": 60000,
+      "retry_count": 1
+    },
+    "ollama/deepseek-coder-v2:16b": {
+      "primary": "ollama/deepseek-coder-v2:16b",
+      "fallback_chain": ["ollama/codellama:13b"],
+      "timeout_ms": 60000,
+      "retry_count": 1
+    },
+    "ollama/mixtral:8x7b": {
+      "primary": "ollama/mixtral:8x7b",
+      "fallback_chain": ["ollama/qwen2.5:32b", "ollama/codellama:13b"],
+      "timeout_ms": 60000,
+      "retry_count": 1
+    },
+    "ollama/qwen2.5:32b": {
+      "primary": "ollama/qwen2.5:32b",
+      "fallback_chain": ["ollama/codellama:13b"],
+      "timeout_ms": 60000,
+      "retry_count": 1
+    },
+    "ollama/codellama:13b": {
+      "primary": "ollama/codellama:13b",
+      "fallback_chain": [],
+      "timeout_ms": 60000,
+      "retry_count": 0
+    }
+  },
+  "default_fallback_chain": ["ollama/qwen2.5-coder:14b", "ollama/deepseek-coder-v2:16b", "ollama/codellama:13b"],
+  "max_retries": 2,
+  "global_timeout_ms": 120000
+}

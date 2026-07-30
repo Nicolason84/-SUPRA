@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:51:09Z",
+  "osVersion": "SUPRA OS v1.0.0",
+  "spaces": [
+    {
+      "id": "universe",
+      "label": "Universe",
+      "icon": "sparkle",
+      "enabled": true
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge",
+      "icon": "brain.head.profile",
+      "enabled": true
+    },
+    {
+      "id": "twins",
+      "label": "Twins",
+      "icon": "person.2.fill",
+      "enabled": true
+    },
+    {
+      "id": "workspace",
+      "label": "Workspace",
+      "icon": "desktopcomputer",
+      "enabled": true
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "icon": "folder",
+      "enabled": true
+    },
+    {
+      "id": "companies",
+      "label": "Companies",
+      "icon": "building.2",
+      "enabled": true
+    },
+    {
+      "id": "people",
+      "label": "People",
+      "icon": "person.3",
+      "enabled": true
+    },
+    {
+      "id": "memory",
+      "label": "Memory",
+      "icon": "memorychip",
+      "enabled": true
+    },
+    {
+      "id": "timeline",
+      "label": "Timeline",
+      "icon": "clock",
+      "enabled": true
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence",
+      "icon": "checkmark.shield",
+      "enabled": true
+    },
+    {
+      "id": "missions",
+      "label": "Missions",
+      "icon": "flag",
+      "enabled": true
+    },
+    {
+      "id": "runtime",
+      "label": "Runtime",
+      "icon": "gear",
+      "enabled": true
+    },
+    {
+      "id": "automation",
+      "label": "Automation",
+      "icon": "gearshape.2",
+      "enabled": true
+    },
+    {
+      "id": "analytics",
+      "label": "Analytics",
+      "icon": "chart.bar",
+      "enabled": true
+    },
+    {
+      "id": "explorer",
+      "label": "Explorer",
+      "icon": "magnifyingglass",
+      "enabled": true
+    }
+  ],
+  "config": {
+    "theme": "dark",
+    "animationsEnabled": true,
+    "liveUpdates": true,
+    "defaultSpace": "universe",
+    "language": "fr"
+  },
+  "metrics": {
+    "twinCount": 4,
+    "objectCount": 838,
+    "healthScore": 9.0,
+    "uptime": "0h 0m"
+  }
+}

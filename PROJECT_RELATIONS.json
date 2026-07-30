@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 14
+  },
+  "relations": [
+    {
+      "source": "SUPRA",
+      "target": "CAnnoNicoIntegrationPackage",
+      "type": "depends_on",
+      "strength": "direct",
+      "details": "Xcode project dependency on local SPM package"
+    },
+    {
+      "source": "SUPRA",
+      "target": "SUPRA_AST_PLATFORM",
+      "type": "co_exists",
+      "strength": "none",
+      "details": "Both in same workspace, but no dependency link"
+    },
+    {
+      "source": "SUPRA",
+      "target": "NICO_APP",
+      "type": "bridged_to",
+      "strength": "direct",
+      "details": "CAnnoNicoIntegrationBridge reads ~/NOVA_OS/NICO_APP_V1"
+    },
+    {
+      "source": "SUPRA",
+      "target": "NICO_APP_CLEAN",
+      "type": "bridged_to",
+      "strength": "indirect",
+      "details": "Via NicoAppAdapter"
+    },
+    {
+      "source": "SUPRA",
+      "target": "SUPRA_VIDEO_SWAP_V3",
+      "type": "bridged_to",
+      "strength": "direct",
+      "details": "Via VideoSwapAdapter referencing ~/NOVA_OS/SUPRA_VIDEO_SWAP_V2"
+    },
+    {
+      "source": "SUPRA",
+      "target": "PUCHERO",
+      "type": "bridged_to",
+      "strength": "direct",
+      "details": "Via PucheroMemoryAdapter referencing ~/NOVA_OS/PUCHERO_V1"
+    },
+    {
+      "source": "SUPRA",
+      "target": "NOVA_BUILD_SYSTEM",
+      "type": "co_exists",
+      "strength": "none",
+      "details": "No direct dependency"
+    },
+    {
+      "source": "SUPRA",
+      "target": "COHERENCE_ENGINE",
+      "type": "co_exists",
+      "strength": "none",
+      "details": "Abandonned, no relation"
+    },
+    {
+      "source": "SUPRA",
+      "target": "HELENE_APP",
+      "type": "co_exists",
+      "strength": "none",
+      "details": "Standalone project"
+    },
+    {
+      "source": "SUPRA_VIDEO_SWAP_V3",
+      "target": "SUPRA_VIDEO_SWAP_APP_V1",
+      "type": "replaces",
+      "strength": "direct",
+      "details": "V3 is the successor of V1, but V1 is still active"
+    },
+    {
+      "source": "SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "target": "SUPRA_VIDEO_SWAP_APP_V1",
+      "type": "duplicate_of",
+      "strength": "direct",
+      "details": "Archive copy of V1"
+    },
+    {
+      "source": "NICO_APP",
+      "target": "NICO_APP_CLEAN",
+      "type": "replaces",
+      "strength": "direct",
+      "details": "Clean version replaces original NICO_APP"
+    },
+    {
+      "source": "SUPRA_BISECT",
+      "target": "SUPRA",
+      "type": "duplicate_of",
+      "strength": "direct",
+      "details": "Temporary bisect clone of SUPRA"
+    },
+    {
+      "source": "SUPRA_TEMP",
+      "target": "SUPRA",
+      "type": "duplicate_of",
+      "strength": "direct",
+      "details": "Temporary clone"
+    },
+    {
+      "source": "SUPRA_RECOVERY",
+      "target": "SUPRA",
+      "type": "duplicate_of",
+      "strength": "direct",
+      "details": "Recovery variants (4)"
+    }
+  ]
+}

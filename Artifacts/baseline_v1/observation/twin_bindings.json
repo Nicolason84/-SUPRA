@@ -1,0 +1,327 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-30T12:20:35Z",
+  "bindings": [
+    {
+      "id": "bind_workspace_1",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:repo:SUPRA",
+      "sourceName": "SUPRA",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_repository",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_2",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:develop",
+      "sourceName": "develop",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_3",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:main",
+      "sourceName": "main",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_4",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:rollback/SUPRA_REPOSITORY_NORMALIZATION_V1-20260722",
+      "sourceName": "rollback/SUPRA_REPOSITORY_NORMALIZATION_V1-20260722",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_5",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:+ supra/allcannonico-consolidated-v1",
+      "sourceName": "+ supra/allcannonico-consolidated-v1",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_6",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:supra/human-gate-single-source-20260721_072156",
+      "sourceName": "supra/human-gate-single-source-20260721_072156",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_7",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:supra/human-gate-single-source-20260721_072447",
+      "sourceName": "supra/human-gate-single-source-20260721_072447",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_8",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:remotes/origin/develop",
+      "sourceName": "remotes/origin/develop",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_9",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:remotes/origin/main",
+      "sourceName": "remotes/origin/main",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_10",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:branch:remotes/origin/supra/human-gate-single-source-20260721_072447",
+      "sourceName": "remotes/origin/supra/human-gate-single-source-20260721_072447",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_branch",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_11",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:2e88ff16",
+      "sourceName": "2e88ff16: refactor(views): extract cannonico circuit board",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_12",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:a6be70fd",
+      "sourceName": "a6be70fd: refactor(views): extract structure navigator view",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_13",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:80ff6d68",
+      "sourceName": "80ff6d68: refactor(infrastructure): extract system integrity",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_14",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:da9f6ffd",
+      "sourceName": "da9f6ffd: refactor(infrastructure): extract mission evidence loader",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_15",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:47fab70f",
+      "sourceName": "47fab70f: refactor(infrastructure): extract terminal megabus bridge",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_16",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:b5f3d7bb",
+      "sourceName": "b5f3d7bb: refactor(models): extract structure enums from ContentView",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_17",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:9a856f39",
+      "sourceName": "9a856f39: SUPRA_AST_PLATFORM V1 Bootstrap",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_18",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:bff42e84",
+      "sourceName": "bff42e84: refactor(models): extract SUPRA models from ContentView",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_19",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:07d8a5d9",
+      "sourceName": "07d8a5d9: refactor(models): extract SUPRA models from ContentView",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    },
+    {
+      "id": "bind_workspace_20",
+      "twinId": "twin_workspace_supra",
+      "sourceType": "git",
+      "sourceId": "git:commit:9e793e91",
+      "sourceName": "9e793e91: docs: add canonical Executive OS documentation (Index, Constitution, Governance)",
+      "bindingType": "canonical",
+      "strength": 0.8,
+      "bidirectional": true,
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": null,
+      "metadata": {
+        "type": "git_commit",
+        "source": "git"
+      }
+    }
+  ],
+  "totalBindings": 20
+}

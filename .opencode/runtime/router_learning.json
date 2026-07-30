@@ -1,0 +1,107 @@
+{
+  "version": "1.0.0",
+  "description": "Learned behaviours and adaptive rules derived from execution history. The Router uses these to improve future decisions.",
+  "last_updated": "2026-07-24T00:21:00Z",
+  "learning_rules": [
+    {
+      "id": "learn_001",
+      "type": "provider_preference",
+      "source": "V001 history",
+      "condition": "mission_type == 'architecture' OR mission_type == 'compliance' OR mission_type == 'critical_analysis'",
+      "action": "prefer opencode-zen/deepseek-v4-flash-free",
+      "confidence": 0.95,
+      "evidence": "2/2 successful executions on opencode-zen for architecture/analysis. Avg quality 7.0. Zero fallbacks.",
+      "active": true
+    },
+    {
+      "id": "learn_002",
+      "type": "provider_preference",
+      "source": "V001 history",
+      "condition": "mission_type == 'review' AND cost_efficiency == true AND NOT critical",
+      "action": "prefer ollama/qwen3:4b",
+      "confidence": 0.85,
+      "evidence": "1/1 successful on ollama for review. Duration 30s (4x faster than opencode-zen). Quality 7.0 matches opencode-zen.",
+      "active": true
+    },
+    {
+      "id": "learn_003",
+      "type": "speed_insight",
+      "source": "V001 history",
+      "condition": "always",
+      "action": "openCode-zen avg duration 120s; ollama avg duration 30s. Factor 4x speed difference.",
+      "confidence": 0.98,
+      "evidence": "240s total on opencode-zen (2 execs) vs 30s on ollama (1 exec).",
+      "active": true
+    },
+    {
+      "id": "learn_004",
+      "type": "fallback_avoidance",
+      "source": "V001 history",
+      "condition": "primary model available == true",
+      "action": "Do NOT trigger fallback. Primary models have 100% success rate.",
+      "confidence": 0.99,
+      "evidence": "0 fallbacks triggered across 3 executions. 100% primary success rate.",
+      "active": true
+    },
+    {
+      "id": "learn_005",
+      "type": "quality_consistency",
+      "source": "V001 history",
+      "condition": "quality_target <= 7",
+      "action": "ollama/qwen3:4b is sufficient. No need to consume opencode-zen capacity.",
+      "confidence": 0.80,
+      "evidence": "ollama quality 7.0 on review = opencode-zen quality 7.0 on architecture. Same quality at 1/4 the duration.",
+      "active": true
+    },
+    {
+      "id": "learn_006",
+      "type": "capacity_preservation",
+      "source": "V001 history",
+      "condition": "mission criticality == 'low' OR mission_type == 'quick_review'",
+      "action": "Route to ollama to preserve opencode-zen capacity for critical missions.",
+      "confidence": 0.85,
+      "evidence": "OpenCode Zen has only 1 model for 7 agents. Ollama delegation prevents bottleneck.",
+      "active": true
+    }
+  ],
+  "adaptive_decisions_available": [
+    "keep_current_model",
+    "change_model_same_provider",
+    "change_provider",
+    "launch_multiple_agents",
+    "launch_consensus",
+    "use_fallback"
+  ],
+  "decision_triggers": {
+    "keep_current_model": {
+      "condition": "historical_success_rate[model] >= 0.8 AND quality_score[model] >= mission_quality_target",
+      "activated_in_v001": true,
+      "times_used": 3
+    },
+    "change_model_same_provider": {
+      "condition": "historical_success_rate[model] < 0.8 OR quality_score[model] < mission_quality_target",
+      "activated_in_v001": false,
+      "times_used": 0
+    },
+    "change_provider": {
+      "condition": "all_models_in_provider have historical_success_rate < 0.8",
+      "activated_in_v001": false,
+      "times_used": 0
+    },
+    "launch_multiple_agents": {
+      "condition": "mission_complexity == 'high' AND confidence < 0.7",
+      "activated_in_v001": false,
+      "times_used": 0
+    },
+    "launch_consensus": {
+      "condition": "mission_type == 'critical_decision' OR (mission_criticality == 'high' AND confidence < 0.8)",
+      "activated_in_v001": false,
+      "times_used": 0
+    },
+    "use_fallback": {
+      "condition": "primary_model_unavailable OR primary_timeout",
+      "activated_in_v001": false,
+      "times_used": 0
+    }
+  }
+}

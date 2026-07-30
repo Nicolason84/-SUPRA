@@ -1,0 +1,115 @@
+{
+  "memory": "MEMORY_SWIFTUI",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "UI-001", "name": "SUPRAApp", "file": "SUPRA/SUPRAApp.swift", "type": "App (@main)", "status": "active", "canonical": true, "archive": false, "reusable": true, "entry_point": true, "uses": ["SupraControlCenterView"]
+    },
+    {
+      "uuid": "UI-002", "name": "ContentView", "file": "SUPRA/ContentView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true, "entry_point": false, "note": "Compilé mais non instancié par @main - contient 11 sous-vues internes"
+    },
+    {
+      "uuid": "UI-003", "name": "SupraControlCenterView", "file": "SUPRA/SupraControlCenterView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true, "notes": "Point d'entrée actuel de l'UI"
+    },
+    {
+      "uuid": "UI-004", "name": "DashboardView", "file": "SUPRA/DashboardView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-005", "name": "MissionCenterView", "file": "SUPRA/MissionCenterView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-006", "name": "MissionDetailView", "file": "SUPRA/MissionDetailView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-007", "name": "MissionTimelineView", "file": "SUPRA/MissionTimelineView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-008", "name": "MissionGraphView", "file": "SUPRA/MissionGraphView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-009", "name": "MissionRow", "file": "SUPRA/MissionRow.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-010", "name": "DecisionInboxView", "file": "SUPRA/DecisionInboxView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-011", "name": "DecisionDetailView", "file": "SUPRA/DecisionDetailView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-012", "name": "DecisionRow", "file": "SUPRA/DecisionRow.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-013", "name": "RuntimeView", "file": "SUPRA/RuntimeView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-014", "name": "SettingsView", "file": "SUPRA/SettingsView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-015", "name": "SUPRAExecutiveCockpitView", "file": "SUPRA/SUPRAExecutiveCockpitView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-016", "name": "SUPRAOSCommandCenterView", "file": "SUPRA/SUPRAOSCommandCenterView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-017", "name": "SUPRAOSHomeView", "file": "SUPRA/SUPRAOSHomeView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-018", "name": "SUPRAOSLiveView", "file": "SUPRA/SUPRAOSLiveView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-019", "name": "SUPRAOSMissionCanvasView", "file": "SUPRA/SUPRAOSMissionCanvasView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-020", "name": "SUPRAOSProductRootView", "file": "SUPRA/SUPRAOSProductRootView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-021", "name": "SUPRAOSTwinCenterView", "file": "SUPRA/SUPRAOSTwinCenterView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-022", "name": "SUPRAOSUniverseView", "file": "SUPRA/SUPRAOSUniverseView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-023", "name": "SUPRAOSGlobalSearchView", "file": "SUPRA/SUPRAOSGlobalSearchView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-024", "name": "SUPRAOSWorkspaceExplorerView", "file": "SUPRA/SUPRAOSWorkspaceExplorerView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-025", "name": "SUPRAChatView", "file": "SUPRA/SUPRAChatView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-026", "name": "WorkerPoolView", "file": "SUPRA/WorkerPoolView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-027", "name": "UniverseDashboard", "file": "SUPRA/UniverseDashboard.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-028", "name": "UniverseNavigator", "file": "SUPRA/UniverseNavigator.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-029", "name": "UniverseSearch", "file": "SUPRA/UniverseSearch.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-030", "name": "UniverseTimeline", "file": "SUPRA/UniverseTimeline.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-031", "name": "EvidenceExplorerView", "file": "SUPRA/EvidenceExplorerView.swift", "type": "View", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-032", "name": "CockpitNavigation", "file": "SUPRA/CockpitNavigation.swift", "type": "navigation_component", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-033", "name": "SUPRAOSDesignSystem", "file": "SUPRA/SUPRAOSDesignSystem.swift", "type": "design_system", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "UI-034", "name": "SUPRAOSFoundation", "file": "SUPRA/SUPRAOSFoundation.swift", "type": "foundation", "status": "active", "canonical": true, "archive": false, "reusable": true
+    }
+  ],
+  "summary": {
+    "total_views": 34,
+    "active_views": 34,
+    "entry_points": 1,
+    "orphaned_views_note": "ContentView n'est pas instancié par @main mais reste compilé"
+  }
+}

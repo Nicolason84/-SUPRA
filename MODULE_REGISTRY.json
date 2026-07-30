@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z"
+  },
+  "supra_app_modules": {
+    "total_swift_files": 114,
+    "total_lines": 539331,
+    "entry_point": "SUPRAApp.swift",
+    "views": [
+      "SUPRAApp.swift", "ContentView.swift", "DashboardView.swift",
+      "MissionCenterView.swift", "MissionDetailView.swift", "MissionTimelineView.swift",
+      "MissionGraphView.swift", "DecisionInboxView.swift", "DecisionDetailView.swift",
+      "RuntimeView.swift", "SettingsView.swift", "SupraControlCenterView.swift",
+      "SUPRAExecutiveCockpitView.swift", "SUPRAOSCommandCenterView.swift",
+      "SUPRAOSHomeView.swift", "SUPRAOSLiveView.swift", "SUPRAOSMissionCanvasView.swift",
+      "SUPRAOSProductRootView.swift", "SUPRAOSTwinCenterView.swift",
+      "SUPRAOSUniverseView.swift", "SUPRAOSGlobalSearchView.swift",
+      "SUPRAOSWorkspaceExplorerView.swift", "SUPRAChatView.swift",
+      "WorkerPoolView.swift", "UniverseDashboard.swift",
+      "UniverseNavigator.swift", "UniverseSearch.swift", "UniverseTimeline.swift",
+      "EvidenceExplorerView.swift", "CockpitNavigation.swift",
+      "DecisionRow.swift", "MissionRow.swift"
+    ],
+    "stores_services": [
+      "MissionStore.swift", "DecisionStore.swift", "ControlCenterStore.swift",
+      "KnowledgeProvider.swift", "ConversationKnowledgeProvider.swift",
+      "DecisionKnowledgeProvider.swift", "GitKnowledgeProvider.swift",
+      "PDFKnowledgeProvider.swift", "ReportKnowledgeProvider.swift",
+      "RuntimeDataService.swift", "RuntimeGateway.swift",
+      "RuntimeMonitor.swift", "RuntimeConnectionState.swift",
+      "RuntimeEventSource.swift"
+    ],
+    "engines": [
+      "ContextEngine.swift", "KnowledgeContextEngine.swift",
+      "KnowledgeGraph.swift", "KnowledgeAuthority.swift",
+      "KnowledgeExplorer.swift", "KnowledgeIdentity.swift",
+      "KnowledgeLineage.swift", "KnowledgeRelation.swift",
+      "KnowledgeRelationship.swift", "KnowledgeSource.swift",
+      "KnowledgeStatistics.swift", "ExecutiveCockpitFoundation.swift",
+      "ExecutiveGraph.swift", "ExecutiveMemory.swift",
+      "ExecutiveSearch.swift", "ExecutiveTimeline.swift",
+      "UniverseEngine.swift", "UniverseGraph.swift",
+      "WorkspaceGovernor.swift", "WorkspaceIndexer.swift",
+      "WorkspaceKnowledgeGraph.swift", "WorkspaceMemory.swift",
+      "WorkspaceDiscovery.swift", "WorkspaceRecommendation.swift",
+      "WorkspaceStatistics.swift"
+    ],
+    "twin_modules": [
+      "TwinAnalytics.swift", "TwinBindings.swift", "TwinComparison.swift",
+      "TwinExplorer.swift", "TwinFactory.swift", "TwinIdentity.swift",
+      "TwinLifecycle.swift", "TwinRegistry.swift", "TwinRenderer.swift",
+      "TwinSynchronizer.swift", "TwinUniverse.swift"
+    ],
+    "bridges": [
+      "CAnnoNicoIntegrationBridge.swift", "CAnnoNicoObject.swift",
+      "OpenCodeBridge.swift", "OpenCodeClient.swift",
+      "SUPRAChatRuntimeAdapter.swift", "SUPRAGabrielConductorRuntime.swift"
+    ],
+    "models": {
+      "path": "SUPRA/Models/",
+      "files": [
+        "RuntimeModels.swift", "RuntimeModels.swift",
+        "NOVAKnowledgeKernel.swift", "Mission.swift",
+        "MissionContext.swift", "Decision.swift",
+        "RuntimeEvent.swift", "RuntimeHealth.swift",
+        "RuntimeModels.swift", "Snapshot.swift",
+        "WorkspaceConfiguration.swift", "WorkspaceModels.swift",
+        "WorkspaceObject.swift"
+      ]
+    },
+    "infrastructure": {
+      "path": "SUPRA/Infrastructure/",
+      "files": []
+    }
+  },
+  "package_cannonico_modules": {
+    "total_swift_files": 5,
+    "targets": {
+      "CAnnoNicoContracts": ["Contracts.swift"],
+      "PucheroMemoryAdapter": ["PucheroMemoryAdapter.swift"],
+      "NicoAppAdapter": ["NicoAppAdapter.swift"],
+      "VideoSwapAdapter": ["VideoSwapAdapter.swift"],
+      "CAnnoNicoIntegration": ["CAnnoNicoIntegration.swift"]
+    }
+  },
+  "video_swap_v3_modules": {
+    "total_swift_files": 293,
+    "engines": ["Foundation", "Core", "MediaEngine", "URLEngine", "ImportEngine"],
+    "note": "Architecture modulaire, 4 engines spécialisés + foundation + core"
+  },
+  "video_swap_v1_modules": {
+    "packages": ["SwapEngineKit", "SwapDomain", "SwapRenderQueue", "SwapPersistence", "SwapURLKit", "SwapRealityKit"],
+    "note": "6 packages, architecture plus fragmentée"
+  },
+  "recovery_variants": {
+    "CHAT": "Variante chat uniquement",
+    "BRIDGE": "Variante bridge",
+    "HEALTH": "Variante health check",
+    "BASELINE": "Variante baseline"
+  }
+}

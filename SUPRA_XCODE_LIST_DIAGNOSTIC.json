@@ -1,0 +1,35 @@
+{
+  "observer": "GO_SUPRA_XCODE_LIST_DIAGNOSTIC_V1",
+  "mode": "SOURCE_READ_ONLY",
+  "command": [
+    "/usr/bin/xcrun",
+    "xcodebuild",
+    "-project",
+    "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj",
+    "-list",
+    "-json",
+    "-disableAutomaticPackageResolution",
+    "-skipPackageUpdates"
+  ],
+  "elapsed_seconds": 22,
+  "timed_out": false,
+  "exit_code": 0,
+  "stdout_bytes": 216,
+  "stderr_bytes": 0,
+  "json_found": true,
+  "json_parse_error": null,
+  "project": {
+    "name": "SUPRA",
+    "targets": [
+      "SUPRA"
+    ],
+    "schemes": [
+      "CAnnoNicoIntegration",
+      "SUPRA"
+    ],
+    "build_configurations": []
+  },
+  "stdout_tail": "{\n  \"project\" : {\n    \"configurations\" : [\n      \"Debug\",\n      \"Release\"\n    ],\n    \"name\" : \"SUPRA\",\n    \"schemes\" : [\n      \"CAnnoNicoIntegration\",\n      \"SUPRA\"\n    ],\n    \"targets\" : [\n      \"SUPRA\"\n    ]\n  }\n}\n",
+  "stderr_tail": "",
+  "verdict": "PASS"
+}

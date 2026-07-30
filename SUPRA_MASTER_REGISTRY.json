@@ -1,0 +1,285 @@
+{
+  "registry_version": "SUPRA_FOUNDATION_V1",
+  "status": "CANONICAL",
+  "created": "2026-07-29",
+  "description": "Consolidated canonical registry — one canonical source per category",
+
+  "canonical_sources_by_category": {
+    "workspace_structure": {
+      "source": "WORKSPACE_MANIFEST.json",
+      "status": "CANONICAL",
+      "description": "Digital twin manifest — canonical workspace structure"
+    },
+    "runtime_state": {
+      "source": "SUPRA_STATE.json",
+      "status": "CANONICAL",
+      "description": "Current runtime state"
+    },
+    "runtime_health": {
+      "source": "RUNTIME_STATUS.json",
+      "status": "ACTIVE",
+      "description": "Runtime health and diagnostics"
+    },
+    "agent_definitions": {
+      "source": "AGENTS.md",
+      "status": "CANONICAL",
+      "description": "Agent definitions for OpenCode"
+    },
+    "agent_registry": {
+      "source": "SUPRA_AGENT_REGISTRY_V1.md",
+      "status": "CANONICAL",
+      "description": "Detailed agent registry with models and permissions"
+    },
+    "model_catalog": {
+      "source": "SUPRA_MODEL_REGISTRY_V1.md",
+      "status": "CANONICAL",
+      "description": "LLM model catalog with capabilities and costs"
+    },
+    "router_specification": {
+      "source": "SUPRA_ROUTER_SPECIFICATION_V1.md",
+      "status": "CANONICAL",
+      "description": "Router specification with classification, scoring, selection"
+    },
+    "workflow_pipeline": {
+      "source": "SUPRA_WORKFLOW_V1.md",
+      "status": "CANONICAL",
+      "description": "Workflow pipeline with 8 stages"
+    },
+    "plugin_specification": {
+      "source": "SUPRA_PLUGIN_SDK_SPEC.md",
+      "status": "SPECIFIED",
+      "description": "Plugin SDK specification"
+    },
+    "architecture_canon": {
+      "source": "SUPRA_EXECUTIVE_CANON.md",
+      "status": "CANONICAL",
+      "description": "Executive canon — absolute reference"
+    },
+    "master_manifest": {
+      "source": "SUPRA_MASTER_MANIFEST.json",
+      "status": "CANONICAL",
+      "description": "Master manifest — single authority"
+    },
+    "node_identity": {
+      "source": ".supra_node_manifest.json",
+      "status": "ACTIVE",
+      "description": "Node-specific identity manifest"
+    },
+    "runtime_config": {
+      "source": ".opencode/runtime/",
+      "status": "ACTIVE",
+      "description": "Runtime configuration directory"
+    },
+    "execution_state": {
+      "source": ".opencode/execution_state.json",
+      "status": "ACTIVE"
+    },
+    "validation_protocol": {
+      "source": "VALIDATION_PROTOCOL.md",
+      "status": "CANONICAL"
+    },
+    "architecture_index": {
+      "source": "SUPRA_ARCHITECTURE_INDEX.json",
+      "status": "CANONICAL"
+    }
+  },
+
+  "categories": {
+    "agents": {
+      "canonical_source": "SUPRA_AGENT_REGISTRY_V1.md",
+      "entries": 9,
+      "status": "CANONICAL",
+      "derived_views": [
+        "AGENTS.md",
+        "opencode.json",
+        "WORKSPACE_MANIFEST.json (agent_registry section)"
+      ]
+    },
+    "models": {
+      "canonical_source": "SUPRA_MODEL_REGISTRY_V1.md",
+      "providers": [
+        "Anthropic Claude", "Ollama", "OpenAI", "Google Gemini",
+        "Groq", "Together", "Mistral AI", "DeepSeek"
+      ],
+      "status": "CANONICAL",
+      "health_source": ".opencode/runtime/provider_health.json"
+    },
+    "plugins": {
+      "canonical_source": "SUPRA_PLUGIN_SDK_SPEC.md",
+      "status": "SPECIFIED",
+      "plugin_types": [
+        "TheoryPlugin", "SherpaPlugin", "CortexPlugin", "ProofPlugin",
+        "WorkspacePlugin", "RuntimePlugin", "ProviderPlugin"
+      ]
+    },
+    "workspace": {
+      "canonical_source": "WORKSPACE_MANIFEST.json",
+      "status": "CANONICAL",
+      "components": [
+        "Executive", "Provider", "Mission", "Workspace", "Memory", "Policy"
+      ],
+      "derived_views": [
+        "CANONICAL_MODULES.json",
+        "CANONICAL_PACKAGES.json",
+        "CANONICAL_PROJECTS.json",
+        "CANONICAL_SERVICES.json",
+        "MODULE_REGISTRY.json",
+        "PACKAGE_REGISTRY.json",
+        "PROJECT_REGISTRY.json",
+        "SERVICE_RELATIONS.json"
+      ]
+    },
+    "runtime": {
+      "canonical_source": "RUNTIME_STATUS.json",
+      "status": "ACTIVE",
+      "version": "2.2.0",
+      "pipeline_stages": 10,
+      "monitoring": "RuntimeMonitor",
+      "diagnostics": "RuntimeDiagnosticsView",
+      "derived_views": [
+        "SUPRA_RUNTIME_GRAPH.json",
+        "SUPRA_DEPENDENCY_GRAPH.json",
+        "SUPRA_SYMBOL_GRAPH.json"
+      ]
+    },
+    "canon": {
+      "canonical_source": "SUPRA_EXECUTIVE_CANON.md",
+      "status": "CANONICAL",
+      "documents": [
+        "SUPRA_EXECUTIVE_CANON.md",
+        "SUPRA_FOUNDATION_VALIDATION_REPORT.md",
+        "SUPRA_MASTER_MANIFEST.json",
+        "SUPRA_MASTER_REGISTRY.json",
+        "SUPRA_AGENT_CANON.md",
+        "SUPRA_PLUGIN_SDK_SPEC.md",
+        "SUPRA_FOUNDATION_RULES.md",
+        "SUPRA_PHASE2_GATE.md",
+        "SUPRA_THEORY_READINESS.md",
+        "SUPRA_FOUNDATION_ROADMAP.md",
+        "DESKTOP_GOVERNANCE.md",
+        "SUPRA_FOUNDATION_EXECUTIVE_REPORT.md"
+      ]
+    },
+    "freeze": {
+      "canonical_source": "FREEZE_REGISTRY.json",
+      "status": "FROZEN",
+      "artifacts": [
+        "FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z",
+        "FREEZE_SUPRA_FUNCTIONAL_AUTHORITY_20260723T105323Z",
+        "FREEZE_SUPRA_ARCHITECTURE_INDEX_20260723T104017Z",
+        "FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z",
+        "FREEZE_SUPRA_GRAPHS_20260723T103701Z"
+      ]
+    },
+    "policies": {
+      "canonical_source": "Governance/",
+      "status": "ACTIVE",
+      "documents": [
+        "VALIDATION_PROTOCOL.md",
+        "SUPRA_WORKFLOW_V1.md",
+        "SUPRA_ROUTER_SPECIFICATION_V1.md"
+      ]
+    },
+    "standards": {
+      "canonical_source": "SUPRA_FOUNDATION_RULES.md",
+      "status": "CANONICAL",
+      "documents": [
+        "CAnnoNico_CONTINUITY_STANDARD.md",
+        "CAnnoNico_DEVELOPMENT_GUIDE.md",
+        "CAnnoNico_WORKFLOW_STANDARD.md"
+      ]
+    }
+  },
+
+  "module_registry": {
+    "canonical_source": "CANONICAL_MODULES.json",
+    "note": "Derived view — authoritative data in WORKSPACE_MANIFEST.json",
+    "entries": "See CANONICAL_MODULES.json"
+  },
+
+  "package_registry": {
+    "canonical_source": "CANONICAL_PACKAGES.json",
+    "note": "Derived view",
+    "entries": "See CANONICAL_PACKAGES.json"
+  },
+
+  "project_registry": {
+    "canonical_source": "CANONICAL_PROJECTS.json",
+    "note": "Derived view",
+    "entries": "See CANONICAL_PROJECTS.json"
+  },
+
+  "service_registry": {
+    "canonical_source": "SERVICE_RELATIONS.json",
+    "note": "Derived view",
+    "entries": "See SERVICE_RELATIONS.json"
+  },
+
+  "worker_registry": {
+    "canonical_source": "CANONICAL_WORKERS.json",
+    "note": "Derived view",
+    "entries": "See CANONICAL_WORKERS.json"
+  },
+
+  "adapter_registry": {
+    "canonical_source": "CANONICAL_ADAPTERS.json",
+    "note": "Derived view",
+    "entries": "See CANONICAL_ADAPTERS.json"
+  },
+
+  "bridge_registry": {
+    "canonical_source": "CANONICAL_BRIDGES.json",
+    "note": "Derived view",
+    "entries": "See CANONICAL_BRIDGES.json"
+  },
+
+  "duplicate_categories": {
+    "canonical_runtime": {
+      "canonical": "Active Runtime v2.2.0 at ~/Desktop/NOVA_OS/SUPRA",
+      "total_instances": 7,
+      "action": "PRESERVE all as historic"
+    },
+    "multiple_cores": {
+      "canonical": "None (Swift codebase is canonical)",
+      "total_instances": 10,
+      "action": "PRESERVE all as historic"
+    },
+    "multiple_manifests": {
+      "canonical": "WORKSPACE_MANIFEST.json → SUPRA_MASTER_MANIFEST.json",
+      "total_instances": 10,
+      "action": "ACCEPT as derived views"
+    },
+    "multiple_workspaces": {
+      "canonical": "Main workspace at ~/Desktop/NOVA_OS/SUPRA",
+      "total_instances": 7,
+      "action": "Bisect + DeepSeek = ACTIVE, others = ARCHIVE"
+    },
+    "multiple_reports": {
+      "canonical": "Varies by domain",
+      "total_instances": 30,
+      "action": "ACCEPT as different views"
+    }
+  },
+
+  "execution_state": {
+    "version": "2.2.0",
+    "camp_base": "CAMP_BASE_02",
+    "phase": "FOUNDATION",
+    "status": "CANONICAL",
+    "git_commits": 19,
+    "git_branch": "develop",
+    "git_ahead": 12,
+    "swift_files": 214,
+    "test_files": 9,
+    "tests_passing": 6,
+    "tests_failing": 3,
+    "workflows_registered": 5,
+    "workflows_executed": 0,
+    "docs_markdown": 130,
+    "docs_json": 123,
+    "scripts": 27,
+    "missions_active": "Mission queue active",
+    "providers_healthy": ["OLLAMA_LOCAL"],
+    "providers_unhealthy": []
+  }
+}

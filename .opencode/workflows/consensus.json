@@ -1,0 +1,39 @@
+{
+  "id": "consensus",
+  "description": "Multiple agents execute the same task, results are compared and fused",
+  "stages": [
+    {
+      "id": "parallel_execution",
+      "type": "execute",
+      "parallel": true,
+      "consensus": true,
+      "n_agents": 3,
+      "description": "Same task executed by N different agents/models in parallel"
+    },
+    {
+      "id": "comparison",
+      "type": "compare",
+      "parallel": false,
+      "consensus": true,
+      "description": "Comparator analyzes differences and agreements between outputs"
+    },
+    {
+      "id": "fusion",
+      "type": "fuse",
+      "parallel": false,
+      "consensus": true,
+      "strategy": "weighted",
+      "description": "Fusion engine merges outputs into single coherent result"
+    },
+    {
+      "id": "validation",
+      "type": "validate",
+      "parallel": false,
+      "consensus": false,
+      "description": "Validate fused output against mission criteria"
+    }
+  ],
+  "mode": "consensus",
+  "fallback": false,
+  "use_case": ["critical_decisions", "architecture_review", "security_audit", "high_risk_changes"]
+}

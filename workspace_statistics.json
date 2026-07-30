@@ -1,0 +1,48 @@
+{
+  "archiveCount" : 76,
+  "conversationCount" : 0,
+  "databaseCount" : 0,
+  "decisionCount" : 1,
+  "documentCount" : 205,
+  "evidenceCount" : 2,
+  "fileCount" : 1120,
+  "gitRepoCount" : 1,
+  "healthScore" : 8.5,
+  "languages" : {
+    "JSON" : 180,
+    "Markup" : 13,
+    "PDF" : 84,
+    "Plist" : 1,
+    "Python" : 1,
+    "Shell" : 264,
+    "Swift" : 104,
+    "Text" : 205
+  },
+  "lastIndexed" : "2026-07-23T23:07:50Z",
+  "missionCount" : 7,
+  "moduleCount" : 0,
+  "pdfCount" : 84,
+  "projectCount" : 1,
+  "scriptCount" : 369,
+  "timestamp" : "2026-07-23T23:07:50Z",
+  "topDirectories" : {
+
+  },
+  "totalSizeBytes" : 133180165,
+  "typeBreakdown" : {
+    "archive" : 76,
+    "decision" : 1,
+    "directory" : 134,
+    "document" : 205,
+    "evidence" : 2,
+    "file" : 322,
+    "image" : 40,
+    "index" : 4,
+    "log" : 10,
+    "mission" : 7,
+    "pdf" : 84,
+    "script" : 369
+  },
+  "version" : "1.0.0",
+  "xcodeProjectCount" : 0
+}

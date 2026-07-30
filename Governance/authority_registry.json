@@ -1,0 +1,19 @@
+{
+  "registry_id": "supra.canonical_authorities",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "authorities": [
+    { "id": "composition_root", "name": "SUPRACompositionRoot", "source": "SUPRA/SUPRACompositionRoot.swift", "role": "single dependency injection point", "responsibilities": ["composition", "injection", "lifecycle boundary"], "owner": "SUPRA", "invariants": ["A03", "A04"] },
+    { "id": "mission_store", "name": "MissionStore", "source": "SUPRA/MissionStore.swift", "role": "canonical mission authority", "responsibilities": ["mission read", "mission write", "mission presentation"], "owner": "Mission Center", "invariants": ["A03", "A05"] },
+    { "id": "execution_orchestrator", "name": "SUPRANucleoOrchestrator", "source": "SUPRA/SUPRANucleoOrchestrator.swift", "role": "runtime orchestration authority", "responsibilities": ["request routing", "runtime coordination"], "owner": "Executive Runtime", "invariants": ["A03", "A05"] },
+    { "id": "execution_pipeline", "name": "SUPRAExecutionPipeline", "source": "SUPRA/SUPRAExecutionPipeline.swift", "role": "execution pipeline authority", "responsibilities": ["execution request", "provider execution", "result handling"], "owner": "Executive Runtime", "invariants": ["A03", "A05"] },
+    { "id": "scheduler", "name": "SUPRAScheduler", "source": "SUPRA/SUPRAScheduler.swift", "role": "compute scheduling authority", "responsibilities": ["slot scheduling", "provider plugin allocation", "locks"], "owner": "Compute", "invariants": ["A03", "A05"] },
+    { "id": "workflow_registry", "name": "ExecutiveWorkflowRegistry", "source": "SUPRA/ExecutiveWorkflow.swift", "role": "workflow authority", "responsibilities": ["workflow definitions", "workflow reports"], "owner": "Executive Workflows", "invariants": ["A03", "A06"] },
+    { "id": "continuity_manager", "name": "ContinuityManager", "source": "SUPRA/ContinuityManager.swift", "role": "continuity authority", "responsibilities": ["continuity state", "mission continuity", "freeze references"], "owner": "Continuity", "invariants": ["A06", "A08"] },
+    { "id": "runtime_gateway", "name": "RuntimeGateway", "source": "SUPRA/RuntimeGateway.swift", "role": "external runtime bridge authority", "responsibilities": ["runtime connection", "bridge execution", "runtime events"], "owner": "Runtime", "invariants": ["A03", "A06"] },
+    { "id": "resource_governor", "name": "SUPRAResourceGovernor", "source": "SUPRA/SUPRAResourceGovernor.swift", "role": "resource authority", "responsibilities": ["resource pressure", "resource snapshot", "monitoring"], "owner": "Environment", "invariants": ["A03", "A06"] },
+    { "id": "environment_world_model", "name": "SUPRAEnvironmentWorldModel", "source": "SUPRA/SUPRAEnvironmentWorldModel.swift", "role": "environment projection authority", "responsibilities": ["environment state", "environment refresh"], "owner": "Environment Twin", "invariants": ["A03", "A06"] },
+    { "id": "hardware_twin", "name": "SUPRAHardwareTwin", "source": "SUPRA/SUPRAHardwareTwin.swift", "role": "hardware projection authority", "responsibilities": ["hardware snapshot", "hardware metrics"], "owner": "Environment Twin", "invariants": ["A03", "A06"] },
+    { "id": "runtime_data_service", "name": "RuntimeDataService", "source": "SUPRA/RuntimeDataService.swift", "role": "runtime data authority", "responsibilities": ["runtime artifacts", "system metrics"], "owner": "Runtime", "invariants": ["A03", "A06"] }
+  ]
+}

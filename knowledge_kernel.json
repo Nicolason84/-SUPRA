@@ -1,0 +1,47 @@
+{
+  "version": "1.0.0",
+  "initialized": true,
+  "buildDate": "2026-07-23T23:43:13Z",
+  "objectCount": 838,
+  "relationCount": 1307,
+  "sourceCount": 6,
+  "healthScore": 9.2,
+  "authorityAvg": 0,
+  "confidenceAvg": 0,
+  "typeBreakdown": {
+    "archive": 76,
+    "artifact_result": 14,
+    "audit": 3,
+    "decision": 2,
+    "document": 205,
+    "evidence": 4,
+    "freeze": 6,
+    "freeze_manifest": 5,
+    "git_branch": 9,
+    "git_commit": 16,
+    "git_repository": 1,
+    "git_tag": 3,
+    "mission": 14,
+    "pdf": 84,
+    "report": 25,
+    "script": 369,
+    "validation": 2
+  },
+  "sourceBreakdown": {
+    "artifact": 14,
+    "decision": 10,
+    "freeze": 11,
+    "git": 29,
+    "report": 30,
+    "workspace": 744
+  },
+  "kernelVersion": "NOVA Knowledge OS v1.0.0",
+  "capabilities": [
+    "canonical_format",
+    "knowledge_graph",
+    "context_engine",
+    "governance",
+    "explorer",
+    "memory"
+  ]
+}

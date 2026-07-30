@@ -1,0 +1,8 @@
+"provider": "anthropic"
+"provider": "ollama"
+"provider": "Ollama"
+"provider": "openai"
+"provider": "opencode-zen"
+"provider": "Shell"
+"provider": "SourceKit"
+"provider": "string"

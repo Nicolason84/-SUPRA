@@ -1,0 +1,59 @@
+{
+  "workflows": [
+    {
+      "id": "single_agent",
+      "description": "Single agent executes the entire mission sequentially",
+      "stages": ["agent_execution", "validation"],
+      "parallel": false,
+      "consensus": false,
+      "fallback": true,
+      "use_case": "Simple tasks, quick fixes, documentation"
+    },
+    {
+      "id": "parallel",
+      "description": "Multiple agents execute independent tasks in parallel",
+      "stages": ["parallel_execution", "collection", "validation"],
+      "parallel": true,
+      "consensus": false,
+      "fallback": false,
+      "use_case": "Large codebase changes, multi-file implementations"
+    },
+    {
+      "id": "consensus",
+      "description": "Multiple agents execute the same task, results are compared and fused",
+      "stages": ["parallel_execution", "comparison", "fusion", "validation"],
+      "parallel": true,
+      "consensus": true,
+      "fallback": false,
+      "use_case": "Critical decisions, architecture reviews, security audits"
+    },
+    {
+      "id": "review",
+      "description": "Agent produces output, reviewer validates, returns for fixes if needed",
+      "stages": ["agent_execution", "review", "final_validation"],
+      "parallel": false,
+      "consensus": false,
+      "fallback": false,
+      "use_case": "Code review workflows, PR preparation"
+    },
+    {
+      "id": "benchmark",
+      "description": "Compare agent-model combinations on standardized tasks",
+      "stages": ["task_dispatch", "execution", "scoring", "ranking"],
+      "parallel": true,
+      "consensus": false,
+      "fallback": false,
+      "use_case": "Model evaluation, agent performance testing"
+    },
+    {
+      "id": "fallback",
+      "description": "Primary agent executes, falls back to secondary on failure",
+      "stages": ["primary_execution", "failure_detection", "fallback_execution", "validation"],
+      "parallel": false,
+      "consensus": false,
+      "fallback": true,
+      "use_case": "Production deployments, reliability-critical tasks"
+    }
+  ],
+  "$schema": "supra://registry/workflow_registry"
+}

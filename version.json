@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "supra_state_version": "2.2.0",
+  "generated_at": "2026-07-28T00:00:00Z",
+  "project": "SUPRA",
+  "runtime_version": "2.2.0",
+  "dashboard_version": "2.2.0",
+  "build_version": "2.2.0",
+  "plugin_version": "2.2.0",
+  "provider_version": "2.2.0",
+  "expected_version": "2.2.0",
+  "compatibility": {
+    "min_supra_state_version": "2.0.0",
+    "max_supra_state_version": "3.0.0"
+  },
+  "components": {
+    "runtime": {
+      "version": "2.2.0",
+      "entry_point": "SUPRAOperationalCoreApp"
+    },
+    "dashboard": {
+      "version": "2.2.0",
+      "view": "RuntimeDiagnosticsView + ExecutiveWorkflowListView"
+    },
+    "workflows": {
+      "registry_version": "1.0.0"
+    },
+    "provider": {
+      "ollama": {
+        "plugin_version": "2.2.0",
+        "provider_version": "2.2.0"
+      }
+    },
+    "plugin": {
+      "version": "2.2.0"
+    }
+  },
+  "sources": {
+    "decisions": {
+      "path": "~/NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/ARCHITECTURAL_DECISIONS.json",
+      "type": "json",
+      "discovery": "dynamic"
+    },
+    "state": {
+      "path": "SUPRA_STATE.json",
+      "type": "json"
+    },
+    "runtime_status": {
+      "path": "RUNTIME_STATUS.json",
+      "type": "json"
+    }
+  },
+  "git": {
+    "describe": "SUPRA_AST_PLATFORM_V1_BOOTSTRAP-9-g80ca2f1"
+  }
+}

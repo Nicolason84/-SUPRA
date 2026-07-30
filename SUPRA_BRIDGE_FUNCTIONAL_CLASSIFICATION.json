@@ -1,0 +1,88 @@
+{
+  "observer": "GO_SUPRA_BRIDGE_FUNCTIONAL_CLASSIFIER_V1",
+  "mode": "READ_ONLY",
+  "summary": {
+    "declarations": 1,
+    "functional_bridges": 1,
+    "bridge_candidates": 0
+  },
+  "functional_bridges": [
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:6:SUPRACAnnoNicoIntegration",
+      "name": "SUPRACAnnoNicoIntegration",
+      "kind": "enum",
+      "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 6,
+      "classification": "FUNCTIONAL_BRIDGE",
+      "confidence": 0.5,
+      "methods": [
+        "snapshot"
+      ],
+      "properties": [
+        "nicoAppSource",
+        "packageID",
+        "pucheroSource",
+        "recoveredCount",
+        "videoSwapSource"
+      ],
+      "signals": {
+        "name_contains_cannonico": true,
+        "file_contains_bridge": true,
+        "file_contains_cannonico": true,
+        "source_contains_bridge": false,
+        "source_contains_cannonico": true,
+        "source_contains_runtime": false,
+        "source_contains_event": false,
+        "source_contains_message": false,
+        "source_contains_encode": false,
+        "source_contains_decode": false,
+        "source_contains_send": false,
+        "source_contains_receive": false
+      }
+    }
+  ],
+  "classifications": [
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:6:SUPRACAnnoNicoIntegration",
+      "name": "SUPRACAnnoNicoIntegration",
+      "kind": "enum",
+      "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 6,
+      "classification": "FUNCTIONAL_BRIDGE",
+      "confidence": 0.5,
+      "methods": [
+        "snapshot"
+      ],
+      "properties": [
+        "nicoAppSource",
+        "packageID",
+        "pucheroSource",
+        "recoveredCount",
+        "videoSwapSource"
+      ],
+      "signals": {
+        "name_contains_cannonico": true,
+        "file_contains_bridge": true,
+        "file_contains_cannonico": true,
+        "source_contains_bridge": false,
+        "source_contains_cannonico": true,
+        "source_contains_runtime": false,
+        "source_contains_event": false,
+        "source_contains_message": false,
+        "source_contains_encode": false,
+        "source_contains_decode": false,
+        "source_contains_send": false,
+        "source_contains_receive": false
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "source": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "declaration": "SUPRACAnnoNicoIntegration",
+      "score": 4,
+      "classification": "FUNCTIONAL_BRIDGE"
+    }
+  ],
+  "verdict": "PASS"
+}

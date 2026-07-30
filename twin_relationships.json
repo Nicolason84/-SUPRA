@@ -1,0 +1,62 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:51:02Z",
+  "relationshipTypes": [
+    {
+      "id": "contains",
+      "name": "Contains",
+      "inverse": "belongs_to",
+      "weight": 1.0,
+      "bidirectional": true,
+      "description": "Contient"
+    },
+    {
+      "id": "binds",
+      "name": "Binds",
+      "inverse": "bound_by",
+      "weight": 0.9,
+      "bidirectional": true,
+      "description": "Liaison Twin-Objet"
+    },
+    {
+      "id": "represents",
+      "name": "Represents",
+      "inverse": "represented_by",
+      "weight": 0.95,
+      "bidirectional": true,
+      "description": "Repr\u00e9sentation"
+    },
+    {
+      "id": "synchronizes",
+      "name": "Synchronizes",
+      "inverse": "synchronized_by",
+      "weight": 0.85,
+      "bidirectional": true,
+      "description": "Synchronisation"
+    },
+    {
+      "id": "evolves_to",
+      "name": "Evolves To",
+      "inverse": "evolved_from",
+      "weight": 0.7,
+      "bidirectional": false,
+      "description": "\u00c9volution"
+    },
+    {
+      "id": "mirrors",
+      "name": "Mirrors",
+      "inverse": "mirrored_by",
+      "weight": 0.8,
+      "bidirectional": true,
+      "description": "Miroir"
+    },
+    {
+      "id": "derives_knowledge",
+      "name": "Derives Knowledge",
+      "inverse": "knowledge_source_for",
+      "weight": 0.9,
+      "bidirectional": true,
+      "description": "D\u00e9rivation de connaissance"
+    }
+  ]
+}

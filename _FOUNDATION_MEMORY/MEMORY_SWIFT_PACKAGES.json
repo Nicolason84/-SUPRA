@@ -1,0 +1,116 @@
+{
+  "memory": "MEMORY_SWIFT_PACKAGES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "PKG-001",
+      "name": "CAnnoNicoIntegrationPackage",
+      "type": "SPM Package (local)",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/Packages/CAnnoNicoIntegrationPackage",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "swift_files": 5,
+      "targets": ["CAnnoNicoContracts", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter", "CAnnoNicoIntegration"],
+      "used_by": ["SUPRA", "SUPRA_BISECT", "SUPRA_RECOVERY"],
+      "dependencies": [],
+      "relations": ["PKG-002", "PKG-003", "PKG-004", "PKG-005"],
+      "swift_tools": "6.0",
+      "platform": "macOS 14"
+    },
+    {
+      "uuid": "PKG-002",
+      "name": "CAnnoNicoContracts",
+      "type": "SPM Library Target",
+      "target_of": "CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Définit CAnnoNicoIntegrationSnapshot, CAnnoNicoSourceReference"
+    },
+    {
+      "uuid": "PKG-003",
+      "name": "PucheroMemoryAdapter",
+      "type": "SPM Library Target",
+      "target_of": "CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["PKG-002"]
+    },
+    {
+      "uuid": "PKG-004",
+      "name": "NicoAppAdapter",
+      "type": "SPM Library Target",
+      "target_of": "CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["PKG-002"],
+      "note": "Bridge vers NICO_APP iOS"
+    },
+    {
+      "uuid": "PKG-005",
+      "name": "VideoSwapAdapter",
+      "type": "SPM Library Target",
+      "target_of": "CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["PKG-002"],
+      "note": "Bridge vers VideoSwap engine"
+    },
+    {
+      "uuid": "PKG-006",
+      "name": "SUPRA_AST_PLATFORM",
+      "type": "SPM Package",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_AST_PLATFORM",
+      "owner": "nicolasalonso",
+      "status": "orphan",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Package présent dans le workspace mais non référencé par le build"
+    },
+    {
+      "uuid": "PKG-007",
+      "name": "VideoSwap V1 Packages (6)",
+      "type": "SPM Packages (legacy)",
+      "paths": [
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapEngineKit",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapDomain",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapRenderQueue",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapPersistence",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapURLKit",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapRealityKit"
+      ],
+      "status": "legacy",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "PKG-008",
+      "name": "VideoSwap V3 Packages (5)",
+      "type": "SPM Packages (active)",
+      "paths": [
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/Foundation",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/Core",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/MediaEngine",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/URLEngine",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/ImportEngine"
+      ],
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "fallback",
+  "description": "Primary agent executes, falls back to secondary on failure",
+  "stages": [
+    {
+      "id": "primary_execution",
+      "type": "execute",
+      "parallel": false,
+      "consensus": false,
+      "description": "Primary agent-model executes the task"
+    },
+    {
+      "id": "failure_detection",
+      "type": "check",
+      "parallel": false,
+      "consensus": false,
+      "conditions": ["timeout", "error", "invalid_output", "quality_below_threshold"],
+      "description": "Check if primary execution succeeded"
+    },
+    {
+      "id": "fallback_execution",
+      "type": "execute",
+      "parallel": false,
+      "consensus": false,
+      "on_failure": true,
+      "description": "Secondary agent-model executes if primary failed"
+    },
+    {
+      "id": "validation",
+      "type": "validate",
+      "parallel": false,
+      "consensus": false,
+      "description": "Validate output from whichever execution succeeded"
+    }
+  ],
+  "mode": "sequential_fallback",
+  "fallback": true,
+  "max_fallbacks": 3,
+  "use_case": ["production", "reliability_critical", "api_unstable", "mission_critical"]
+}

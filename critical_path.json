@@ -1,0 +1,74 @@
+{
+  "version": "1.0.0",
+  "mission": "Analyser complètement le dépôt SUPRA",
+  "type": "critical_path_analysis",
+  "generated_by": "SUPRA-Planner (SUPRA-Router)",
+  "critical_path": {
+    "path": ["T1", "T4", "T9", "T10"],
+    "total_duration_seconds": 270,
+    "description": "Chemin le plus long : mapping du dépôt → review des résultats → analyse architecturale → rapport final",
+    "nodes": [
+      {"id": "T1", "name": "Mapper la structure du dépôt", "start": 0, "end": 60, "duration": 60, "slack": 0, "critical": true},
+      {"id": "T4", "name": "Analyser les résultats agents", "start": 60, "end": 90, "duration": 30, "slack": 0, "critical": true},
+      {"id": "T9", "name": "Analyse architecturale complète", "start": 90, "end": 210, "duration": 120, "slack": 0, "critical": true},
+      {"id": "T10", "name": "Compiler le rapport final", "start": 210, "end": 270, "duration": 60, "slack": 0, "critical": true}
+    ]
+  },
+  "all_paths": [
+    {
+      "path": ["T2", "T3", "T9", "T10"],
+      "description": "Indexation → audit → architecture → rapport",
+      "duration_seconds": 255,
+      "critical": false,
+      "slack": 15
+    },
+    {
+      "path": ["T5", "T9", "T10"],
+      "description": "Runtime → architecture → rapport",
+      "duration_seconds": 240,
+      "critical": false,
+      "slack": 30
+    },
+    {
+      "path": ["T8", "T9", "T10"],
+      "description": "Recherche → architecture → rapport",
+      "duration_seconds": 220,
+      "critical": false,
+      "slack": 50
+    },
+    {
+      "path": ["T6", "T9", "T10"],
+      "description": "Provider → architecture → rapport",
+      "duration_seconds": 200,
+      "critical": false,
+      "slack": 70
+    },
+    {
+      "path": ["T7", "T9", "T10"],
+      "description": "Modèle → architecture → rapport",
+      "duration_seconds": 200,
+      "critical": false,
+      "slack": 70
+    }
+  ],
+  "metrics": {
+    "critical_path_duration": 270,
+    "shortest_path_duration": 200,
+    "avg_path_duration": 230.8,
+    "paths_evaluated": 6,
+    "critical_nodes": 4,
+    "non_critical_nodes": 6,
+    "total_slack": 235,
+    "bottleneck_tasks": ["T9"]
+  },
+  "timeline": {
+    "G1_start": 0,
+    "G1_end": 60,
+    "G2_start": 60,
+    "G2_end": 90,
+    "G3_start": 90,
+    "G3_end": 210,
+    "G4_start": 210,
+    "G4_end": 270
+  }
+}

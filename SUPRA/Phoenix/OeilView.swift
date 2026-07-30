@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 // MARK: - ŒIL View
 //
@@ -459,22 +460,4 @@ private struct OeilPanel<Content: View>: View {
     }
 }
 
-// MARK: - SUPRA Color Extensions (for SwiftUI Preview compatibility)
-
-extension Color {
-    static let supraBackground = Color(NSColor.windowBackgroundColor)
-    static let supraSurface = Color(NSColor.underPageBackgroundColor)
-    static let supraText = Color(NSColor.labelColor)
-    static let supraTextSecondary = Color(NSColor.secondaryLabelColor)
-    static let supraTextTertiary = Color(NSColor.tertiaryLabelColor)
-    static let supraTextQuaternary = Color(NSColor.quaternaryLabelColor)
-    static let supraBorder = Color(NSColor.separatorColor).opacity(0.5)
-    static let supraBorderLight = Color(NSColor.separatorColor).opacity(0.8)
-    static let supraAccent = Color.blue
-    static let supraGreen = Color.green
-    static let supraRed = Color.red
-    static let supraOrange = Color.orange
-    static let supraTeal = Color.teal
-    static let supraPurple = Color.purple
-    static let supraBlue = Color.blue
-}
+// Colors are defined in SUPRAOSDesignSystem.swift — do not duplicate

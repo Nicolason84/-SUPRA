@@ -1,0 +1,31 @@
+{
+  "observer": "GO_SUPRA_INDEX_PATH_BINDING_V1",
+  "mode": "TARGETED_FILESYSTEM_BINDING",
+  "source": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json",
+  "target": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+  "resolved_target": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json",
+  "sha256": "632565a9dc5b75d72efd56b4cbdab66edd80d076a601bd620dc1767eaec12261",
+  "checks": {
+    "source_exists": true,
+    "source_valid_json": true,
+    "target_is_symlink": true,
+    "target_exists": true,
+    "target_valid_json": true,
+    "content_hash_match": true,
+    "expected_counts_present": true
+  },
+  "summary": {
+    "files": 18,
+    "symbols": 743,
+    "nodes": 770,
+    "edges": 320162,
+    "entrypoints": 1,
+    "views": 18,
+    "stores": 4,
+    "models": 27,
+    "runtimes": 4,
+    "bridges": 2,
+    "readers": 2
+  },
+  "verdict": "PASS"
+}

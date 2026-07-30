@@ -1,0 +1,81 @@
+{
+  "$schema": "engine-registry-v1",
+  "version": "1.0.0",
+  "updated_at": "2026-07-24T20:00:00Z",
+  "policy": "LOCAL_STRICT",
+  "engines": [
+    {
+      "engine_id": "ollama.qwen3-fast",
+      "engine_role": "InferenceEngine",
+      "provider": "Ollama",
+      "model": "qwen3:4b",
+      "local": true,
+      "capabilities": ["completion", "tools", "thinking"],
+      "context_limit": 16384,
+      "memory_estimate_mb": 3072,
+      "input_schema": {"type": "object", "properties": {"prompt": {"type": "string"}}},
+      "output_schema": {"type": "object", "properties": {"completion": {"type": "string"}}},
+      "health": "http://localhost:11434/api/health",
+      "cost_policy": "LOCAL_STRICT",
+      "fallbacks": [],
+      "status": "REGISTERED",
+      "quality_tier": "FAST",
+      "use_case": ["triage", "reading", "small_corrections", "classification", "mission_prep", "summaries"]
+    },
+    {
+      "engine_id": "ollama.qwen3-deep",
+      "engine_role": "InferenceEngine",
+      "provider": "Ollama",
+      "model": "qwen3.6:latest",
+      "local": true,
+      "capabilities": ["completion", "vision", "tools", "thinking"],
+      "context_limit": 131072,
+      "memory_estimate_mb": 24576,
+      "input_schema": {"type": "object", "properties": {"prompt": {"type": "string"}}},
+      "output_schema": {"type": "object", "properties": {"completion": {"type": "string"}}},
+      "health": "http://localhost:11434/api/health",
+      "cost_policy": "LOCAL_STRICT",
+      "fallbacks": ["ollama.qwen3-fast"],
+      "status": "REGISTERED",
+      "quality_tier": "DEEP",
+      "use_case": ["complex_analysis", "architecture_review", "cross_module_refactoring", "ux_analysis"]
+    },
+    {
+      "engine_id": "shell-validation",
+      "engine_role": "ValidationEngine",
+      "provider": "Shell",
+      "model": "N/A (local)",
+      "local": true,
+      "capabilities": ["compile_check", "lint", "diff"],
+      "context_limit": null,
+      "memory_estimate_mb": 100,
+      "health": "http://localhost:11434/api/health",
+      "cost_policy": "LOCAL_STRICT",
+      "fallbacks": [],
+      "status": "REGISTERED",
+      "quality_tier": "VALIDATOR",
+      "use_case": ["xcodebuild", "swift_check", "compile_validation"]
+    },
+    {
+      "engine_id": "sourcekit-validation",
+      "engine_role": "ValidationEngine",
+      "provider": "SourceKit",
+      "model": "N/A (local)",
+      "local": true,
+      "capabilities": ["semantic_analysis", "type_checking"],
+      "context_limit": null,
+      "memory_estimate_mb": 200,
+      "health": "http://localhost:11434/api/health",
+      "cost_policy": "LOCAL_STRICT",
+      "fallbacks": [],
+      "status": "REGISTERED",
+      "quality_tier": "VALIDATOR",
+      "use_case": ["swift_semantic_analysis", "type_inference"]
+    }
+  ],
+  "not_installed": [
+    {"engine_id": "embeddinggemma", "reason": "not_downloaded", "target_size_mb": 1500},
+    {"engine_id": "deepseek-coder-v2-lite", "reason": "not_downloaded", "target_size_mb": 800},
+    {"engine_id": "gemma3-4b", "reason": "not_downloaded", "target_size_mb": 5000}
+  ]
+}

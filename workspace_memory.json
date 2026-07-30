@@ -1,0 +1,19 @@
+{
+  "entries" : [
+    {
+      "changeDescription" : "Initial workspace scan completed: 1254 objects indexed",
+      "eventType" : "initial_scan",
+      "id" : "2FBE2909-1420-40F9-814A-F2CD3D54EDCD",
+      "newHash" : null,
+      "objectId" : null,
+      "objectName" : null,
+      "objectType" : null,
+      "previousHash" : null,
+      "timestamp" : "2026-07-23T23:07:50Z",
+      "version" : "1.0.0"
+    }
+  ],
+  "lastIndexed" : "2026-07-23T23:07:50Z",
+  "totalSnapshots" : 1,
+  "version" : "1.0.0"
+}

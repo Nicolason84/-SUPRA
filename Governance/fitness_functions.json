@@ -1,0 +1,14 @@
+{
+  "registry_id": "supra.fitness_functions",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "functions": [
+    { "id": "FF-001", "name": "single_composition_root", "article": "A04", "severity": "blocker", "check": "exactly_one_composition_root", "source": "SUPRA/SUPRACompositionRoot.swift" },
+    { "id": "FF-002", "name": "canonical_authority_sources_exist", "article": "A03", "severity": "blocker", "check": "all_authority_sources_exist", "source": "Governance/authority_registry.json" },
+    { "id": "FF-003", "name": "no_duplicate_lot1_construction", "article": "A03", "severity": "blocker", "check": "canonical_construction_sites_only", "source": "SUPRA/SUPRACompositionRoot.swift" },
+    { "id": "FF-004", "name": "no_parallel_engine_names", "article": "A05", "severity": "blocker", "check": "prohibited_parallel_declarations_absent", "source": "SUPRA" },
+    { "id": "FF-005", "name": "constitution_registry_integrity", "article": "A01", "severity": "blocker", "check": "constitution_source_and_articles_present", "source": "Governance/constitution_registry.json" },
+    { "id": "FF-006", "name": "adr_traceability", "article": "A06", "severity": "warning", "check": "adr_documents_and_links_present", "source": "Governance/adr_registry.json" },
+    { "id": "FF-007", "name": "freeze_continuity_presence", "article": "A08", "severity": "blocker", "check": "continuity_and_freeze_sources_present", "source": "CONTINUITY.md" }
+  ]
+}

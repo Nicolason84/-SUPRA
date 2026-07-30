@@ -1,0 +1,197 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "OLLAMA_LOCAL": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      },
+      "models": {
+        "qwen3-coder": {
+          "id": "qwen3-coder:latest",
+          "options": {
+            "reasoningEffort": "none"
+          },
+          "limit": {
+            "context": 16384,
+            "output": 2048
+          }
+        }
+      },
+      "priority": 0
+    },
+    "OPENAI_CLOUD": {
+      "npm": "@ai-sdk/openai",
+      "options": {
+        "apiKey": "{{OPENAI_API_KEY}}",
+        "baseURL": "https://api.openai.com/v1"
+      },
+      "models": {
+        "gpt-4o": {
+          "id": "gpt-4o",
+          "options": {
+            "reasoningEffort": "medium"
+          },
+          "limit": {
+            "context": 8192,
+            "output": 4096
+          }
+        }
+      },
+      "priority": 1
+    }
+  },
+  "model": "OLLAMA_LOCAL/qwen3-coder",
+  "small_model": "OLLAMA_LOCAL/qwen3-coder",
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "default_agent": "router",
+  "lsp": true,
+  "skills": {
+    "paths": [
+      ".opencode/skills",
+      ".opencode/workflows"
+    ]
+  },
+  "agent": {
+    "SUPRA-Architect": {
+      "mode": "subagent",
+      "description": "Concevoir l'architecture du système, produire des ADR, valider la cohérence structurelle",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Builder": {
+      "mode": "subagent",
+      "description": "Implémenter du code Swift à partir de spécifications, générer des artefacts",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "SUPRA-Auditor": {
+      "mode": "subagent",
+      "description": "Analyse statique du code : conformité, sécurité, intégrité, cohérence",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Reviewer": {
+      "mode": "subagent",
+      "description": "Relecture de code : style, conventions, performance, suggestions",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Explorer": {
+      "mode": "subagent",
+      "description": "Navigation dans le codebase, recherche de fichiers, compréhension de structures",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Research": {
+      "mode": "subagent",
+      "description": "Recherche d'information, documentation, investigation technique",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Runtime": {
+      "mode": "subagent",
+      "description": "Analyse du comportement runtime, diagnostic de crashs, validation des flux",
+      "permission": {
+        "edit": "deny",
+        "bash": "allow"
+      }
+    },
+    "SUPRA-Refactor": {
+      "mode": "subagent",
+      "description": "Refactoring sécurisé sans altération fonctionnelle — READ ONLY (missions via BUILDER pour écriture)",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "SUPRA-Router": {
+      "mode": "subagent",
+      "description": "Routage des missions vers le meilleur agent-modèle selon la tâche — READ ONLY (sélectionne, n'écrit pas)",
+      "permission": {
+        "edit": "deny",
+        "bash": "allow"
+      }
+    }
+  },
+  "references": {
+    "lab-architecture": {
+      "path": "SUPRA_AI_LAB_ARCHITECTURE_V1.md",
+      "description": "Architecture complète du laboratoire SUPRA AI LAB"
+    },
+    "agent-registry": {
+      "path": "SUPRA_AGENT_REGISTRY_V1.md",
+      "description": "Registre des agents SUPRA avec rôles et permissions"
+    },
+    "router-spec": {
+      "path": "SUPRA_ROUTER_SPECIFICATION_V1.md",
+      "description": "Spécification complète du routeur SUPRA"
+    },
+    "model-registry": {
+      "path": "SUPRA_MODEL_REGISTRY_V1.md",
+      "description": "Registre des modèles LLM supportés"
+    },
+    "workflow": {
+      "path": "SUPRA_WORKFLOW_V1.md",
+      "description": "Pipeline et workflows du laboratoire SUPRA"
+    },
+    "factory-constitution": {
+      "path": "FACTORIES/SUPRA_FACTORY_CONSTITUTION.md",
+      "description": "Constitution de l'usine logicielle autonome SUPRA"
+    },
+    "factory-01": {
+      "path": "FACTORIES/FACTORY_01_ARCHITECTURE/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_01_ARCHITECTURE"
+    },
+    "factory-02": {
+      "path": "FACTORIES/FACTORY_02_DISCOVERY/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_02_DISCOVERY"
+    },
+    "factory-03": {
+      "path": "FACTORIES/FACTORY_03_RUNTIME/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_03_RUNTIME"
+    },
+    "factory-04": {
+      "path": "FACTORIES/FACTORY_04_KNOWLEDGE/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_04_KNOWLEDGE"
+    },
+    "factory-05": {
+      "path": "FACTORIES/FACTORY_05_MEMORY/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_05_MEMORY"
+    },
+    "factory-06": {
+      "path": "FACTORIES/FACTORY_06_PROOF/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_06_PROOF"
+    },
+    "factory-07": {
+      "path": "FACTORIES/FACTORY_07_QUALITY/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_07_QUALITY"
+    },
+    "factory-08": {
+      "path": "FACTORIES/FACTORY_08_DOCUMENTATION/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_08_DOCUMENTATION"
+    },
+    "factory-09": {
+      "path": "FACTORIES/FACTORY_09_EXECUTION/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_09_EXECUTION"
+    },
+    "factory-10": {
+      "path": "FACTORIES/FACTORY_10_EXECUTIVE/specs/FACTORY_SPECIFICATION.md",
+      "description": "Spécification de FACTORY_10_EXECUTIVE"
+    }
+  }
+}

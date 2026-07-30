@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:51:09Z",
+  "totalTwins": 4,
+  "byType": {
+    "workspace": 1,
+    "knowledge": 1,
+    "runtime": 1,
+    "project": 1
+  },
+  "byStatus": {
+    "active": 4
+  },
+  "totalBindings": 20,
+  "totalObjects": 838,
+  "totalKnowledgeRelations": 1307,
+  "averageConfidence": 0.9125,
+  "healthScore": 9.0,
+  "twinTypeCoverage": 4,
+  "sourceCoverage": 6
+}

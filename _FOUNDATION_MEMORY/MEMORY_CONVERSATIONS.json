@@ -1,0 +1,65 @@
+{
+  "memory": "MEMORY_CONVERSATIONS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "CNV-001",
+      "name": "ConversationKnowledgeProvider",
+      "file": "SUPRA/ConversationKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Provider de connaissances issues des conversations"
+    },
+    {
+      "uuid": "CNV-002",
+      "name": "SUPRAChatView",
+      "file": "SUPRA/SUPRAChatView.swift",
+      "type": "chat_view",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Interface de chat SUPRA"
+    },
+    {
+      "uuid": "CNV-003",
+      "name": "SUPRAChatRuntimeAdapter",
+      "file": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "type": "chat_adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Adaptateur runtime pour le chat"
+    },
+    {
+      "uuid": "CNV-004",
+      "name": "SUPRA_CONVERSATION_SUMMARY_20260723_013907.txt",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_CONVERSATION_SUMMARY_20260723_013907.txt",
+      "type": "conversation_artifact",
+      "size_kb": 10.3,
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "CNV-005",
+      "name": "SUPRA_CONVERSATION_SUMMARY_20260723_014047.md",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_CONVERSATION_SUMMARY_20260723_014047.md",
+      "type": "conversation_artifact",
+      "size_kb": 10.5,
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    }
+  ]
+}

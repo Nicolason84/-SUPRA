@@ -1,0 +1,518 @@
+{
+  "observer": "GO_SUPRA_ARCHITECTURE_INDEX_V1",
+  "mode": "READ_ONLY",
+  "authority": {
+    "freeze": "FREEZE_SUPRA_GRAPHS_20260723T103701Z",
+    "status": "VALIDATED",
+    "manifest": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_SUPRA_GRAPHS_20260723T103701Z/FREEZE_MANIFEST.json",
+    "producers": {
+      "dependency": {
+        "producer": "GO_SUPRA_DEPENDENCY_GRAPH_V4",
+        "file": "SUPRA_DEPENDENCY_GRAPH.json"
+      },
+      "symbol": {
+        "producer": "GO_SUPRA_SYMBOL_GRAPH_V2",
+        "file": "SUPRA_SYMBOL_GRAPH.json"
+      },
+      "runtime": {
+        "producer": "GO_SUPRA_RUNTIME_GRAPH_V2",
+        "file": "SUPRA_RUNTIME_GRAPH.json"
+      }
+    }
+  },
+  "summary": {
+    "files": 18,
+    "symbols": 743,
+    "nodes": 770,
+    "edges": 320162,
+    "entrypoints": 1,
+    "views": 18,
+    "stores": 4,
+    "models": 27,
+    "runtimes": 4,
+    "bridges": 2,
+    "readers": 2
+  },
+  "symbol_types": {
+    "class": 5,
+    "enum": 35,
+    "extension": 1,
+    "func": 91,
+    "let": 381,
+    "struct": 53,
+    "var": 177
+  },
+  "edge_types": {
+    "declares": 743,
+    "imports": 30,
+    "references": 319389
+  },
+  "imports": [
+    {
+      "module": "Foundation",
+      "file_count": 10
+    },
+    {
+      "module": "SwiftUI",
+      "file_count": 9
+    },
+    {
+      "module": "Combine",
+      "file_count": 4
+    },
+    {
+      "module": "CAnnoNicoContracts",
+      "file_count": 2
+    },
+    {
+      "module": "AppKit",
+      "file_count": 1
+    },
+    {
+      "module": "CryptoKit",
+      "file_count": 1
+    },
+    {
+      "module": "NicoAppAdapter",
+      "file_count": 1
+    },
+    {
+      "module": "PucheroMemoryAdapter",
+      "file_count": 1
+    },
+    {
+      "module": "VideoSwapAdapter",
+      "file_count": 1
+    }
+  ],
+  "runtime_layers": {
+    "entrypoints": [
+      "symbol:SUPRA/SUPRAApp.swift:11:struct:SUPRAApp"
+    ],
+    "views": [
+      "symbol:SUPRA/ContentView.swift:445:struct:ContentView",
+      "symbol:SUPRA/ContentView.swift:1817:func:integrityEvidenceRow",
+      "symbol:SUPRA/ContentView.swift:3865:struct:SUPRALiveBoardsRootView",
+      "symbol:SUPRA/ContentView.swift:3901:var:detailView",
+      "symbol:SUPRA/ContentView.swift:3920:struct:SUPRAWorkspaceLiveView",
+      "symbol:SUPRA/ContentView.swift:3965:struct:SUPRAArchitectureLiveView",
+      "symbol:SUPRA/ContentView.swift:3979:struct:SUPRAAuthorityLiveView",
+      "symbol:SUPRA/ContentView.swift:3993:struct:SUPRAStorageLiveView",
+      "symbol:SUPRA/ContentView.swift:4031:struct:SUPRADecisionInboxLiveView",
+      "symbol:SUPRA/ContentView.swift:4063:struct:SUPRASystemLiveView",
+      "symbol:SUPRA/DecisionDetailView.swift:2:struct:DecisionDetailView",
+      "symbol:SUPRA/DecisionInboxView.swift:2:struct:DecisionInboxView",
+      "symbol:SUPRA/DecisionRow.swift:2:struct:DecisionRow",
+      "symbol:SUPRA/MissionCenterView.swift:2:struct:MissionCenterView",
+      "symbol:SUPRA/MissionDetailView.swift:2:struct:MissionDetailView",
+      "symbol:SUPRA/MissionRow.swift:2:struct:MissionRow",
+      "symbol:SUPRA/SupraControlCenterView.swift:2:struct:SupraControlCenterView",
+      "symbol:SUPRA/SupraControlCenterView.swift:279:struct:ExecutivePlaceholderView"
+    ],
+    "stores": [
+      "symbol:SUPRA/ContentView.swift:3074:class:SUPRAExecutiveStore",
+      "symbol:SUPRA/ControlCenterStore.swift:5:class:ControlCenterStore",
+      "symbol:SUPRA/DecisionStore.swift:5:class:DecisionStore",
+      "symbol:SUPRA/MissionStore.swift:5:class:MissionStore"
+    ],
+    "models": [
+      "symbol:SUPRA/ContentView.swift:294:func:removePlaceholderMissionEvidence",
+      "symbol:SUPRA/ContentView.swift:459:var:gabrielSnapshot",
+      "symbol:SUPRA/ContentView.swift:1127:var:operationalDecisionCandidates",
+      "symbol:SUPRA/ContentView.swift:1149:var:cannonicoIntegrationSnapshot",
+      "symbol:SUPRA/ContentView.swift:1164:var:cannonicoIntegrationMissionPrompt",
+      "symbol:SUPRA/ContentView.swift:2181:let:humanDecision",
+      "symbol:SUPRA/ContentView.swift:3113:let:requiredMissionEvidence",
+      "symbol:SUPRA/ContentView.swift:3118:let:loadedMissionEvidence",
+      "symbol:SUPRA/ContentView.swift:3756:struct:SUPRALiveSnapshot",
+      "symbol:SUPRA/ContentView.swift:4031:struct:SUPRADecisionInboxLiveView",
+      "symbol:SUPRA/Decision.swift:2:struct:Decision",
+      "symbol:SUPRA/DecisionDetailView.swift:2:struct:DecisionDetailView",
+      "symbol:SUPRA/DecisionInboxView.swift:2:struct:DecisionInboxView",
+      "symbol:SUPRA/DecisionInboxView.swift:66:var:selectedDecision",
+      "symbol:SUPRA/DecisionRow.swift:2:struct:DecisionRow",
+      "symbol:SUPRA/DecisionStore.swift:5:class:DecisionStore",
+      "symbol:SUPRA/DecisionStore.swift:115:func:readDecisions",
+      "symbol:SUPRA/Mission.swift:2:struct:Mission",
+      "symbol:SUPRA/MissionCenterView.swift:2:struct:MissionCenterView",
+      "symbol:SUPRA/MissionCenterView.swift:66:var:selectedMission",
+      "symbol:SUPRA/MissionDetailView.swift:2:struct:MissionDetailView",
+      "symbol:SUPRA/MissionRow.swift:2:struct:MissionRow",
+      "symbol:SUPRA/MissionStore.swift:5:class:MissionStore",
+      "symbol:SUPRA/MissionStore.swift:126:func:readMission",
+      "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:2:struct:SUPRAGabrielWorkerSnapshot",
+      "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:22:struct:SUPRAGabrielConductorSnapshot",
+      "symbol:SUPRA/Snapshot.swift:12:struct:Snapshot"
+    ],
+    "runtimes": [
+      "symbol:SUPRA/ContentView.swift:3004:enum:SUPRAActionRuntime",
+      "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:22:struct:SUPRAGabrielConductorSnapshot",
+      "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:26:let:visibleConductor",
+      "symbol:SUPRA/SUPRAGabrielConductorRuntime.swift:92:enum:SUPRAGabrielConductorRuntime"
+    ],
+    "bridges": [
+      "symbol:SUPRA/CAnnoNicoIntegrationBridge.swift:6:enum:SUPRACAnnoNicoIntegration",
+      "symbol:SUPRA/ContentView.swift:3104:var:localBridgePayload"
+    ],
+    "readers": [
+      "symbol:SUPRA/ArtifactReader.swift:2:struct:ArtifactReader",
+      "symbol:SUPRA/ArtifactReader.swift:4:enum:ReaderError"
+    ]
+  },
+  "files": [
+    {
+      "name": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "symbol_count": 26,
+      "function_count": 8,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 1,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "imports": [
+        "CAnnoNicoContracts",
+        "Foundation",
+        "NicoAppAdapter",
+        "PucheroMemoryAdapter",
+        "VideoSwapAdapter"
+      ],
+      "symbol_count": 7,
+      "function_count": 1,
+      "struct_count": 0,
+      "class_count": 0,
+      "enum_count": 1,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "imports": [
+        "AppKit",
+        "CAnnoNicoContracts",
+        "Combine",
+        "CryptoKit",
+        "Foundation",
+        "SwiftUI"
+      ],
+      "symbol_count": 475,
+      "function_count": 50,
+      "struct_count": 35,
+      "class_count": 2,
+      "enum_count": 10,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 1,
+      "observable_object": true,
+      "state_count": 29,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "ControlCenterStore.swift",
+      "path": "SUPRA/ControlCenterStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "symbol_count": 3,
+      "function_count": 1,
+      "struct_count": 0,
+      "class_count": 1,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": true,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "symbol_count": 31,
+      "function_count": 0,
+      "struct_count": 4,
+      "class_count": 0,
+      "enum_count": 3,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 6,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 7,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 2,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 4,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "symbol_count": 30,
+      "function_count": 8,
+      "struct_count": 0,
+      "class_count": 1,
+      "enum_count": 2,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": true,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "symbol_count": 35,
+      "function_count": 0,
+      "struct_count": 5,
+      "class_count": 0,
+      "enum_count": 2,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 7,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 2,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 6,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 4,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "symbol_count": 30,
+      "function_count": 8,
+      "struct_count": 0,
+      "class_count": 1,
+      "enum_count": 2,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": true,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "SUPRAApp.swift",
+      "path": "SUPRA/SUPRAApp.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 2,
+      "function_count": 0,
+      "struct_count": 1,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "symbol_count": 29,
+      "function_count": 2,
+      "struct_count": 2,
+      "class_count": 0,
+      "enum_count": 2,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "symbol_count": 17,
+      "function_count": 0,
+      "struct_count": 2,
+      "class_count": 0,
+      "enum_count": 0,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 0,
+      "binding_count": 0,
+      "environment_count": 0
+    },
+    {
+      "name": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "symbol_count": 24,
+      "function_count": 7,
+      "struct_count": 2,
+      "class_count": 0,
+      "enum_count": 1,
+      "protocol_count": 0,
+      "actor_count": 0,
+      "extension_count": 0,
+      "observable_object": false,
+      "state_count": 1,
+      "binding_count": 0,
+      "environment_count": 0
+    }
+  ]
+}

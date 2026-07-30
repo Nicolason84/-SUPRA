@@ -1,0 +1,15 @@
+{
+  "node_id": "supra-node-macbook-pro-de-nicolaslocal",
+  "hostname": "MacBook-Pro-de-Nicolas.local",
+  "platform": "macos",
+  "architecture": "arm64",
+  "bootstrap_version": "3.0.0",
+  "created_at": "2026-07-25T00:07:55Z",
+  "tools": {
+    "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "ollama": "ollama version is 0.32.3",
+    "opencode": "1.18.5"
+  },
+  "status": "initialized"
+}

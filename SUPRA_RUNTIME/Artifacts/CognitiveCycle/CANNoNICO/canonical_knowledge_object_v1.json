@@ -1,0 +1,145 @@
+{
+  "$schema": "SUPRA_Canonical_Knowledge_Object_V1",
+  "canId": "can:knowledge:cognitive-cycle-demo-001",
+  "canVersion": "V1",
+  "stage": "CANNoNICO",
+  "createdAt": "2026-07-29",
+  "tick": 3,
+  "derivedFrom": "puchero:cand:认知周期演示-001",
+  "canName": "SUPRA Cognitive Cycle Demonstration",
+  "canDefinitions": {
+    "identity": "can:knowledge:cognitive-cycle-demo-001",
+    "purpose": "Demonstrate the complete cognitive cycle of SUPRA from idea to proof",
+    "scope": "End-to-end demonstration of TUV5 → PUCHERO → CANNoNICO → ProjectionEngine → Runtime",
+    "authority": "SUPRA Execution Gate — Proof of Canonical Runtime",
+    "version": "V1",
+    "primitive": "P5 CAN_KNOWLEDGE + P6 CAN_RELATION"
+  },
+  "canResponsibilities": [
+    "transform_sources_to_structured_knowledge",
+    "link_concepts_across_stages",
+    "detect_and_resolve_contradictions",
+    "fuse_duplicate_concepts",
+    "accumulate_evidence_for_coherence",
+    "measure_coherence_of_candidate",
+    "project_canonical_model_to_multiple_formats",
+    "interpret_projections_as_execution",
+    "trace_decisions_results_proofs_feedback",
+    "close_the_loop_back_to_knowledge"
+  ],
+  "canRelations": [
+    {
+      "target": "can:knowledge:tuv5-package",
+      "relationType": "derives_from",
+      "direction": "upstream",
+      "weight": 1.0,
+      "evidence": ["tuv5:pkg:认知周期演示-001"],
+      "validated": true
+    },
+    {
+      "target": "can:knowledge:puchero-candidate",
+      "relationType": "derived_from",
+      "direction": "upstream",
+      "weight": 1.0,
+      "evidence": ["puchero:cand:认知周期演示-001"],
+      "validated": true
+    },
+    {
+      "target": "can:projection:swift",
+      "relationType": "projects_to",
+      "direction": "downstream",
+      "weight": 1.0,
+      "evidence": ["projection:swift"],
+      "validated": true
+    },
+    {
+      "target": "can:projection:bash",
+      "relationType": "projects_to",
+      "direction": "downstream",
+      "weight": 1.0,
+      "evidence": ["projection:bash"],
+      "validated": true
+    },
+    {
+      "target": "can:projection:json",
+      "relationType": "projects_to",
+      "direction": "downstream",
+      "weight": 1.0,
+      "evidence": ["projection:json"],
+      "validated": true
+    },
+    {
+      "target": "can:projection:markdown",
+      "relationType": "projects_to",
+      "direction": "downstream",
+      "weight": 1.0,
+      "evidence": ["projection:markdown"],
+      "validated": true
+    },
+    {
+      "target": "can:runtime:execution",
+      "relationType": "triggers",
+      "direction": "downstream",
+      "weight": 1.0,
+      "evidence": ["runtime:execution"],
+      "validated": true
+    }
+  ],
+  "canConstraints": [
+    {
+      "constraintId": "can:constraint:derivation-exclusivity",
+      "name": "Derivation Exclusivity",
+      "description": "Every projection must be derived exclusively from the canonical model",
+      "rule": "NO_BUSINESS_INFO_IN_PROJECTIONS",
+      "severity": "critical"
+    },
+    {
+      "constraintId": "can:constraint:reprojection",
+      "name": "Reprojection on Model Change",
+      "description": "Any modification to the canonical model must trigger automatic reprojection",
+      "rule": "REPROJECT_ON_CHANGE",
+      "severity": "critical"
+    },
+    {
+      "constraintId": "can:constraint:traceability",
+      "name": "Complete Traceability",
+      "description": "Every livrable must be traceable to its origin through the full pipeline",
+      "rule": "FULL_TRACEABILITY",
+      "severity": "critical"
+    }
+  ],
+  "canProofs": [
+    {
+      "proofId": "proof:tuv5-compilation",
+      "claim": "TUV5 Knowledge Package contains structured knowledge from 5 input sources",
+      "evidence": ["input:conversation", "input:idee", "input:document", "input:code", "input:decision"],
+      "tick": 1
+    },
+    {
+      "proofId": "proof:puchero-maturation",
+      "claim": "PUCHERO Knowledge Candidate has coherence score >= 0.75 and no critical contradictions",
+      "evidence": ["puchero:cand:认知周期演示-001"],
+      "tick": 2
+    },
+    {
+      "proofId": "proof:canonico-formalization",
+      "claim": "CANNoNICO Canonical Knowledge Object has identity, definitions, responsibilities, relations, constraints, proofs",
+      "evidence": ["can:knowledge:cognitive-cycle-demo-001"],
+      "tick": 3
+    }
+  ],
+  "nambrohoraRef": 3,
+  "canTrace": [
+    "can:knowledge:tuv5-package",
+    "can:knowledge:puchero-candidate",
+    "can:knowledge:cognitive-cycle-demo-001"
+  ],
+  "canProjections": ["swift", "bash", "json", "markdown", "yaml", "api", "html", "sql"],
+  "canConfidence": 0.91,
+  "canCoherence": 0.92,
+  "compiledAt": 3,
+  "canonicalForm": "official",
+  "validated": true,
+  "rejectionReason": null,
+  "nambrohoraRef_tick": 3
+}

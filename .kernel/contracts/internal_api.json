@@ -1,0 +1,113 @@
+{
+  "internal_api": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "description": "Internal API contracts for agent-kernel interactions. Defines the interfaces that agents use to communicate with the Kernel.",
+    "versioning": {
+      "strategy": "semantic_versioning",
+      "compatibility": "Backward compatible changes",
+      "breaking_changes": "Require new major version"
+    },
+    "endpoints": {
+      "agent_registration": {
+        "path": "/kernel/api/v1/agents/register",
+        "method": "POST",
+        "description": "Register an agent with the Kernel",
+        "requires": ["agent_identity", "capabilities", "permissions"],
+        "access_control": "Executrice Authority"
+      },
+      "query_registry": {
+        "path": "/kernel/api/v1/query/*",
+        "method": "GET",
+        "description": "Query any registry (missions, decisions, proofs, etc.)",
+        "parameters": ["filter", "limit", "offset", "order_by"],
+        "access_control": "any_agent"
+      },
+      "submit_proofs": {
+        "path": "/kernel/api/v1/proofs",
+        "method": "POST",
+        "description": "Submit proofs for verification",
+        "requires": ["proof_content", "evidence", "sha256"],
+        "access_control": "SUPRA-Reviewer"
+      },
+      "execute_missions": {
+        "path": "/kernel/api/v1/missions/execute",
+        "method": "POST", 
+        "description": "Execute a mission",
+        "requires": ["mission_id", "agent_assignment", "preconditions"],
+        "access_control": "SUPRA-Router"
+      },
+      "record_event": {
+        "path": "/kernel/api/v1/events",
+        "method": "POST",
+        "description": "Record an event in the Kernel",
+        "requires": ["event_type", "timestamp", "actor", "payload"],
+        "access_control": "any_agent"
+      },
+      "create_adrs": {
+        "path": "/kernel/api/v1/adrs",
+        "method": "POST",
+        "description": "Create an Architecture Decision Record",
+        "requires": ["adr_content", "decision", "evidence"],
+        "access_control": "SUPRA-Architect"
+      },
+      "validate_gate": {
+        "path": "/kernel/api/v1/gates/validate",
+        "method": "POST",
+        "description": "Validate a gate passage",
+        "requires": ["gate_id", "artifacts", "verification"],
+        "access_control": "SUPRA-Executive"
+      },
+      "get_executive_memory": {
+        "path": "/kernel/api/v1/executive/memory",
+        "method": "GET",
+        "description": "Get the current executive memory projection",
+        "access_control": "any_agent"
+      },
+      "get_runtime_state": {
+        "path": "/kernel/api/v1/runtime/state",
+        "method": "GET",
+        "description": "Get current runtime state",
+        "access_control": "SUPRA-Runtime"
+      },
+      "check_provider_status": {
+        "path": "/kernel/api/v1/providers/status",
+        "method": "GET",
+        "description": "Check provider availability and capacity",
+        "access_control": "SUPRA-Router"
+      }
+    },
+    "authentication": {
+      "jwt_enabled": true,
+      "agent_roles": true,
+      "capability_based": true,
+      "token_expiry": "24h"
+    },
+    "authorization": {
+      "rbac_levels": ["agent", "architect", "auditor", "builder", "router", "runtime", "explorer", "researcher"],
+      "capability_gates": true,
+      "human_approval_required": true
+    },
+    "rate_limits": {
+      "api_calls_per_minute": 100,
+      "proof_submissions_per_hour": 10,
+      "mission_executions_per_hour": 5
+    },
+    "validation_workflow": {
+      "proof_required": true,
+      "audit_required": true,
+      "gate_validation_required": true,
+      "rollback_capability": true
+    },
+    "data_classification": {
+      "public": ["missions", "decisions", "proofs"],
+      "internal": ["runtime", "metrics"],
+      "confidential": ["runtime_state", "access_logs"]
+    },
+    "compliance": {
+      "audit_enabled": true,
+      "audit_log": "/kernel/audit/api_calls.jsonl",
+      "integrity_checks": true,
+      "sha256_verification": true
+    }
+  }
+}

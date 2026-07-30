@@ -1,0 +1,29 @@
+CodingKeys
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:17
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:2963
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:2980
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3297
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3399
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3410
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3427
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3445
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3592
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3612
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3632
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3650
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift:3702
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAGabrielConductorRuntime.swift:12
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAGabrielConductorRuntime.swift:36
+Filter
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionStore.swift:12
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionStore.swift:11
+Priority
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Decision.swift:25
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Mission.swift:26
+Sort
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionStore.swift:21
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionStore.swift:21
+Status
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Decision.swift:17
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Mission.swift:19
+  /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Mission.swift:44

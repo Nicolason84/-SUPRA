@@ -1,0 +1,1 @@
+./SUPRA/MultiMemoryStore.swift:6:    static let shared = MultiMemoryStore()

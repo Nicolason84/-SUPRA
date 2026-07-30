@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/next_action.schema.json",
+  "title": "Next Action",
+  "description": "A concrete next step derived from missions, decisions, or executive review. Actions are executable and trackable.",
+  "type": "object",
+  "required": ["id", "title", "type", "status", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the next action"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title of the action"
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Detailed description of what the action entails"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["EXECUTE_FACTORY", "RUN_AGENT", "VALIDATE_GATE", "CREATE_ARTIFACT", "REVIEW_DOCUMENT", "COLLECT_PROOF", "AUDIT_COMPLIANCE", "DEPLOY", "ROLLBACK", "MANUAL", "HUMAN_CONFIRMATION"],
+      "description": "Type of action"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "READY", "IN_PROGRESS", "COMPLETED", "BLOCKED", "FAILED", "CANCELLED", "DEFERRED"],
+      "description": "Current status of the action"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+      "description": "Priority for scheduling"
+    },
+    "source": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["MISSION", "DECISION", "EXECUTIVE_REVIEW", "GATE", "AUTOMATED", "USER"]
+        },
+        "id": { "type": "string" }
+      },
+      "description": "What generated this action"
+    },
+    "assigned_agent": {
+      "type": ["string", "null"],
+      "description": "Agent type assigned to execute this action"
+    },
+    "factory_id": {
+      "type": ["string", "null"],
+      "description": "Factory ID if this action executes a factory"
+    },
+    "gate_id": {
+      "type": ["string", "null"],
+      "description": "Gate ID if this action validates a gate"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "IDs of actions that must complete before this one"
+    },
+    "preconditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions that must be true before execution"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when action was created"
+    },
+    "started_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when action started"
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when action completed"
+    },
+    "due_date": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional deadline"
+    },
+    "result": {
+      "type": ["object", "null"],
+      "description": "Result of action execution"
+    },
+    "error": {
+      "type": ["string", "null"],
+      "description": "Error message if action failed"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum for integrity"
+    }
+  }
+}

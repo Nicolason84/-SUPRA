@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "description": "Ordered history of all routing decisions. Used by the adaptive engine to detect patterns and adjust future selections.",
+  "total_entries": 3,
+  "last_updated": "2026-07-24T00:21:00Z",
+  "entries": [
+    {
+      "entry_id": "hist_001",
+      "timestamp": "2026-07-24T00:18:00Z",
+      "mission": "SUPRA_PROVIDER_RUNTIME_V001/architecture_analysis",
+      "capabilities_requested": ["architecture", "analysis", "planning"],
+      "policies_applied": ["routing_policy.json → mandatory_opencode_zen", "routing_rules.json → rule_architecture"],
+      "decision": {
+        "provider": "opencode-zen",
+        "model": "deepseek-v4-flash-free",
+        "agent": "SUPRA-Architect",
+        "workflow": "single_agent"
+      },
+      "alternatives_evaluated": [
+        {"provider": "ollama", "model": "qwen3:4b", "rejected_reason": "No architecture capability in provider_capabilities.json"}
+      ],
+      "outcome": "success",
+      "quality_metrics": {
+        "confidence_score": 0.94,
+        "quality_score": 7,
+        "duration_seconds": 120
+      }
+    },
+    {
+      "entry_id": "hist_002",
+      "timestamp": "2026-07-24T00:18:00Z",
+      "mission": "SUPRA_PROVIDER_RUNTIME_V001/compliance_audit",
+      "capabilities_requested": ["analysis", "audit", "compliance"],
+      "policies_applied": ["routing_policy.json → provider_preferences", "routing_rules.json → rule_analysis"],
+      "decision": {
+        "provider": "opencode-zen",
+        "model": "deepseek-v4-flash-free",
+        "agent": "SUPRA-Auditor",
+        "workflow": "single_agent"
+      },
+      "alternatives_evaluated": [
+        {"provider": "ollama", "model": "qwen3:4b", "rejected_reason": "Analysis score 0.68 < opencode-zen score 0.92"}
+      ],
+      "outcome": "success",
+      "quality_metrics": {
+        "confidence_score": 0.92,
+        "quality_score": 7,
+        "duration_seconds": 120
+      }
+    },
+    {
+      "entry_id": "hist_003",
+      "timestamp": "2026-07-24T00:19:00Z",
+      "mission": "SUPRA_PROVIDER_RUNTIME_V001/provider_review",
+      "capabilities_requested": ["review", "analysis", "code_quality"],
+      "policies_applied": ["routing_policy.json → provider_preferences", "routing_rules.json → rule_review"],
+      "decision": {
+        "provider": "ollama",
+        "model": "qwen3:4b",
+        "agent": "SUPRA-Reviewer",
+        "workflow": "single_agent"
+      },
+      "alternatives_evaluated": [
+        {"provider": "opencode-zen", "model": "deepseek-v4-flash-free", "rejected_reason": "Reserved for higher-priority tasks. Ollama sufficient for lightweight review."}
+      ],
+      "outcome": "success",
+      "quality_metrics": {
+        "confidence_score": 0.62,
+        "quality_score": 7,
+        "duration_seconds": 30
+      }
+    }
+  ],
+  "patterns_detected": [
+    {"pattern": "opencode_zen_dominant", "description": "OpenCode Zen selected for 2/3 missions. Used for all critical/high-capability tasks.", "confidence": 0.95},
+    {"pattern": "ollama_lightweight", "description": "Ollama selected when cost_efficiency > quality_requirement. Used for review tasks.", "confidence": 0.85},
+    {"pattern": "no_fallback_needed", "description": "0 fallbacks triggered across 3 executions. Primary models always available.", "confidence": 0.99}
+  ]
+}

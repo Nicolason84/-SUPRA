@@ -1,0 +1,216 @@
+{
+  "schema_version": "DEPENDENCY_GRAPH_V1",
+  "generated_on": "2026-07-29",
+  "authority": "FACTORY_02_DISCOVERY",
+  "status": "VALIDATED",
+  "nodes": [
+    {
+      "id": "SUPRA",
+      "kind": "xcode-target",
+      "path": "SUPRA",
+      "depends_on": [
+        "Packages/CAnnoNicoIntegrationPackage"
+      ]
+    },
+    {
+      "id": "Packages/CAnnoNicoIntegrationPackage",
+      "kind": "swift-package",
+      "path": "Packages/CAnnoNicoIntegrationPackage",
+      "depends_on": []
+    },
+    {
+      "id": "CAnnoNicoContracts",
+      "kind": "swift-package-target",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts",
+      "depends_on": []
+    },
+    {
+      "id": "PucheroMemoryAdapter",
+      "kind": "swift-package-target",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter",
+      "depends_on": [
+        "CAnnoNicoContracts"
+      ]
+    },
+    {
+      "id": "NicoAppAdapter",
+      "kind": "swift-package-target",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter",
+      "depends_on": [
+        "CAnnoNicoContracts"
+      ]
+    },
+    {
+      "id": "VideoSwapAdapter",
+      "kind": "swift-package-target",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter",
+      "depends_on": [
+        "CAnnoNicoContracts"
+      ]
+    },
+    {
+      "id": "SUPRATests",
+      "kind": "test-suite-on-disk",
+      "path": "SUPRATests",
+      "depends_on": [
+        "SUPRA"
+      ]
+    },
+    {
+      "id": "SUPRA_AST_PLATFORM",
+      "kind": "swift-package",
+      "path": "SUPRA_AST_PLATFORM",
+      "depends_on": []
+    },
+    {
+      "id": "FACTORIES",
+      "kind": "governance",
+      "path": "FACTORIES",
+      "depends_on": []
+    },
+    {
+      "id": "SUPRA_RUNTIME",
+      "kind": "runtime-state",
+      "path": "SUPRA_RUNTIME",
+      "depends_on": [
+        "SUPRA"
+      ]
+    },
+    {
+      "id": ".kernel",
+      "kind": "runtime-state",
+      "path": ".kernel",
+      "depends_on": [
+        "SUPRA",
+        ".opencode"
+      ]
+    },
+    {
+      "id": ".opencode",
+      "kind": "agent-runtime",
+      "path": ".opencode",
+      "depends_on": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "SUPRA",
+      "to": "Packages/CAnnoNicoIntegrationPackage",
+      "type": "build-package-dependency",
+      "evidence": "SUPRA.xcodeproj/project.pbxproj"
+    },
+    {
+      "from": "SUPRA",
+      "to": "CAnnoNicoContracts",
+      "type": "source-import",
+      "evidence": "SUPRA/ContentView.swift"
+    },
+    {
+      "from": "SUPRA",
+      "to": "PucheroMemoryAdapter",
+      "type": "source-import",
+      "evidence": "SUPRA/CAnnoNicoIntegrationBridge.swift"
+    },
+    {
+      "from": "SUPRA",
+      "to": "NicoAppAdapter",
+      "type": "source-import",
+      "evidence": "SUPRA/CAnnoNicoIntegrationBridge.swift"
+    },
+    {
+      "from": "SUPRA",
+      "to": "VideoSwapAdapter",
+      "type": "source-import",
+      "evidence": "SUPRA/CAnnoNicoIntegrationBridge.swift"
+    },
+    {
+      "from": "PucheroMemoryAdapter",
+      "to": "CAnnoNicoContracts",
+      "type": "package-target-dependency",
+      "evidence": "Packages/CAnnoNicoIntegrationPackage/Package.swift"
+    },
+    {
+      "from": "NicoAppAdapter",
+      "to": "CAnnoNicoContracts",
+      "type": "package-target-dependency",
+      "evidence": "Packages/CAnnoNicoIntegrationPackage/Package.swift"
+    },
+    {
+      "from": "VideoSwapAdapter",
+      "to": "CAnnoNicoContracts",
+      "type": "package-target-dependency",
+      "evidence": "Packages/CAnnoNicoIntegrationPackage/Package.swift"
+    },
+    {
+      "from": "SUPRATests",
+      "to": "SUPRA",
+      "type": "source-level-reference",
+      "evidence": "SUPRATests/SUPRAMissionExecutionTests.swift"
+    },
+    {
+      "from": "SUPRA_RUNTIME",
+      "to": "SUPRA",
+      "type": "runtime-state-consumer",
+      "evidence": "SUPRA_RUNTIME directory structure"
+    },
+    {
+      "from": ".kernel",
+      "to": "SUPRA",
+      "type": "runtime-kernel-state",
+      "evidence": ".kernel directory structure"
+    },
+    {
+      "from": ".kernel",
+      "to": ".opencode",
+      "type": "agent-kernel-coexistence",
+      "evidence": "top-level runtime directories"
+    }
+  ],
+  "module_imports": {
+    "SUPRA": [
+      "AppKit",
+      "CAnnoNicoContracts",
+      "Combine",
+      "CommonCrypto",
+      "CoreGraphics",
+      "CryptoKit",
+      "Foundation",
+      "NicoAppAdapter",
+      "PucheroMemoryAdapter",
+      "SwiftUI",
+      "UniformTypeIdentifiers",
+      "VideoSwapAdapter",
+      "os"
+    ],
+    "SUPRATests": [
+      "Foundation",
+      "XCTest"
+    ],
+    "SUPRA_AST_PLATFORM": [
+      "Foundation",
+      "SUPRAAST",
+      "SwiftParser",
+      "SwiftSyntax"
+    ],
+    "CAnnoNicoIntegrationPackage": [
+      "CAnnoNicoContracts",
+      "Foundation"
+    ]
+  },
+  "validated_paths": [
+    ".kernel",
+    ".opencode",
+    "Packages/CAnnoNicoIntegrationPackage/Package.swift",
+    "Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts",
+    "Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter",
+    "Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter",
+    "Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter",
+    "SUPRA.xcodeproj/project.pbxproj",
+    "SUPRA/CAnnoNicoIntegrationBridge.swift",
+    "SUPRA/ContentView.swift",
+    "SUPRATests/SUPRAMissionExecutionTests.swift",
+    "SUPRA_AST_PLATFORM/Package.swift",
+    "SUPRA_RUNTIME"
+  ],
+  "missing_paths": []
+}

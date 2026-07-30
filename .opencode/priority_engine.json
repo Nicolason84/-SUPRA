@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "engine": "SUPRA Priority Engine",
+  "description": "Calculates mission priority, urgency, criticality, dependencies, and required resources automatically.",
+  "calculation_rules": {
+    "priority_score": {
+      "formula": "base_priority + urgency_bonus + criticality_bonus",
+      "components": {
+        "base_priority": {"source": "mission_type", "mapping": {"architecture":10,"build":9,"route":9,"audit":8,"compliance":8,"analysis":7,"review":6,"runtime":6,"benchmark":5,"explore":5,"research":4,"report_generation":4,"provider_check":3,"model_check":3,"scheduler_test":2,"graph_analysis":9,"refactor":8}},
+        "urgency_bonus": {"source": "urgency", "mapping": {"critical":3,"high":2,"medium":1,"low":0}},
+        "criticality_bonus": {"source": "criticality", "mapping": {"critical":3,"high":1,"medium":0,"low":-1}}
+      },
+      "range": "0-16"
+    },
+    "urgency_score": {
+      "formula": "dependency_count_penalty + waiting_time_factor",
+      "dependency_count_penalty": "missions_blocking_others += 1 per dependent",
+      "waiting_time_factor": "minutes_in_queue * 0.1, capped at 5",
+      "range": "1-10"
+    },
+    "criticality_score": {
+      "formula": "blocking_factor * 2 + agent_availability_factor + system_health_factor",
+      "blocking_factor": "1 if mission blocks others, else 0",
+      "agent_availability_factor": "1 if agent is contended (<2 available), else 0",
+      "system_health_factor": "1 if system is degraded, else 0",
+      "range": "0-4"
+    }
+  },
+  "current_scores": {
+    "mission_M-0001": {"priority_score": 14, "urgency_score": 8, "criticality_score": 3, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0002": {"priority_score": 7, "urgency_score": 3, "criticality_score": 1, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0003": {"priority_score": 11, "urgency_score": 6, "criticality_score": 2, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0004": {"priority_score": 9, "urgency_score": 4, "criticality_score": 1, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0005": {"priority_score": 13, "urgency_score": 7, "criticality_score": 3, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0006": {"priority_score": 6, "urgency_score": 2, "criticality_score": 0, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0007": {"priority_score": 10, "urgency_score": 5, "criticality_score": 2, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0008": {"priority_score": 8, "urgency_score": 3, "criticality_score": 1, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0009": {"priority_score": 12, "urgency_score": 8, "criticality_score": 3, "computed_at": "2026-07-24T01:00:00Z"},
+    "mission_M-0010": {"priority_score": 5, "urgency_score": 1, "criticality_score": 0, "computed_at": "2026-07-24T01:00:00Z"}
+  },
+  "automated_decisions": [
+    {"decision": "promote_M-0001", "reason": "Architecture mission with critical urgency. Priority score 14 > threshold 12. Promoted to front of queue.", "applied": true},
+    {"decision": "demote_M-0010", "reason": "Model check with low urgency. Priority score 5 < threshold 6. Demoted to back of queue.", "applied": true},
+    {"decision": "raise_urgency_M-0009", "reason": "Mission has 2 dependents waiting. Urgency score increased from 6 to 8.", "applied": true},
+    {"decision": "flag_critical_M-0005", "reason": "Mission blocks 3 others. Criticality score 3. Flagged as critical path.", "applied": true}
+  ],
+  "summary": {
+    "total_missions_scored": 100,
+    "avg_priority_score": 8.4,
+    "avg_urgency_score": 4.2,
+    "avg_criticality_score": 1.6,
+    "missions_promoted": 12,
+    "missions_demoted": 8,
+    "missions_flagged_critical": 5
+  }
+}

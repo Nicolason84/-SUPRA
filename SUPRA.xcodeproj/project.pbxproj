@@ -10,14 +10,30 @@
 		B7FE38A58DAB2A75FF08E158 /* CAnnoNicoIntegration in Frameworks */ = {isa = PBXBuildFile; productRef = C2AF6E410E7C8555BCDD97C6 /* CAnnoNicoIntegration */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A289594C98B54FF7A37158A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20B095B7300A331E0040C04F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20B095BE300A331E0040C04F;
+			remoteInfo = SUPRA;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		20B095BF300A331E0040C04F /* SUPRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SUPRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A289593F98B54FF7A37158A1 /* SUPRATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SUPRATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		20B095C1300A331E0040C04F /* SUPRA */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SUPRA;
+			sourceTree = "<group>";
+		};
+		A289594098B54FF7A37158A1 /* SUPRATests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SUPRATests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,14 +47,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A289594298B54FF7A37158A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		208DE79A301AA3DE005D34AF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A289594098B54FF7A37158A1 /* SUPRATests */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		20B095B6300A331E0040C04F = {
 			isa = PBXGroup;
 			children = (
 				20B095C1300A331E0040C04F /* SUPRA */,
 				20B095C0300A331E0040C04F /* Products */,
+				208DE79A301AA3DE005D34AF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -46,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				20B095BF300A331E0040C04F /* SUPRA.app */,
+				A289593F98B54FF7A37158A1 /* SUPRATests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +109,27 @@
 			productReference = 20B095BF300A331E0040C04F /* SUPRA.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A289593E98B54FF7A37158A1 /* SUPRATests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A289594798B54FF7A37158A1 /* Build configuration list for PBXNativeTarget "SUPRATests" */;
+			buildPhases = (
+				A289594198B54FF7A37158A1 /* Sources */,
+				A289594298B54FF7A37158A1 /* Frameworks */,
+				A289594398B54FF7A37158A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A289594E98B54FF7A37158A1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A289594098B54FF7A37158A1 /* SUPRATests */,
+			);
+			name = SUPRATests;
+			productName = SUPRATests;
+			productReference = A289593F98B54FF7A37158A1 /* SUPRATests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -88,6 +142,10 @@
 				TargetAttributes = {
 					20B095BE300A331E0040C04F = {
 						CreatedOnToolsVersion = 26.6;
+					};
+					A289593E98B54FF7A37158A1 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = 20B095BE300A331E0040C04F;
 					};
 				};
 			};
@@ -109,12 +167,20 @@
 			projectRoot = "";
 			targets = (
 				20B095BE300A331E0040C04F /* SUPRA */,
+				A289593E98B54FF7A37158A1 /* SUPRATests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		20B095BD300A331E0040C04F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A289594398B54FF7A37158A1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +197,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A289594198B54FF7A37158A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A289594E98B54FF7A37158A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20B095BE300A331E0040C04F /* SUPRA */;
+			targetProxy = A289594C98B54FF7A37158A1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		20B095C8300A331F0040C04F /* Debug */ = {
@@ -316,6 +397,55 @@
 			};
 			name = Release;
 		};
+		A289594898B54FF7A37158A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SUPRATests;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nicolasalonso.SUPRA.SUPRATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SUPRA.app/Contents/MacOS/SUPRA";
+				TEST_TARGET_NAME = SUPRA;
+			};
+			name = Debug;
+		};
+		A289594998B54FF7A37158A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SUPRATests;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nicolasalonso.SUPRA.SUPRATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SUPRA.app/Contents/MacOS/SUPRA";
+				TEST_TARGET_NAME = SUPRA;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -333,6 +463,15 @@
 			buildConfigurations = (
 				20B095CB300A331F0040C04F /* Debug */,
 				20B095CC300A331F0040C04F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A289594798B54FF7A37158A1 /* Build configuration list for PBXNativeTarget "SUPRATests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A289594898B54FF7A37158A1 /* Debug */,
+				A289594998B54FF7A37158A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 21
+  },
+  "runtime_types": [
+    {
+      "id": "RT-001",
+      "identifier": "RuntimeSourceMode",
+      "path": "SUPRA/RuntimeSourceProtocol.swift",
+      "status": "active",
+      "type": "enum",
+      "values": ["json", "auto", "opencode"]
+    },
+    {
+      "id": "RT-002",
+      "identifier": "RuntimeSourceProtocol",
+      "path": "SUPRA/RuntimeSourceProtocol.swift",
+      "status": "active",
+      "type": "protocol",
+      "requirements": ["connectionState", "mode", "start()", "stop()", "refresh()"]
+    },
+    {
+      "id": "RT-003",
+      "identifier": "RuntimeConnectionState",
+      "path": "SUPRA/RuntimeConnectionState.swift",
+      "status": "active",
+      "type": "enum",
+      "values": ["disconnected", "connecting", "connected", "degraded", "offline"]
+    },
+    {
+      "id": "RT-004",
+      "identifier": "RuntimeEventType",
+      "path": "SUPRA/RuntimeEvent.swift",
+      "status": "active",
+      "type": "enum",
+      "values": 11
+    },
+    {
+      "id": "RT-005",
+      "identifier": "RuntimeEvent",
+      "path": "SUPRA/RuntimeEvent.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Identifiable", "Equatable"]
+    },
+    {
+      "id": "RT-006",
+      "identifier": "RuntimeGatewayEvent",
+      "path": "SUPRA/RuntimeGateway.swift",
+      "status": "active",
+      "type": "enum",
+      "values": 13
+    },
+    {
+      "id": "RT-007",
+      "identifier": "RuntimeStatus",
+      "path": "SUPRA/RuntimeGateway.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Codable"]
+    },
+    {
+      "id": "RT-008",
+      "identifier": "RuntimeGateway",
+      "path": "SUPRA/RuntimeGateway.swift",
+      "status": "active",
+      "type": "class",
+      "singleton": "shared",
+      "concurrency": "@MainActor",
+      "pattern": "ObservableObject"
+    },
+    {
+      "id": "RT-009",
+      "identifier": "RuntimeHealth",
+      "path": "SUPRA/RuntimeHealth.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Equatable"]
+    },
+    {
+      "id": "RT-010",
+      "identifier": "RuntimeTrace",
+      "path": "SUPRA/RuntimeModels.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Codable"]
+    },
+    {
+      "id": "RT-011",
+      "identifier": "RuntimeMetrics",
+      "path": "SUPRA/RuntimeModels.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Codable"]
+    },
+    {
+      "id": "RT-012",
+      "identifier": "RuntimeData",
+      "path": "SUPRA/RuntimeModels.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Codable"]
+    },
+    {
+      "id": "RT-013",
+      "identifier": "RuntimeDataService",
+      "path": "SUPRA/RuntimeDataService.swift",
+      "status": "active",
+      "type": "class",
+      "concurrency": "@MainActor",
+      "pattern": "ObservableObject"
+    },
+    {
+      "id": "RT-014",
+      "identifier": "RuntimeMonitor",
+      "path": "SUPRA/RuntimeMonitor.swift",
+      "status": "active",
+      "type": "class",
+      "concurrency": "@MainActor",
+      "pattern": "ObservableObject"
+    },
+    {
+      "id": "RT-015",
+      "identifier": "JSONRuntimeSource",
+      "path": "SUPRA/RuntimeEventSource.swift",
+      "status": "active",
+      "type": "class",
+      "conforms_to": ["RuntimeSourceProtocol"]
+    },
+    {
+      "id": "RT-016",
+      "identifier": "OpenCodeRuntimeSource",
+      "path": "SUPRA/RuntimeEventSource.swift",
+      "status": "active",
+      "type": "class",
+      "conforms_to": ["RuntimeSourceProtocol"]
+    },
+    {
+      "id": "RT-017",
+      "identifier": "RuntimeView",
+      "path": "SUPRA/RuntimeView.swift",
+      "status": "active",
+      "type": "view",
+      "framework": "SwiftUI"
+    },
+    {
+      "id": "RT-018",
+      "identifier": "SUPRAGabrielConductorSnapshot",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "status": "active",
+      "type": "struct",
+      "conforms_to": ["Codable", "Sendable"]
+    },
+    {
+      "id": "RT-019",
+      "identifier": "SUPRAGabrielConductorRuntime",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "status": "active",
+      "type": "enum",
+      "external_process": "~/NOVA_OS/GABRIEL_PARALLEL_MISSION_CONDUCTOR_V1/RUNTIME/gabriel_parallel_conductor.py"
+    },
+    {
+      "id": "RT-020",
+      "identifier": "SUPRAChatRuntimeProtocol",
+      "path": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "status": "active",
+      "type": "protocol",
+      "concurrency": "@MainActor"
+    },
+    {
+      "id": "RT-021",
+      "identifier": "SUPRAChatRuntimeAdapter",
+      "path": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "status": "active",
+      "type": "class",
+      "concurrency": "@MainActor",
+      "conforms_to": ["SUPRAChatRuntimeProtocol"]
+    }
+  ],
+  "runtime_data_sources": [
+    "runtime_trace.json",
+    "delegation_trace.json",
+    "runtime_metrics.json",
+    "agent_execution.json",
+    "execution_graph.json",
+    "mission_graph_metrics.json",
+    "provider_metrics.json",
+    "dashboard_snapshot.json"
+  ],
+  "architecture_summary": {
+    "layers": [
+      {"name": "Protocol Layer", "types": ["RuntimeSourceProtocol", "SUPRAChatRuntimeProtocol"]},
+      {"name": "State Layer", "types": ["RuntimeConnectionState", "RuntimeEvent", "RuntimeHealth"]},
+      {"name": "Gateway Layer", "types": ["RuntimeGateway", "RuntimeGatewayEvent", "RuntimeStatus"]},
+      {"name": "Source Layer", "types": ["JSONRuntimeSource", "OpenCodeRuntimeSource"]},
+      {"name": "Service Layer", "types": ["RuntimeDataService", "RuntimeMonitor"]},
+      {"name": "Adapter Layer", "types": ["SUPRAChatRuntimeAdapter"]},
+      {"name": "Model Layer", "types": ["RuntimeTrace", "RuntimeMetrics", "RuntimeData"]},
+      {"name": "Presentation Layer", "types": ["RuntimeView"]}
+    ]
+  }
+}

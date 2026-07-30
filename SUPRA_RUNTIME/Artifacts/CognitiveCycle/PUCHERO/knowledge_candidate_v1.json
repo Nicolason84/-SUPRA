@@ -1,0 +1,94 @@
+{
+  "$schema": "SUPRA_Knowledge_Candidate_V1",
+  "candidateId": "puchero:cand:认知周期演示-001",
+  "version": "V1",
+  "stage": "PUCHERO",
+  "createdAt": "2026-07-29",
+  "tick": 2,
+  "derivedFrom": "tuv5:pkg:认知周期演示-001",
+  "sourcePackage": "TUV5 Knowledge Package V1",
+  "linkedConcepts": [
+    {
+      "conceptId": "concept:tuv5-understanding",
+      "linkedTo": ["concept:puchero-maturing"],
+      "relationType": "precedes",
+      "weight": 1.0
+    },
+    {
+      "conceptId": "concept:puchero-maturing",
+      "linkedTo": ["concept:tuv5-understanding", "concept:canonico-canonization"],
+      "relationType": "between",
+      "weight": 1.0
+    },
+    {
+      "conceptId": "concept:canonico-canonization",
+      "linkedTo": ["concept:puchero-maturing", "concept:projection-engine"],
+      "relationType": "precedes",
+      "weight": 1.0
+    },
+    {
+      "conceptId": "concept:projection-engine",
+      "linkedTo": ["concept:canonico-canonization", "concept:runtime-interpretation"],
+      "relationType": "precedes",
+      "weight": 1.0
+    },
+    {
+      "conceptId": "concept:runtime-interpretation",
+      "linkedTo": ["concept:projection-engine", "concept:tuv5-understanding"],
+      "relationType": "feeds_back_to",
+      "weight": 0.5
+    }
+  ],
+  "contradictions": [
+    {
+      "contradictionId": "contr:001",
+      "conceptA": "concept:tuv5-understanding",
+      "conceptB": "concept:runtime-interpretation",
+      "type": "temporalInconsistency",
+      "description": "TUV5 is the entry point and Runtime is the exit point — they operate at different temporal phases",
+      "severity": "info",
+      "resolution": "defused",
+      "resolutionReason": "Temporal ordering is consistent — they are sequential phases of the same cycle",
+      "evidence": ["constraint:no-manual-intervention", "constraint:traceability"]
+    }
+  ],
+  "fusedDuplicates": [
+    {
+      "fusionId": "fuse:001",
+      "sourceConcepts": ["concept:tuv5-understanding", "concept:canonico-canonization"],
+      "resultingConcept": "concept:knowledge-transformation",
+      "rationale": "Both TUV5 and CANNoNICO transform knowledge — TUV5 structures it, CANNoNICO formalizes it",
+      "confidenceDelta": 0.03
+    }
+  ],
+  "accumulatedEvidence": [
+    {
+      "evidenceId": "evidence:001",
+      "source": "input:document",
+      "claim": "The cognitive cycle specification is complete and internally consistent",
+      "weight": 0.95
+    },
+    {
+      "evidenceId": "evidence:002",
+      "source": "input:decision",
+      "claim": "Knowledge-first architecture is the governing principle",
+      "weight": 0.90
+    },
+    {
+      "evidenceId": "evidence:003",
+      "source": "concept:projection-engine",
+      "claim": "Eight projection formats are defined — Swift, Bash, JSON, Markdown, YAML, API, HTML, SQL",
+      "weight": 0.85
+    }
+  ],
+  "coherenceScore": 0.92,
+  "confidenceScore": 0.91,
+  "validationStatus": "validated",
+  "rejectionReason": null,
+  "trace": [
+    "tuv5:pkg:认知周期演示-001",
+    "puchero:cand:认知周期演示-001"
+  ],
+  "projectionTargets": ["swift", "bash", "json", "markdown", "yaml", "api", "html", "sql"],
+  "tick": 2
+}

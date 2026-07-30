@@ -1,0 +1,13 @@
+{
+  "schema":"supra.proof-registry.v1",
+  "generatedAt":"2026-07-30T00:00:00Z",
+  "proofs":[
+    {"id":"PR-001","claim":"Bootstrap is acyclic and activation follows binding.","sourceEvidence":["BOOTSTRAP_VALIDATION.json","BOOTSTRAP_PROOF.json","SUPRATests/BootstrapArchitectureTests.swift"],"reproduction":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_BOOTSTRAP_GOVERNANCE_V5 -only-testing:SUPRATests/BootstrapArchitectureTests test","result":"PASS"},
+    {"id":"PR-002","claim":"A complete autonomous runtime iteration reaches READY and updates memory.","sourceEvidence":["SUPRATests/SUPRARuntimeLoopTests.swift","STATUS.json","AUTONOMY_REPORT.md"],"reproduction":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_RUNTIME_CONSOLIDATION_DERIVED test","result":"PASS"},
+    {"id":"PR-003","claim":"Mission lifecycle persists state and publishes evidence and next mission.","sourceEvidence":["SUPRATests/SUPRAMissionExecutionTests.swift","SUPRA/MissionStore.swift","MISSION_OPERATING_SYSTEM_REPORT.md"],"reproduction":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_RUNTIME_CONSOLIDATION_DERIVED -only-testing:SUPRATests/SUPRA_MissionExecutionTests test","result":"PASS"},
+    {"id":"PR-004","claim":"Inference requests can use configured local or cloud providers through the canonical gateway.","sourceEvidence":["SUPRATests/SUPRAInferenceSovereigntyRuntimeTests.swift","SUPRA/InferenceSovereigntyRuntime.swift"],"reproduction":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_RUNTIME_CONSOLIDATION_DERIVED -only-testing:SUPRATests/SUPRAInferenceSovereigntyRuntimeTests test","result":"PASS"},
+    {"id":"PR-005","claim":"Factory operating rules, owners, and outputs are declared.","sourceEvidence":["AGENTS.md","FACTORIES/SUPRA_FACTORY_CONSTITUTION.md","FACTORIES/FACTORY_REGISTRY.json"],"reproduction":"Review all ten FACTORIES/*/specs/FACTORY_SPECIFICATION.md files and FACTORIES/FACTORY_REGISTRY.json","result":"PASS"},
+    {"id":"PR-006","claim":"Knowledge, memory, and proof are continuously governed with complete machine-enforced lineage.","sourceEvidence":["FACTORIES/FACTORY_04_KNOWLEDGE/outputs/CANONICAL_MODEL.json","FACTORIES/FACTORY_05_MEMORY/outputs/MEMORY_STATE.json","FACTORIES/FACTORY_06_PROOF/outputs/CERTIFICATION_REPORT.md"],"reproduction":"Not reproducible as a complete claim; missing automated lineage and checksum gates.","result":"GAP"}
+  ],
+  "summary":{"total":6,"pass":5,"gap":1}
+}

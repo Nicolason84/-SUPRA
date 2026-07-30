@@ -1,0 +1,34 @@
+COMMAND_python3	PASS	/usr/bin/python3	available
+COMMAND_xcodebuild	PASS	/usr/bin/xcodebuild	available
+COMMAND_curl	PASS	/usr/bin/curl	available
+COMMAND_pgrep	PASS	/usr/bin/pgrep	available
+COMMAND_find	PASS	/usr/bin/find	available
+COMMAND_shasum	PASS	/usr/bin/shasum	available
+SUPRA_ROOT	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA	directory present
+XCODE_PROJECT	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj	directory present
+SUPRA_SOURCE_ROOT	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA	directory present
+SWIFT_SOURCES	PASS	18	Swift source files found
+EXTRACTION_PLAN_RUNTIME_ABSENT	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/_EXTRACTION_PLAN	not present in runtime source tree
+EXTRACTION_PLAN_QUARANTINED	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740	1 preserved architecture directory/directories
+DUPLICATE_SWIFT_TYPES	WARN	5	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/DUPLICATE_TYPES_20260723_155802.txt
+ARCHITECTURE_INDEX_JSON	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json	valid JSON
+INDEX_TARGET_IS_SYMLINK	PASS	/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json
+INDEX_TARGET_READABLE	PASS	/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json	readable
+INDEX_TARGET_VALID_JSON	PASS	/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json	valid JSON
+INDEX_HASH_MATCH	PASS	632565a9dc5b75d72efd56b4cbdab66edd80d076a601bd620dc1767eaec12261	source and expected runtime path match
+INDEX_SUMMARY	PASS	files=18;symbols=743;nodes=770;edges=320162	architecture index summary
+ARTIFACT_LOT1	WARN	0	no matching JSON artifact found
+ARTIFACT_LOT2	WARN	0	no matching JSON artifact found
+ARTIFACT_LOT3	WARN	0	no matching JSON artifact found
+ARTIFACT_BUILD	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z/SUPRA_SYMLINK_OVERLAY_BUILD.json	6 candidate(s)
+ARTIFACT_MANIFEST	PASS	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z/FREEZE_MANIFEST.json	5 candidate(s)
+ARTIFACT_ESTATE	WARN	0	no matching JSON artifact found
+XCODE_BUILD	PASS	exit=0 errors=0 warnings=0	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/SUPRA_FULL_BUILD_20260723_155802.log
+SUPRA_APP_PRODUCT	PASS	/Users/nicolasalonso/Library/Developer/Xcode/DerivedData/SUPRA-brymtechwigcboblkpbezhswerbq/Build/Products/Debug/SUPRA.app	Debug product found
+SUPRA_RUNTIME_PROCESS	PASS	68389	process alive after 8 seconds
+OLLAMA_CLI	PASS	ollama version is 0.32.1	/usr/local/bin/ollama
+OLLAMA_API	PASS	1 model(s)	qwen3:4b
+CODEX_CLI	PASS	codex-cli 0.145.0	/Users/nicolasalonso/.local/bin/codex
+CODEX_EXEC_COMMAND	PASS	available	codex exec --help succeeded
+CODEX_REAL_ACCESS	PASS	CODEX_ACCESS_OK	/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/CODEX_ACCESS_TEST_20260723_155802.log
+CHATGPT_BUSINESS_WORKSPACE	WARN		confirmation .eml not found in Downloads, Desktop or Documents

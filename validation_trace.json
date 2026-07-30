@@ -1,0 +1,59 @@
+{
+  "trace_type": "validation",
+  "validator": {
+    "agent": "SUPRA-Validator",
+    "criteria": [
+      {
+        "id": "c1",
+        "description": "Repository structure analyzed",
+        "status": "PASS",
+        "score": 1.0
+      },
+      {
+        "id": "c2",
+        "description": "Configuration integrity verified",
+        "status": "PASS",
+        "score": 1.0
+      },
+      {
+        "id": "c3",
+        "description": "Agent availability confirmed",
+        "status": "PASS",
+        "score": 1.0
+      },
+      {
+        "id": "c4",
+        "description": "Code quality assessed",
+        "status": "PASS",
+        "score": 0.85
+      },
+      {
+        "id": "c5",
+        "description": "Previous repairs verified",
+        "status": "PASS",
+        "score": 1.0
+      },
+      {
+        "id": "c6",
+        "description": "Security concerns identified",
+        "status": "PASS",
+        "score": 0.95
+      },
+      {
+        "id": "c7",
+        "description": "Single unified response produced",
+        "status": "PASS",
+        "score": 1.0
+      },
+      {
+        "id": "c8",
+        "description": "Pipeline completeness",
+        "status": "PASS",
+        "score": 1.0
+      }
+    ],
+    "overall_score": 0.98,
+    "verdict": "PASS",
+    "validation_detail": "All 8 criteria met. Unified response is coherent, accurate, and comprehensive."
+  }
+}

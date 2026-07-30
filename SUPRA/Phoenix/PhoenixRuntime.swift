@@ -23,7 +23,7 @@ public final class PhoenixRuntime: ObservableObject {
     public let runtimeCore = ExecutiveRuntimeCore.shared
     public let visionEngine = VisionEngine.shared
     public let presenceEngine = PresenceEngine.shared
-    public let contextEngine = ContextEngine.shared
+    public let contextEngine = ExecutiveContextEngine.shared
     public let snapshotBus = ExecutiveSnapshotBus.shared
     public let eventBus = ExecutiveEventBus.shared
     public let digitalTwin = DigitalTwinRuntime.shared
@@ -34,7 +34,7 @@ public final class PhoenixRuntime: ObservableObject {
 
     private let snapshotBuilder = ExecutiveSnapshotBuilder()
     private var snapshotTimer: Timer?
-    private var snapshotSubscription: UUID?
+    private var snapshotSubscription: ExecutiveEventSubscription?
 
     // MARK: - Private
 
@@ -96,8 +96,8 @@ public final class PhoenixRuntime: ObservableObject {
         snapshotTimer?.invalidate()
         snapshotTimer = nil
 
-        if let id = snapshotSubscription {
-            snapshotBus.unsubscribe(id: id)
+        if let subscription = snapshotSubscription {
+            snapshotBus.unsubscribe(id: subscription.id)
         }
 
         await runtimeCore.shutdown()

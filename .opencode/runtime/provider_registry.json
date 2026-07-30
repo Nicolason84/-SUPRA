@@ -1,0 +1,137 @@
+{
+  "providers": [
+    {
+      "id": "opencode-zen",
+      "name": "OpenCode Zen",
+      "type": "internal",
+      "base_url": "opencode://internal",
+      "models": [
+        {
+          "id": "deepseek-v4-flash-free",
+          "status": "available",
+          "cost": "free",
+          "speed": "fast",
+          "context": 131072,
+          "capabilities": ["reasoning", "code", "analysis", "planning", "routing", "architecture"],
+          "fallback": ["ollama/qwen3:4b", "ollama/qwen2.5-coder:14b"]
+        }
+      ],
+      "status": "available",
+      "cost_model": "free",
+      "rate_limit": { "requests_per_minute": 999, "tokens_per_minute": 999999 },
+      "health_check": { "type": "internal", "endpoint": "opencode://session" }
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama",
+      "type": "local",
+      "base_url": "http://localhost:11434",
+      "models": [
+        {
+          "id": "qwen3:4b",
+          "status": "available",
+          "cost": "free",
+          "speed": "fast",
+          "context": 32768,
+          "capabilities": ["reasoning", "code", "analysis", "classification"],
+          "fallback": []
+        },
+        {
+          "id": "qwen2.5-coder:14b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "medium",
+          "context": 32768,
+          "capabilities": ["reasoning", "code", "analysis", "classification", "planning"],
+          "fallback": ["ollama/qwen3:4b"]
+        },
+        {
+          "id": "deepseek-coder-v2:16b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "medium",
+          "context": 65536,
+          "capabilities": ["reasoning", "code", "analysis", "planning"],
+          "fallback": ["ollama/qwen3:4b"]
+        },
+        {
+          "id": "mixtral:8x7b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "medium",
+          "context": 32768,
+          "capabilities": ["reasoning", "analysis", "classification"],
+          "fallback": ["ollama/qwen3:4b"]
+        },
+        {
+          "id": "llama3.1:70b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "slow",
+          "context": 131072,
+          "capabilities": ["reasoning", "analysis", "planning", "architecture"],
+          "fallback": ["ollama/qwen3:4b"]
+        },
+        {
+          "id": "codellama:13b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "medium",
+          "context": 16384,
+          "capabilities": ["code", "generation", "completion"],
+          "fallback": ["ollama/qwen3:4b"]
+        },
+        {
+          "id": "qwen2.5:32b",
+          "status": "unavailable",
+          "cost": "free",
+          "speed": "slow",
+          "context": 32768,
+          "capabilities": ["reasoning", "analysis", "classification"],
+          "fallback": ["ollama/qwen3:4b"]
+        }
+      ],
+      "status": "available",
+      "cost_model": "free",
+      "rate_limit": { "requests_per_minute": 999, "tokens_per_minute": 999999 },
+      "health_check": { "type": "api", "endpoint": "/api/tags" }
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI Compatible",
+      "type": "api",
+      "base_url": "https://api.openai.com/v1",
+      "models": [
+        {
+          "id": "gpt-4o",
+          "status": "unavailable",
+          "cost": "paid",
+          "speed": "fast",
+          "context": 128000,
+          "capabilities": ["reasoning", "code", "analysis", "planning", "architecture", "routing"],
+          "fallback": ["ollama/qwen3:4b", "opencode-zen/deepseek-v4-flash-free"]
+        },
+        {
+          "id": "gpt-4o-mini",
+          "status": "unavailable",
+          "cost": "paid",
+          "speed": "fast",
+          "context": 128000,
+          "capabilities": ["reasoning", "code", "analysis", "classification"],
+          "fallback": ["ollama/qwen3:4b"]
+        }
+      ],
+      "status": "unavailable",
+      "cost_model": "per_token",
+      "rate_limit": { "requests_per_minute": 500, "tokens_per_minute": 1000000 },
+      "health_check": { "type": "api", "endpoint": "/models" }
+    }
+  ],
+  "discovery": {
+    "ollama": {
+      "auto_detect": true,
+      "command": "ollama list",
+      "interval_seconds": 300
+    }
+  }
+}

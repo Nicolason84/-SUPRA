@@ -122,7 +122,7 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
     private let snapshotBus = ExecutiveSnapshotBus.shared
     private let vision = VisionEngine.shared
     private let presence = PresenceEngine.shared
-    private let context = ContextEngine.shared
+    private let context = ExecutiveContextEngine.shared
 
     private var perceptionSequence: UInt64 = 0
     private let maxPerceptionLog: Int = 50
@@ -180,7 +180,7 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
     }
 
     public func reset() async throws {
-        await shutdown()
+        try await shutdown()
         try await boot()
     }
 

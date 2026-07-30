@@ -1,0 +1,266 @@
+{
+  "version": "CAMP_BASE_02_FOUNDATION_1.0",
+  "created": "2026-07-28",
+  "status": "COMPLETION_IN_PROGRESS",
+  "description": "Manifeste du jumeau numérique officiel du Workspace SUPRA AI LAB - Version foundation de CAMP_BASE_02 pour architecture Executive Operating System",
+  "workspace_root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+  "base_commit": "80ca2f1",
+  "architecture_principle": "Executive Operating System with interchangeable AI Providers",
+  "components": {
+    "Executive": {
+      "name": "Executive Core",
+      "location": "SUPRA/",
+      "files": [
+        "SUPRAApp.swift",
+        "SUPRACommandCenterApp.swift", 
+        "SUPRAOperationalCoreApp.swift",
+        "SUPRACompositionRoot.swift"
+      ],
+      "characteristics": [
+        "Runtime permanent - independence from providers",
+        "Modèles Interchangeables - n'importe quel engine IA",
+        "Gestionnaire de Providers - remplacement automatique",
+        "Mémoire Permanente - mémoire de Workspace",
+        "Décideur - politiques d'exécution",
+        "Montre Administrateur - interface d'autorité",
+        "Graph Explorator - exploration de relations",
+        "Passerelle Runtime - conversion d'exécution",
+        "Store de Preuves - autorisation d'exécution",
+        "Planificateur de Missions - ordonnanceur de missions",
+        "Engine de Décision - autorité décisionnelle",
+        "Store de Mémoire - perspective mémoire",
+        "Graph de Connaissance - topological",
+        "Architecte Nucleo - allocation des ressources",
+        "Diffusion de Twin - sync Twin",
+        "Fabricant de Worker - pool de workers",
+        "Engine de Autorité - autorité centrale",
+        "Engine de Politique - politique de routage",
+        "Découverte de Plugin - scopie de plugin",
+        "Registry de Plugin - schéma de plugin",
+        "Documentation de Plugin - directive",
+        "Fabrication de Worker - factory",
+        "Scheduler - Orchestrator",
+        "Scheduler Background - planning en arrière-plan",
+        "Coordinator Passif - refresh passif",
+        "Copilot d'Optimisation - optimisation du planning",
+        "Governancer Resource - contrôle des ressources",
+        "Intelligence Resource - métriques ROI",
+        "Intelligence Resource View - visualiseur",
+        "Engine de Monetization - commercialisation",
+        "Evolution Engine - évolution",
+        "View Evolution Engine - visualiseur",
+        "View Evolution Room - dispositif GUI",
+        "View Spatial Navigator - navigation spatiale",
+        "View World Map - cartes du monde",
+        "Provider Broker - bridge externe",
+        "Registry of Providers - catalogue de fournisseurs",
+        "Protocoles de Provider - contrats",
+        "Plugin Discovery - inspector",
+        "Provider Registry - catalogue",
+        "OllamaProvider - fournisseur local"
+      ],
+      "config_files": [
+        "opencode.json",
+        "AGENTS.md"
+      ],
+      "documentation": [
+        "SUPRA_AI_LAB_ARCHITECTURE_V1.md",
+        "EXECUTIVE_OBJECT_MODEL.md",
+        "EXECUTIVE_COMPOSITION_ROOT.md",
+        "SUPRA_EXECUTIVE_MISSION_CONTROL_V1_ARCHITECTURE.md",
+        "SUPRA_PROVIDER_ARCHITECTURE.md",
+        "SUPRA_PROVIDER_RUNTIME_REPORT.md"
+      ]
+    },
+    "Provider": {
+      "name": "Interchangeable AI Provider Engine",
+      "location": ".opencode/runtime/",
+      "files": [
+        "router.json",
+        "routing_policy.json",
+        "routing_rules.json",
+        "provider_registry.json",
+        "provider_health.json",
+        "provider_capabilities.json"
+      ],
+      "characteristics": [
+        "Provider Interchangeable - n'importe quel moteur disponible",
+        "Agent autonome - ciclicité individuelle",
+        "Données Permanente - état d'exécution essentielles",
+        "Matrice Score - performance",
+        "Héritage Router - décisions de routage",
+        "Apprentissage Router - amélioration continue",
+        "Mémoire Router - contexte persistent",
+        "Registre Providers - catalogue disponible",
+        "Santé Provider - état de santé",
+        "Capacités Provider - détails techniques",
+        "Statistiques Provider - métriques d'utilisation",
+        "Chaîne de Fallback - dégénérescence",
+        "Politiques de Routage - algorithmes de routage"
+      ]
+    },
+    "Mission": {
+      "name": "Execution Pipeline Abstraction",
+      "location": ".opencode/workflows/",
+      "files": [
+        "single_agent.json",
+        "parallel.json",
+        "fallback.json",
+        "benchmark.json"
+      ],
+      "characteristics": [
+        "Pipeline de Contrat - échange de données",
+        "Indépendant du moteur - abstrait l'accès au provider",
+        "Décision de Provider - choisi par Runtime",
+        "Abstraction de Navigation - intentions vs capacités",
+        "Extraction de Contrôle - extraction d'autorité",
+        "Contrainte de Validation - examen initial",
+        "Extension de Priorité - ordre d'exécution",
+        "Extension de Risque - évaluation de vulnérabilité",
+        "Choix de Provider - sélection optimale",
+        "Remplacement de Provider - dégénérescence automatique"
+      ]
+    },
+    "Workspace": {
+      "name": "Digital Twin Workspace",
+      "characteristics": [
+        "Twin Numérique - représentation exacte en double",
+        "Support Multi-versions - historique versions",
+        "Architecture et Configuration - données structurelles",
+        "Fournisseur Principal - fournisseur principal",
+        "Stratégies d'Ouverture - accès externe transparent",
+        "Gestionnaire de Twin - ouzbekistan central",
+        "Analyste de Twin - interprétation de Twin",
+        "Graphique de Twin - graphe de relation de Twin",
+        "Factory de Twin - échange de poduction",
+        "Identité de Twin - identité unique",
+        "Lifecycle de Twin - modèle de cycle de vie",
+        "Registry of Twin - catalogue de Twin",
+        "Renderer of Twin - dispositifs de visualisation de Twin",
+        "Synchronizer of Twin - synchronisation multi-platforme",
+        "Universe of Twin - portail universel",
+        "WorkspaceCardView - prototype UI",
+        "DecisionAuthorityView - prototype cockpit d'autorité",
+        "MemoryCardView - vue d'état mémoire"
+      ]
+    },
+    "Memory": {
+      "name": "Persistent Memory Engine",
+      "location": ".kernel/runtime/",
+      "files": [
+        "node_identity.json"
+      ],
+      "characteristics": [
+        "Stateful Persistence - mémoire de la base de travail",
+        "Lineage of Identity - perspective d'identité",
+        "Perception of Context - mise en miroir contextuel 360",
+        "Knowledge of Authority - cercle d'autorité",
+        "Knowledge Statistics - statistiques de connaissances"
+      ]
+    },
+    "Policy": {
+      "name": "Policy Engine",
+      "location": "SUPRA/",
+      "files": [
+        "SUPRADecisionEngine.swift",
+        "SUPRADecisionAuthority.swift"
+      ],
+      "characteristics": [
+        "Decision Authority - prioritisé par consentement",
+        "Opération élite de décensus et prise de décision",
+        "Tracker de Contradiction unifié - suivi de préparation",
+        "Visualiseur de Confiance - sensibilisation de Part",
+        "Concept de poids d'autorité distinct de l'exposition publique et de l'autorisation d'exécution",
+        "Salle de Décision - grille d'analyse de décision"
+      ]
+    }
+  },
+  "agent_registry": {
+    "SUPRA-Architect": {
+      "role": "architecture",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch"],
+      "status": "available"
+    },
+    "SUPRA-Builder": {
+      "role": "implementation", 
+      "permissions": ["read", "edit", "bash", "glob", "grep", "lsp"],
+      "status": "available"
+    },
+    "SUPRA-Auditor": {
+      "role": "analysis",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "status": "available"
+    },
+    "SUPRA-Reviewer": {
+      "role": "review",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "status": "available"
+    },
+    "SUPRA-Explorer": {
+      "role": "exploration",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "status": "available"
+    },
+    "SUPRA-Research": {
+      "role": "research",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch", "websearch"],
+      "status": "available"
+    },
+    "SUPRA-Runtime": {
+      "role": "runtime",
+      "permissions": ["read", "grep", "glob", "lsp", "bash"],
+      "status": "available"
+    },
+    "SUPRA-Refactor": {
+      "role": "refactoring",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "status": "available"
+    },
+    "SUPRA-Router": {
+      "role": "routing",
+      "permissions": ["read", "grep", "glob", "lsp", "task", "webfetch"],
+      "status": "available"
+    }
+  },
+  "runtime_providers": {
+    "OLLAMA_LOCAL": {
+      "type": "local",
+      "capabilities": ["qwen3-coder"],
+      "status": "healthy",
+      "context_max": 16384,
+      "output_max": 2048
+    }
+  },
+  "commands": [
+    "supra-router",
+    "supra-audit",
+    "supra-build",
+    "supra-review",
+    "supra-runtime",
+    "supra-search",
+    "supra-benchmark",
+    "supra-status"
+  ],
+  "documentation": [
+    "SUPRA_AGENT_REGISTRY_V1.md",
+    "SUPRA_ROUTER_SPECIFICATION_V1.md",
+    "SUPRA_MODEL_REGISTRY_V1.md",
+    "SUPRA_WORKFLOW_V1.md"
+  ],
+  "scripts": [
+    "GO_SUPRA.sh",
+    "GO_SUPRA_INSTALL.sh",
+    "GO_SUPRA_BOOTSTRAP*.sh",
+    "GO_SUPRA_RUNTIME_BOOTSTRAP.sh",
+    "SUPRA_BOOTSTRAP_V3.sh"
+  ],
+  "archives": [
+    "FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z",
+    "FREEZE_SUPRA_FUNCTIONAL_AUTHORITY_20260723T105323Z"
+  ],
+  "execution_state": {
+    "mission_queue": "active",
+    "current_phase": "CAMP_BASE_02_FOUNDATION",
+    "status_global": "PREPARATION"
+  }
+}

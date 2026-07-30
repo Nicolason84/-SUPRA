@@ -1,0 +1,23 @@
+{
+  "service": "runtime",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Runtime — interprets projections, produces real execution, traces decisions, results, proofs, and feedback",
+  "responsibilities": [
+    "interpréter les projections",
+    "produire une exécution réelle",
+    "tracer les décisions, résultats, preuves et retours d'expérience",
+    "boucle de rétroaction vers la connaissance"
+  ],
+  "runtime_config": {
+    "trace_decisions": true,
+    "trace_results": true,
+    "trace_proofs": true,
+    "trace_feedback": true,
+    "feedback_loop_enabled": true,
+    "reprojection_on_feedback": true
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/runtime/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

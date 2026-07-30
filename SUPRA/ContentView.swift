@@ -536,7 +536,7 @@ struct ContentView: View {
 
     // SUPRA_CANNONICO_SNAPSHOT_UI_V1_BEGIN
     var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
-        SUPRACAnnoNicoIntegration.snapshot()
+        CAnnoNicoSnapshotStore.shared.currentState.snapshot
     }
 
     var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
@@ -3265,19 +3265,22 @@ private struct SUPRAWorkspaceLiveView: View {
                     SUPRAStatusCard(
                         title: "Architecture",
                         status: model.snapshot.architectureStatus,
-                        detail: model.snapshot.architectureVerdict
+                        detail: model.snapshot.architectureVerdict,
+                        color: .green
                     )
 
                     SUPRAStatusCard(
                         title: "Authority",
                         status: model.snapshot.authorityGate,
-                        detail: model.snapshot.authorityVerdict
+                        detail: model.snapshot.authorityVerdict,
+                        color: .blue
                     )
 
                     SUPRAStatusCard(
                         title: "Storage",
                         status: model.snapshot.storageStatus,
-                        detail: "Recovered \(model.snapshot.recovered) · Review \(model.snapshot.reviewVolume)"
+                        detail: "Recovered \(model.snapshot.recovered) · Review \(model.snapshot.reviewVolume)",
+                        color: .orange
                     )
                 }
 
@@ -3287,7 +3290,9 @@ private struct SUPRAWorkspaceLiveView: View {
                         "Resolve authority lineage",
                         "Review \(model.snapshot.reviewVolume)",
                         "Approve only explicit storage paths"
-                    ]
+                    ],
+                    icon: "person.fill.questionmark",
+                    color: .purple
                 )
             }
             .padding(28)
@@ -3338,19 +3343,23 @@ private struct SUPRAStorageLiveView: View {
                     SUPRAStatusCard(
                         title: "Recovered",
                         status: model.snapshot.recovered,
-                        detail: "DerivedData approved batch"
+                        detail: "DerivedData approved batch",
+                        color: .green
                     )
 
                     SUPRAStatusCard(
                         title: "Review volume",
                         status: model.snapshot.reviewVolume,
-                        detail: "\(model.snapshot.reviewItems) explicit items"
+                        detail: "\(model.snapshot.reviewItems) explicit items",
+                        color: .orange
                     )
                 }
 
                 SUPRAActionCard(
                     title: "Next decision",
-                    actions: [model.snapshot.storageNext]
+                    actions: [model.snapshot.storageNext],
+                    icon: "arrow.triangle.branch",
+                    color: .blue
                 )
 
                 Button("Open storage evidence", action: model.openStorageEvidence)
@@ -3377,7 +3386,9 @@ private struct SUPRADecisionInboxLiveView: View {
                     actions: [
                         "Gate: \(model.snapshot.authorityGate)",
                         "Resolve missing explicit lineage"
-                    ]
+                    ],
+                    icon: "person.badge.key.fill",
+                    color: .purple
                 )
 
                 SUPRAActionCard(
@@ -3385,7 +3396,9 @@ private struct SUPRADecisionInboxLiveView: View {
                     actions: [
                         "Review \(model.snapshot.reviewVolume)",
                         "Keep / move / delete per explicit item"
-                    ]
+                    ],
+                    icon: "externaldrive.fill",
+                    color: .orange
                 )
             }
             .padding(28)
@@ -3407,7 +3420,8 @@ private struct SUPRASystemLiveView: View {
                 SUPRAStatusCard(
                     title: "Connection",
                     status: model.lastError == nil ? "CONNECTED" : "DEGRADED",
-                    detail: model.lastError ?? "All CURRENT boards readable"
+                    detail: model.lastError ?? "All CURRENT boards readable",
+                    color: model.lastError == nil ? .green : .red
                 )
 
                 Text(
@@ -3440,7 +3454,8 @@ private struct SUPRADetailPage: View {
                 SUPRAStatusCard(
                     title: "Status",
                     status: status,
-                    detail: verdict
+                    detail: verdict,
+                    color: .blue
                 )
 
                 Button(actionTitle, action: action)
@@ -3466,56 +3481,4 @@ private struct SUPRAHeader: View {
     }
 }
 
-private struct SUPRAStatusCard: View {
-    let title: String
-    let status: String
-    let detail: String
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.headline)
-                .foregroundStyle(.secondary)
-
-            Text(status)
-                .font(.system(size: 25, weight: .bold))
-
-            Text(detail)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .lineLimit(5)
-
-            Spacer(minLength: 0)
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, minHeight: 180, alignment: .topLeading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(.quaternary))
-    }
-}
-
-private struct SUPRAActionCard: View {
-    let title: String
-    let actions: [String]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.title3.bold())
-
-            ForEach(actions, id: \.self) { action in
-                HStack(alignment: .top, spacing: 10) {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .foregroundStyle(.tint)
-
-                    Text(action)
-                        .textSelection(.enabled)
-                }
-            }
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(.quaternary))
-    }
-}

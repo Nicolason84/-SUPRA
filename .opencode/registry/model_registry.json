@@ -1,0 +1,145 @@
+{
+  "models": [
+    {
+      "id": "anthropic/claude-sonnet-4-6",
+      "provider": "anthropic",
+      "name": "Claude Sonnet 4.6",
+      "capabilities": ["architecture", "swift", "refactoring", "analysis", "research", "documentation", "debugging", "review", "runtime"],
+      "context_window": 200000,
+      "cost_per_token": 0.000015,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 9.5,
+        "swift": 9.5,
+        "refactoring": 9.0,
+        "analysis": 9.0,
+        "research": 9.0,
+        "documentation": 8.5,
+        "debugging": 9.0,
+        "review": 9.0,
+        "runtime": 8.5
+      }
+    },
+    {
+      "id": "ollama/qwen2.5-coder:14b",
+      "provider": "ollama",
+      "name": "Qwen 2.5 Coder 14B",
+      "capabilities": ["swift", "refactoring", "analysis", "review", "documentation"],
+      "context_window": 32768,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 7.5,
+        "swift": 8.0,
+        "refactoring": 7.5,
+        "analysis": 7.5,
+        "research": 7.0,
+        "documentation": 7.0,
+        "debugging": 7.0,
+        "review": 7.0,
+        "runtime": 6.5
+      }
+    },
+    {
+      "id": "ollama/deepseek-coder-v2:16b",
+      "provider": "ollama",
+      "name": "DeepSeek Coder V2 16B",
+      "capabilities": ["swift", "refactoring", "debugging", "analysis"],
+      "context_window": 128000,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 7.0,
+        "swift": 7.5,
+        "refactoring": 7.5,
+        "analysis": 7.0,
+        "research": 6.5,
+        "documentation": 6.5,
+        "debugging": 7.5,
+        "review": 7.0,
+        "runtime": 7.0
+      }
+    },
+    {
+      "id": "ollama/mixtral:8x7b",
+      "provider": "ollama",
+      "name": "Mixtral 8x7B",
+      "capabilities": ["analysis", "research", "documentation"],
+      "context_window": 32768,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 7.0,
+        "swift": 6.5,
+        "refactoring": 6.5,
+        "analysis": 7.0,
+        "research": 7.5,
+        "documentation": 7.5,
+        "debugging": 6.5,
+        "review": 6.5,
+        "runtime": 6.0
+      }
+    },
+    {
+      "id": "ollama/llama3.1:70b",
+      "provider": "ollama",
+      "name": "Llama 3.1 70B",
+      "capabilities": ["research", "documentation", "analysis"],
+      "context_window": 128000,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 7.5,
+        "swift": 7.0,
+        "refactoring": 7.0,
+        "analysis": 7.5,
+        "research": 8.0,
+        "documentation": 8.0,
+        "debugging": 7.0,
+        "review": 7.0,
+        "runtime": 6.5
+      }
+    },
+    {
+      "id": "ollama/codellama:13b",
+      "provider": "ollama",
+      "name": "CodeLlama 13B",
+      "capabilities": ["swift", "refactoring"],
+      "context_window": 16384,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 6.0,
+        "swift": 6.5,
+        "refactoring": 6.5,
+        "analysis": 6.0,
+        "research": 5.5,
+        "documentation": 5.5,
+        "debugging": 6.0,
+        "review": 6.0,
+        "runtime": 5.5
+      }
+    },
+    {
+      "id": "ollama/qwen2.5:32b",
+      "provider": "ollama",
+      "name": "Qwen 2.5 32B",
+      "capabilities": ["research", "documentation", "analysis"],
+      "context_window": 32768,
+      "cost_per_token": 0,
+      "status": "available",
+      "quality_scores": {
+        "architecture": 7.0,
+        "swift": 6.5,
+        "refactoring": 6.5,
+        "analysis": 7.0,
+        "research": 7.5,
+        "documentation": 7.5,
+        "debugging": 7.0,
+        "review": 6.5,
+        "runtime": 6.5
+      }
+    }
+  ],
+  "$schema": "supra://registry/model_registry"
+}

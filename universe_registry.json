@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:51:02Z",
+  "universeName": "NOVA Universe",
+  "universeVersion": "1.0.0",
+  "twinTypes": [
+    "workspace",
+    "project",
+    "mission",
+    "decision",
+    "evidence",
+    "company",
+    "person",
+    "team",
+    "organization",
+    "runtime",
+    "knowledge",
+    "product",
+    "capital",
+    "environment",
+    "digital_life"
+  ],
+  "registeredTwins": [],
+  "totalTwins": 0,
+  "healthScore": 9.0
+}

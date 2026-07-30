@@ -1,0 +1,26 @@
+51:    @Published private(set) var refreshCount = 0
+72:        loadIndex()
+75:    func configure(knowledgeGraph: KnowledgeGraph, decisionStore: DecisionStore, missionStore: MissionStore) {
+81:    func startAutoRefresh() {
+90:    func stopAutoRefresh() {
+95:    func checkForNewFiles() {
+110:        connectToKnowledgeGraph()
+115:    func importConversations(from url: URL) {
+133:            connectToKnowledgeGraph()
+143:    func generateSummary(for conversationId: String) {
+158:    func generateAllSummaries() {
+173:    func refresh() {
+177:    private func applyFilters() {
+194:    private func loadIndex() {
+203:    private func saveIndex() {
+210:    private func parseChatGPTExport(_ data: Data, sourceFile: String, version: Int) throws -> [ConversationRecord] {
+255:    private func importSingleFile(_ url: URL, version: Int) {
+263:    private func findConversationFiles(in directory: URL) -> [URL] {
+274:    private func lastPathComponentWithoutExtension(_ url: URL) -> String {
+278:    private func connectToKnowledgeGraph() {
+306:    private func inferTags(from title: String, messages: [ConversationMessage]) -> [String] {
+319:    private func extractContext(from text: String) -> String {
+329:    private func extractDecisions(from text: String) -> [String] {
+343:    private func extractNextActions(from text: String) -> [String] {
+356:    private func extractRelatedFiles(from text: String) -> [String] {
+366:    private func dismissImportStatus() {

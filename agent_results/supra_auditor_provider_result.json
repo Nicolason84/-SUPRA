@@ -1,0 +1,24 @@
+{
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "agent": "SUPRA-Auditor",
+  "mission": "Provider runtime compliance audit",
+  "compliance_score": 0.65,
+  "violations": [
+    "FALLBACK_DEAD_END: fallbacks.json chains terminate at ollama/codellama:13b (status=unavailable, fallback=[]). Router following any fallbacks.json chain will reach an unavailable model with no further options.",
+    "PROVIDER_CHAIN_DEAD_END: routing_policy.fallback_provider_chain ends with 'openai' whose provider status is 'unavailable' — final fallback provider is unreachable.",
+    "INCONSISTENT_FALLBACK_SYSTEMS: provider_registry.json defines model-level fallbacks (terminal qwen3:4b, available) while fallbacks.json defines a separate chain (terminal codellama:13b, unavailable). Two parallel systems with conflicting terminal nodes.",
+    "UNREGISTERED_ROUTER_MODEL: router.json classifier uses anthropic/claude-sonnet-4-6 which is not registered in provider_registry.json — no health check, no fallback chain in provider_registry."
+  ],
+  "gaps": [
+    "MODEL_PROFILES_MISSING: provider_capabilities.json model_profiles only covers 2 of 10 registered models. Missing profiles for qwen2.5-coder:14b, deepseek-coder-v2:16b, mixtral:8x7b, llama3.1:70b, codellama:13b, qwen2.5:32b, gpt-4o, gpt-4o-mini.",
+    "DEFAULT_FALLBACK_CHAIN_UNAVAILABLE: fallbacks.json default_fallback_chain references ollama/qwen2.5-coder:14b, ollama/deepseek-coder-v2:16b, ollama/codellama:13b — all three are status=unavailable in provider_registry.",
+    "FALLBACKS_NOT_COVERING_PRIMARY: fallbacks.json does not define chains for active primary models opencode-zen/deepseek-v4-flash-free or ollama/qwen3:4b.",
+    "OPENAI_UNCONFIGURED: openai provider fully defined (models, capabilities, health check endpoint) but marked unavailable with 'No API key configured'. Adds config debt."
+  ],
+  "agents_mapped": 9,
+  "agents_total": 9,
+  "providers_configured": 3,
+  "fallback_valid": false,
+  "audit_details": "Audited 3 providers (opencode-zen, ollama, openai) — 2 available, 1 unavailable. All 9 agents mapped to valid provider+model pairs. Routing_policy covers all 4 selection steps (classify→provider→model→agent). Fallback systems have critical structural flaws: fallbacks.json terminal is a dead end (codellama:13b unavailable with empty fallback), provider fallback chain ends at openai (unavailable), and two separate fallback mechanisms exist with inconsistent terminal nodes. Router classifier model (anthropic/claude-sonnet-4-6) is absent from provider registry. Provider capabilities are comprehensive but only 2/10 registered models have quality profiles. Core operational path (opencode-zen→deepseek-v4-flash-free→agents) is sound, but recovery paths are broken."
+}

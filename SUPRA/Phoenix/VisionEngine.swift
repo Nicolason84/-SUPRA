@@ -136,7 +136,7 @@ public final class VisionEngine: ObservableObject, ExecutiveEngine {
     }
 
     public func reset() async throws {
-        await shutdown()
+        try await shutdown()
         try await boot()
     }
 

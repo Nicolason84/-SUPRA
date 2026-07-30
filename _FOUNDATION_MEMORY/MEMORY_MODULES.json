@@ -1,0 +1,89 @@
+{
+  "memory": "MEMORY_MODULES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "MOD-001",
+      "name": "CAnnoNicoContracts",
+      "project": "SUPRA",
+      "package": "CAnnoNicoIntegrationPackage",
+      "type": "library",
+      "swift_files": 1,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "exports": ["CAnnoNicoIntegrationSnapshot", "CAnnoNicoSourceReference"],
+      "used_by": ["CAnnoNicoIntegration", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter", "ContentView"]
+    },
+    {
+      "uuid": "MOD-002",
+      "name": "CAnnoNicoIntegration",
+      "project": "SUPRA",
+      "package": "CAnnoNicoIntegrationPackage",
+      "type": "library",
+      "swift_files": 1,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["MOD-001", "MOD-003", "MOD-004", "MOD-005"],
+      "used_by": ["SUPRA target"]
+    },
+    {
+      "uuid": "MOD-003",
+      "name": "PucheroMemoryAdapter",
+      "project": "SUPRA",
+      "package": "CAnnoNicoIntegrationPackage",
+      "type": "adapter",
+      "swift_files": 1,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["MOD-001"],
+      "note": "Adaptateur mémoire Puchero"
+    },
+    {
+      "uuid": "MOD-004",
+      "name": "NicoAppAdapter",
+      "project": "SUPRA",
+      "package": "CAnnoNicoIntegrationPackage",
+      "type": "adapter",
+      "swift_files": 1,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["MOD-001"],
+      "note": "Adaptateur NICO_APP iOS"
+    },
+    {
+      "uuid": "MOD-005",
+      "name": "VideoSwapAdapter",
+      "project": "SUPRA",
+      "package": "CAnnoNicoIntegrationPackage",
+      "type": "adapter",
+      "swift_files": 1,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "dependencies": ["MOD-001"],
+      "note": "Adaptateur VideoSwap engine"
+    },
+    {
+      "uuid": "MOD-006",
+      "name": "SUPRA_AST_PLATFORM",
+      "project": "SUPRA",
+      "package": "SUPRA_AST_PLATFORM",
+      "type": "library (SPM)",
+      "status": "orphan",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Package non référencé dans le build"
+    }
+  ]
+}

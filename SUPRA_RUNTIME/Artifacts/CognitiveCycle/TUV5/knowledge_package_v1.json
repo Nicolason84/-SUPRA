@@ -1,0 +1,149 @@
+{
+  "$schema": "SUPRA_Knowledge_Package_V1",
+  "packageId": "tuv5:pkg:认知周期演示-001",
+  "version": "V1",
+  "stage": "TUV5",
+  "createdAt": "2026-07-29",
+  "tick": 1,
+  "inputs": [
+    {
+      "id": "input:conversation",
+      "type": "conversation",
+      "source": "SUPRA agent discussion on canonical knowledge",
+      "content": "Discussion about transforming heterogeneous sources into structured canonical knowledge",
+      "semanticKey": "canonical-knowledge-transformation"
+    },
+    {
+      "id": "input:idee",
+      "type": "idea",
+      "source": "SUPRA execution gate directive",
+      "content": "Knowledge First. Canon Before Code. Proof Before Scale.",
+      "semanticKey": "knowledge-first-principle"
+    },
+    {
+      "id": "input:document",
+      "type": "document",
+      "source": "SUPRA execution gate specification",
+      "content": "Complete cognitive cycle demonstration specification with 5 stages",
+      "semanticKey": "cognitive-cycle-specification"
+    },
+    {
+      "id": "input:code",
+      "type": "code",
+      "source": "SUPRA_RUNTIME Swift pipeline components",
+      "content": "DetectPhase, GroupPhase, ComparePhase, CanonizePhase, LinkPhase, MigratePhase, ProvePhase",
+      "semanticKey": "pipeline-implementation"
+    },
+    {
+      "id": "input:decision",
+      "type": "decision",
+      "source": "SUPRA governance architecture",
+      "content": "Make knowledge canonical the single source of truth; projections become governed artifacts",
+      "semanticKey": "knowledge-as-truth-decision"
+    }
+  ],
+  "concepts": [
+    {
+      "conceptId": "concept:tuv5-understanding",
+      "name": "TUV5 Understanding",
+      "definition": "The process of transforming heterogeneous sources into structured knowledge",
+      "sourceReferences": ["input:conversation", "input:document"],
+      "semantics": {"stage": "understanding", "transforms": "heterogeneous-to-structured"}
+    },
+    {
+      "conceptId": "concept:puchero-maturing",
+      "name": "PUCHERO Maturing",
+      "definition": "The process of linking concepts, detecting contradictions, fusing duplicates, accumulating evidence, measuring coherence",
+      "sourceReferences": ["input:document"],
+      "semantics": {"stage": "maturing", "operations": "link,detect,fuse,accumulate,measure"}
+    },
+    {
+      "conceptId": "concept:canonico-canonization",
+      "name": "CANNoNICO Canonization",
+      "definition": "Transforming Knowledge Candidate into official canonical representation",
+      "sourceReferences": ["input:document", "input:decision"],
+      "semantics": {"stage": "canonization", "produces": "canonical-identity,definitions,responsibilities,relations,constraints,proofs"}
+    },
+    {
+      "conceptId": "concept:projection-engine",
+      "name": "Projection Engine",
+      "definition": "Transforms Canonical Knowledge Object into executable projections in multiple formats",
+      "sourceReferences": ["input:document", "input:code"],
+      "semantics": {"stage": "projection", "formats": "swift,bash,json,markdown,yaml,api,html,sql"}
+    },
+    {
+      "conceptId": "concept:runtime-interpretation",
+      "name": "Runtime Interpretation",
+      "definition": "Interprets projections, produces real execution, traces decisions and feedback",
+      "sourceReferences": ["input:document", "input:decision"],
+      "semantics": {"stage": "runtime", "traces": "decision,result,proof,feedback"}
+    }
+  ],
+  "relations": [
+    {
+      "source": "concept:tuv5-understanding",
+      "target": "concept:puchero-maturing",
+      "type": "precedes",
+      "weight": 1.0
+    },
+    {
+      "source": "concept:puchero-maturing",
+      "target": "concept:canonico-canonization",
+      "type": "precedes",
+      "weight": 1.0
+    },
+    {
+      "source": "concept:canonico-canonization",
+      "target": "concept:projection-engine",
+      "type": "precedes",
+      "weight": 1.0
+    },
+    {
+      "source": "concept:projection-engine",
+      "target": "concept:runtime-interpretation",
+      "type": "precedes",
+      "weight": 1.0
+    },
+    {
+      "source": "concept:runtime-interpretation",
+      "target": "concept:tuv5-understanding",
+      "type": "feeds_back_to",
+      "weight": 0.5
+    }
+  ],
+  "evidenceChains": [
+    ["input:document", "concept:tuv5-understanding"],
+    ["input:document", "concept:puchero-maturing"],
+    ["input:document", "concept:canonico-canonization"],
+    ["input:document", "concept:projection-engine"],
+    ["input:document", "concept:runtime-interpretation"],
+    ["input:decision", "concept:canonico-canonization"],
+    ["input:decision", "concept:runtime-interpretation"]
+  ],
+  "constraints": [
+    {
+      "constraintId": "constraint:no-manual-intervention",
+      "rule": "No stage shall be performed manually outside the pipeline",
+      "severity": "critical"
+    },
+    {
+      "constraintId": "constraint:traceability",
+      "rule": "Every livrable must be traceable to its origin",
+      "severity": "critical"
+    },
+    {
+      "constraintId": "constraint:canonical-exclusivity",
+      "rule": "Every projection must be derived exclusively from the canonical model",
+      "severity": "critical"
+    },
+    {
+      "constraintId": "constraint:no-direct-business-info",
+      "rule": "No business information shall be added directly in generated artifacts",
+      "severity": "critical"
+    }
+  ],
+  "confidence": 0.95,
+  "validated": true,
+  "rejected": false,
+  "tick": 1
+}

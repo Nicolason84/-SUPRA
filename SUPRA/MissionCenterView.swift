@@ -1,82 +1,53 @@
 import SwiftUI
 
 struct MissionCenterView: View {
-    @StateObject private var store = MissionStore()
+    @EnvironmentObject private var store: MissionStore
     @State private var selection: Mission.ID?
 
     var body: some View {
         NavigationSplitView {
-            Group {
-                if store.isLoading {
-                    ProgressView("Loading missions…")
-                } else if store.visibleMissions.isEmpty {
-                    ContentUnavailableView(
-                        store.query.isEmpty && store.activeFilter == .all ? "No missions" : "No matching missions",
-                        systemImage: "scope",
-                        description: Text(emptyDescription)
-                    )
-                } else {
-                    List(store.visibleMissions, selection: $selection) { mission in
-                        MissionRow(mission: mission)
-                            .tag(mission.id)
-                    }
-                }
-            }
-            .navigationTitle("Mission Center")
-            .searchable(text: $store.query, placement: .toolbar, prompt: "Search missions")
-            .toolbar { toolbarContent }
+            MissionSurfaceView(selection: $selection)
+                .navigationTitle("Mission Center")
         } detail: {
             if let mission = selectedMission {
                 MissionDetailView(mission: mission)
+                    .id(mission.id)
             } else {
-                ContentUnavailableView(
-                    "Select a mission",
-                    systemImage: "sidebar.left",
-                    description: Text("Mission details will appear here.")
-                )
+                ContentUnavailableView {
+                    VStack(spacing: 12) {
+                        Image(systemName: "flag.slash.fill")
+                            .font(.system(size: 36, weight: .semibold))
+                            .foregroundStyle(Color.supraTextTertiary)
+                        Text("No mission selected")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Color.supraText)
+                    }
+                } description: {
+                    Text("Create or select a mission from Mission Center to inspect its evidence and execution state.")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Color.supraTextSecondary)
+                }
             }
         }
         .frame(minWidth: 900, minHeight: 600)
-        .task { store.load() }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup {
-            Button("Refresh", systemImage: "arrow.clockwise", action: store.refresh)
-                .disabled(store.isLoading)
-
-            Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
-                Picker("Filter", selection: $store.activeFilter) {
-                    ForEach(MissionStore.Filter.allCases) { filter in
-                        Text(filter.rawValue).tag(filter)
-                    }
-                }
+        .task {
+            store.load()
+            if selection == nil {
+                selection = store.currentMission?.id ?? store.visibleMissions.first?.id
             }
-
-            Menu("Sort", systemImage: "arrow.up.arrow.down") {
-                Picker("Sort", selection: $store.activeSort) {
-                    ForEach(MissionStore.Sort.allCases) { sort in
-                        Text(sort.rawValue).tag(sort)
-                    }
-                }
-            }
+        }
+        .onChange(of: store.visibleMissions) { _, missions in
+            guard selection == nil else { return }
+            selection = missions.first?.id
         }
     }
 
     private var selectedMission: Mission? {
-        store.visibleMissions.first { $0.id == selection }
-    }
-
-    private var emptyDescription: String {
-        if let errorMessage = store.errorMessage { return errorMessage }
-        if !store.query.isEmpty || store.activeFilter != .all {
-            return "Adjust Search or Filter to see available missions."
-        }
-        return "No mission data is currently available."
+        store.missions.first { $0.id == selection } ?? store.currentMission
     }
 }
 
 #Preview {
     NavigationStack { MissionCenterView() }
+        .environmentObject(SUPRACompositionRoot.shared.missionStore)
 }

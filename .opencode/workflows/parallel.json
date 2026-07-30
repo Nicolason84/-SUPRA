@@ -1,0 +1,30 @@
+{
+  "id": "parallel",
+  "description": "Multiple agents execute independent tasks in parallel",
+  "stages": [
+    {
+      "id": "parallel_execution",
+      "type": "execute",
+      "parallel": true,
+      "consensus": false,
+      "description": "Independent tasks are dispatched to multiple agents in parallel"
+    },
+    {
+      "id": "collection",
+      "type": "collect",
+      "parallel": false,
+      "consensus": false,
+      "description": "Collect and merge results from all parallel executions"
+    },
+    {
+      "id": "validation",
+      "type": "validate",
+      "parallel": false,
+      "consensus": false,
+      "description": "Validate merged output against mission criteria"
+    }
+  ],
+  "mode": "parallel",
+  "fallback": false,
+  "use_case": ["large_implementation", "multi_file_changes", "batch_operations"]
+}

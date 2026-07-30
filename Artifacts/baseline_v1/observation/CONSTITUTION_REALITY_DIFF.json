@@ -1,0 +1,23 @@
+{
+  "schema":"supra.observation.constitution-reality-diff.v1",
+  "observedAt":"2026-07-30T14:27:41+02:00",
+  "status":"PASS",
+  "staleProjections":[],
+  "orphanArtifacts":{"status":"UNVERIFIED","observedUntrackedPathCount":791,"reason":"The repository contains untracked artefacts without a current Twin ownership or provenance assertion."},
+  "missingEvidence":[
+    "Standalone indexing completion evidence",
+    "Package.resolved lockfile"
+  ],
+  "brokenTraceability":[
+    "Current build warnings remain recorded as 74 warnings."
+  ],
+  "constitutionalGaps":[
+    "Executive Digital Twin synchronization is now evidenced for this observation cycle."
+  ],
+  "unchangedClaims":[
+    "Xcode project listing succeeds when toolchain cache access is available.",
+    "Debug macOS build succeeds with zero compiler errors.",
+    "The local CAnnoNicoIntegrationPackage resolves successfully.",
+    "The full SUPRATests suite passes with exit code 0."
+  ]
+}

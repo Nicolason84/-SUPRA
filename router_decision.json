@@ -1,0 +1,92 @@
+{
+  "decision_id": "ROUTER-DEC-20260723-001",
+  "timestamp": "2026-07-23T23:56:50Z",
+  "mission": "Analyser l'\u00e9tat actuel du d\u00e9p\u00f4t SUPRA",
+  "classification": {
+    "category": "analysis",
+    "method": "keyword + capability matching",
+    "confidence": 0.95
+  },
+  "planner_output": {
+    "tasks": [
+      {
+        "id": "t1",
+        "description": "Repository structure exploration",
+        "type": "navigation"
+      },
+      {
+        "id": "t2",
+        "description": "Static code audit and config integrity",
+        "type": "analysis"
+      },
+      {
+        "id": "t3",
+        "description": "Code and architecture quality review",
+        "type": "review"
+      }
+    ],
+    "parallel_groups": [
+      [
+        "t1",
+        "t2",
+        "t3"
+      ]
+    ]
+  },
+  "assignments": [
+    {
+      "task_id": "t1",
+      "agent": "SUPRA-Explorer",
+      "model": "anthropic/claude-sonnet-4-6",
+      "fallback_agent": "SUPRA-Research",
+      "fallback_model": "ollama/qwen2.5-coder:14b",
+      "routing_rule_matched": {
+        "id": "rule_fallback_default",
+        "pattern": "*",
+        "priority": 1
+      },
+      "score": 0.89,
+      "workflow_stage": "parallel_execution"
+    },
+    {
+      "task_id": "t2",
+      "agent": "SUPRA-Auditor",
+      "model": "anthropic/claude-sonnet-4-6",
+      "fallback_agent": "SUPRA-Reviewer",
+      "fallback_model": "ollama/qwen2.5-coder:14b",
+      "routing_rule_matched": {
+        "id": "rule_analysis",
+        "pattern": "analyser|audit|v\u00e9rifier|analyze|audit|check",
+        "priority": 10
+      },
+      "score": 0.94,
+      "workflow_stage": "parallel_execution"
+    },
+    {
+      "task_id": "t3",
+      "agent": "SUPRA-Reviewer",
+      "model": "anthropic/claude-sonnet-4-6",
+      "fallback_agent": "SUPRA-Auditor",
+      "fallback_model": "ollama/qwen2.5-coder:14b",
+      "routing_rule_matched": {
+        "id": "rule_review",
+        "pattern": "review|relecture|v\u00e9rifier",
+        "priority": 10
+      },
+      "score": 0.91,
+      "workflow_stage": "parallel_execution"
+    }
+  ],
+  "workflow": "consensus",
+  "routing_rules_consulted": 9,
+  "agents_considered": 9,
+  "models_considered": 7,
+  "capabilities_consulted": 11,
+  "resources": {
+    "agent_registry": ".opencode/registry/agent_registry.json",
+    "model_registry": ".opencode/registry/model_registry.json",
+    "capability_registry": ".opencode/registry/capability_registry.json",
+    "routing_rules": ".opencode/runtime/routing_rules.json",
+    "fallbacks": ".opencode/runtime/fallbacks.json"
+  }
+}

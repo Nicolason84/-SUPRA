@@ -1,0 +1,22 @@
+{
+  "service": "projection_engine",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "ProjectionEngine — transforms Canonical Knowledge Objects into projections in Swift, Bash, JSON, Markdown, YAML, API, HTML, SQL",
+  "responsibilities": [
+    "projeter depuis le modèle canonique uniquement",
+    "produire des projections cohérentes",
+    "ne contenir aucune logique absente du modèle canonique",
+    "permettre la reprojection automatique"
+  ],
+  "projection_config": {
+    "supported_formats": ["swift", "bash", "json", "markdown", "yaml", "api", "html", "sql"],
+    "derivation_rule": "exclusively_from_canonical_model",
+    "no_business_info_injection": true,
+    "reprojection_on_model_change": true,
+    "validation_required": true
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/projection_engine/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

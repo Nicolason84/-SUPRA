@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z"
+  },
+  "packages": [
+    {
+      "id": "CAnnoNicoIntegrationPackage",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/Packages/CAnnoNicoIntegrationPackage",
+      "used_by": ["SUPRA", "SUPRA_BISECT", "SUPRA_RECOVERY"],
+      "targets": ["CAnnoNicoContracts", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter", "CAnnoNicoIntegration"],
+      "swift_files": 5,
+      "status": "ACTIVE - intégré au build SUPRA",
+      "note": "Package d'intégration canonique - bridges vers adapters externes"
+    },
+    {
+      "id": "SwapEngineKit",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapEngineKit",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE",
+      "note": "Moteur VideoSwap V1"
+    },
+    {
+      "id": "SwapDomain",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapDomain",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "SwapRenderQueue",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapRenderQueue",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "SwapPersistence",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapPersistence",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "SwapURLKit",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapURLKit",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "SwapRealityKit",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages/SwapRealityKit",
+      "used_by": ["SUPRA_VIDEO_SWAP_APP_V1"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "Foundation (VideoSwap V3)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/Foundation",
+      "used_by": ["SUPRA_VIDEO_SWAP_V3"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "Core (VideoSwap V3)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/Core",
+      "used_by": ["SUPRA_VIDEO_SWAP_V3"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "MediaEngine (VideoSwap V3)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/MediaEngine",
+      "used_by": ["SUPRA_VIDEO_SWAP_V3"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "URLEngine (VideoSwap V3)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/URLEngine",
+      "used_by": ["SUPRA_VIDEO_SWAP_V3"],
+      "status": "ACTIVE"
+    },
+    {
+      "id": "ImportEngine (VideoSwap V3)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3/ImportEngine",
+      "used_by": ["SUPRA_VIDEO_SWAP_V3"],
+      "status": "ACTIVE"
+    }
+  ],
+  "orphan_packages": [
+    {
+      "id": "SUPRA_AST_PLATFORM",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_AST_PLATFORM",
+      "note": "Package AST Platform présent dans le workspace mais visiblement non utilisé"
+    }
+  ],
+  "duplicated_package_families": [
+    {
+      "family": "VideoSwap",
+      "versions": ["V1", "V3"],
+      "paths": [
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/Packages",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3"
+      ],
+      "note": "VideoSwap V1 (6 packages) et V3 (4 engines) - coexistence des deux versions"
+    }
+  ]
+}

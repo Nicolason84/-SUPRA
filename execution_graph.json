@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_JOB_SCHEDULER_V001 / SUPRA_MISSION_CENTER_V001",
+  "graph_type": "directed_acyclic",
+  "nodes": [
+    {"id": "mission", "type": "input", "label": "Mission Intake"},
+    {"id": "executive", "type": "stage", "label": "Executive (Architect)", "agent": "SUPRA-Architect", "access": "read_only"},
+    {"id": "planner", "type": "stage", "label": "Planner (Router)", "agent": "SUPRA-Router", "access": "read_only"},
+    {"id": "router", "type": "stage", "label": "Router (Router)", "agent": "SUPRA-Router", "access": "read_only"},
+    {"id": "queue", "type": "stage", "label": "Job Queue", "states": ["QUEUED", "PLANNED", "RUNNING", "WAITING", "BLOCKED", "FAILED", "SUCCESS"]},
+    {"id": "workers", "type": "parallel", "label": "Worker Pool (3 workers active)", "workers": ["worker_architect", "worker_auditor", "worker_reviewer"]},
+    {"id": "job_001", "type": "job", "label": "Architecture Analysis", "provider": "opencode-zen", "model": "deepseek-v4-flash-free", "agent": "SUPRA-Architect", "duration": "120s", "result": "SUCCESS"},
+    {"id": "job_002", "type": "job", "label": "Compliance Audit", "provider": "opencode-zen", "model": "deepseek-v4-flash-free", "agent": "SUPRA-Auditor", "duration": "120s", "result": "SUCCESS"},
+    {"id": "job_003", "type": "job", "label": "Provider Review", "provider": "ollama", "model": "qwen3:4b", "agent": "SUPRA-Reviewer", "duration": "30s", "result": "SUCCESS"},
+    {"id": "comparator", "type": "stage", "label": "Comparator (Reviewer)", "agent": "SUPRA-Reviewer", "access": "read_only"},
+    {"id": "fusion", "type": "stage", "label": "Fusion (Architect)", "agent": "SUPRA-Architect", "access": "read_only"},
+    {"id": "validator", "type": "stage", "label": "Validator (Auditor)", "agent": "SUPRA-Auditor", "access": "read_only"},
+    {"id": "builder", "type": "stage", "label": "Builder (WRITE ONLY)", "agent": "SUPRA-Builder", "access": "write_only"},
+    {"id": "final_validation", "type": "stage", "label": "Final Validation", "agent": "SUPRA-Auditor", "access": "read_only"},
+    {"id": "user", "type": "output", "label": "User"}
+  ],
+  "edges": [
+    {"from": "mission", "to": "executive"},
+    {"from": "executive", "to": "planner"},
+    {"from": "planner", "to": "router"},
+    {"from": "router", "to": "queue"},
+    {"from": "queue", "to": "workers"},
+    {"from": "workers", "to": "job_001"},
+    {"from": "workers", "to": "job_002"},
+    {"from": "workers", "to": "job_003"},
+    {"from": "job_001", "to": "comparator"},
+    {"from": "job_002", "to": "comparator"},
+    {"from": "job_003", "to": "comparator"},
+    {"from": "comparator", "to": "fusion"},
+    {"from": "fusion", "to": "validator"},
+    {"from": "validator", "to": "builder"},
+    {"from": "builder", "to": "final_validation"},
+    {"from": "final_validation", "to": "user"}
+  ],
+  "summary": {
+    "total_nodes": 16,
+    "total_edges": 16,
+    "parallel_paths": 3,
+    "write_paths": 1,
+    "read_only_stages": 9,
+    "write_only_stages": 1,
+    "single_writer_verified": true,
+    "multi_job_verified": true
+  }
+}

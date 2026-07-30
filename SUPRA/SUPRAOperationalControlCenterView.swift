@@ -7,30 +7,40 @@ struct SUPRAOperationalControlCenterView: View {
     @StateObject private var evolutionEngine = SUPRAEvolutionEngine.shared
     @StateObject private var envModel = SUPRAEnvironmentWorldModel.shared
     @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
-    @StateObject private var runtimeService = RuntimeDataService.shared
+    @EnvironmentObject private var runtimeService: RuntimeDataService
+    @EnvironmentObject private var missionStore: MissionStore
+    @State private var prompt = ""
+    @State private var isExecuting = false
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: SUPRAOSDesignSystem.spacing) {
-                header
-                monMacSection
-                Divider().background(Color.supraBorder)
-                potentielSection
-                Divider().background(Color.supraBorder)
-                opportunitesSection
-                Divider().background(Color.supraBorder)
-                missionsSection
-                Divider().background(Color.supraBorder)
-                actionsSection
-                Divider().background(Color.supraBorder)
-                decisionsSection
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: SUPRAOSDesignSystem.spacing) {
+                    header
+                    promptSection
+                    userMissionsSection
+                    monMacSection
+                    Divider().background(Color.supraBorder)
+                    potentielSection
+                    Divider().background(Color.supraBorder)
+                    opportunitesSection
+                    Divider().background(Color.supraBorder)
+                    missionsSection
+                    Divider().background(Color.supraBorder)
+                    actionsSection
+                    Divider().background(Color.supraBorder)
+                    decisionsSection
+                }
+                .padding(SUPRAOSDesignSystem.padding)
+                .frame(maxWidth: 1280, alignment: .leading)
+                .frame(maxWidth: .infinity)
             }
-            .padding(SUPRAOSDesignSystem.padding)
-            .frame(maxWidth: 1280, alignment: .leading)
-            .frame(maxWidth: .infinity)
+            .background(Color.supraBackground)
+            .task { runtimeService.refreshSystemMetrics() }
+            .navigationDestination(for: Mission.self) { mission in
+                MissionDetailView(mission: mission)
+            }
         }
-        .background(Color.supraBackground)
-        .task { runtimeService.refreshSystemMetrics() }
     }
 
     private var header: some View {
@@ -89,6 +99,105 @@ struct SUPRAOperationalControlCenterView: View {
         .background(Color.supraSurface)
         .clipShape(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall))
         .overlay(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall).stroke(Color.supraBorder, lineWidth: 1))
+    }
+
+    private var promptSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            sectionHeader("0. NOUVELLE MISSION")
+            HStack(spacing: 10) {
+                TextField("Décris ta mission…", text: $prompt)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 13))
+                    .padding(10)
+                    .background(Color.supraGlass)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.supraBorder, lineWidth: 1))
+                Button {
+                    executePrompt()
+                } label: {
+                    HStack(spacing: 6) {
+                        if isExecuting {
+                            ProgressView().scaleEffect(0.7).frame(width: 12, height: 12)
+                        }
+                        Text(isExecuting ? "Exécution…" : "Exécuter")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(prompt.isEmpty || isExecuting ? Color.supraTextTertiary : Color.supraAccent)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .buttonStyle(.plain)
+                .disabled(prompt.isEmpty || isExecuting)
+            }
+        }
+        .padding(SUPRAOSDesignSystem.paddingSmall)
+        .background(Color.supraSurface)
+        .clipShape(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall))
+        .overlay(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall).stroke(Color.supraBorder, lineWidth: 1))
+    }
+
+    private var userMissionsSection: some View {
+        let recent = missionStore.missions.suffix(5)
+        return VStack(alignment: .leading, spacing: 8) {
+            sectionHeader("MES MISSIONS (\(missionStore.missions.count))")
+            if recent.isEmpty {
+                Text("Aucune mission pour le moment")
+                    .font(.system(size: 11)).foregroundColor(.supraTextTertiary).padding(8)
+            } else {
+                ForEach(recent) { mission in
+                    NavigationLink(value: mission) {
+                        HStack(spacing: 8) {
+                            Circle()
+                                .fill(missionColor(mission.status))
+                                .frame(width: 8, height: 8)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(mission.title)
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundColor(.supraText)
+                                Text(mission.currentStatus)
+                                    .font(.system(size: 9))
+                                    .foregroundColor(.supraTextSecondary)
+                            }
+                            Spacer()
+                            Text(mission.status.rawValue)
+                                .font(.system(size: 9, weight: .semibold))
+                                .foregroundColor(missionColor(mission.status))
+                        }
+                        .padding(8)
+                        .background(Color.supraGlass)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(SUPRAOSDesignSystem.paddingSmall)
+        .background(Color.supraSurface)
+        .clipShape(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall))
+        .overlay(RoundedRectangle(cornerRadius: SUPRAOSDesignSystem.cornerRadiusSmall).stroke(Color.supraBorder, lineWidth: 1))
+    }
+
+    private func missionColor(_ status: Mission.Status) -> Color {
+        switch status {
+        case .completed: .supraGreen
+        case .active: .supraAccent
+        case .blocked: .supraRed
+        case .planned: .supraTextTertiary
+        }
+    }
+
+    private func executePrompt() {
+        let text = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return }
+        isExecuting = true
+        Task {
+            if let id = await missionStore.createMission(intent: text) {
+                prompt = ""
+                await missionStore.executeMission(id: id)
+            }
+            isExecuting = false
+        }
     }
 
     private var potentielSection: some View {

@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/adr.schema.json",
+  "title": "Architecture Decision Record",
+  "description": "An Architecture Decision Record (ADR) documents a significant architectural decision, its context, consequences, and alternatives.",
+  "type": "object",
+  "required": ["id", "title", "status", "level", "date", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the ADR"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "adr_number": {
+      "type": "string",
+      "pattern": "^ADR-\\d{3}$",
+      "description": "Sequential ADR number (e.g., ADR-001)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the architectural decision"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PROPOSED", "REVIEW", "ACCEPTED", "REJECTED", "DEPRECATED", "SUPERSEDED", "ARCHIVED"],
+      "description": "Current lifecycle status of the ADR"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["CONSTITUTION", "ARCHITECTURE", "STANDARD", "COMPONENT"],
+      "description": "Governance level of this ADR"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the decision (YYYY-MM-DD)"
+    },
+    "author": {
+      "type": "string",
+      "description": "Agent or person who proposed the ADR"
+    },
+    "validators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent", "status"],
+        "properties": {
+          "agent": { "type": "string" },
+          "status": { "type": "string", "enum": ["APPROVED", "REJECTED", "PENDING"] },
+          "date": { "type": "string", "format": "date-time" }
+        }
+      },
+      "description": "Validation records for this ADR"
+    },
+    "context": {
+      "type": "string",
+      "description": "Description of the problem or opportunity motivating this decision"
+    },
+    "decision": {
+      "type": "string",
+      "description": "The decision that was made"
+    },
+    "justification": {
+      "type": "string",
+      "description": "Why this decision was made, based on evidence"
+    },
+    "consequences": {
+      "type": "object",
+      "required": ["positive", "negative", "neutral"],
+      "properties": {
+        "positive": { "type": "array", "items": { "type": "string" } },
+        "negative": { "type": "array", "items": { "type": "string" } },
+        "neutral": { "type": "array", "items": { "type": "string" } }
+      },
+      "description": "Consequences of this decision"
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "advantages", "disadvantages", "reason_rejected"],
+        "properties": {
+          "title": { "type": "string" },
+          "advantages": { "type": "array", "items": { "type": "string" } },
+          "disadvantages": { "type": "array", "items": { "type": "string" } },
+          "reason_rejected": { "type": "string" }
+        }
+      },
+      "description": "Alternative options considered and why they were rejected"
+    },
+    "compliance": {
+      "type": "object",
+      "required": ["constitution", "immutable_principles", "executive_canon", "linked_adrs"],
+      "properties": {
+        "constitution": { "type": "boolean" },
+        "immutable_principles": { "type": "boolean" },
+        "executive_canon": { "type": "boolean" },
+        "linked_adrs": { "type": "array", "items": { "type": "string" } }
+      },
+      "description": "Compliance checklist"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for categorization"
+    },
+    "file": {
+      "type": ["string", "null"],
+      "description": "Path to the markdown ADR file"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "ADR numbers this ADR supersedes"
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "description": "ADR number that supersedes this one"
+    },
+    "impacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Components, files, or systems impacted by this ADR"
+    },
+    "validation_date": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when validated"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the ADR content"
+    }
+  }
+}

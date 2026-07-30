@@ -1,0 +1,5954 @@
+{
+  "observer": "GO_SUPRA_SYMBOL_GRAPH_V2",
+  "mode": "READ_ONLY",
+  "summary": {
+    "files": 18,
+    "symbols": 743
+  },
+  "symbols": [
+    {
+      "id": "SUPRA/ArtifactReader.swift:2:struct:ArtifactReader",
+      "kind": "struct",
+      "name": "ArtifactReader",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:4:enum:ReaderError",
+      "kind": "enum",
+      "name": "ReaderError",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:7:var:errorDescription",
+      "kind": "var",
+      "name": "errorDescription",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 7
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:17:let:fileManager",
+      "kind": "let",
+      "name": "fileManager",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 17
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:19:let:lotURLs",
+      "kind": "let",
+      "name": "lotURLs",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 19
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:25:let:buildURL",
+      "kind": "let",
+      "name": "buildURL",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 25
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:26:let:manifestURL",
+      "kind": "let",
+      "name": "manifestURL",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 26
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:27:let:desktopEstateURL",
+      "kind": "let",
+      "name": "desktopEstateURL",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 27
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:28:let:indexURL",
+      "kind": "let",
+      "name": "indexURL",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 28
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:33:func:read",
+      "kind": "func",
+      "name": "read",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 33
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:35:let:lots",
+      "kind": "let",
+      "name": "lots",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 35
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:38:let:build",
+      "kind": "let",
+      "name": "build",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 38
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:39:let:manifest",
+      "kind": "let",
+      "name": "manifest",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 39
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:40:let:estate",
+      "kind": "let",
+      "name": "estate",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 40
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:55:func:availableJSONStatus",
+      "kind": "func",
+      "name": "availableJSONStatus",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 55
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:69:func:availableTextStatus",
+      "kind": "func",
+      "name": "availableTextStatus",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 69
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:83:func:jsonStatus",
+      "kind": "func",
+      "name": "jsonStatus",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 83
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:91:let:value",
+      "kind": "let",
+      "name": "value",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 91
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:94:func:optionalJSONStatus",
+      "kind": "func",
+      "name": "optionalJSONStatus",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 94
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:102:func:textStatus",
+      "kind": "func",
+      "name": "textStatus",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 102
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:107:let:meaningful",
+      "kind": "let",
+      "name": "meaningful",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 107
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:114:func:jsonDetail",
+      "kind": "func",
+      "name": "jsonDetail",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 114
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:116:let:keys",
+      "kind": "let",
+      "name": "keys",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 116
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:117:let:values",
+      "kind": "let",
+      "name": "values",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 117
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:120:func:status",
+      "kind": "func",
+      "name": "status",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 120
+    },
+    {
+      "id": "SUPRA/ArtifactReader.swift:128:let:modifiedAt",
+      "kind": "let",
+      "name": "modifiedAt",
+      "file": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "line": 128
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:6:enum:SUPRACAnnoNicoIntegration",
+      "kind": "enum",
+      "name": "SUPRACAnnoNicoIntegration",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:8:let:packageID",
+      "kind": "let",
+      "name": "packageID",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 8
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:9:let:pucheroSource",
+      "kind": "let",
+      "name": "pucheroSource",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:12:let:nicoAppSource",
+      "kind": "let",
+      "name": "nicoAppSource",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:15:let:videoSwapSource",
+      "kind": "let",
+      "name": "videoSwapSource",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 15
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:18:func:snapshot",
+      "kind": "func",
+      "name": "snapshot",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 18
+    },
+    {
+      "id": "SUPRA/CAnnoNicoIntegrationBridge.swift:34:var:recoveredCount",
+      "kind": "var",
+      "name": "recoveredCount",
+      "file": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/ContentView.swift:11:let:messageId",
+      "kind": "let",
+      "name": "messageId",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/ContentView.swift:12:let:source",
+      "kind": "let",
+      "name": "source",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/ContentView.swift:13:let:target",
+      "kind": "let",
+      "name": "target",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 13
+    },
+    {
+      "id": "SUPRA/ContentView.swift:14:let:type",
+      "kind": "let",
+      "name": "type",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 14
+    },
+    {
+      "id": "SUPRA/ContentView.swift:15:let:payload",
+      "kind": "let",
+      "name": "payload",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 15
+    },
+    {
+      "id": "SUPRA/ContentView.swift:16:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 16
+    },
+    {
+      "id": "SUPRA/ContentView.swift:27:var:rootURL",
+      "kind": "var",
+      "name": "rootURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 27
+    },
+    {
+      "id": "SUPRA/ContentView.swift:34:var:inboxURL",
+      "kind": "var",
+      "name": "inboxURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/ContentView.swift:38:var:terminalRegistryURL",
+      "kind": "var",
+      "name": "terminalRegistryURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 38
+    },
+    {
+      "id": "SUPRA/ContentView.swift:44:func:publish",
+      "kind": "func",
+      "name": "publish",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 44
+    },
+    {
+      "id": "SUPRA/ContentView.swift:55:let:message",
+      "kind": "let",
+      "name": "message",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 55
+    },
+    {
+      "id": "SUPRA/ContentView.swift:63:let:data",
+      "kind": "let",
+      "name": "data",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 63
+    },
+    {
+      "id": "SUPRA/ContentView.swift:65:let:destination",
+      "kind": "let",
+      "name": "destination",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 65
+    },
+    {
+      "id": "SUPRA/ContentView.swift:71:func:status",
+      "kind": "func",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 71
+    },
+    {
+      "id": "SUPRA/ContentView.swift:77:func:registerSUPRAAndGabriel",
+      "kind": "func",
+      "name": "registerSUPRAAndGabriel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 77
+    },
+    {
+      "id": "SUPRA/ContentView.swift:108:let:evidenceId",
+      "kind": "let",
+      "name": "evidenceId",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 108
+    },
+    {
+      "id": "SUPRA/ContentView.swift:109:let:sourcePath",
+      "kind": "let",
+      "name": "sourcePath",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 109
+    },
+    {
+      "id": "SUPRA/ContentView.swift:110:let:contentType",
+      "kind": "let",
+      "name": "contentType",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 110
+    },
+    {
+      "id": "SUPRA/ContentView.swift:111:let:content",
+      "kind": "let",
+      "name": "content",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 111
+    },
+    {
+      "id": "SUPRA/ContentView.swift:115:let:maximumEvidenceBytes",
+      "kind": "let",
+      "name": "maximumEvidenceBytes",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 115
+    },
+    {
+      "id": "SUPRA/ContentView.swift:116:func:loadRequiredEvidence",
+      "kind": "func",
+      "name": "loadRequiredEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 116
+    },
+    {
+      "id": "SUPRA/ContentView.swift:118:let:home",
+      "kind": "let",
+      "name": "home",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 118
+    },
+    {
+      "id": "SUPRA/ContentView.swift:119:let:probeRoot",
+      "kind": "let",
+      "name": "probeRoot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 119
+    },
+    {
+      "id": "SUPRA/ContentView.swift:124:let:actionRunsRoot",
+      "kind": "let",
+      "name": "actionRunsRoot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 124
+    },
+    {
+      "id": "SUPRA/ContentView.swift:129:let:reconciliationRunsRoot",
+      "kind": "let",
+      "name": "reconciliationRunsRoot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 129
+    },
+    {
+      "id": "SUPRA/ContentView.swift:134:let:graphSchemaProbeURL",
+      "kind": "let",
+      "name": "graphSchemaProbeURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 134
+    },
+    {
+      "id": "SUPRA/ContentView.swift:140:let:actionStatusURL",
+      "kind": "let",
+      "name": "actionStatusURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 140
+    },
+    {
+      "id": "SUPRA/ContentView.swift:147:let:reconciliationStatusURL",
+      "kind": "let",
+      "name": "reconciliationStatusURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 147
+    },
+    {
+      "id": "SUPRA/ContentView.swift:153:var:evidence",
+      "kind": "var",
+      "name": "evidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 153
+    },
+    {
+      "id": "SUPRA/ContentView.swift:157:let:loaded",
+      "kind": "let",
+      "name": "loaded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 157
+    },
+    {
+      "id": "SUPRA/ContentView.swift:165:let:loaded",
+      "kind": "let",
+      "name": "loaded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 165
+    },
+    {
+      "id": "SUPRA/ContentView.swift:174:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 174
+    },
+    {
+      "id": "SUPRA/ContentView.swift:180:let:handle",
+      "kind": "let",
+      "name": "handle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 180
+    },
+    {
+      "id": "SUPRA/ContentView.swift:194:let:fileExtension",
+      "kind": "let",
+      "name": "fileExtension",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 194
+    },
+    {
+      "id": "SUPRA/ContentView.swift:196:let:contentType",
+      "kind": "let",
+      "name": "contentType",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 196
+    },
+    {
+      "id": "SUPRA/ContentView.swift:215:func:latestExistingFile",
+      "kind": "func",
+      "name": "latestExistingFile",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 215
+    },
+    {
+      "id": "SUPRA/ContentView.swift:223:let:enumerator",
+      "kind": "let",
+      "name": "enumerator",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 223
+    },
+    {
+      "id": "SUPRA/ContentView.swift:237:let:normalizedNameFragments",
+      "kind": "let",
+      "name": "normalizedNameFragments",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 237
+    },
+    {
+      "id": "SUPRA/ContentView.swift:241:let:normalizedPathFragments",
+      "kind": "let",
+      "name": "normalizedPathFragments",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 241
+    },
+    {
+      "id": "SUPRA/ContentView.swift:245:var:latestURL",
+      "kind": "var",
+      "name": "latestURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 245
+    },
+    {
+      "id": "SUPRA/ContentView.swift:247:var:latestDate",
+      "kind": "var",
+      "name": "latestDate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 247
+    },
+    {
+      "id": "SUPRA/ContentView.swift:250:let:values",
+      "kind": "let",
+      "name": "values",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 250
+    },
+    {
+      "id": "SUPRA/ContentView.swift:260:let:fileExtension",
+      "kind": "let",
+      "name": "fileExtension",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 260
+    },
+    {
+      "id": "SUPRA/ContentView.swift:266:let:normalizedName",
+      "kind": "let",
+      "name": "normalizedName",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 266
+    },
+    {
+      "id": "SUPRA/ContentView.swift:274:let:normalizedPath",
+      "kind": "let",
+      "name": "normalizedPath",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 274
+    },
+    {
+      "id": "SUPRA/ContentView.swift:282:let:modificationDate",
+      "kind": "let",
+      "name": "modificationDate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 282
+    },
+    {
+      "id": "SUPRA/ContentView.swift:294:func:removePlaceholderMissionEvidence",
+      "kind": "func",
+      "name": "removePlaceholderMissionEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 294
+    },
+    {
+      "id": "SUPRA/ContentView.swift:298:let:protectedEvidenceIds",
+      "kind": "let",
+      "name": "protectedEvidenceIds",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 298
+    },
+    {
+      "id": "SUPRA/ContentView.swift:302:let:genericEvidenceKeys",
+      "kind": "let",
+      "name": "genericEvidenceKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 302
+    },
+    {
+      "id": "SUPRA/ContentView.swift:323:let:possibleId",
+      "kind": "let",
+      "name": "possibleId",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 323
+    },
+    {
+      "id": "SUPRA/ContentView.swift:334:let:content",
+      "kind": "let",
+      "name": "content",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 334
+    },
+    {
+      "id": "SUPRA/ContentView.swift:350:let:buildVerdict",
+      "kind": "let",
+      "name": "buildVerdict",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 350
+    },
+    {
+      "id": "SUPRA/ContentView.swift:351:let:rollbackVerdict",
+      "kind": "let",
+      "name": "rollbackVerdict",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 351
+    },
+    {
+      "id": "SUPRA/ContentView.swift:352:let:sourceMutation",
+      "kind": "let",
+      "name": "sourceMutation",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 352
+    },
+    {
+      "id": "SUPRA/ContentView.swift:353:let:buildLogPath",
+      "kind": "let",
+      "name": "buildLogPath",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 353
+    },
+    {
+      "id": "SUPRA/ContentView.swift:354:let:rollbackProofPath",
+      "kind": "let",
+      "name": "rollbackProofPath",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 354
+    },
+    {
+      "id": "SUPRA/ContentView.swift:355:let:unavailable",
+      "kind": "let",
+      "name": "unavailable",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 355
+    },
+    {
+      "id": "SUPRA/ContentView.swift:363:var:isHealthy",
+      "kind": "var",
+      "name": "isHealthy",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 363
+    },
+    {
+      "id": "SUPRA/ContentView.swift:372:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 372
+    },
+    {
+      "id": "SUPRA/ContentView.swift:373:let:root",
+      "kind": "let",
+      "name": "root",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 373
+    },
+    {
+      "id": "SUPRA/ContentView.swift:378:let:buildURL",
+      "kind": "let",
+      "name": "buildURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 378
+    },
+    {
+      "id": "SUPRA/ContentView.swift:380:let:rollbackURL",
+      "kind": "let",
+      "name": "rollbackURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 380
+    },
+    {
+      "id": "SUPRA/ContentView.swift:381:let:logURL",
+      "kind": "let",
+      "name": "logURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 381
+    },
+    {
+      "id": "SUPRA/ContentView.swift:391:func:jsonString",
+      "kind": "func",
+      "name": "jsonString",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 391
+    },
+    {
+      "id": "SUPRA/ContentView.swift:394:let:object",
+      "kind": "let",
+      "name": "object",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 394
+    },
+    {
+      "id": "SUPRA/ContentView.swift:395:let:dictionary",
+      "kind": "let",
+      "name": "dictionary",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 395
+    },
+    {
+      "id": "SUPRA/ContentView.swift:403:enum:SUPRAStructureMode",
+      "kind": "enum",
+      "name": "SUPRAStructureMode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 403
+    },
+    {
+      "id": "SUPRA/ContentView.swift:409:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 409
+    },
+    {
+      "id": "SUPRA/ContentView.swift:410:var:symbol",
+      "kind": "var",
+      "name": "symbol",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 410
+    },
+    {
+      "id": "SUPRA/ContentView.swift:418:var:subtitle",
+      "kind": "var",
+      "name": "subtitle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 418
+    },
+    {
+      "id": "SUPRA/ContentView.swift:427:enum:SUPRAHumanStage",
+      "kind": "enum",
+      "name": "SUPRAHumanStage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 427
+    },
+    {
+      "id": "SUPRA/ContentView.swift:434:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 434
+    },
+    {
+      "id": "SUPRA/ContentView.swift:435:var:symbol",
+      "kind": "var",
+      "name": "symbol",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 435
+    },
+    {
+      "id": "SUPRA/ContentView.swift:445:struct:ContentView",
+      "kind": "struct",
+      "name": "ContentView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 445
+    },
+    {
+      "id": "SUPRA/ContentView.swift:447:var:store",
+      "kind": "var",
+      "name": "store",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 447
+    },
+    {
+      "id": "SUPRA/ContentView.swift:448:var:selection",
+      "kind": "var",
+      "name": "selection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 448
+    },
+    {
+      "id": "SUPRA/ContentView.swift:449:var:chatDraft",
+      "kind": "var",
+      "name": "chatDraft",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 449
+    },
+    {
+      "id": "SUPRA/ContentView.swift:450:var:pendingAction",
+      "kind": "var",
+      "name": "pendingAction",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 450
+    },
+    {
+      "id": "SUPRA/ContentView.swift:451:var:showActionConfirmation",
+      "kind": "var",
+      "name": "showActionConfirmation",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 451
+    },
+    {
+      "id": "SUPRA/ContentView.swift:452:var:systemIntegrity",
+      "kind": "var",
+      "name": "systemIntegrity",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 452
+    },
+    {
+      "id": "SUPRA/ContentView.swift:453:var:operationalQuery",
+      "kind": "var",
+      "name": "operationalQuery",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 453
+    },
+    {
+      "id": "SUPRA/ContentView.swift:454:var:operationalScope",
+      "kind": "var",
+      "name": "operationalScope",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 454
+    },
+    {
+      "id": "SUPRA/ContentView.swift:455:var:operationalSelectedKey",
+      "kind": "var",
+      "name": "operationalSelectedKey",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 455
+    },
+    {
+      "id": "SUPRA/ContentView.swift:456:var:operationalInspectorVisible",
+      "kind": "var",
+      "name": "operationalInspectorVisible",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 456
+    },
+    {
+      "id": "SUPRA/ContentView.swift:457:var:sidebarAdvancedExpanded",
+      "kind": "var",
+      "name": "sidebarAdvancedExpanded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 457
+    },
+    {
+      "id": "SUPRA/ContentView.swift:458:var:autopilotStarted",
+      "kind": "var",
+      "name": "autopilotStarted",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 458
+    },
+    {
+      "id": "SUPRA/ContentView.swift:459:var:gabrielSnapshot",
+      "kind": "var",
+      "name": "gabrielSnapshot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 459
+    },
+    {
+      "id": "SUPRA/ContentView.swift:460:var:gabrielBusy",
+      "kind": "var",
+      "name": "gabrielBusy",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 460
+    },
+    {
+      "id": "SUPRA/ContentView.swift:461:var:structureMode",
+      "kind": "var",
+      "name": "structureMode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 461
+    },
+    {
+      "id": "SUPRA/ContentView.swift:462:var:humanStage",
+      "kind": "var",
+      "name": "humanStage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 462
+    },
+    {
+      "id": "SUPRA/ContentView.swift:463:var:columnVisibility",
+      "kind": "var",
+      "name": "columnVisibility",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 463
+    },
+    {
+      "id": "SUPRA/ContentView.swift:464:var:immersiveFocus",
+      "kind": "var",
+      "name": "immersiveFocus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 464
+    },
+    {
+      "id": "SUPRA/ContentView.swift:465:var:circuitPurgeCount",
+      "kind": "var",
+      "name": "circuitPurgeCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 465
+    },
+    {
+      "id": "SUPRA/ContentView.swift:466:var:filteredInputStatus",
+      "kind": "var",
+      "name": "filteredInputStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 466
+    },
+    {
+      "id": "SUPRA/ContentView.swift:467:var:autonomousHumanGateEnabled",
+      "kind": "var",
+      "name": "autonomousHumanGateEnabled",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 467
+    },
+    {
+      "id": "SUPRA/ContentView.swift:468:var:autonomousHumanGateStarted",
+      "kind": "var",
+      "name": "autonomousHumanGateStarted",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 468
+    },
+    {
+      "id": "SUPRA/ContentView.swift:469:var:autonomousCycleCount",
+      "kind": "var",
+      "name": "autonomousCycleCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 469
+    },
+    {
+      "id": "SUPRA/ContentView.swift:470:var:autonomousStatus",
+      "kind": "var",
+      "name": "autonomousStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 470
+    },
+    {
+      "id": "SUPRA/ContentView.swift:471:var:autonomousLastProcessedReply",
+      "kind": "var",
+      "name": "autonomousLastProcessedReply",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 471
+    },
+    {
+      "id": "SUPRA/ContentView.swift:472:var:technicalDisclosureExpanded",
+      "kind": "var",
+      "name": "technicalDisclosureExpanded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 472
+    },
+    {
+      "id": "SUPRA/ContentView.swift:473:var:terminalMegabusStatus",
+      "kind": "var",
+      "name": "terminalMegabusStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 473
+    },
+    {
+      "id": "SUPRA/ContentView.swift:474:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 474
+    },
+    {
+      "id": "SUPRA/ContentView.swift:519:let:authorizedValue",
+      "kind": "let",
+      "name": "authorizedValue",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 519
+    },
+    {
+      "id": "SUPRA/ContentView.swift:526:let:authorizedValue",
+      "kind": "let",
+      "name": "authorizedValue",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 526
+    },
+    {
+      "id": "SUPRA/ContentView.swift:535:var:structureNavigator",
+      "kind": "var",
+      "name": "structureNavigator",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 535
+    },
+    {
+      "id": "SUPRA/ContentView.swift:556:var:structureContext",
+      "kind": "var",
+      "name": "structureContext",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 556
+    },
+    {
+      "id": "SUPRA/ContentView.swift:577:func:structureSummary",
+      "kind": "func",
+      "name": "structureSummary",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 577
+    },
+    {
+      "id": "SUPRA/ContentView.swift:584:func:structureMetric",
+      "kind": "func",
+      "name": "structureMetric",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 584
+    },
+    {
+      "id": "SUPRA/ContentView.swift:592:var:humanIntent",
+      "kind": "var",
+      "name": "humanIntent",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 592
+    },
+    {
+      "id": "SUPRA/ContentView.swift:602:var:humanNextAction",
+      "kind": "var",
+      "name": "humanNextAction",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 602
+    },
+    {
+      "id": "SUPRA/ContentView.swift:609:var:structureDetail",
+      "kind": "var",
+      "name": "structureDetail",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 609
+    },
+    {
+      "id": "SUPRA/ContentView.swift:623:var:hydrogenExperience",
+      "kind": "var",
+      "name": "hydrogenExperience",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 623
+    },
+    {
+      "id": "SUPRA/ContentView.swift:635:var:atomiumExperience",
+      "kind": "var",
+      "name": "atomiumExperience",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 635
+    },
+    {
+      "id": "SUPRA/ContentView.swift:647:var:arboExperience",
+      "kind": "var",
+      "name": "arboExperience",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 647
+    },
+    {
+      "id": "SUPRA/ContentView.swift:659:var:orbitalExperience",
+      "kind": "var",
+      "name": "orbitalExperience",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 659
+    },
+    {
+      "id": "SUPRA/ContentView.swift:671:func:structureHero",
+      "kind": "func",
+      "name": "structureHero",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 671
+    },
+    {
+      "id": "SUPRA/ContentView.swift:685:var:cannonicoCircuitBoard",
+      "kind": "var",
+      "name": "cannonicoCircuitBoard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 685
+    },
+    {
+      "id": "SUPRA/ContentView.swift:768:func:circuitNode",
+      "kind": "func",
+      "name": "circuitNode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 768
+    },
+    {
+      "id": "SUPRA/ContentView.swift:778:func:circuitChip",
+      "kind": "func",
+      "name": "circuitChip",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 778
+    },
+    {
+      "id": "SUPRA/ContentView.swift:782:var:integrationAtomium",
+      "kind": "var",
+      "name": "integrationAtomium",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 782
+    },
+    {
+      "id": "SUPRA/ContentView.swift:792:func:structureCard",
+      "kind": "func",
+      "name": "structureCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 792
+    },
+    {
+      "id": "SUPRA/ContentView.swift:803:var:arboGraph",
+      "kind": "var",
+      "name": "arboGraph",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 803
+    },
+    {
+      "id": "SUPRA/ContentView.swift:812:var:gabrielOrbital",
+      "kind": "var",
+      "name": "gabrielOrbital",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 812
+    },
+    {
+      "id": "SUPRA/ContentView.swift:833:var:structureBackground",
+      "kind": "var",
+      "name": "structureBackground",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 833
+    },
+    {
+      "id": "SUPRA/ContentView.swift:840:var:sidebar",
+      "kind": "var",
+      "name": "sidebar",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 840
+    },
+    {
+      "id": "SUPRA/ContentView.swift:959:var:detail",
+      "kind": "var",
+      "name": "detail",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 959
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1047:var:operationalWorkspaceRecords",
+      "kind": "var",
+      "name": "operationalWorkspaceRecords",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1047
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1049:let:records",
+      "kind": "let",
+      "name": "records",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1049
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1066:let:query",
+      "kind": "let",
+      "name": "query",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1066
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1077:var:operationalSelectedRecord",
+      "kind": "var",
+      "name": "operationalSelectedRecord",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1077
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1087:func:isAuthorizedHumanGate",
+      "kind": "func",
+      "name": "isAuthorizedHumanGate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1087
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1089:let:normalized",
+      "kind": "let",
+      "name": "normalized",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1089
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1097:let:authorizedSignals",
+      "kind": "let",
+      "name": "authorizedSignals",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1097
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1119:var:hasAuthorizedHumanGate",
+      "kind": "var",
+      "name": "hasAuthorizedHumanGate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1119
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1123:var:effectiveAutonomousStatus",
+      "kind": "var",
+      "name": "effectiveAutonomousStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1123
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1127:var:operationalDecisionCandidates",
+      "kind": "var",
+      "name": "operationalDecisionCandidates",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1127
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1130:let:records",
+      "kind": "let",
+      "name": "records",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1130
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1137:var:cannonicoParallelRecords",
+      "kind": "var",
+      "name": "cannonicoParallelRecords",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1137
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1139:let:records",
+      "kind": "let",
+      "name": "records",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1139
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1149:var:cannonicoIntegrationSnapshot",
+      "kind": "var",
+      "name": "cannonicoIntegrationSnapshot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1149
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1152:var:cannonicoRecoveredReferences",
+      "kind": "var",
+      "name": "cannonicoRecoveredReferences",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1152
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1158:var:cannonicoPendingReferences",
+      "kind": "var",
+      "name": "cannonicoPendingReferences",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1158
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1164:var:cannonicoIntegrationMissionPrompt",
+      "kind": "var",
+      "name": "cannonicoIntegrationMissionPrompt",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1164
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1166:let:moduleLines",
+      "kind": "let",
+      "name": "moduleLines",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1166
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1167:let:path",
+      "kind": "let",
+      "name": "path",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1167
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1168:let:capabilities",
+      "kind": "let",
+      "name": "capabilities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1168
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1169:let:inputs",
+      "kind": "let",
+      "name": "inputs",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1169
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1170:let:outputs",
+      "kind": "let",
+      "name": "outputs",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1170
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1184:var:appIntegrationCandidates",
+      "kind": "var",
+      "name": "appIntegrationCandidates",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1184
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1194:var:autopilotLatestReply",
+      "kind": "var",
+      "name": "autopilotLatestReply",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1194
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1198:var:operationalWorkspacePage",
+      "kind": "var",
+      "name": "operationalWorkspacePage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1198
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1605:var:operationalInspector",
+      "kind": "var",
+      "name": "operationalInspector",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1605
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1690:func:inspectorField",
+      "kind": "func",
+      "name": "inspectorField",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1690
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1703:func:operationalIcon",
+      "kind": "func",
+      "name": "operationalIcon",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1703
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1705:let:combined",
+      "kind": "let",
+      "name": "combined",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1705
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1717:var:systemIntegrityPage",
+      "kind": "var",
+      "name": "systemIntegrityPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1717
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1795:func:integrityCard",
+      "kind": "func",
+      "name": "integrityCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1795
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1797:let:positive",
+      "kind": "let",
+      "name": "positive",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1797
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1817:func:integrityEvidenceRow",
+      "kind": "func",
+      "name": "integrityEvidenceRow",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1817
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1845:var:actionCenterPage",
+      "kind": "var",
+      "name": "actionCenterPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1845
+    },
+    {
+      "id": "SUPRA/ContentView.swift:1917:var:humanSynthesisChatPage",
+      "kind": "var",
+      "name": "humanSynthesisChatPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 1917
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2029:var:humanAutonomyCard",
+      "kind": "var",
+      "name": "humanAutonomyCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2029
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2093:func:humanSynthesisCard",
+      "kind": "func",
+      "name": "humanSynthesisCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2093
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2097:let:synthesis",
+      "kind": "let",
+      "name": "synthesis",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2097
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2174:struct:HumanSynthesis",
+      "kind": "struct",
+      "name": "HumanSynthesis",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2174
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2176:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2176
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2177:let:summary",
+      "kind": "let",
+      "name": "summary",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2177
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2178:let:badge",
+      "kind": "let",
+      "name": "badge",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2178
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2179:let:operations",
+      "kind": "let",
+      "name": "operations",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2179
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2180:let:requiresHuman",
+      "kind": "let",
+      "name": "requiresHuman",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2180
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2181:let:humanDecision",
+      "kind": "let",
+      "name": "humanDecision",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2181
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2183:func:humanSynthesis",
+      "kind": "func",
+      "name": "humanSynthesis",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2183
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2187:let:upper",
+      "kind": "let",
+      "name": "upper",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2187
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2188:let:humanGateMarkers",
+      "kind": "let",
+      "name": "humanGateMarkers",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2188
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2199:let:requiresHuman",
+      "kind": "let",
+      "name": "requiresHuman",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2199
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2203:let:operationNames",
+      "kind": "let",
+      "name": "operationNames",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2203
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2212:let:operations",
+      "kind": "let",
+      "name": "operations",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2212
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2221:let:moduleCount",
+      "kind": "let",
+      "name": "moduleCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2221
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2224:let:summary",
+      "kind": "let",
+      "name": "summary",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2224
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2265:func:startAutonomousHumanGateIfNeeded",
+      "kind": "func",
+      "name": "startAutonomousHumanGateIfNeeded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2265
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2286:let:synthesis",
+      "kind": "let",
+      "name": "synthesis",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2286
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2319:func:sendHumanChatDraft",
+      "kind": "func",
+      "name": "sendHumanChatDraft",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2319
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2321:let:prompt",
+      "kind": "let",
+      "name": "prompt",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2321
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2337:var:chatPage",
+      "kind": "var",
+      "name": "chatPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2337
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2416:func:startAutopilotIfNeeded",
+      "kind": "func",
+      "name": "startAutopilotIfNeeded",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2416
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2420:let:names",
+      "kind": "let",
+      "name": "names",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2420
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2425:let:prompt",
+      "kind": "let",
+      "name": "prompt",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2425
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2439:func:sendChatDraft",
+      "kind": "func",
+      "name": "sendChatDraft",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2439
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2442:let:text",
+      "kind": "let",
+      "name": "text",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2442
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2447:var:executivePage",
+      "kind": "var",
+      "name": "executivePage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2447
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2482:var:hero",
+      "kind": "var",
+      "name": "hero",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2482
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2533:var:metricsGrid",
+      "kind": "var",
+      "name": "metricsGrid",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2533
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2578:func:metricCard",
+      "kind": "func",
+      "name": "metricCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2578
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2608:var:alertsPanel",
+      "kind": "var",
+      "name": "alertsPanel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2608
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2641:var:sourcesPanel",
+      "kind": "var",
+      "name": "sourcesPanel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2641
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2681:func:registryPage",
+      "kind": "func",
+      "name": "registryPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2681
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2746:func:sourcePage",
+      "kind": "func",
+      "name": "sourcePage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2746
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2753:let:matchingSources",
+      "kind": "let",
+      "name": "matchingSources",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2753
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2795:var:interfacePage",
+      "kind": "var",
+      "name": "interfacePage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2795
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2839:func:interfaceRule",
+      "kind": "func",
+      "name": "interfaceRule",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2839
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2859:func:pageHeader",
+      "kind": "func",
+      "name": "pageHeader",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2859
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2888:func:sectionHeader",
+      "kind": "func",
+      "name": "sectionHeader",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2888
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2908:func:statusBadge",
+      "kind": "func",
+      "name": "statusBadge",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2908
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2920:func:statusColor",
+      "kind": "func",
+      "name": "statusColor",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2920
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2937:struct:SUPRAChatMessage",
+      "kind": "struct",
+      "name": "SUPRAChatMessage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2937
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2940:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2940
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2941:let:role",
+      "kind": "let",
+      "name": "role",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2941
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2942:let:text",
+      "kind": "let",
+      "name": "text",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2942
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2944:struct:SUPRAChatRequest",
+      "kind": "struct",
+      "name": "SUPRAChatRequest",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2944
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2946:let:message",
+      "kind": "let",
+      "name": "message",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2946
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2948:struct:SUPRAChatResponse",
+      "kind": "struct",
+      "name": "SUPRAChatResponse",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2948
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2950:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2950
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2951:let:reply",
+      "kind": "let",
+      "name": "reply",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2951
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2952:let:error",
+      "kind": "let",
+      "name": "error",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2952
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2958:let:schema",
+      "kind": "let",
+      "name": "schema",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2958
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2959:let:remoteExecution",
+      "kind": "let",
+      "name": "remoteExecution",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2959
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2960:let:freeShell",
+      "kind": "let",
+      "name": "freeShell",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2960
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2961:let:argumentsAllowed",
+      "kind": "let",
+      "name": "argumentsAllowed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2961
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2962:let:actions",
+      "kind": "let",
+      "name": "actions",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2962
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2963:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2963
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2972:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2972
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2973:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2973
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2974:let:scriptPath",
+      "kind": "let",
+      "name": "scriptPath",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2974
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2975:let:sha256",
+      "kind": "let",
+      "name": "sha256",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2975
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2976:let:mode",
+      "kind": "let",
+      "name": "mode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2976
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2977:let:requiresConfirmation",
+      "kind": "let",
+      "name": "requiresConfirmation",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2977
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2978:let:backupPaths",
+      "kind": "let",
+      "name": "backupPaths",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2978
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2979:let:description",
+      "kind": "let",
+      "name": "description",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2979
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2980:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2980
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2987:enum:SUPRAActionError",
+      "kind": "enum",
+      "name": "SUPRAActionError",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2987
+    },
+    {
+      "id": "SUPRA/ContentView.swift:2991:var:errorDescription",
+      "kind": "var",
+      "name": "errorDescription",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 2991
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3004:enum:SUPRAActionRuntime",
+      "kind": "enum",
+      "name": "SUPRAActionRuntime",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3004
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3016:let:manifest",
+      "kind": "let",
+      "name": "manifest",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3016
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3026:let:raw",
+      "kind": "let",
+      "name": "raw",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3026
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3027:let:home",
+      "kind": "let",
+      "name": "home",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3027
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3028:let:allowed",
+      "kind": "let",
+      "name": "allowed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3028
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3031:let:digest",
+      "kind": "let",
+      "name": "digest",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3031
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3038:let:fm",
+      "kind": "let",
+      "name": "fm",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3038
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3039:let:stamp",
+      "kind": "let",
+      "name": "stamp",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3039
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3040:let:run",
+      "kind": "let",
+      "name": "run",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3040
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3041:let:backup",
+      "kind": "let",
+      "name": "backup",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3041
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3043:var:saved",
+      "kind": "var",
+      "name": "saved",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3043
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3045:let:source",
+      "kind": "let",
+      "name": "source",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3045
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3046:let:destination",
+      "kind": "let",
+      "name": "destination",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3046
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3049:let:outputURL",
+      "kind": "let",
+      "name": "outputURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3049
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3051:let:handle",
+      "kind": "let",
+      "name": "handle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3051
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3053:let:process",
+      "kind": "let",
+      "name": "process",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3053
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3067:let:text",
+      "kind": "let",
+      "name": "text",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3067
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3074:class:SUPRAExecutiveStore",
+      "kind": "class",
+      "name": "SUPRAExecutiveStore",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3074
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3084:let:chatURL",
+      "kind": "let",
+      "name": "chatURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3084
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3086:func:sendChat",
+      "kind": "func",
+      "name": "sendChat",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3086
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3093:var:request",
+      "kind": "var",
+      "name": "request",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3093
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3104:var:localBridgePayload",
+      "kind": "var",
+      "name": "localBridgePayload",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3104
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3110:let:missionEvidence",
+      "kind": "let",
+      "name": "missionEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3110
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3113:let:requiredMissionEvidence",
+      "kind": "let",
+      "name": "requiredMissionEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3113
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3118:let:loadedMissionEvidence",
+      "kind": "let",
+      "name": "loadedMissionEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3118
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3126:let:missingEvidence",
+      "kind": "let",
+      "name": "missingEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3126
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3162:let:configuration",
+      "kind": "let",
+      "name": "configuration",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3162
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3167:let:session",
+      "kind": "let",
+      "name": "session",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3167
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3172:let:payload",
+      "kind": "let",
+      "name": "payload",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3172
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3189:var:modelURL",
+      "kind": "var",
+      "name": "modelURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3189
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3197:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3197
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3211:let:data",
+      "kind": "let",
+      "name": "data",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3211
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3212:let:decoder",
+      "kind": "let",
+      "name": "decoder",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3212
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3213:let:baseModel",
+      "kind": "let",
+      "name": "baseModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3213
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3219:let:connection",
+      "kind": "let",
+      "name": "connection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3219
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3237:func:loadActions",
+      "kind": "func",
+      "name": "loadActions",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3237
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3248:func:verify",
+      "kind": "func",
+      "name": "verify",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3248
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3257:func:execute",
+      "kind": "func",
+      "name": "execute",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3257
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3262:let:output",
+      "kind": "let",
+      "name": "output",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3262
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3271:func:revealModel",
+      "kind": "func",
+      "name": "revealModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3271
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3280:struct:SUPRAExecutiveModel",
+      "kind": "struct",
+      "name": "SUPRAExecutiveModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3280
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3282:let:schema",
+      "kind": "let",
+      "name": "schema",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3282
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3283:let:generatedAt",
+      "kind": "let",
+      "name": "generatedAt",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3283
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3284:let:mode",
+      "kind": "let",
+      "name": "mode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3284
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3285:let:memoryFirst",
+      "kind": "let",
+      "name": "memoryFirst",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3285
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3286:let:backendRewritten",
+      "kind": "let",
+      "name": "backendRewritten",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3286
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3287:let:swiftuiRole",
+      "kind": "let",
+      "name": "swiftuiRole",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3287
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3288:let:system",
+      "kind": "let",
+      "name": "system",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3288
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3289:let:metrics",
+      "kind": "let",
+      "name": "metrics",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3289
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3290:let:sections",
+      "kind": "let",
+      "name": "sections",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3290
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3291:let:projects",
+      "kind": "let",
+      "name": "projects",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3291
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3292:let:capabilities",
+      "kind": "let",
+      "name": "capabilities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3292
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3293:let:products",
+      "kind": "let",
+      "name": "products",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3293
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3294:let:sources",
+      "kind": "let",
+      "name": "sources",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3294
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3295:let:alerts",
+      "kind": "let",
+      "name": "alerts",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3295
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3296:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3296
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3313:let:fallback",
+      "kind": "let",
+      "name": "fallback",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3313
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3355:func:withAlert",
+      "kind": "func",
+      "name": "withAlert",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3355
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3388:struct:SUPRASemanticProjectsFeed",
+      "kind": "struct",
+      "name": "SUPRASemanticProjectsFeed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3388
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3389:let:projects",
+      "kind": "let",
+      "name": "projects",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3389
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3391:struct:SUPRASemanticProject",
+      "kind": "struct",
+      "name": "SUPRASemanticProject",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3391
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3393:let:projectID",
+      "kind": "let",
+      "name": "projectID",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3393
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3394:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3394
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3395:let:classification",
+      "kind": "let",
+      "name": "classification",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3395
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3396:let:paths",
+      "kind": "let",
+      "name": "paths",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3396
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3397:let:capabilities",
+      "kind": "let",
+      "name": "capabilities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3397
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3398:let:observationCount",
+      "kind": "let",
+      "name": "observationCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3398
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3399:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3399
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3405:struct:SUPRASemanticProductsFeed",
+      "kind": "struct",
+      "name": "SUPRASemanticProductsFeed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3405
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3407:let:products",
+      "kind": "let",
+      "name": "products",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3407
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3408:let:capabilityOpportunities",
+      "kind": "let",
+      "name": "capabilityOpportunities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3408
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3409:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3409
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3415:struct:SUPRASemanticProduct",
+      "kind": "struct",
+      "name": "SUPRASemanticProduct",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3415
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3417:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3417
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3418:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3418
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3419:let:classification",
+      "kind": "let",
+      "name": "classification",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3419
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3420:let:identityAuthority",
+      "kind": "let",
+      "name": "identityAuthority",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3420
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3421:let:path",
+      "kind": "let",
+      "name": "path",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3421
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3422:let:score",
+      "kind": "let",
+      "name": "score",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3422
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3423:let:evidenceCount",
+      "kind": "let",
+      "name": "evidenceCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3423
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3424:let:launchedProductProven",
+      "kind": "let",
+      "name": "launchedProductProven",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3424
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3425:let:goal",
+      "kind": "let",
+      "name": "goal",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3425
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3426:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3426
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3434:struct:SUPRAFacadeCandidate",
+      "kind": "struct",
+      "name": "SUPRAFacadeCandidate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3434
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3436:let:candidateID",
+      "kind": "let",
+      "name": "candidateID",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3436
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3437:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3437
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3438:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3438
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3439:let:declaredAction",
+      "kind": "let",
+      "name": "declaredAction",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3439
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3440:let:declaredRank",
+      "kind": "let",
+      "name": "declaredRank",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3440
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3441:let:matchedReconciledProjectCount",
+      "kind": "let",
+      "name": "matchedReconciledProjectCount",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3441
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3442:let:maturityScoreDeclared",
+      "kind": "let",
+      "name": "maturityScoreDeclared",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3442
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3443:let:notALaunchedProduct",
+      "kind": "let",
+      "name": "notALaunchedProduct",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3443
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3444:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3444
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3455:struct:SUPRASemanticFacadeConnection",
+      "kind": "struct",
+      "name": "SUPRASemanticFacadeConnection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3455
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3457:let:model",
+      "kind": "let",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3457
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3458:let:opportunities",
+      "kind": "let",
+      "name": "opportunities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3458
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3460:enum:SUPRASemanticFeedError",
+      "kind": "enum",
+      "name": "SUPRASemanticFeedError",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3460
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3465:var:errorDescription",
+      "kind": "var",
+      "name": "errorDescription",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3465
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3473:extension:SUPRAExecutiveModel",
+      "kind": "extension",
+      "name": "SUPRAExecutiveModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3473
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3475:func:connectingSemanticProductFeeds",
+      "kind": "func",
+      "name": "connectingSemanticProductFeeds",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3475
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3476:let:root",
+      "kind": "let",
+      "name": "root",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3476
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3478:let:url",
+      "kind": "let",
+      "name": "url",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3478
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3479:let:projectsURL",
+      "kind": "let",
+      "name": "projectsURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3479
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3480:let:decoder",
+      "kind": "let",
+      "name": "decoder",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3480
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3481:let:feed",
+      "kind": "let",
+      "name": "feed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3481
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3485:let:projectsFeed",
+      "kind": "let",
+      "name": "projectsFeed",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3485
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3499:let:connectedProjects",
+      "kind": "let",
+      "name": "connectedProjects",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3499
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3510:let:productRecords",
+      "kind": "let",
+      "name": "productRecords",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3510
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3520:let:opportunityRecords",
+      "kind": "let",
+      "name": "opportunityRecords",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3520
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3530:let:connectedMetrics",
+      "kind": "let",
+      "name": "connectedMetrics",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3530
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3540:let:connectedSections",
+      "kind": "let",
+      "name": "connectedSections",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3540
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3550:let:connectedSources",
+      "kind": "let",
+      "name": "connectedSources",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3550
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3560:let:connectedAlerts",
+      "kind": "let",
+      "name": "connectedAlerts",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3560
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3563:let:connectedModel",
+      "kind": "let",
+      "name": "connectedModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3563
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3583:struct:SUPRASystem",
+      "kind": "struct",
+      "name": "SUPRASystem",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3583
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3585:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3585
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3586:let:subtitle",
+      "kind": "let",
+      "name": "subtitle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3586
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3587:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3587
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3588:let:canonicalSource",
+      "kind": "let",
+      "name": "canonicalSource",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3588
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3589:let:runtimeSource",
+      "kind": "let",
+      "name": "runtimeSource",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3589
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3590:let:atlasSource",
+      "kind": "let",
+      "name": "atlasSource",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3590
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3591:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3591
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3601:struct:SUPRAMetrics",
+      "kind": "struct",
+      "name": "SUPRAMetrics",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3601
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3603:let:projects",
+      "kind": "let",
+      "name": "projects",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3603
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3604:let:capabilities",
+      "kind": "let",
+      "name": "capabilities",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3604
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3605:let:products",
+      "kind": "let",
+      "name": "products",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3605
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3606:let:uiModules",
+      "kind": "let",
+      "name": "uiModules",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3606
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3607:let:memoryObjects",
+      "kind": "let",
+      "name": "memoryObjects",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3607
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3608:let:resources",
+      "kind": "let",
+      "name": "resources",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3608
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3609:let:sourcesFound",
+      "kind": "let",
+      "name": "sourcesFound",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3609
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3610:let:sourcesMissing",
+      "kind": "let",
+      "name": "sourcesMissing",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3610
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3611:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3611
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3623:struct:SUPRASection",
+      "kind": "struct",
+      "name": "SUPRASection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3623
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3625:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3625
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3626:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3626
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3627:let:systemImage",
+      "kind": "let",
+      "name": "systemImage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3627
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3628:let:subtitle",
+      "kind": "let",
+      "name": "subtitle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3628
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3629:let:count",
+      "kind": "let",
+      "name": "count",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3629
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3630:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3630
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3631:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3631
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3641:struct:SUPRARecord",
+      "kind": "struct",
+      "name": "SUPRARecord",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3641
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3643:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3643
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3644:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3644
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3645:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3645
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3646:let:path",
+      "kind": "let",
+      "name": "path",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3646
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3647:let:score",
+      "kind": "let",
+      "name": "score",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3647
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3648:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3648
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3649:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3649
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3664:let:container",
+      "kind": "let",
+      "name": "container",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3664
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3673:struct:SUPRASource",
+      "kind": "struct",
+      "name": "SUPRASource",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3673
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3675:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3675
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3676:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3676
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3678:let:path",
+      "kind": "let",
+      "name": "path",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3678
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3679:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3679
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3680:let:authority",
+      "kind": "let",
+      "name": "authority",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3680
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3681:let:priority",
+      "kind": "let",
+      "name": "priority",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3681
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3683:struct:SUPRAAlert",
+      "kind": "struct",
+      "name": "SUPRAAlert",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3683
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3685:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3685
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3686:let:severity",
+      "kind": "let",
+      "name": "severity",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3686
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3687:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3687
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3688:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3688
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3701:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3701
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3709:let:container",
+      "kind": "let",
+      "name": "container",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3709
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3717:func:encode",
+      "kind": "func",
+      "name": "encode",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3717
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3719:var:container",
+      "kind": "var",
+      "name": "container",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3719
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3734:enum:SUPRALiveSection",
+      "kind": "enum",
+      "name": "SUPRALiveSection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3734
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3742:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3742
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3744:var:icon",
+      "kind": "var",
+      "name": "icon",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3744
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3756:struct:SUPRALiveSnapshot",
+      "kind": "struct",
+      "name": "SUPRALiveSnapshot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3756
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3758:var:architectureStatus",
+      "kind": "var",
+      "name": "architectureStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3758
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3759:var:architectureVerdict",
+      "kind": "var",
+      "name": "architectureVerdict",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3759
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3760:var:authorityStatus",
+      "kind": "var",
+      "name": "authorityStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3760
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3761:var:authorityVerdict",
+      "kind": "var",
+      "name": "authorityVerdict",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3761
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3762:var:authorityGate",
+      "kind": "var",
+      "name": "authorityGate",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3762
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3763:var:storageStatus",
+      "kind": "var",
+      "name": "storageStatus",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3763
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3764:var:recovered",
+      "kind": "var",
+      "name": "recovered",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3764
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3765:var:reviewVolume",
+      "kind": "var",
+      "name": "reviewVolume",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3765
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3766:var:reviewItems",
+      "kind": "var",
+      "name": "reviewItems",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3766
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3767:var:storageNext",
+      "kind": "var",
+      "name": "storageNext",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3767
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3768:var:updatedAt",
+      "kind": "var",
+      "name": "updatedAt",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3768
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3772:class:SUPRALiveBoardsModel",
+      "kind": "class",
+      "name": "SUPRALiveBoardsModel",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3772
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3773:var:snapshot",
+      "kind": "var",
+      "name": "snapshot",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3773
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3774:var:lastError",
+      "kind": "var",
+      "name": "lastError",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3774
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3775:var:timer",
+      "kind": "var",
+      "name": "timer",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3775
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3777:let:home",
+      "kind": "let",
+      "name": "home",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3777
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3778:var:architectureURL",
+      "kind": "var",
+      "name": "architectureURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3778
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3782:var:authorityURL",
+      "kind": "var",
+      "name": "authorityURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3782
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3786:var:storageURL",
+      "kind": "var",
+      "name": "storageURL",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3786
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3790:func:start",
+      "kind": "func",
+      "name": "start",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3790
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3800:func:stop",
+      "kind": "func",
+      "name": "stop",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3800
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3805:func:reload",
+      "kind": "func",
+      "name": "reload",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3805
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3808:let:architecture",
+      "kind": "let",
+      "name": "architecture",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3808
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3809:let:authority",
+      "kind": "let",
+      "name": "authority",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3809
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3810:let:storage",
+      "kind": "let",
+      "name": "storage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3810
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3811:var:next",
+      "kind": "var",
+      "name": "next",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3811
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3835:func:openArchitectureEvidence",
+      "kind": "func",
+      "name": "openArchitectureEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3835
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3839:func:openAuthorityEvidence",
+      "kind": "func",
+      "name": "openAuthorityEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3839
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3843:func:openStorageEvidence",
+      "kind": "func",
+      "name": "openStorageEvidence",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3843
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3847:func:readObject",
+      "kind": "func",
+      "name": "readObject",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3847
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3849:let:data",
+      "kind": "let",
+      "name": "data",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3849
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3859:func:text",
+      "kind": "func",
+      "name": "text",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3859
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3865:struct:SUPRALiveBoardsRootView",
+      "kind": "struct",
+      "name": "SUPRALiveBoardsRootView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3865
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3867:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3867
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3868:var:selection",
+      "kind": "var",
+      "name": "selection",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3868
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3869:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3869
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3901:var:detailView",
+      "kind": "var",
+      "name": "detailView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3901
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3920:struct:SUPRAWorkspaceLiveView",
+      "kind": "struct",
+      "name": "SUPRAWorkspaceLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3920
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3922:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3922
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3923:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3923
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3965:struct:SUPRAArchitectureLiveView",
+      "kind": "struct",
+      "name": "SUPRAArchitectureLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3965
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3967:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3967
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3968:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3968
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3979:struct:SUPRAAuthorityLiveView",
+      "kind": "struct",
+      "name": "SUPRAAuthorityLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3979
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3981:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3981
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3982:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3982
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3993:struct:SUPRAStorageLiveView",
+      "kind": "struct",
+      "name": "SUPRAStorageLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3993
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3995:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3995
+    },
+    {
+      "id": "SUPRA/ContentView.swift:3996:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 3996
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4031:struct:SUPRADecisionInboxLiveView",
+      "kind": "struct",
+      "name": "SUPRADecisionInboxLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4031
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4033:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4033
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4034:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4034
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4063:struct:SUPRASystemLiveView",
+      "kind": "struct",
+      "name": "SUPRASystemLiveView",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4063
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4065:var:model",
+      "kind": "var",
+      "name": "model",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4065
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4066:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4066
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4095:struct:SUPRADetailPage",
+      "kind": "struct",
+      "name": "SUPRADetailPage",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4095
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4097:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4097
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4098:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4098
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4099:let:verdict",
+      "kind": "let",
+      "name": "verdict",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4099
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4100:let:actionTitle",
+      "kind": "let",
+      "name": "actionTitle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4100
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4101:let:action",
+      "kind": "let",
+      "name": "action",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4101
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4102:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4102
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4121:struct:SUPRAHeader",
+      "kind": "struct",
+      "name": "SUPRAHeader",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4121
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4123:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4123
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4124:let:subtitle",
+      "kind": "let",
+      "name": "subtitle",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4124
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4125:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4125
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4136:struct:SUPRAStatusCard",
+      "kind": "struct",
+      "name": "SUPRAStatusCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4136
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4138:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4138
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4139:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4139
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4140:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4140
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4141:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4141
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4164:struct:SUPRAActionCard",
+      "kind": "struct",
+      "name": "SUPRAActionCard",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4164
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4166:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4166
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4167:let:actions",
+      "kind": "let",
+      "name": "actions",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4167
+    },
+    {
+      "id": "SUPRA/ContentView.swift:4168:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "line": 4168
+    },
+    {
+      "id": "SUPRA/ControlCenterStore.swift:5:class:ControlCenterStore",
+      "kind": "class",
+      "name": "ControlCenterStore",
+      "file": "ControlCenterStore.swift",
+      "path": "SUPRA/ControlCenterStore.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/ControlCenterStore.swift:9:let:reader",
+      "kind": "let",
+      "name": "reader",
+      "file": "ControlCenterStore.swift",
+      "path": "SUPRA/ControlCenterStore.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/ControlCenterStore.swift:19:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "ControlCenterStore.swift",
+      "path": "SUPRA/ControlCenterStore.swift",
+      "line": 19
+    },
+    {
+      "id": "SUPRA/Decision.swift:2:struct:Decision",
+      "kind": "struct",
+      "name": "Decision",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/Decision.swift:4:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/Decision.swift:5:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/Decision.swift:6:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/Decision.swift:7:let:priority",
+      "kind": "let",
+      "name": "priority",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 7
+    },
+    {
+      "id": "SUPRA/Decision.swift:8:let:category",
+      "kind": "let",
+      "name": "category",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 8
+    },
+    {
+      "id": "SUPRA/Decision.swift:9:let:date",
+      "kind": "let",
+      "name": "date",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/Decision.swift:10:let:humanGate",
+      "kind": "let",
+      "name": "humanGate",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 10
+    },
+    {
+      "id": "SUPRA/Decision.swift:11:let:confidence",
+      "kind": "let",
+      "name": "confidence",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/Decision.swift:12:let:summary",
+      "kind": "let",
+      "name": "summary",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/Decision.swift:13:let:evidence",
+      "kind": "let",
+      "name": "evidence",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 13
+    },
+    {
+      "id": "SUPRA/Decision.swift:14:let:nextActions",
+      "kind": "let",
+      "name": "nextActions",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 14
+    },
+    {
+      "id": "SUPRA/Decision.swift:15:let:history",
+      "kind": "let",
+      "name": "history",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 15
+    },
+    {
+      "id": "SUPRA/Decision.swift:16:enum:Status",
+      "kind": "enum",
+      "name": "Status",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 16
+    },
+    {
+      "id": "SUPRA/Decision.swift:24:enum:Priority",
+      "kind": "enum",
+      "name": "Priority",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 24
+    },
+    {
+      "id": "SUPRA/Decision.swift:31:enum:HumanGate",
+      "kind": "enum",
+      "name": "HumanGate",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 31
+    },
+    {
+      "id": "SUPRA/Decision.swift:37:struct:Evidence",
+      "kind": "struct",
+      "name": "Evidence",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 37
+    },
+    {
+      "id": "SUPRA/Decision.swift:39:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 39
+    },
+    {
+      "id": "SUPRA/Decision.swift:40:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 40
+    },
+    {
+      "id": "SUPRA/Decision.swift:41:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 41
+    },
+    {
+      "id": "SUPRA/Decision.swift:42:let:source",
+      "kind": "let",
+      "name": "source",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 42
+    },
+    {
+      "id": "SUPRA/Decision.swift:44:struct:NextAction",
+      "kind": "struct",
+      "name": "NextAction",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 44
+    },
+    {
+      "id": "SUPRA/Decision.swift:46:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 46
+    },
+    {
+      "id": "SUPRA/Decision.swift:47:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 47
+    },
+    {
+      "id": "SUPRA/Decision.swift:48:let:owner",
+      "kind": "let",
+      "name": "owner",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 48
+    },
+    {
+      "id": "SUPRA/Decision.swift:49:let:dueDate",
+      "kind": "let",
+      "name": "dueDate",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 49
+    },
+    {
+      "id": "SUPRA/Decision.swift:51:struct:HistoryEntry",
+      "kind": "struct",
+      "name": "HistoryEntry",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 51
+    },
+    {
+      "id": "SUPRA/Decision.swift:53:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 53
+    },
+    {
+      "id": "SUPRA/Decision.swift:54:let:date",
+      "kind": "let",
+      "name": "date",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 54
+    },
+    {
+      "id": "SUPRA/Decision.swift:55:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 55
+    },
+    {
+      "id": "SUPRA/Decision.swift:56:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "line": 56
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:2:struct:DecisionDetailView",
+      "kind": "struct",
+      "name": "DecisionDetailView",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:4:let:decision",
+      "kind": "let",
+      "name": "decision",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:5:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:54:var:header",
+      "kind": "var",
+      "name": "header",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 54
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:70:func:detailSection",
+      "kind": "func",
+      "name": "detailSection",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 70
+    },
+    {
+      "id": "SUPRA/DecisionDetailView.swift:81:func:itemList",
+      "kind": "func",
+      "name": "itemList",
+      "file": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "line": 81
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:2:struct:DecisionInboxView",
+      "kind": "struct",
+      "name": "DecisionInboxView",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:4:var:store",
+      "kind": "var",
+      "name": "store",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:5:var:selection",
+      "kind": "var",
+      "name": "selection",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:6:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:42:var:toolbarContent",
+      "kind": "var",
+      "name": "toolbarContent",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 42
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:66:var:selectedDecision",
+      "kind": "var",
+      "name": "selectedDecision",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 66
+    },
+    {
+      "id": "SUPRA/DecisionInboxView.swift:70:var:emptyDescription",
+      "kind": "var",
+      "name": "emptyDescription",
+      "file": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "line": 70
+    },
+    {
+      "id": "SUPRA/DecisionRow.swift:2:struct:DecisionRow",
+      "kind": "struct",
+      "name": "DecisionRow",
+      "file": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/DecisionRow.swift:4:let:decision",
+      "kind": "let",
+      "name": "decision",
+      "file": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/DecisionRow.swift:5:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/DecisionRow.swift:39:var:confidenceText",
+      "kind": "var",
+      "name": "confidenceText",
+      "file": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "line": 39
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:5:class:DecisionStore",
+      "kind": "class",
+      "name": "DecisionStore",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:6:var:sourceURL",
+      "kind": "var",
+      "name": "sourceURL",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:11:enum:Filter",
+      "kind": "enum",
+      "name": "Filter",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:17:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 17
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:20:enum:Sort",
+      "kind": "enum",
+      "name": "Sort",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 20
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:26:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 26
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:34:var:query",
+      "kind": "var",
+      "name": "query",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:37:var:activeFilter",
+      "kind": "var",
+      "name": "activeFilter",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 37
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:40:var:activeSort",
+      "kind": "var",
+      "name": "activeSort",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 40
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:43:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 43
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:61:func:refresh",
+      "kind": "func",
+      "name": "refresh",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 61
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:66:func:search",
+      "kind": "func",
+      "name": "search",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 66
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:70:func:filter",
+      "kind": "func",
+      "name": "filter",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 70
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:74:func:sort",
+      "kind": "func",
+      "name": "sort",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 74
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:78:func:applyPresentation",
+      "kind": "func",
+      "name": "applyPresentation",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 78
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:80:let:filtered",
+      "kind": "let",
+      "name": "filtered",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 80
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:81:let:matchesQuery",
+      "kind": "let",
+      "name": "matchesQuery",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 81
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:85:let:matchesFilter",
+      "kind": "let",
+      "name": "matchesFilter",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 85
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:106:func:priorityRank",
+      "kind": "func",
+      "name": "priorityRank",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 106
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:115:func:readDecisions",
+      "kind": "func",
+      "name": "readDecisions",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 115
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:117:let:data",
+      "kind": "let",
+      "name": "data",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 117
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:119:let:records",
+      "kind": "let",
+      "name": "records",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 119
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:123:let:date",
+      "kind": "let",
+      "name": "date",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 123
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:125:let:category",
+      "kind": "let",
+      "name": "category",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 125
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:129:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 129
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:130:let:sourceStatus",
+      "kind": "let",
+      "name": "sourceStatus",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 130
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:132:let:evidenceValue",
+      "kind": "let",
+      "name": "evidenceValue",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 132
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:134:let:normalizedStatus",
+      "kind": "let",
+      "name": "normalizedStatus",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 134
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:135:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 135
+    },
+    {
+      "id": "SUPRA/DecisionStore.swift:136:let:humanGate",
+      "kind": "let",
+      "name": "humanGate",
+      "file": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "line": 136
+    },
+    {
+      "id": "SUPRA/Mission.swift:2:struct:Mission",
+      "kind": "struct",
+      "name": "Mission",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/Mission.swift:4:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/Mission.swift:5:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/Mission.swift:6:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/Mission.swift:7:let:priority",
+      "kind": "let",
+      "name": "priority",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 7
+    },
+    {
+      "id": "SUPRA/Mission.swift:8:let:category",
+      "kind": "let",
+      "name": "category",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 8
+    },
+    {
+      "id": "SUPRA/Mission.swift:9:let:owner",
+      "kind": "let",
+      "name": "owner",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/Mission.swift:10:let:dueDate",
+      "kind": "let",
+      "name": "dueDate",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 10
+    },
+    {
+      "id": "SUPRA/Mission.swift:11:let:progress",
+      "kind": "let",
+      "name": "progress",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/Mission.swift:12:let:summary",
+      "kind": "let",
+      "name": "summary",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/Mission.swift:13:let:objectives",
+      "kind": "let",
+      "name": "objectives",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 13
+    },
+    {
+      "id": "SUPRA/Mission.swift:14:let:tasks",
+      "kind": "let",
+      "name": "tasks",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 14
+    },
+    {
+      "id": "SUPRA/Mission.swift:15:let:dependencies",
+      "kind": "let",
+      "name": "dependencies",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 15
+    },
+    {
+      "id": "SUPRA/Mission.swift:16:let:timeline",
+      "kind": "let",
+      "name": "timeline",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 16
+    },
+    {
+      "id": "SUPRA/Mission.swift:17:let:currentStatus",
+      "kind": "let",
+      "name": "currentStatus",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 17
+    },
+    {
+      "id": "SUPRA/Mission.swift:18:enum:Status",
+      "kind": "enum",
+      "name": "Status",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 18
+    },
+    {
+      "id": "SUPRA/Mission.swift:25:enum:Priority",
+      "kind": "enum",
+      "name": "Priority",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 25
+    },
+    {
+      "id": "SUPRA/Mission.swift:32:struct:Objective",
+      "kind": "struct",
+      "name": "Objective",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 32
+    },
+    {
+      "id": "SUPRA/Mission.swift:34:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/Mission.swift:35:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 35
+    },
+    {
+      "id": "SUPRA/Mission.swift:36:let:isCompleted",
+      "kind": "let",
+      "name": "isCompleted",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 36
+    },
+    {
+      "id": "SUPRA/Mission.swift:38:struct:Task",
+      "kind": "struct",
+      "name": "Task",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 38
+    },
+    {
+      "id": "SUPRA/Mission.swift:40:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 40
+    },
+    {
+      "id": "SUPRA/Mission.swift:41:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 41
+    },
+    {
+      "id": "SUPRA/Mission.swift:42:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 42
+    },
+    {
+      "id": "SUPRA/Mission.swift:43:enum:Status",
+      "kind": "enum",
+      "name": "Status",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 43
+    },
+    {
+      "id": "SUPRA/Mission.swift:51:struct:Dependency",
+      "kind": "struct",
+      "name": "Dependency",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 51
+    },
+    {
+      "id": "SUPRA/Mission.swift:53:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 53
+    },
+    {
+      "id": "SUPRA/Mission.swift:54:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 54
+    },
+    {
+      "id": "SUPRA/Mission.swift:55:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 55
+    },
+    {
+      "id": "SUPRA/Mission.swift:57:struct:TimelineEntry",
+      "kind": "struct",
+      "name": "TimelineEntry",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 57
+    },
+    {
+      "id": "SUPRA/Mission.swift:59:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 59
+    },
+    {
+      "id": "SUPRA/Mission.swift:60:let:date",
+      "kind": "let",
+      "name": "date",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 60
+    },
+    {
+      "id": "SUPRA/Mission.swift:61:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 61
+    },
+    {
+      "id": "SUPRA/Mission.swift:62:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "line": 62
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:2:struct:MissionCenterView",
+      "kind": "struct",
+      "name": "MissionCenterView",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:4:var:store",
+      "kind": "var",
+      "name": "store",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:5:var:selection",
+      "kind": "var",
+      "name": "selection",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:6:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:42:var:toolbarContent",
+      "kind": "var",
+      "name": "toolbarContent",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 42
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:66:var:selectedMission",
+      "kind": "var",
+      "name": "selectedMission",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 66
+    },
+    {
+      "id": "SUPRA/MissionCenterView.swift:70:var:emptyDescription",
+      "kind": "var",
+      "name": "emptyDescription",
+      "file": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "line": 70
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:2:struct:MissionDetailView",
+      "kind": "struct",
+      "name": "MissionDetailView",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:4:let:mission",
+      "kind": "let",
+      "name": "mission",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:5:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:56:var:header",
+      "kind": "var",
+      "name": "header",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 56
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:71:func:detailSection",
+      "kind": "func",
+      "name": "detailSection",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 71
+    },
+    {
+      "id": "SUPRA/MissionDetailView.swift:82:func:itemList",
+      "kind": "func",
+      "name": "itemList",
+      "file": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "line": 82
+    },
+    {
+      "id": "SUPRA/MissionRow.swift:2:struct:MissionRow",
+      "kind": "struct",
+      "name": "MissionRow",
+      "file": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/MissionRow.swift:4:let:mission",
+      "kind": "let",
+      "name": "mission",
+      "file": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/MissionRow.swift:5:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/MissionRow.swift:41:var:dueDateText",
+      "kind": "var",
+      "name": "dueDateText",
+      "file": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "line": 41
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:5:class:MissionStore",
+      "kind": "class",
+      "name": "MissionStore",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:6:var:sourceURL",
+      "kind": "var",
+      "name": "sourceURL",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:10:enum:Filter",
+      "kind": "enum",
+      "name": "Filter",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 10
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:17:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 17
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:20:enum:Sort",
+      "kind": "enum",
+      "name": "Sort",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 20
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:26:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 26
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:34:var:query",
+      "kind": "var",
+      "name": "query",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:37:var:activeFilter",
+      "kind": "var",
+      "name": "activeFilter",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 37
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:40:var:activeSort",
+      "kind": "var",
+      "name": "activeSort",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 40
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:43:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 43
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:53:let:urls",
+      "kind": "let",
+      "name": "urls",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 53
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:68:func:refresh",
+      "kind": "func",
+      "name": "refresh",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 68
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:73:func:search",
+      "kind": "func",
+      "name": "search",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 73
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:77:func:filter",
+      "kind": "func",
+      "name": "filter",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 77
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:81:func:sort",
+      "kind": "func",
+      "name": "sort",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 81
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:85:func:applyPresentation",
+      "kind": "func",
+      "name": "applyPresentation",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 85
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:87:let:filtered",
+      "kind": "let",
+      "name": "filtered",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 87
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:88:let:matchesQuery",
+      "kind": "let",
+      "name": "matchesQuery",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 88
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:93:let:matchesFilter",
+      "kind": "let",
+      "name": "matchesFilter",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 93
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:117:func:priorityRank",
+      "kind": "func",
+      "name": "priorityRank",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 117
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:126:func:readMission",
+      "kind": "func",
+      "name": "readMission",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 126
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:128:let:data",
+      "kind": "let",
+      "name": "data",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 128
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:130:let:idValue",
+      "kind": "let",
+      "name": "idValue",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 130
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:131:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 131
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:132:let:intent",
+      "kind": "let",
+      "name": "intent",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 132
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:133:let:state",
+      "kind": "let",
+      "name": "state",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 133
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:137:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 137
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:142:let:createdAt",
+      "kind": "let",
+      "name": "createdAt",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 142
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:143:let:normalizedState",
+      "kind": "let",
+      "name": "normalizedState",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 143
+    },
+    {
+      "id": "SUPRA/MissionStore.swift:144:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "line": 144
+    },
+    {
+      "id": "SUPRA/SUPRAApp.swift:11:struct:SUPRAApp",
+      "kind": "struct",
+      "name": "SUPRAApp",
+      "file": "SUPRAApp.swift",
+      "path": "SUPRA/SUPRAApp.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/SUPRAApp.swift:12:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "SUPRAApp.swift",
+      "path": "SUPRA/SUPRAApp.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:2:struct:SUPRAGabrielWorkerSnapshot",
+      "kind": "struct",
+      "name": "SUPRAGabrielWorkerSnapshot",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:4:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:5:let:title",
+      "kind": "let",
+      "name": "title",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:6:let:mission",
+      "kind": "let",
+      "name": "mission",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:7:let:source",
+      "kind": "let",
+      "name": "source",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 7
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:8:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 8
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:9:let:analysis",
+      "kind": "let",
+      "name": "analysis",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:10:let:outputDir",
+      "kind": "let",
+      "name": "outputDir",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 10
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:11:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 11
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:22:struct:SUPRAGabrielConductorSnapshot",
+      "kind": "struct",
+      "name": "SUPRAGabrielConductorSnapshot",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 22
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:24:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 24
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:25:let:generatedAt",
+      "kind": "let",
+      "name": "generatedAt",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 25
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:26:let:visibleConductor",
+      "kind": "let",
+      "name": "visibleConductor",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 26
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:27:let:finalAuthority",
+      "kind": "let",
+      "name": "finalAuthority",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 27
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:28:let:missionSlots",
+      "kind": "let",
+      "name": "missionSlots",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 28
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:29:let:workerProcesses",
+      "kind": "let",
+      "name": "workerProcesses",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 29
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:30:let:uiInstances",
+      "kind": "let",
+      "name": "uiInstances",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 30
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:31:let:sharedSourceMode",
+      "kind": "let",
+      "name": "sharedSourceMode",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 31
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:32:let:outputMode",
+      "kind": "let",
+      "name": "outputMode",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 32
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:33:let:workers",
+      "kind": "let",
+      "name": "workers",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 33
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:34:let:run",
+      "kind": "let",
+      "name": "run",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 34
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:35:enum:CodingKeys",
+      "kind": "enum",
+      "name": "CodingKeys",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 35
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:49:let:unavailable",
+      "kind": "let",
+      "name": "unavailable",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 49
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:92:enum:SUPRAGabrielConductorRuntime",
+      "kind": "enum",
+      "name": "SUPRAGabrielConductorRuntime",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 92
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:96:let:snapshotPath",
+      "kind": "let",
+      "name": "snapshotPath",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 96
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:102:func:load",
+      "kind": "func",
+      "name": "load",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 102
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:105:let:snapshot",
+      "kind": "let",
+      "name": "snapshot",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 105
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:115:func:run",
+      "kind": "func",
+      "name": "run",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 115
+    },
+    {
+      "id": "SUPRA/SUPRAGabrielConductorRuntime.swift:118:let:process",
+      "kind": "let",
+      "name": "process",
+      "file": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "line": 118
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:2:struct:ArtifactStatus",
+      "kind": "struct",
+      "name": "ArtifactStatus",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:4:let:id",
+      "kind": "let",
+      "name": "id",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:5:let:name",
+      "kind": "let",
+      "name": "name",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 5
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:6:let:path",
+      "kind": "let",
+      "name": "path",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 6
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:7:let:status",
+      "kind": "let",
+      "name": "status",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 7
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:8:let:detail",
+      "kind": "let",
+      "name": "detail",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 8
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:9:let:modifiedAt",
+      "kind": "let",
+      "name": "modifiedAt",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 9
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:10:let:isAvailable",
+      "kind": "let",
+      "name": "isAvailable",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 10
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:12:struct:Snapshot",
+      "kind": "struct",
+      "name": "Snapshot",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 12
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:14:let:lots",
+      "kind": "let",
+      "name": "lots",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 14
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:15:let:build",
+      "kind": "let",
+      "name": "build",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 15
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:16:let:manifest",
+      "kind": "let",
+      "name": "manifest",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 16
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:17:let:index",
+      "kind": "let",
+      "name": "index",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 17
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:18:let:desktopEstate",
+      "kind": "let",
+      "name": "desktopEstate",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 18
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:19:let:capturedAt",
+      "kind": "let",
+      "name": "capturedAt",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 19
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:20:var:availableCount",
+      "kind": "var",
+      "name": "availableCount",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 20
+    },
+    {
+      "id": "SUPRA/Snapshot.swift:24:var:requiredCount",
+      "kind": "var",
+      "name": "requiredCount",
+      "file": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "line": 24
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:2:struct:SupraControlCenterView",
+      "kind": "struct",
+      "name": "SupraControlCenterView",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 2
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:4:var:store",
+      "kind": "var",
+      "name": "store",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 4
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:13:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 13
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:39:func:dashboard",
+      "kind": "func",
+      "name": "dashboard",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 39
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:55:var:dashboardHeader",
+      "kind": "var",
+      "name": "dashboardHeader",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 55
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:69:func:executiveSummary",
+      "kind": "func",
+      "name": "executiveSummary",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 69
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:105:func:quickActions",
+      "kind": "func",
+      "name": "quickActions",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 105
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:147:func:runtimeHealth",
+      "kind": "func",
+      "name": "runtimeHealth",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 147
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:149:let:artifacts",
+      "kind": "let",
+      "name": "artifacts",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 149
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:171:func:recentActivity",
+      "kind": "func",
+      "name": "recentActivity",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 171
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:191:func:dashboardSection",
+      "kind": "func",
+      "name": "dashboardSection",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 191
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:203:func:summaryCard",
+      "kind": "func",
+      "name": "summaryCard",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 203
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:228:func:healthName",
+      "kind": "func",
+      "name": "healthName",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 228
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:236:var:summaryColumns",
+      "kind": "var",
+      "name": "summaryColumns",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 236
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:240:var:actionColumns",
+      "kind": "var",
+      "name": "actionColumns",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 240
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:244:var:healthColumns",
+      "kind": "var",
+      "name": "healthColumns",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 244
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:249:enum:ExecutiveDestination",
+      "kind": "enum",
+      "name": "ExecutiveDestination",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 249
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:256:var:id",
+      "kind": "var",
+      "name": "id",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 256
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:258:var:title",
+      "kind": "var",
+      "name": "title",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 258
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:268:var:systemImage",
+      "kind": "var",
+      "name": "systemImage",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 268
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:279:struct:ExecutivePlaceholderView",
+      "kind": "struct",
+      "name": "ExecutivePlaceholderView",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 279
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:281:let:destination",
+      "kind": "let",
+      "name": "destination",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 281
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:282:var:snapshot",
+      "kind": "var",
+      "name": "snapshot",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 282
+    },
+    {
+      "id": "SUPRA/SupraControlCenterView.swift:283:var:body",
+      "kind": "var",
+      "name": "body",
+      "file": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "line": 283
+    }
+  ]
+}

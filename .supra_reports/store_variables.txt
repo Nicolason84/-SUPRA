@@ -1,0 +1,11 @@
+./SUPRA/SUPRACommandCenterState.swift:247:    private let missionStore = MissionStore()
+./SUPRA/ConversationMemoryStore.swift:61:    private var knowledgeGraph: KnowledgeGraph?
+./SUPRA/ConversationMemoryStore.swift:62:    private var decisionStore: DecisionStore?
+./SUPRA/ConversationMemoryStore.swift:63:    private var missionStore: MissionStore?
+./SUPRA/MultiMemoryStore.swift:112:        let missions = MissionStore().missions
+./SUPRA/KnowledgeStatistics.swift:6:    @Published var stats: KnowledgeGraphStatistics?
+./SUPRA/DecisionInboxView.swift:5:    @StateObject private var store = DecisionStore()
+./SUPRA/KnowledgeContextEngine.swift:9:    private var graph: KnowledgeGraph?
+./SUPRA/SUPRAIntelligenceEngine.swift:14:    private let missionStore = MissionStore()
+./SUPRA/SUPRACanonicalWorldAccess.swift:147:        let ms = MissionStore()
+./SUPRA/KnowledgeObject.swift:42:    let statistics: KnowledgeGraphStatistics

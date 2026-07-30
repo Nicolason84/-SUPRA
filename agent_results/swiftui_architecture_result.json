@@ -1,0 +1,47 @@
+{
+  "task_type": "architecture",
+  "agent": "SUPRA-Architect",
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "bindings_source": "runtime_bindings.json",
+  "delegation_rule": "DEL_001",
+  "depends_on": ["swiftui_exploration_result", "swiftui_research_result"],
+  "architecture_plan": {
+    "impact_analysis": "SUPRA is already a native SwiftUI application using NavigationSplitView, NavigationStack, ObservableObject stores, @StateObject ownership, and standalone View structs. The research recommendations target UIKit→SwiftUI migration (UIHostingController, navigation bridge), which is not applicable. However, a modernisation opportunity exists: migrate from ObservableObject+@Published to the iOS 18+ @Observable macro. This reduces boilerplate, improves performance via fine-grained observation, and eliminates @StateObject/@ObservedObject distinction. Stores (DecisionStore, MissionStore, ControlCenterStore) are the primary candidates. All are @MainActor final class ObservableObject — ideal targets for @Observable. The existing NavigationSplitView + NavigationStack routing via ExecutiveDestination enum is sound and needs no change. @ViewBuilder computed properties for sub-views should remain; extracting them into separate files is unnecessary. .onAppear usage should be audited and replaced with .task for async operations to prevent duplicate calls during re-renders.",
+    "recommended_approach": "Phase 1: Audit — identify all .onAppear closures used for async data loading across the 15 SwiftUI files; flag for .task migration. Phase 2: Observable migration — convert DecisionStore, MissionStore, ControlCenterStore from ObservableObject+@Published to @Observable macro one store at a time, updating dependent views to use @State (instead of @StateObject) and @Bindable (instead of @ObservedObject). Phase 3: .task migration — replace .onAppear async calls with .task { } in views where data loading occurs, adding cancellation-safe patterns. Phase 4: Snapshot testing — adopt swift-snapshot-testing for visual regression on migrated screens before/after each change. No navigation rewrite needed. No UIHostingController or UIKit bridge work is required since SUPRA is already SwiftUI-native.",
+    "files_to_modify": [
+      "SUPRA/Stores/DecisionStore.swift",
+      "SUPRA/Stores/MissionStore.swift",
+      "SUPRA/Stores/ControlCenterStore.swift",
+      "SUPRA/Views/DecisionInboxView.swift",
+      "SUPRA/Views/MissionCenterView.swift",
+      "SUPRA/Views/SupraControlCenterView.swift",
+      "SUPRA/Views/DecisionDetailView.swift",
+      "SUPRA/Views/MissionDetailView.swift",
+      "SUPRA/Views/ContentView.swift"
+    ],
+    "regression_risks": [
+      "@Observable macro requires iOS 17+, minimum deployment target must be verified",
+      "@State in parent views may not recreate child bindings the same way @StateObject did — child view identity and lifecycle differ between @StateObject ownership and @Observable + @State pattern",
+      "Observation machinery in @Observable tracks property reads at compile time; computed properties or lazy vars in stores may not trigger view updates as expected",
+      ".task { } cancellation on view disappearance may interrupt in-flight network requests that were previously started via .onAppear without cancellation, potentially leaving data in partial state",
+      "Simultaneous ObservableObject and @Observable stores in the same view hierarchy may cause inconsistent observation behaviour if a view observes both macros",
+      "Snapshot test reference images must be regenerated on any visual change, adding CI overhead during migration window"
+    ],
+    "implementation_steps": [
+      "Verify iOS deployment target >= 17 in project settings; if < 17, defer @Observable migration and proceed only with .task migration",
+      "Audit all .onAppear blocks in the 15 SwiftUI files; list each async call site and confirm it has a matching cancellation or .task replacement",
+      "Migrate DecisionStore from ObservableObject+@Published to @Observable macro; update DecisionInboxView to use @State(DecisionStore()) and DecisionDetailView to use @Bindable",
+      "Migrate MissionStore similarly; update MissionCenterView and MissionDetailView",
+      "Migrate ControlCenterStore similarly; update SupraControlCenterView and ContentView",
+      "Audit ExecutiveDestination enum — no change needed, but verify all navigation destinations still resolve after store observation change",
+      "Replace all identified .onAppear async calls with .task { } including cancellation handling",
+      "Add swift-snapshot-testing package dependency; write snapshot tests for each migrated view covering loading, populated, empty, and error states",
+      "Run full test suite and visual diff; fix any regressions in view identity or data flow",
+      "Commit migration with per-step granularity for bisection safety"
+    ]
+  },
+  "score": 8,
+  "duration_seconds": 90,
+  "status": "completed"
+}

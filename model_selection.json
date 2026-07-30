@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_PROVIDER_RUNTIME_V001",
+  "timestamp": "2026-07-24T00:20:00Z",
+  "model_selections": [
+    {
+      "provider": "opencode-zen",
+      "provider_status": "available",
+      "provider_type": "internal",
+      "models_available": [
+        {
+          "id": "deepseek-v4-flash-free",
+          "status": "available",
+          "quality_score": 0.92,
+          "speed": "fast",
+          "cost": "free",
+          "context": 131072,
+          "capabilities": ["reasoning", "code", "analysis", "planning", "architecture", "routing"]
+        }
+      ],
+      "models_unavailable": [],
+      "selected_model": "deepseek-v4-flash-free",
+      "selection_criteria": {
+        "strategy": "best_in_provider",
+        "reason": "Only available model in opencode-zen provider. Quality score 0.92, cost free, context 131072 tokens."
+      }
+    },
+    {
+      "provider": "ollama",
+      "provider_status": "available",
+      "provider_type": "local",
+      "models_available": [
+        {
+          "id": "qwen3:4b",
+          "status": "available",
+          "quality_score": 0.65,
+          "speed": "fast",
+          "cost": "free",
+          "context": 32768,
+          "capabilities": ["reasoning", "code", "analysis", "classification"]
+        }
+      ],
+      "models_unavailable": [
+        { "id": "qwen2.5-coder:14b", "reason": "Not pulled locally" },
+        { "id": "deepseek-coder-v2:16b", "reason": "Not pulled locally" },
+        { "id": "mixtral:8x7b", "reason": "Not pulled locally" },
+        { "id": "llama3.1:70b", "reason": "Not pulled locally" },
+        { "id": "codellama:13b", "reason": "Not pulled locally" },
+        { "id": "qwen2.5:32b", "reason": "Not pulled locally" }
+      ],
+      "selected_model": "qwen3:4b",
+      "selection_criteria": {
+        "strategy": "best_in_provider",
+        "reason": "Only available model in ollama provider. Quality score 0.65, cost free, adequate for lightweight review tasks."
+      }
+    },
+    {
+      "provider": "openai",
+      "provider_status": "unavailable",
+      "provider_type": "api",
+      "models_available": [],
+      "models_unavailable": [
+        { "id": "gpt-4o", "reason": "No API key configured" },
+        { "id": "gpt-4o-mini", "reason": "No API key configured" }
+      ],
+      "selected_model": null,
+      "selection_criteria": {
+        "strategy": "best_in_provider",
+        "reason": "Provider unavailable. Skipped in selection."
+      }
+    }
+  ],
+  "summary": {
+    "providers_evaluated": 3,
+    "providers_with_available_models": 2,
+    "models_evaluated": 9,
+    "models_available": 2,
+    "models_selected": 2,
+    "multi_model": true
+  }
+}

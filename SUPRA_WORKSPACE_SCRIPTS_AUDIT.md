@@ -1,0 +1,219 @@
+# SUPRA WORKSPACE SCRIPTS AUDIT
+
+**Version**: 1.0  
+**Status**: AUDITED  
+**Path**: `SUPRA_WORKSPACE_SCRIPTS_AUDIT.md`
+
+---
+
+## Condition 3 — Audit SUPRA_SCRIPTS/
+
+### Emplacement
+
+`~/Desktop/SUPRA_SCRIPTS/`
+
+### Inventaire
+
+| Métrique | Valeur |
+|----------|--------|
+| Total scripts | 150 |
+| Total `.command` | 1 |
+| Taille totale | ~2.5 MB |
+| Plus grand | 64 KB (`GO_SUPRA_PHASE2_ENVIRONMENT_MEANING_AND_CAPABILITY_MAPPING_V1.sh`) |
+| Plus petit | 746 B (`GO_SUPRA_PRIVATE_COCKPIT_HTML_LAUNCH_V1.sh`) |
+
+### Distribution par domaine
+
+| Domaine | Nombre | Période | Statut estimé |
+|---------|--------|---------|---------------|
+| SUPRA_GENERAL | 123 | Jul 14-22 | MIXTE |
+| NICO_APP | 7 | Jul 15 | OBSOLÈTE (projet terminé) |
+| FIX_* | 4 | Jul 15 | OBSOLÈTE |
+| CHECK_ALL_TERMINAL_TABS_DEEP | 2 | Jul 18 | OBSOLÈTE (diagnostic) |
+| BUILD_* | 2 | Jul 17 | OBSOLÈTE |
+| AUTRE | 12 | Jul 14-18 | OBSOLÈTE |
+
+### Distribution par version
+
+| Version | Nombre |
+|---------|--------|
+| V1 | 127 |
+| V2 | 12 |
+| V3 | 3 |
+| V4 | 1 |
+| V5 | 3 |
+| V6 | 1 |
+| V7 | 1 |
+| V8 | 1 |
+| V9 | 1 |
+
+### Distribution par date
+
+| Date | Nombre | Interprétation |
+|------|--------|----------------|
+| Jul 14 | 2 | Très ancien |
+| Jul 15 | 36 | Campagne LULU/ONDUPACK/NICO |
+| Jul 16 | 54 | Campagne CANNONICO/MEMORY |
+| Jul 17 | 38 | Campagne PROJECT_IDENTITY/AUDIT |
+| Jul 18 | 12 | Phase 1/2 scripts |
+| Jul 19 | 2 | XCODE, TERMINAL |
+| Jul 20 | 3 | LOCAL AI |
+| Jul 21 | 1 | AUTHORITY |
+| Jul 22 | 2 | FACTORY HOST |
+
+### Groupes fonctionnels
+
+#### G1 — LULU (8 scripts, Jul 14-15) — OBSOLÈTE
+```
+GO_SUPRA_LULU_EXACT_ASSET_LOCK_V8.sh
+GO_SUPRA_LULU_EXACT_PROPERTY_EXTRACTION_V7.sh
+GO_SUPRA_LULU_HERITAGE_ESTUDIO_INTEGRAL_ES_V3.sh
+GO_SUPRA_LULU_HERITAGE_ETUDE_EXEMPLE_V1.sh
+GO_SUPRA_LULU_HERITAGE_ETUDE_EXEMPLE_V2.sh (doublon V1)
+GO_SUPRA_LULU_HERITAGE_VALUE_CAPTURE_ES_V5.sh
+GO_SUPRA_LULU_TOTAL_INTELLIGENCE_V6.sh
+GO_SUPRA_LULU_URBAN_INTELLIGENCE_REQUEST_V9.sh
+```
+
+#### G2 — ONDUPACK (9 scripts, Jul 14-15) — OBSOLÈTE
+```
+GO_SUPRA_ONDUPACK_EXECUTIVE_DOSSIER_V1.sh
+GO_SUPRA_ONDUPACK_EXECUTIVE_DOSSIER_V2_CLEAN.sh (doublon V1)
+GO_SUPRA_ONDUPACK_MONEY_GATE_V1.sh
+GO_SUPRA_ONDUPACK_REAL_BUSINESS_CASE_V3.sh
+GO_SUPRA_ONDUPACK_REBUILD_WINNERS_V1.sh
+GO_SUPRA_ONDUPACK_REVENUE_PRODUCT_V1.sh
+GO_FIX_ONDUPACK_CONTACT_FALSE_POSITIVES_V3.sh
+GO_FIX_ONDUPACK_CONTACT_FALSE_POSITIVES_V4.sh (doublon V3)
+GO_FIX_ONDUPACK_MONEY_GATE_CONTACTS_V2.sh
+```
+
+#### G3 — NICO_APP (7 scripts, Jul 15) — OBSOLÈTE
+```
+GO_NICO_APP_CLEAN_V2_TO_V5.sh
+GO_NICO_APP_CLEAN_V5_FIX_OBSERVABLEOBJECT_V1.sh (doublon)
+GO_NICO_APP_FIX_MISSIONMODULE_DUPLICATE_V1.sh
+GO_NICO_APP_FIX_MISSIONMODULE_DUPLICATE_V2.sh (doublon V1)
+GO_NICO_APP_ORCHESTRATOR_V1.sh
+GO_NICO_APP_STOS_FACTORY_BUTTON_V1.sh
+GO_NICO_APP_STOS_MENU_REAL_V1.sh
+```
+
+#### G4 — VIDEO_SWAP (7 scripts, Jul 15) — OBSOLÈTE
+```
+GO_SUPRA_VIDEO_SWAP_APP_V1.sh
+GO_SUPRA_VIDEO_SWAP_REAL_ENGINE_V1.sh
+GO_SUPRA_VIDEO_SWAP_REBUILD_FIX_V1.sh
+GO_SUPRA_VIDEO_SWAP_REPAIR_PURGE_V1.sh
+GO_SUPRA_VIDEO_SWAP_RESUME_STEP8_V1.sh
+GO_SUPRA_VIDEO_SWAP_V2.sh
+GO_FIX_PUCHERO_TWIN_NICO_FINAL.sh
+```
+
+#### G5 — CANNONICO (10+ scripts, Jul 15-17) — HISTORIQUE
+```
+GO_CANNONICO_ENVIRONMENT_OS_V1.sh
+GO_SUPRA_CANNONICO_ENVIRONMENT_TWIN_FABRIC_V1.sh
+GO_SUPRA_CANNONICO_IMAC_ESTATE_AND_AUTONOMOUS_ARCHITECT_V1.sh
+GO_SUPRA_CANNONICO_UI_OPERATING_SYSTEM_V1.sh
+GO_SUPRA_CANONICAL_ASSET_REGISTRY_AND_DELTA_CONVERGENCE_V1.sh
+GO_SUPRA_CANONICAL_FAMILY_AUDIT_FORGE_V1.sh
+GO_SUPRA_CANONICAL_LANGUAGE_COMPILER_V1.sh
+GO_SUPRA_CANONICAL_NAMING_AND_BRANDING_V1.sh
+GO_SUPRA_MASTER_CANON_COMPILER_V1.sh
+GO_SUPRA_MASTER_CANON_COMPILER_V1_1.sh (doublon)
+```
+
+#### G6 — PLATFORM_CORE (3 scripts, Jul 16) — HISTORIQUE
+```
+GO_SUPRA_PLATFORM_CORE_V2.sh
+GO_SUPRA_PLATFORM_CORE_V2_1_LIVE_ORCHESTRATOR.sh
+GO_SUPRA_PLATFORM_CORE_V2_2.sh
+```
+
+#### G7 — PROJECT_IDENTITY (7 scripts, Jul 17) — HISTORIQUE
+```
+GO_SUPRA_PROJECT_IDENTITY_MULTI_CORPUS_VALIDATION_V1.sh
+GO_SUPRA_PROJECT_IDENTITY_MULTI_CORPUS_VALIDATION_V1_1.sh (doublon)
+GO_SUPRA_PROJECT_IDENTITY_MULTI_CORPUS_VALIDATION_V1_2_RECOVERY.sh (patch)
+GO_SUPRA_PROJECT_IDENTITY_RECOVER_AND_PATCH_V1_3.sh (patch)
+GO_SUPRA_PROJECT_IDENTITY_FIX_GENERATOR_AND_RUN_V1_4.sh (patch)
+GO_SUPRA_PROJECT_IDENTITY_FINAL_VERIFY_V1_5.sh (patch)
+GO_SUPRA_PROJECT_IDENTITY_REFERENCE_CORPUS_V1.sh
+```
+
+#### G8 — AUDIT/VALIDATION (10+ scripts, Jul 16-18) — HISTORIQUE
+```
+GO_SUPRA_EXECUTIVE_AUDITOR_V1.sh
+GO_SUPRA_PROGRESSIVE_AUDIT_ENGINE_V1.sh + patches (3)
+GO_SUPRA_AUDIT_ALL_TERMINAL_TABS_TOTAL_V1.sh
+GO_AUDIT_TARGETED_SUPRA_COMPONENT_BINDINGS_V1.sh
+GO_SUPRA_TOTAL_ASSET_AND_MEMORY_BRIDGE_AUDIT_V1.sh
+GO_VALIDATE_PROJECT_REGISTRY_AND_RESOLVE_DECLARED_BINDINGS_V1.sh
+GO_CHECK_ALL_TERMINAL_TABS_DEEP_V1.sh + V1_1
+```
+
+#### G9 — RÉCENTS / ACTIFS (6 scripts, Jul 20-22) — ACTIF
+```
+GO_SUPRA_LOCAL_AI_TOTAL_DISCOVERY_V1.sh          (Jul 20, 22 KB)
+GO_REPAIR_SUPRA_LOCAL_AI_ANALYSIS_V1.sh           (Jul 20, 11 KB)
+GO_SUPRA_RECOVER_EXISTING_LOCAL_AI_PATH_V1.sh     (Jul 20, 17 KB)
+GO_SUPRA_AUTHORITY_RESOLUTION_AND_DECISION_BOARD_V1.command (Jul 21, 16 KB)
+GO_SUPRA_FACTORY_HOST_BOOTSTRAP_V1.sh             (Jul 22, 2 KB)
+GO_SUPRA_HOST_MOUNT_EXISTING_ARTIFACTS_V1.sh      (Jul 22, 3 KB)
+```
+
+### Scripts critiques identifiés
+
+| Script | Raison |
+|--------|--------|
+| `GO_SUPRA_AUTHORITY_RESOLUTION_AND_DECISION_BOARD_V1.command` | Seul .command, récent (Jul 21) |
+| `GO_SUPRA_LOCAL_AI_TOTAL_DISCOVERY_V1.sh` | Récent (Jul 20), taille significative |
+| `GO_SUPRA_FACTORY_HOST_BOOTSTRAP_V1.sh` | Plus récent (Jul 22) |
+
+### Doublons identifiés
+
+| Groupe | Scripts | À conserver |
+|--------|---------|-------------|
+| GO_CHECK_ALL_TERMINAL_TABS_DEEP | V1, V1_1 | V1_1 (dernier) |
+| GO_FIX_ONDUPACK_CONTACT_FALSE_POSITIVES | V3, V4 | V4 (dernier) |
+| GO_NICO_APP_CLEAN | V2_TO_V5, V5_FIX | V2_TO_V5 |
+| GO_NICO_APP_FIX_MISSIONMODULE_DUPLICATE | V1, V2 | V2 (dernier) |
+| GO_SUPRA_FACTORY | V1, V1_1 | V1_1 |
+| GO_SUPRA_KNOWLEDGE_COMPILER | V1, V1_1_COMPACT_RESUME | V1 |
+| GO_SUPRA_LULU_HERITAGE_ETUDE_EXEMPLE | V1, V2 | V2 (dernier) |
+| GO_SUPRA_MASTER_CANON_COMPILER | V1, V1_1 | V1_1 |
+| GO_SUPRA_ONDUPACK_EXECUTIVE_DOSSIER | V1, V2_CLEAN | V2_CLEAN |
+| GO_SUPRA_PLATFORM_CORE | V2, V2_1, V2_2 | V2_2 (dernier) |
+| GO_SUPRA_PROGRESSIVE_AUDIT_ENGINE | V1 + ARGPARSE_FIX + DELTA_RECOVERY | V1 |
+| GO_SUPRA_PROJECT_IDENTITY_MULTI_CORPUS_VALIDATION | V1 à V1_5 | V1_5 (dernier) |
+| GO_SUPRA_STORAGE_TWIN | V1, V1_1_ASYNC | V1_1_ASYNC |
+| GO_SUPRA_TERMINAL_MEMORY_BRIDGE_RECONCILIATION | V1, V1_1 | V1_1 |
+
+### Classification par révention
+
+| Catégorie | Nombre | Exemple |
+|-----------|--------|---------|
+| ACTIF (Jul 20-22) | 6 | LOCAL_AI, AUTHORITY, FACTORY_HOST |
+| HISTORIQUE (Jul 16-19) | ~100 | CANNONICO, AUDIT, MEMORY |
+| OBSOLÈTE (Jul 14-15) | ~44 | LULU, ONDUPACK, NICO, VIDEO_SWAP |
+
+### Recommandation pour Phase 0
+
+| Action | Détail | Risque |
+|--------|--------|--------|
+| **NE RIEN SUPPRIMER** | Conservation intégrale | Nul |
+| **NE PAS DÉPLACER** | SUPRA_SCRIPTS/ reste où il est | Nul |
+| Ajouter les 30 scripts Desktop vers SUPRA_SCRIPTS/ | Phase 0 standard | Vérifier collisions |
+| **Collision check**: 0 collision prévue (noms Desktop ≠ noms SUPRA_SCRIPTS/) | Aucun conflit de noms | Vérifié |
+
+### Conclusion
+
+| Critère | Statut |
+|---------|--------|
+| Contenu de SUPRA_SCRIPTS/ connu | ✅ |
+| Doublons identifiés | ✅ (14 groupes) |
+| Scripts obsolètes identifiés | ✅ (~44 obsolètes) |
+| Scripts critiques identifiés | ✅ (3 actifs) |
+| Collision avec scripts Desktop | ✅ Aucune |
+| Phase 0 possible sans risque | ✅ |

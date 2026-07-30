@@ -1,0 +1,90 @@
+{
+  "Version": "1.0.0",
+  "Commit": "80ca2f19aa2e1cbf5f8183fb993c2b96abc177ea",
+  "SHA": "d641472e97d2e6cf68093b91ea6091159650aaec3e22adff19ff219fe5787f5e",
+  "Date": "2026-07-28",
+  "Artefacts": [
+    {
+      "Type": "Application",
+      "Path": "/private/tmp/SUPRA_ALPHA01_DERIVED/Build/Products/Debug/SUPRA.app",
+      "SHA-256": "[SHA non disponible dans les preuves]",
+      "Purpose": "Runtime principal SUPRA"
+    },
+    {
+      "Type": "Build Log",
+      "Path": "/private/tmp/SUPRA_ALPHA01_BUILD.log",
+      "SHA-256": "d641472e97d2e6cf68093b91ea6091159650aaec3e22adff19ff219fe5787f5e",
+      "Purpose": "Preuve de compilation"
+    },
+    {
+      "Type": "Runtime Capture",
+      "Path": "/private/tmp/SUPRA_ALPHA01_RUNTIME_LAUNCH.png",
+      "SHA-256": "7a27926899fbf913b18944e5d21b569412dc17c2a4e0412f86eb2f490090b281",
+      "Purpose": "Preuve de lancement"
+    },
+    {
+      "Type": "Audit Report",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/ALPHA01_RELEASE_AUDIT.md",
+      "SHA-256": "[SHA non disponible, fichier complet]",
+      "Purpose": "Audit de certification final"
+    },
+    {
+      "Type": "Cleanup Plan",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/GIT_CLEANUP_PLAN.md",
+      "SHA-256": "[SHA non disponible, fichier complet]",
+      "Purpose": "Hygiène Git"
+    },
+    {
+      "Type": "Release Documentation",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/docs/releases/",
+      "SHA-256": "[Zip non disponible, répertoire]",
+      "Purpose": "Documentation de release"
+    },
+    {
+      "Type": "Installer Audit",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/GO_SUPRA_INSTALL_AUDIT.md",
+      "SHA-256": "[SHA non disponible, fichier complet]",
+      "Purpose": "Audit du script d'installation"
+    }
+  ],
+  "Livrables": [
+    {
+      "Type": "Application",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj",
+      "Status": "Build recompilable"
+    },
+    {
+      "Type": "Documentation",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/ALPHA01_RELEASE_AUDIT.md",
+      "Status": "Complète"
+    },
+    {
+      "Type": "Documentation",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/GIT_CLEANUP_PLAN.md",
+      "Status": "Complète"
+    },
+    {
+      "Type": "Documentation",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/ALPHA02_EXECUTION_PACKAGE.md",
+      "Status": "Complète"
+    },
+    {
+      "Type": "Scripts",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/GO_SUPRA_INSTALL.sh",
+      "Status": "Syntaxiquement valide"
+    },
+    {
+      "Type": "Preuves",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/BUILD_LOG.md",
+      "Status": "Complète"
+    },
+    {
+      "Type": "Preuves",
+      "Path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/RUNTIME_STATUS.md",
+      "Status": "Complète"
+    }
+  ],
+  "Décision": "ALPHA-01 est définitivement figée et certifiée prête pour ALPHA-02.",
+  "Owner": "SUPRA-Builder",
+  "Approved_by": ["SUPRA-Architect", "Governance"]
+}

@@ -1,7 +1,8 @@
 import SwiftUI
+import Combine
 
 struct DecisionInboxView: View {
-    @StateObject private var store = DecisionStore()
+    @EnvironmentObject private var store: DecisionStore
     @State private var selection: Decision.ID?
 
     var body: some View {
@@ -79,4 +80,5 @@ struct DecisionInboxView: View {
 
 #Preview {
     NavigationStack { DecisionInboxView() }
+        .environmentObject(SUPRACompositionRoot.shared.decisionStore)
 }

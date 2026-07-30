@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "name": "SUPRA Builder Guard",
+  "description": "Enforcement mechanism guaranteeing that only SUPRA-Builder performs file mutations.",
+  "guard_active": true,
+  "single_writer": "SUPRA-Builder",
+  "write_operations": ["edit", "write", "create", "delete", "patch", "rename", "move", "chmod"],
+  "read_only_agents": ["SUPRA-Architect", "SUPRA-Auditor", "SUPRA-Reviewer", "SUPRA-Explorer", "SUPRA-Research", "SUPRA-Runtime", "SUPRA-Refactor", "SUPRA-Router"],
+  "rules": [
+    {
+      "id": "guard_001",
+      "rule": "No read-only agent may directly edit, write, create, or delete any file",
+      "enforcement": "Block at operation dispatch level",
+      "violation_response": "log_warning + reject_operation + notify_mission_center"
+    },
+    {
+      "id": "guard_002",
+      "rule": "All mutation requests from read-only agents must pass through the Mission Center write request protocol",
+      "enforcement": "Validate request origin before routing to Builder",
+      "violation_response": "reject + 'Use Mission Center write request protocol'"
+    },
+    {
+      "id": "guard_003",
+      "rule": "SUPRA-Builder may only write files that have been validated by the Mission Center pipeline",
+      "enforcement": "Check validation stamp before applying mutation",
+      "violation_response": "log_warning + require_validator_approval"
+    },
+    {
+      "id": "guard_004",
+      "rule": "SUPRA-Builder must report all mutations to Mission Center for audit trail",
+      "enforcement": "Mutation log must be written to mission_center history",
+      "violation_response": "log_warning + append_mutation_record"
+    }
+  ],
+  "write_request_protocol": {
+    "steps": [
+      "1. Read-only agent identifies need for file mutation",
+      "2. Agent prepares: { target_file, mutation_type, content_diff, rationale }",
+      "3. Agent submits write request to Mission Center queue",
+      "4. Mission Center validates: is requestor read-only? yes → proceed",
+      "5. Request prioritized in Builder queue",
+      "6. Builder picks up request, reviews, and applies mutation",
+      "7. Builder logs mutation in execution_history.json",
+      "8. Builder reports back to requesting agent"
+    ],
+    "schema": {
+      "requestor": "string (agent_id)",
+      "target_file": "string (file_path)",
+      "mutation_type": "string (create|modify|delete)",
+      "content_diff": "string (description or patch)",
+      "rationale": "string (why this mutation is needed)",
+      "submitted_at": "string (timestamp)"
+    }
+  },
+  "violation_log": [],
+  "last_checked": "2026-07-24T00:30:00Z"
+}

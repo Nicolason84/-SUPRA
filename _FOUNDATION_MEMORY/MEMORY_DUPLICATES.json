@@ -1,0 +1,66 @@
+{
+  "memory": "MEMORY_DUPLICATES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "DUP-001",
+      "name": "SUPRA_RECOVERY (4 variants of SUPRA)",
+      "type": "project_fork",
+      "canonical": "SUPRA",
+      "duplicates": ["CHAT", "BRIDGE", "HEALTH", "BASELINE"],
+      "impact": "low",
+      "recoverable_mb": 11,
+      "note": "Snapshots de récupération à archiver"
+    },
+    {
+      "uuid": "DUP-002",
+      "name": "SUPRA_BISECT (reduced copy of SUPRA)",
+      "type": "project_fork",
+      "canonical": "SUPRA",
+      "impact": "low",
+      "recoverable_mb": 17,
+      "note": "Copie de bissection, obsolète après build stable"
+    },
+    {
+      "uuid": "DUP-003",
+      "name": "NICO_APP vs NICO_APP_CLEAN",
+      "type": "app_duplicate",
+      "canonical": "NICO_APP",
+      "risk": "medium",
+      "recoverable_gb": 5.3,
+      "note": "Deux versions de NICO_APP iOS dont une avec DerivedData massif"
+    },
+    {
+      "uuid": "DUP-004",
+      "name": "HELENE standalone vs HELENE in NICO_APP",
+      "type": "app_duplicate",
+      "canonical": "HELENE standalone",
+      "risk": "medium",
+      "note": "SUPRA_HELENE existe en standalone ET intégré dans NICO_APP"
+    },
+    {
+      "uuid": "DUP-005",
+      "name": "VideoSwap V1 vs V3",
+      "type": "version_duplicate",
+      "canonical": "V3",
+      "risk": "medium",
+      "recoverable_mb": 20,
+      "note": "V1 legacy (20 MB), V3 active (49 MB)"
+    },
+    {
+      "uuid": "DUP-006",
+      "name": "Desktop recovery logs (3 files)",
+      "type": "log_duplicate",
+      "canonical": "none",
+      "risk": "low",
+      "recoverable_mb": 236,
+      "note": "Fichiers de recovery massifs probablement redondants entre eux"
+    }
+  ],
+  "summary": {
+    "total_families": 6,
+    "estimated_recoverable_mb": 350,
+    "estimated_recoverable_gb_from_deriveddata": 28
+  }
+}

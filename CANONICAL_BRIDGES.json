@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 3
+  },
+  "bridges": [
+    {
+      "id": "BRG-001",
+      "identifier": "OpenCodeBridge",
+      "path": "SUPRA/OpenCodeBridge.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "class",
+      "protocol": ["ObservableObject"],
+      "singleton": "shared",
+      "concurrency": "@MainActor",
+      "commands": [
+        "startMission", "cancelMission", "getMissionStatus",
+        "dispatchAgent", "getAgentStatus", "executeTask",
+        "getExecutionState", "queryKnowledge", "updateKnowledge",
+        "getWorkspaceIndex", "scanWorkspace", "getRuntimeStatus",
+        "getProviderStatus", "getEventStream", "ping"
+      ],
+      "dependencies": ["RuntimeGateway"],
+      "consumers": ["NOVAKnowledgeKernel", "UniverseDashboard", "UniverseEngine", "ExecutiveCockpitFoundation"]
+    },
+    {
+      "id": "BRG-002",
+      "identifier": "CAnnoNicoIntegrationBridge",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "enum",
+      "dependencies": ["CAnnoNicoContracts", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter"],
+      "external_refs": [
+        "~/NOVA_OS/PUCHERO_V1",
+        "~/NOVA_OS/NICO_APP_V1",
+        "~/NOVA_OS/SUPRA_VIDEO_SWAP_V2"
+      ]
+    },
+    {
+      "id": "BRG-003",
+      "identifier": "SUPRATerminalMegabusBridge",
+      "path": "SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": true,
+      "replacement": null,
+      "type": "enum",
+      "duplicate_of": {
+        "path": "_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift",
+        "status": "archived"
+      },
+      "target": "~/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/",
+      "consumers": ["ContentView"]
+    }
+  ],
+  "planned": {
+    "bridge_extraction_target": "SUPRA/Bridges/",
+    "status": "empty"
+  }
+}

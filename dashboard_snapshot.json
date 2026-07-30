@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "snapshot_id": "DASH-SNAP-001",
+  "timestamp": "2026-07-24T01:00:00Z",
+  "system_status": "operational",
+  "mission_counts": {
+    "total": 100,
+    "queued": 19, "ready": 10, "planned": 11, "running": 11,
+    "waiting": 5, "blocked": 1, "failed": 3, "success": 29, "archived": 14,
+    "active": 39, "completed": 43
+  },
+  "workers": {
+    "total": 20, "busy": 11, "idle": 9,
+    "by_provider": {"opencode-zen": {"busy": 9, "idle": 7}, "ollama": {"busy": 1, "idle": 1}, "openai": {"busy": 0, "idle": 2}}
+  },
+  "providers": {
+    "opencode-zen": {"status": "available", "load_pct": 56.25, "missions_total": 86},
+    "ollama": {"status": "available", "load_pct": 50.0, "missions_total": 14},
+    "openai": {"status": "unavailable", "load_pct": 0, "missions_total": 0}
+  },
+  "pie_chart_states": {"QUEUED": 19, "READY": 10, "PLANNED": 11, "RUNNING": 11, "SUCCESS": 29, "ARCHIVED": 14, "WAITING": 5, "BLOCKED": 1, "FAILED": 3},
+  "top_bottlenecks": [
+    {"rank": 1, "name": "SUPRA-Architect", "avg_duration": 115, "missions_pending": 3},
+    {"rank": 2, "name": "SUPRA-Auditor", "avg_duration": 48, "missions_pending": 6},
+    {"rank": 3, "name": "SUPRA-Reviewer", "avg_duration": 32, "missions_pending": 4}
+  ],
+  "health_indicators": {
+    "completion_rate": "91.5%",
+    "failure_rate": "8.5%",
+    "queue_health": "stable",
+    "worker_health": 4.6,
+    "provider_health": 2.3,
+    "system_health_score": 8.2
+  }
+}

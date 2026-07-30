@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+    "date": "2026-07-24T17:35:00Z",
+    "total_memories": 24,
+    "total_entries": 254,
+    "note": "Index global de toutes les mémoires fondatrices"
+  },
+  "memories": {
+    "MEMORY_ENVIRONMENT": { "entries": 8, "scope": "Machine, OS, espaces de travail" },
+    "MEMORY_PROJECTS": { "entries": 10, "scope": "Tous les projets identifiés" },
+    "MEMORY_GIT": { "entries": 8, "scope": "Dépôts Git, branches, statuts" },
+    "MEMORY_XCODE": { "entries": 8, "scope": "Projets Xcode, configurations, DerivedData" },
+    "MEMORY_SWIFT_PACKAGES": { "entries": 8, "scope": "Packages SPM locaux, targets, statuts" },
+    "MEMORY_MODULES": { "entries": 6, "scope": "Modules Swift, libraries, adapters" },
+    "MEMORY_SERVICES": { "entries": 16, "scope": "Stores, services, providers" },
+    "MEMORY_SWIFTUI": { "entries": 34, "scope": "Toutes les vues SwiftUI" },
+    "MEMORY_RUNTIME": { "entries": 12, "scope": "Runtime monitoring, events, health" },
+    "MEMORY_WORKERS": { "entries": 4, "scope": "Workers, agents, event sources" },
+    "MEMORY_CAPABILITIES": { "entries": 16, "scope": "Fonctionnalités métier groupées" },
+    "MEMORY_BRIDGES": { "entries": 6, "scope": "Bridges d'intégration" },
+    "MEMORY_ADAPTERS": { "entries": 4, "scope": "Adapteurs externes" },
+    "MEMORY_DECISIONS": { "entries": 6, "scope": "Système de décisions" },
+    "MEMORY_PRODUCTS": { "entries": 7, "scope": "Produits et concepts" },
+    "MEMORY_FREEZES": { "entries": 14, "scope": "Freezes et snapshots" },
+    "MEMORY_ARCHIVES": { "entries": 5, "scope": "Archives de projets" },
+    "MEMORY_REPORTS": { "entries": 22, "scope": "Rapports et analyses" },
+    "MEMORY_CONVERSATIONS": { "entries": 5, "scope": "Chat et conversations" },
+    "MEMORY_SCRIPTS": { "entries": 4, "scope": "Scripts et outils" },
+    "MEMORY_DEPENDENCIES": { "entries": 8, "scope": "Graphe des dépendances" },
+    "MEMORY_DUPLICATES": { "entries": 6, "scope": "Familles de doublons" },
+    "MEMORY_CLEANUP": { "entries": 13, "scope": "Actions de nettoyage" }
+  },
+  "cross_references": {
+    "canonical_project": "SUPRA",
+    "canonical_git": "GIT-001 (SUPRA develop)",
+    "canonical_package": "PKG-001 (CAnnoNicoIntegrationPackage)",
+    "canonical_xcodeproj": "XCODE-001 (SUPRA.xcodeproj)",
+    "central_bridge": "BRG-001 (CAnnoNicoIntegrationBridge)",
+    "entry_point_ui": "UI-001 (SUPRAApp)",
+    "unused_ui": "UI-002 (ContentView - compilé mais non instancié)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "task_type": "exploration",
+  "agent": "SUPRA-Explorer",
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "bindings_source": "runtime_bindings.json",
+  "delegation_rule": "DEL_005",
+  "findings": {
+    "total_files_scanned": 97,
+    "swift_files_found": 30,
+    "swiftui_files_found": 15,
+    "project_patterns": [
+      "NavigationSplitView for master-detail screens (DecisionInboxView, MissionCenterView, ContentView)",
+      "NavigationStack with .navigationDestination(for:) for hub-spoke routing (SupraControlCenterView)",
+      "ObservableObject store per screen via @StateObject (DecisionStore, MissionStore, ControlCenterStore)",
+      "All stores are @MainActor final class: ObservableObject with @Published state",
+      "View sub-components extracted as computed @ViewBuilder properties, not separate files",
+      "Row views extracted as standalone structs (DecisionRow, MissionRow) for list items",
+      "Detail views as standalone structs (DecisionDetailView, MissionDetailView) receiving model via let",
+      "ContentUnavailableView for empty/loading/error states",
+      ".background(.regularMaterial, in: RoundedRectangle(cornerRadius: X)) card pattern",
+      "LazyVGrid with adaptive GridItem for dashboard sections",
+      "SF Symbols throughout for icons",
+      "ExecutiveDestination enum registered in SupraControlCenterView for all navigable screens",
+      "#Preview macro at bottom of each view file",
+      "Protocol-based runtime abstraction (SUPRAChatRuntimeProtocol) with adapter pattern",
+      "JSON file loading from ~/NOVA_OS/ directory for persisted data"
+    ],
+    "recommended_pattern": "NavigationSplitView master-detail with @StateObject Store, ObservableObject per screen, standalone View struct, ExecutiveDestination registration in SupraControlCenterView, ContentUnavailableView for empty states, .regularMaterial card styling"
+  },
+  "duration_seconds": 45,
+  "status": "completed"
+}

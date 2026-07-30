@@ -1,0 +1,556 @@
+{
+  "observer": "GO_SUPRA_DEPENDENCY_GRAPH_V4",
+  "mode": "READ_ONLY",
+  "summary": {
+    "swift_files": 18,
+    "imports": 30,
+    "functions": 85
+  },
+  "files": [
+    {
+      "name": "ArtifactReader.swift",
+      "path": "SUPRA/ArtifactReader.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "structs": [
+        "ArtifactReader"
+      ],
+      "classes": [],
+      "enums": [
+        "ReaderError"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "availableJSONStatus",
+        "availableTextStatus",
+        "jsonDetail",
+        "jsonStatus",
+        "optionalJSONStatus",
+        "read",
+        "status",
+        "textStatus"
+      ],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "imports": [
+        "CAnnoNicoContracts",
+        "Foundation",
+        "NicoAppAdapter",
+        "PucheroMemoryAdapter",
+        "VideoSwapAdapter"
+      ],
+      "structs": [],
+      "classes": [],
+      "enums": [
+        "SUPRACAnnoNicoIntegration"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "snapshot"
+      ],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "ContentView.swift",
+      "path": "SUPRA/ContentView.swift",
+      "imports": [
+        "AppKit",
+        "CAnnoNicoContracts",
+        "Combine",
+        "CryptoKit",
+        "Foundation",
+        "SwiftUI"
+      ],
+      "structs": [
+        "ContentView",
+        "HumanSynthesis",
+        "SUPRAActionCard",
+        "SUPRAActionDefinition",
+        "SUPRAActionManifest",
+        "SUPRAAlert",
+        "SUPRAArchitectureLiveView",
+        "SUPRAAuthorityLiveView",
+        "SUPRAChatMessage",
+        "SUPRAChatRequest",
+        "SUPRAChatResponse",
+        "SUPRADecisionInboxLiveView",
+        "SUPRADetailPage",
+        "SUPRAExecutiveModel",
+        "SUPRAFacadeCandidate",
+        "SUPRAHeader",
+        "SUPRALiveBoardsRootView",
+        "SUPRALiveSnapshot",
+        "SUPRAMetrics",
+        "SUPRAMissionEvidencePayload",
+        "SUPRARecord",
+        "SUPRASection",
+        "SUPRASemanticFacadeConnection",
+        "SUPRASemanticProduct",
+        "SUPRASemanticProductsFeed",
+        "SUPRASemanticProject",
+        "SUPRASemanticProjectsFeed",
+        "SUPRASource",
+        "SUPRAStatusCard",
+        "SUPRAStorageLiveView",
+        "SUPRASystem",
+        "SUPRASystemIntegritySnapshot",
+        "SUPRASystemLiveView",
+        "SUPRATerminalMegabusEnvelope",
+        "SUPRAWorkspaceLiveView"
+      ],
+      "classes": [
+        "SUPRAExecutiveStore",
+        "SUPRALiveBoardsModel"
+      ],
+      "enums": [
+        "CodingKeys",
+        "SUPRAActionError",
+        "SUPRAActionRuntime",
+        "SUPRAHumanStage",
+        "SUPRALiveSection",
+        "SUPRAMissionEvidenceLoader",
+        "SUPRASemanticFeedError",
+        "SUPRAStructureMode",
+        "SUPRASystemIntegrityLoader",
+        "SUPRATerminalMegabusBridge"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [
+        "SUPRAExecutiveModel"
+      ],
+      "functions": [
+        "circuitChip",
+        "circuitNode",
+        "connectingSemanticProductFeeds",
+        "encode",
+        "execute",
+        "humanSynthesis",
+        "humanSynthesisCard",
+        "inspectorField",
+        "integrityCard",
+        "integrityEvidenceRow",
+        "interfaceRule",
+        "isAuthorizedHumanGate",
+        "jsonString",
+        "latestExistingFile",
+        "load",
+        "loadActions",
+        "loadManifest",
+        "loadRequiredEvidence",
+        "metricCard",
+        "openArchitectureEvidence",
+        "openAuthorityEvidence",
+        "openStorageEvidence",
+        "operationalIcon",
+        "pageHeader",
+        "publish",
+        "readObject",
+        "registerSUPRAAndGabriel",
+        "registryPage",
+        "reload",
+        "removePlaceholderMissionEvidence",
+        "revealModel",
+        "sectionHeader",
+        "sendChat",
+        "sendChatDraft",
+        "sendHumanChatDraft",
+        "sourcePage",
+        "start",
+        "startAutonomousHumanGateIfNeeded",
+        "startAutopilotIfNeeded",
+        "status",
+        "statusBadge",
+        "statusColor",
+        "stop",
+        "structureCard",
+        "structureHero",
+        "structureMetric",
+        "structureSummary",
+        "text",
+        "verify",
+        "withAlert"
+      ],
+      "observableObject": true,
+      "state": 29,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "ControlCenterStore.swift",
+      "path": "SUPRA/ControlCenterStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "structs": [],
+      "classes": [
+        "ControlCenterStore"
+      ],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "load"
+      ],
+      "observableObject": true,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "Decision.swift",
+      "path": "SUPRA/Decision.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "structs": [
+        "Decision",
+        "Evidence",
+        "HistoryEntry",
+        "NextAction"
+      ],
+      "classes": [],
+      "enums": [
+        "HumanGate",
+        "Priority",
+        "Status"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "DecisionDetailView.swift",
+      "path": "SUPRA/DecisionDetailView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "DecisionDetailView"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "DecisionInboxView.swift",
+      "path": "SUPRA/DecisionInboxView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "DecisionInboxView"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 2,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "DecisionRow.swift",
+      "path": "SUPRA/DecisionRow.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "DecisionRow"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "DecisionStore.swift",
+      "path": "SUPRA/DecisionStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "structs": [],
+      "classes": [
+        "DecisionStore"
+      ],
+      "enums": [
+        "Filter",
+        "Sort"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "applyPresentation",
+        "filter",
+        "load",
+        "priorityRank",
+        "readDecisions",
+        "refresh",
+        "search",
+        "sort"
+      ],
+      "observableObject": true,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "Mission.swift",
+      "path": "SUPRA/Mission.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "structs": [
+        "Dependency",
+        "Mission",
+        "Objective",
+        "Task",
+        "TimelineEntry"
+      ],
+      "classes": [],
+      "enums": [
+        "Priority",
+        "Status"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "MissionCenterView.swift",
+      "path": "SUPRA/MissionCenterView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "MissionCenterView"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 2,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "MissionDetailView.swift",
+      "path": "SUPRA/MissionDetailView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "MissionDetailView"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "MissionRow.swift",
+      "path": "SUPRA/MissionRow.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "MissionRow"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "MissionStore.swift",
+      "path": "SUPRA/MissionStore.swift",
+      "imports": [
+        "Combine",
+        "Foundation"
+      ],
+      "structs": [],
+      "classes": [
+        "MissionStore"
+      ],
+      "enums": [
+        "Filter",
+        "Sort"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "applyPresentation",
+        "filter",
+        "load",
+        "priorityRank",
+        "readMission",
+        "refresh",
+        "search",
+        "sort"
+      ],
+      "observableObject": true,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "SUPRAApp.swift",
+      "path": "SUPRA/SUPRAApp.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "SUPRAApp"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "SUPRAGabrielConductorRuntime.swift",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "structs": [
+        "SUPRAGabrielConductorSnapshot",
+        "SUPRAGabrielWorkerSnapshot"
+      ],
+      "classes": [],
+      "enums": [
+        "CodingKeys",
+        "SUPRAGabrielConductorRuntime"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "load",
+        "run"
+      ],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "Snapshot.swift",
+      "path": "SUPRA/Snapshot.swift",
+      "imports": [
+        "Foundation"
+      ],
+      "structs": [
+        "ArtifactStatus",
+        "Snapshot"
+      ],
+      "classes": [],
+      "enums": [],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [],
+      "observableObject": false,
+      "state": 0,
+      "binding": 0,
+      "environment": 0
+    },
+    {
+      "name": "SupraControlCenterView.swift",
+      "path": "SUPRA/SupraControlCenterView.swift",
+      "imports": [
+        "SwiftUI"
+      ],
+      "structs": [
+        "ExecutivePlaceholderView",
+        "SupraControlCenterView"
+      ],
+      "classes": [],
+      "enums": [
+        "ExecutiveDestination"
+      ],
+      "protocols": [],
+      "actors": [],
+      "extensions": [],
+      "functions": [
+        "dashboard",
+        "executiveSummary",
+        "healthName",
+        "quickActions",
+        "recentActivity",
+        "runtimeHealth",
+        "summaryCard"
+      ],
+      "observableObject": false,
+      "state": 1,
+      "binding": 0,
+      "environment": 0
+    }
+  ]
+}

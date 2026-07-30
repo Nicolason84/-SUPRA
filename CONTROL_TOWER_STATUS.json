@@ -1,0 +1,280 @@
+{
+  "meta": {
+    "mission": "SUPRA_CONTROL_TOWER_V1",
+    "generated_at": "2026-07-24T17:43:00Z",
+    "machine": "Nicolas Alonso iMac (arm64, macOS 26.5)",
+    "workspace": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+    "mode": "READ_ONLY — aucune mutation"
+  },
+  "processes": {
+    "status": "idle",
+    "note": "Aucun processus SUPRA actif en session courante (CLI only)",
+    "last_runtime_mission": {
+      "id": "SUPRA_RUNTIME_INTEGRATION_V001",
+      "date": "2026-07-24T00:44:00Z",
+      "agents_dispatched": 5,
+      "completed": 5,
+      "failed": 0,
+      "total_duration_seconds": 360,
+      "quality_score": 0.82,
+      "providers_used": ["opencode-zen", "ollama"],
+      "verdict": "PASS — pipeline complet exécuté"
+    },
+    "runtime_smoke_test": {
+      "date": "2026-07-23T12:03:38Z",
+      "build_succeeded": true,
+      "process_survived_12_seconds": true,
+      "crash_detected": false,
+      "application_visible": true,
+      "log_lines": 167,
+      "verdict": "PASS"
+    },
+    "agent_results_available": 14,
+    "agent_results_dir": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/agent_results/"
+  },
+  "missions": {
+    "active_missions": [
+      {
+        "id": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+        "status": "completed",
+        "mode": "READ_ONLY INDUSTRIEL",
+        "output": "_FOUNDATION_MEMORY/ (29 fichiers)"
+      },
+      {
+        "id": "SUPRA_CONTROL_TOWER_V1",
+        "status": "in_progress",
+        "mode": "READ_ONLY",
+        "output": "CONTROL_TOWER_STATUS.json"
+      },
+      {
+        "id": "SUPRA_ENVIRONMENT_TWIN_V1",
+        "status": "completed",
+        "mode": "PROD",
+        "output": "ENVIRONMENT_INDEX.json, PROJECT_REGISTRY.json, PACKAGE_REGISTRY.json, MODULE_REGISTRY.json, CANONICAL_REGISTRY.json, DUPLICATE_REGISTRY.json, DEPENDENCY_GRAPH.json, FREEZE_REGISTRY.json, ENVIRONMENT_REPORT.md, CLEANUP_PLAN.md"
+      }
+    ],
+    "mission_center_metrics": {
+      "file": "mission_center_metrics.json",
+      "execution_graph": "execution_graph.json",
+      "queued_jobs": 0,
+      "active_workers": 0
+    },
+    "pending_missions_dir": "_MISSIONS/",
+    "pending_missions": 1
+  },
+  "builds": {
+    "latest_build": {
+      "status": "SUCCEEDED",
+      "date": "2026-07-24T17:25:59Z",
+      "command": "xcodebuild -scheme SUPRA -configuration Debug build",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "scheme": "SUPRA",
+      "configuration": "Debug",
+      "platform": "macOS 26.5",
+      "derived_data": {
+        "path": "~/Library/Developer/Xcode/DerivedData/SUPRA-brymtechwigcboblkpbezhswerbq/",
+        "estimated_size_gb": 28
+      }
+    },
+    "previous_build_diagnostic": {
+      "date": "2026-07-23T13:23:00Z",
+      "status": "FAILED",
+      "errors": 74,
+      "cause": "_EXTRACTION_PLAN files — doublons de déclarations",
+      "note": "Ce diagnostic est antérieur; le build actuel passe"
+    },
+    "build_artifacts": {
+      "app_bundle": "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData/SUPRA-brymtechwigcboblkpbezhswerbq/Build/Products/Debug/SUPRA.app",
+      "build_dir": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/build/",
+      "build_log": "/Users/nicolasalonso/Desktop/SUPRA_BUILD_FULL.log"
+    }
+  },
+  "git_state": {
+    "branch": "develop",
+    "remote": "origin",
+    "last_commit": {
+      "hash": "2e88ff1",
+      "message": "refactor(views): extract cannonico circuit board",
+      "date": "2026-07-24"
+    },
+    "last_5_commits": [
+      "2e88ff1 refactor(views): extract cannonico circuit board",
+      "a6be70f refactor(views): extract structure navigator view",
+      "80ff6d6 refactor(infrastructure): extract system integrity",
+      "da9f6ff refactor(infrastructure): extract mission evidence loader",
+      "47fab70 refactor(infrastructure): extract terminal megabus bridge"
+    ],
+    "modified_files": 6,
+    "modified_details": [
+      "DEPENDENCY_MAP.md",
+      "SUPRA/DecisionInboxView.swift",
+      "SUPRA/MissionCenterView.swift",
+      "SUPRA/MissionDetailView.swift",
+      "SUPRA/SUPRAApp.swift",
+      "SUPRA/SupraControlCenterView.swift"
+    ],
+    "untracked_files": 110,
+    "untracked_significant": [
+      "_FOUNDATION_MEMORY/ (29 fichiers de mémoire fondatrice)",
+      "FREEZE_SUPRA_* (5 freezes temporels)",
+      "SUPRA_AST_PLATFORM/ (package orphelin)",
+      "Nombreux registres JSON et rapports"
+    ],
+    "dirty": true,
+    "note": "Fichiers modifiés = refactor en cours (extraction de vues). Untracked = artefacts générés par missions."
+  },
+  "active_agents": {
+    "openode_agents_configured": 9,
+    "agents": [
+      {"name": "SUPRA-Architect", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Builder", "mode": "subagent", "edit": true, "bash": true},
+      {"name": "SUPRA-Auditor", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Reviewer", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Explorer", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Research", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Refactor", "mode": "subagent", "edit": false, "bash": false},
+      {"name": "SUPRA-Runtime", "mode": "subagent", "edit": false, "bash": true},
+      {"name": "SUPRA-Router", "mode": "subagent", "edit": false, "bash": true}
+    ],
+    "commands_available": [
+      {"name": "supra-router", "agent": "SUPRA-Router", "description": "Router une mission"},
+      {"name": "supra-audit", "agent": "SUPRA-Auditor", "description": "Audit complet du code"},
+      {"name": "supra-build", "agent": "SUPRA-Builder", "description": "Implémenter du code Swift"},
+      {"name": "supra-review", "agent": "SUPRA-Reviewer", "description": "Relecture de code"},
+      {"name": "supra-runtime", "agent": "SUPRA-Runtime", "description": "Analyser le runtime"},
+      {"name": "supra-search", "agent": "SUPRA-Explorer", "description": "Rechercher dans le projet"},
+      {"name": "supra-benchmark", "agent": "SUPRA-Router", "description": "Benchmark modèles/agents"},
+      {"name": "supra-status", "agent": "SUPRA-Router", "description": "État du laboratoire"}
+    ],
+    "last_agent_results": [
+      "supra_architect_provider_result.json",
+      "supra_auditor_result.json",
+      "supra_explorer_result.json",
+      "supra_reviewer_result.json",
+      "swiftui_architecture_result.json",
+      "swiftui_audit_result.json",
+      "swiftui_exploration_result.json",
+      "swiftui_research_result.json",
+      "swiftui_review_result.json"
+    ]
+  },
+  "warnings": [
+    {
+      "severity": "medium",
+      "component": "architecture",
+      "message": "ContentView.swift compilé mais non instancié par @main — 11 sous-vues inaccessibles",
+      "file": "SUPRA/ContentView.swift",
+      "action": "Décider si ContentView doit être intégré ou supprimé"
+    },
+    {
+      "severity": "medium",
+      "component": "architecture",
+      "message": "Deux architectures UI coexistent: ControlCenterView (entry point actif) et SUPRAOS* Shell (9 vues non connectées)",
+      "files": ["SUPRA/SupraControlCenterView.swift", "SUPRA/SUPRAOSCommandCenterView.swift"],
+      "action": "Unifier sous une seule architecture"
+    },
+    {
+      "severity": "low",
+      "component": "package",
+      "message": "SUPRA_AST_PLATFORM package présent mais non référencé dans le build",
+      "path": "SUPRA_AST_PLATFORM/",
+      "action": "Vérifier l'utilité ou archiver"
+    },
+    {
+      "severity": "low",
+      "component": "storage",
+      "message": "DerivedData Xcode estimé à ~28 GB — espace récupérable",
+      "action": "Nettoyer DerivedData après stabilisation"
+    },
+    {
+      "severity": "low",
+      "component": "storage",
+      "message": "236 MB de logs recovery sur le Bureau",
+      "action": "Archiver dans _SUPRA_BACKUPS/logs/"
+    },
+    {
+      "severity": "info",
+      "component": "git",
+      "message": "6 fichiers modifiés et ~110 untracked — repository non propre",
+      "action": "Commit ou stash avant nouvelle mission"
+    },
+    {
+      "severity": "info",
+      "component": "runtime",
+      "message": "Dernier smoke test runtime date de 2026-07-23 — 24h sans validation runtime",
+      "action": "Relancer un smoke test"
+    }
+  ],
+  "next_actions": [
+    {
+      "priority": 1,
+      "action": "Relancer un build de validation",
+      "command": "xcodebuild -scheme SUPRA -configuration Debug build",
+      "reason": "Le dernier build SUCCEEDED date de cette session"
+    },
+    {
+      "priority": 2,
+      "action": "Relancer un runtime smoke test",
+      "command": "open build/Debug/SUPRA.app && sleep 12 && killall SUPRA",
+      "reason": "Dernier test il y a 24h"
+    },
+    {
+      "priority": 3,
+      "action": "Committer ou stasher les 6 fichiers modifiés",
+      "reason": "Refactor en cours (extraction de vues) — verrouiller l'état"
+    },
+    {
+      "priority": 4,
+      "action": "Nettoyer DerivedData Xcode",
+      "command": "rm -rf ~/Library/Developer/Xcode/DerivedData/SUPRA-*",
+      "reason": "Récupérer ~28 GB, reconstruire après"
+    },
+    {
+      "priority": 5,
+      "action": "Archiver les FREEZE_SUPRA_* dans _SUPRA_BACKUPS/freezes/",
+      "reason": "5 dossiers de freezes temporels à ranger"
+    },
+    {
+      "priority": 6,
+      "action": "Archiver les logs recovery du Bureau",
+      "reason": "236 MB de logs de diagnostic"
+    },
+    {
+      "priority": 7,
+      "action": "Décider du sort de ContentView (intégrer ou désactiver)",
+      "reason": "View orpheline non instanciée par @main"
+    }
+  ],
+  "system_health": {
+    "overall": "GOOD",
+    "build": "PASS",
+    "runtime": "PASS (last: 2026-07-23)",
+    "git": "DIRTY (6 modified, 110 untracked)",
+    "agents": "OPERATIONAL (9/9 configured)",
+    "storage": "WARNING (28 GB DerivedData, 236 MB logs)",
+    "architecture": "WARNING (ContentView orphan, OS Shell disconnected)",
+    "capabilities": 16,
+    "active_projects": 6,
+    "swift_files_canonical": 114,
+    "swift_files_total_ecosystem": 1634,
+    "git_repos_total": 8
+  },
+  "references": {
+    "environment_index": "ENVIRONMENT_INDEX.json",
+    "project_registry": "PROJECT_REGISTRY.json",
+    "package_registry": "PACKAGE_REGISTRY.json",
+    "module_registry": "MODULE_REGISTRY.json",
+    "canonical_registry": "CANONICAL_REGISTRY.json",
+    "duplicate_registry": "DUPLICATE_REGISTRY.json",
+    "dependency_graph": "DEPENDENCY_GRAPH.json",
+    "freeze_registry": "FREEZE_REGISTRY.json",
+    "foundation_memory": "_FOUNDATION_MEMORY/FOUNDATION_MEMORY.md",
+    "system_topology": "_FOUNDATION_MEMORY/SYSTEM_TOPOLOGY.md",
+    "architecture_map": "_FOUNDATION_MEMORY/ARCHITECTURE_MAP.md",
+    "cleanup_plan": "CLEANUP_PLAN.md",
+    "cleanup_preparation": "_FOUNDATION_MEMORY/CLEANUP_PREPARATION.md",
+    "environment_report": "ENVIRONMENT_REPORT.md"
+  }
+}

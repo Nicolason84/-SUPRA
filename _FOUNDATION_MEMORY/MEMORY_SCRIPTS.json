@@ -1,0 +1,55 @@
+{
+  "memory": "MEMORY_SCRIPTS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "SCR-001",
+      "name": "SUPRA_SCRIPTS",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_SCRIPTS",
+      "type": "scripts_directory",
+      "project": "SUPRA",
+      "status": "empty",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Dossier vide, aucun script"
+    },
+    {
+      "uuid": "SCR-002",
+      "name": "NOVA_BUILD_SYSTEM scripts",
+      "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM",
+      "type": "script_collection",
+      "project": "NOVA_BUILD_SYSTEM",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true,
+      "note": "Multiples versions d'agents, compilateurs, pipelines, orchestrateurs (scripts sh/py)"
+    },
+    {
+      "uuid": "SCR-003",
+      "name": "GO_* scripts on Desktop",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+      "type": "shell_scripts",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true,
+      "note": "Centaines de scripts GO_* dans SUPRA/ et NOVA_OS/ pour diverses missions"
+    },
+    {
+      "uuid": "SCR-004",
+      "name": "NOVA_OS scripts",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS",
+      "type": "shell_scripts",
+      "project": "NOVA_OS",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true,
+      "note": "Scripts GO_* dans le dossier NOVA_OS (centaines)"
+    }
+  ]
+}

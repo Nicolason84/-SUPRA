@@ -1,0 +1,17 @@
+{
+  "freeze": "SUPRA_PRODUCT_BUILD",
+  "generated_utc": "20260723T120033Z",
+  "status": "VALIDATED",
+  "producer": "GO_SUPRA_SYMLINK_OVERLAY_BUILD_V1",
+  "artifact": "SUPRA_SYMLINK_OVERLAY_BUILD.json",
+  "build": {
+    "status": "SUCCEEDED",
+    "exit_code": 0,
+    "error_count": 0,
+    "warning_count": 1,
+    "package_error_count": 0,
+    "extraction_plan_count": 0,
+    "product_generated": true
+  },
+  "verdict": "PASS"
+}

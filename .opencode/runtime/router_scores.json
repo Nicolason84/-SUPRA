@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "description": "Cumulative scores per provider, model, and agent computed from execution history.",
+  "last_updated": "2026-07-24T00:21:00Z",
+  "provider_scores": {
+    "opencode-zen": {
+      "total_executions": 2,
+      "successful": 2,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_confidence": 0.93,
+      "avg_quality": 7.0,
+      "avg_duration_seconds": 120.0,
+      "total_duration_seconds": 240,
+      "reliability": 1.0,
+      "capabilities_delivered": ["architecture", "analysis", "planning", "audit", "compliance"],
+      "trend": "stable"
+    },
+    "ollama": {
+      "total_executions": 1,
+      "successful": 1,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_confidence": 0.62,
+      "avg_quality": 7.0,
+      "avg_duration_seconds": 30.0,
+      "total_duration_seconds": 30,
+      "reliability": 1.0,
+      "capabilities_delivered": ["review", "analysis"],
+      "trend": "stable"
+    },
+    "openai": {
+      "total_executions": 0,
+      "successful": 0,
+      "failed": 0,
+      "success_rate": null,
+      "avg_confidence": null,
+      "avg_quality": null,
+      "avg_duration_seconds": null,
+      "total_duration_seconds": 0,
+      "reliability": 0.0,
+      "capabilities_delivered": [],
+      "trend": "unavailable"
+    }
+  },
+  "model_scores": {
+    "opencode-zen/deepseek-v4-flash-free": {
+      "total_executions": 2,
+      "successful": 2,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_confidence": 0.93,
+      "avg_quality": 7.0,
+      "avg_duration_seconds": 120.0,
+      "total_duration_seconds": 240,
+      "reliability": 1.0,
+      "specialty_domains": ["architecture", "compliance", "analysis"],
+      "latency_profile": "fast",
+      "trend": "stable"
+    },
+    "ollama/qwen3:4b": {
+      "total_executions": 1,
+      "successful": 1,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_confidence": 0.62,
+      "avg_quality": 7.0,
+      "avg_duration_seconds": 30.0,
+      "total_duration_seconds": 30,
+      "reliability": 1.0,
+      "specialty_domains": ["review", "lightweight_analysis"],
+      "latency_profile": "fast",
+      "trend": "stable"
+    }
+  },
+  "agent_scores": {
+    "SUPRA-Architect": {
+      "total_executions": 1,
+      "successful": 1,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_quality": 7.0,
+      "preferred_provider": "opencode-zen",
+      "preferred_model": "deepseek-v4-flash-free",
+      "best_quality_on": "opencode-zen/deepseek-v4-flash-free"
+    },
+    "SUPRA-Auditor": {
+      "total_executions": 1,
+      "successful": 1,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_quality": 7.0,
+      "preferred_provider": "opencode-zen",
+      "preferred_model": "deepseek-v4-flash-free",
+      "best_quality_on": "opencode-zen/deepseek-v4-flash-free"
+    },
+    "SUPRA-Reviewer": {
+      "total_executions": 1,
+      "successful": 1,
+      "failed": 0,
+      "success_rate": 1.0,
+      "avg_quality": 7.0,
+      "preferred_provider": "ollama",
+      "preferred_model": "qwen3:4b",
+      "best_quality_on": "ollama/qwen3:4b"
+    }
+  }
+}

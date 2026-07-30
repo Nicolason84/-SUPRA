@@ -72,13 +72,13 @@ enum ExecutiveSpace: String, CaseIterable, Identifiable {
 // MARK: - Executive Window
 
 struct ExecutiveWindow: View {
-    @State private var destination: ExecutiveSpace = .cockpit
+    @State private var destination: ExecutiveSpace = .missions
     @State private var commandPalettePresented = false
     @State private var inspectorPresented = true
     @State private var notificationPresented = false
     @State private var query = ""
     @State private var sidebarHovered: ExecutiveSpace?
-    @State private var previousDestination: ExecutiveSpace = .cockpit
+    @State private var previousDestination: ExecutiveSpace = .missions
 
     var body: some View {
         VStack(spacing: 0) {

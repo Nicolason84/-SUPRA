@@ -1,0 +1,386 @@
+{
+  "manifest_version": "SUPRA_FOUNDATION_V1",
+  "status": "CANONICAL",
+  "created": "2026-07-29",
+  "description": "Master Manifest — Single canonical authority for SUPRA Foundation. All future components must register here.",
+  "workspace_root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+  "base_commit": "80ca2f1",
+
+  "canonical_documents": {
+    "executive_canon": {
+      "path": "SUPRA_EXECUTIVE_CANON.md",
+      "type": "constitution",
+      "status": "CANONICAL",
+      "description": "Absolute reference document for SUPRA Foundation"
+    },
+    "validation_report": {
+      "path": "SUPRA_FOUNDATION_VALIDATION_REPORT.md",
+      "type": "report",
+      "status": "CANONICAL",
+      "description": "Validation of all 12 SUPRA ZERO deliverables"
+    },
+    "master_registry": {
+      "path": "SUPRA_MASTER_REGISTRY.json",
+      "type": "registry",
+      "status": "CANONICAL",
+      "description": "Consolidated canonical registry"
+    },
+    "agent_canon": {
+      "path": "SUPRA_AGENT_CANON.md",
+      "type": "specification",
+      "status": "CANONICAL",
+      "description": "Agent architecture canon"
+    },
+    "plugin_sdk_spec": {
+      "path": "SUPRA_PLUGIN_SDK_SPEC.md",
+      "type": "specification",
+      "status": "CANONICAL",
+      "description": "Plugin SDK specification (no implementation)"
+    },
+    "foundation_rules": {
+      "path": "SUPRA_FOUNDATION_RULES.md",
+      "type": "standards",
+      "status": "CANONICAL",
+      "description": "Industrial base rules and standards"
+    },
+    "phase2_gate": {
+      "path": "SUPRA_PHASE2_GATE.md",
+      "type": "checklist",
+      "status": "CANONICAL",
+      "description": "Phase 2 gate checklist"
+    },
+    "theory_readiness": {
+      "path": "SUPRA_THEORY_READINESS.md",
+      "type": "preparation",
+      "status": "CANONICAL",
+      "description": "Theory Engine readiness preparation"
+    },
+    "roadmap": {
+      "path": "SUPRA_FOUNDATION_ROADMAP.md",
+      "type": "roadmap",
+      "status": "CANONICAL",
+      "description": "Official SUPRA roadmap"
+    },
+    "desktop_governance": {
+      "path": "DESKTOP_GOVERNANCE.md",
+      "type": "governance",
+      "status": "CANONICAL",
+      "description": "Desktop governance classification"
+    },
+    "executive_report": {
+      "path": "SUPRA_FOUNDATION_EXECUTIVE_REPORT.md",
+      "type": "report",
+      "status": "CANONICAL",
+      "description": "Final executive report for Foundation mission"
+    }
+  },
+
+  "architecture": {
+    "name": "SUPRA ULTIMATE",
+    "version": "FOUNDATION_V1",
+    "layers": [
+      {
+        "id": "executive_kernel",
+        "name": "Executive Kernel",
+        "order": 5,
+        "status": "ACTIVE",
+        "completion_pct": 80,
+        "components": [
+          "CompositionRoot", "ExecutiveCore", "ExecutiveDashboard",
+          "DecisionEngine", "PolicyEngine", "LifecycleManager",
+          "Governance"
+        ],
+        "source_location": "SUPRA/"
+      },
+      {
+        "id": "runtime",
+        "name": "Runtime",
+        "order": 4,
+        "status": "ACTIVE",
+        "completion_pct": 85,
+        "components": [
+          "MissionExecutor", "WorkflowEngine", "RuntimeMonitor",
+          "RuntimeDiagnostics", "Transmission", "Scheduler",
+          "ResourceGovernor"
+        ],
+        "source_location": "SUPRA/"
+      },
+      {
+        "id": "workspace",
+        "name": "Workspace",
+        "order": 4,
+        "status": "ACTIVE",
+        "completion_pct": 90,
+        "components": [
+          "WorkspaceIndex", "TwinSystem", "UniverseEngine",
+          "KnowledgeGraph", "ObjectModel", "Memory"
+        ],
+        "source_location": "SUPRA/"
+      },
+      {
+        "id": "providers",
+        "name": "Providers",
+        "order": 1,
+        "status": "ACTIVE",
+        "completion_pct": 75,
+        "components": [
+          "ProviderProtocols", "ProviderBroker", "OllamaProvider",
+          "FallbackEngine", "ProviderRegistry", "PluginProvider"
+        ],
+        "source_location": "SUPRA/ + .opencode/runtime/"
+      },
+      {
+        "id": "products",
+        "name": "Products",
+        "order": 5,
+        "status": "PARTIAL",
+        "completion_pct": 40,
+        "components": [
+          "MonetizationEngine", "BusinessEngine", "ProductRegistry"
+        ],
+        "source_location": "SUPRA/"
+      },
+      {
+        "id": "sherpa",
+        "name": "Sherpa",
+        "order": 3,
+        "status": "NOT_STARTED",
+        "completion_pct": 0,
+        "components": [
+          "ContextSelection", "ProviderRecommendations", "NavigationEngine"
+        ],
+        "planned_phase": "PHASE_2d_SH sherpa"
+      },
+      {
+        "id": "cortex",
+        "name": "Cortex",
+        "order": 3,
+        "status": "PARTIAL",
+        "completion_pct": 20,
+        "components": [
+          "DecisionMemory", "EvidenceStorage", "LearningEngine"
+        ],
+        "planned_phase": "PHASE_2e"
+      },
+      {
+        "id": "theory",
+        "name": "Theory",
+        "order": 2,
+        "status": "NOT_STARTED",
+        "completion_pct": 0,
+        "components": [
+          "TheoryOntology", "TheoryLibrary", "TheoryGraph", "TheorySearch"
+        ],
+        "planned_phase": "PHASE_2c"
+      },
+      {
+        "id": "plugins",
+        "name": "Plugins",
+        "order": 1,
+        "status": "SPECIFIED",
+        "completion_pct": 20,
+        "components": [
+          "PluginRegistry", "PluginContracts", "PluginLoader", "PluginSDK"
+        ],
+        "planned_phase": "PHASE_2b"
+      },
+      {
+        "id": "industrial_base",
+        "name": "Industrial Base",
+        "order": 0,
+        "status": "CANONICAL",
+        "completion_pct": 100,
+        "components": [
+          "Standards", "Conventions", "Registries", "Contracts",
+          "Schemas", "Templates", "SDK", "Policies", "Rules", "Guides"
+        ],
+        "canonical_document": "SUPRA_FOUNDATION_RULES.md"
+      }
+    ]
+  },
+
+  "agents": {
+    "total_defined": 9,
+    "single_writer": "SUPRA-Builder",
+    "canonical_source": "SUPRA_AGENT_CANON.md",
+    "agent_definitions": "AGENTS.md",
+    "runtime_config": "opencode.json",
+    "agents": {
+      "SUPRA-Builder": {
+        "mode": "subagent",
+        "permissions": ["read", "edit", "bash", "lsp", "glob", "grep"],
+        "role": "Implementation and code generation",
+        "can_write": true
+      },
+      "SUPRA-Architect": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp", "webfetch"],
+        "role": "System architecture, ADR production, structural validation",
+        "can_write": false
+      },
+      "SUPRA-Auditor": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp"],
+        "role": "Compliance and integrity validation only (READ ONLY)",
+        "can_write": false
+      },
+      "SUPRA-Explorer": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp"],
+        "role": "Codebase navigation and structure understanding",
+        "can_write": false
+      },
+      "SUPRA-Research": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp", "webfetch", "websearch"],
+        "role": "Technical research and documentation",
+        "can_write": false
+      },
+      "SUPRA-Runtime": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp", "bash"],
+        "role": "Runtime behavior analysis and diagnostic",
+        "can_write": false
+      },
+      "SUPRA-Refactor": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp"],
+        "role": "Safe refactoring without functional alteration (READ ONLY)",
+        "can_write": false
+      },
+      "SUPRA-Reviewer": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp"],
+        "role": "Code review: style, conventions, performance, suggestions",
+        "can_write": false
+      },
+      "SUPRA-Router": {
+        "mode": "subagent",
+        "permissions": ["read", "grep", "glob", "lsp", "task", "webfetch"],
+        "role": "Task routing to optimal agents/models",
+        "can_write": false
+      }
+    },
+    "future_agents": [
+      "SUPRA-Sherpa", "SUPRA-Cortex", "SUPRA-Theory",
+      "SUPRA-Governance", "SUPRA-Product", "SUPRA-Plugin"
+    ]
+  },
+
+  "registries": {
+    "master": "SUPRA_MASTER_REGISTRY.json",
+    "workspace": "WORKSPACE_MANIFEST.json",
+    "canonical_modules": "CANONICAL_MODULES.json",
+    "canonical_packages": "CANONICAL_PACKAGES.json",
+    "canonical_projects": "CANONICAL_PROJECTS.json",
+    "canonical_services": "CANONICAL_SERVICES.json",
+    "canonical_workers": "CANONICAL_WORKERS.json",
+    "canonical_adapters": "CANONICAL_ADAPTERS.json",
+    "canonical_bridges": "CANONICAL_BRIDGES.json",
+    "canonical_runtime": "CANONICAL_RUNTIME.json",
+    "module_registry": "MODULE_REGISTRY.json",
+    "package_registry": "PACKAGE_REGISTRY.json",
+    "project_registry": "PROJECT_REGISTRY.json",
+    "service_relations": "SERVICE_RELATIONS.json",
+    "freeze_registry": "FREEZE_REGISTRY.json",
+    "release_manifest": "RELEASE_MANIFEST.json",
+    "duplicate_registry": "DUPLICATE_REGISTRY.json",
+    "node_manifest": ".supra_node_manifest.json"
+  },
+
+  "policies": {
+    "workflow": "SUPRA_WORKFLOW_V1.md",
+    "router_specification": "SUPRA_ROUTER_SPECIFICATION_V1.md",
+    "validation_protocol": "VALIDATION_PROTOCOL.md",
+    "governance_dir": "Governance/",
+    "runtime_policies": ".opencode/runtime/"
+  },
+
+  "standards": {
+    "continuity": "CAnnoNico_CONTINUITY_STANDARD.md",
+    "development_guide": "CAnnoNico_DEVELOPMENT_GUIDE.md",
+    "workflow_standard": "CAnnoNico_WORKFLOW_STANDARD.md",
+    "executive_object_model": "EXECUTIVE_OBJECT_MODEL.md",
+    "executive_runtime": "EXECUTIVE_RUNTIME.md"
+  },
+
+  "executive_state": {
+    "version": "2.2.0",
+    "camp_base": "CAMP_BASE_02",
+    "phase": "FOUNDATION",
+    "status": "CANONICAL",
+    "next_phase": "ULTIMATE_CONSOLIDATION",
+    "git_commits": 19,
+    "git_branch": "develop",
+    "swift_files": 214,
+    "test_files": 9,
+    "test_passing": 6,
+    "test_failing": 3,
+    "workflows_registered": 5,
+    "workflows_executed": 0,
+    "frozen_projects": 6,
+    "alpha_certification": "ALPHA-01",
+    "mission_queue": "active"
+  },
+
+  "freeze_artifacts": [
+    {
+      "id": "runtime_proof",
+      "path": "FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z",
+      "date": "2026-07-23",
+      "type": "evidence"
+    },
+    {
+      "id": "functional_authority",
+      "path": "FREEZE_SUPRA_FUNCTIONAL_AUTHORITY_20260723T105323Z",
+      "date": "2026-07-23",
+      "type": "authority"
+    },
+    {
+      "id": "architecture_index",
+      "path": "FREEZE_SUPRA_ARCHITECTURE_INDEX_20260723T104017Z",
+      "date": "2026-07-23",
+      "type": "index"
+    },
+    {
+      "id": "product_build",
+      "path": "FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z",
+      "date": "2026-07-23",
+      "type": "build"
+    },
+    {
+      "id": "graphs",
+      "path": "FREEZE_SUPRA_GRAPHS_20260723T103701Z",
+      "date": "2026-07-23",
+      "type": "graph"
+    }
+  ],
+
+  "supra_zero_artifacts": [
+    "SUPRA_ZERO_MASTER_MAP.md",
+    "SUPRA_ZERO_DESKTOP_CARTOGRAPHY.md",
+    "SUPRA_ZERO_ACTIVE_PROJECTS.md",
+    "SUPRA_ZERO_CAMP_BASE_MASTER.md",
+    "SUPRA_ZERO_CONTINUITY_MASTER.md",
+    "SUPRA_ZERO_DUPLICATE_ANALYSIS.md",
+    "SUPRA_ZERO_INDUSTRIAL_BASE.md",
+    "SUPRA_ZERO_PLUGIN_ARCHITECTURE.md",
+    "SUPRA_ZERO_AGENT_ARCHITECTURE.md",
+    "SUPRA_ZERO_ULTIMATE_ARCHITECTURE.md",
+    "SUPRA_ZERO_PHASE2_READINESS.md",
+    "SUPRA_ZERO_EXECUTIVE_REPORT.md"
+  ],
+
+  "dependencies": {
+    "executive_kernel": [],
+    "runtime": ["executive_kernel"],
+    "workspace": ["executive_kernel"],
+    "providers": ["industrial_base"],
+    "plugins": ["industrial_base", "providers"],
+    "theory": ["industrial_base", "plugins"],
+    "sherpa": ["theory", "plugins"],
+    "cortex": ["theory", "plugins"],
+    "products": ["executive_kernel", "runtime"],
+    "industrial_base": []
+  }
+}

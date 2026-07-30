@@ -1,0 +1,27 @@
+{
+  "registry_id": "supra.constitution",
+  "version": "2.0.0",
+  "status": "STABLE",
+  "canonical_source": "docs/SUPRA_EXECUTIVE_OS_CONSTITUTION_V1.md",
+  "governance_source": "docs/SUPRA_EXECUTIVE_OS_GOVERNANCE.md",
+  "history": [
+    { "version": "1.0.0", "status": "FROZEN", "source": "docs/SUPRA_EXECUTIVE_OS_CONSTITUTION_V1.md" },
+    { "version": "2.0.0", "status": "STABLE", "source": "SUPRA Constitution Executable V2.0 mission" }
+  ],
+  "articles": [
+    { "id": "A01", "title": "Knowledge and architecture are the source of truth", "invariant": "implementation_is_not_canonical" },
+    { "id": "A02", "title": "No reinvention", "invariant": "new_creation_requires_pre_matching" },
+    { "id": "A03", "title": "Single canonical authority", "invariant": "one_authority_per_responsibility" },
+    { "id": "A04", "title": "Composition Root uniqueness", "invariant": "exactly_one_composition_root" },
+    { "id": "A05", "title": "No parallel runtime engines", "invariant": "no_parallel_runtime_scheduler_store_provider" },
+    { "id": "A06", "title": "Evidence and traceability", "invariant": "actions_require_traceable_evidence" },
+    { "id": "A07", "title": "Compilation and validation gates", "invariant": "failed_gate_stops_lot" },
+    { "id": "A08", "title": "Freeze discipline", "invariant": "freeze_requires_report_proof_continuity" }
+  ],
+  "relations": [
+    { "from": "A02", "to": "A03", "type": "protects" },
+    { "from": "A03", "to": "A04", "type": "requires" },
+    { "from": "A06", "to": "A07", "type": "verifies" },
+    { "from": "A07", "to": "A08", "type": "precedes" }
+  ]
+}

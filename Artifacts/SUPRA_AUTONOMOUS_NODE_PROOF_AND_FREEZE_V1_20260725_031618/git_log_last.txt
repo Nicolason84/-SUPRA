@@ -1,0 +1,1 @@
+2e88ff1 refactor(views): extract cannonico circuit board

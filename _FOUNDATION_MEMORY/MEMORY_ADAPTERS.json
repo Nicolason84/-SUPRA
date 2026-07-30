@@ -1,0 +1,67 @@
+{
+  "memory": "MEMORY_ADAPTERS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "ADP-001",
+      "name": "NicoAppAdapter",
+      "package": "CAnnoNicoIntegrationPackage",
+      "target": "NicoAppAdapter",
+      "file": "Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift",
+      "type": "adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "connects": "SUPRA → NICO_APP iOS",
+      "dependencies": ["CAnnoNicoContracts"],
+      "note": "Adaptateur vers l'application iOS NICO_APP"
+    },
+    {
+      "uuid": "ADP-002",
+      "name": "VideoSwapAdapter",
+      "package": "CAnnoNicoIntegrationPackage",
+      "target": "VideoSwapAdapter",
+      "file": "Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift",
+      "type": "adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "connects": "SUPRA → VideoSwap V3",
+      "dependencies": ["CAnnoNicoContracts"],
+      "note": "Adaptateur vers le moteur VideoSwap V3"
+    },
+    {
+      "uuid": "ADP-003",
+      "name": "PucheroMemoryAdapter",
+      "package": "CAnnoNicoIntegrationPackage",
+      "target": "PucheroMemoryAdapter",
+      "file": "Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift",
+      "type": "adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "connects": "SUPRA → Puchero Memory",
+      "dependencies": ["CAnnoNicoContracts"],
+      "note": "Adaptateur mémoire Puchero"
+    },
+    {
+      "uuid": "ADP-004",
+      "name": "SUPRAChatRuntimeAdapter",
+      "file": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "type": "adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Adaptateur runtime interne pour le chat"
+    }
+  ]
+}

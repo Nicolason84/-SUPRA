@@ -1,0 +1,41 @@
+{
+  "router": {
+    "version": "1.0.0",
+    "mode": "hybrid",
+    "classifier": {
+      "type": "llm",
+      "model": "anthropic/claude-sonnet-4-6",
+      "categories": ["architecture", "swift", "refactoring", "analysis", "research", "documentation", "debugging", "review", "runtime"]
+    },
+    "scorer": {
+      "strategy": "weighted",
+      "weights": {
+        "task_match": 0.4,
+        "model_quality": 0.3,
+        "availability": 0.2,
+        "cost_efficiency": 0.1
+      }
+    },
+    "selector": {
+      "default_strategy": "default",
+      "strategies": {
+        "default": { "type": "best_score" },
+        "cost_optimized": { "type": "best_ratio", "metric": "quality_per_cost" },
+        "fastest": { "type": "lowest_latency" },
+        "consensus": { "type": "top_n", "n": 3 },
+        "fallback": { "type": "sequential_fallback" }
+      }
+    },
+    "registries": {
+      "agent": ".opencode/registry/agent_registry.json",
+      "model": ".opencode/registry/model_registry.json",
+      "capability": ".opencode/registry/capability_registry.json",
+      "workflow": ".opencode/registry/workflow_registry.json"
+    },
+    "runtime": {
+      "rules": ".opencode/runtime/routing_rules.json",
+      "fallbacks": ".opencode/runtime/fallbacks.json",
+      "providers": ".opencode/runtime/provider_registry.json"
+    }
+  }
+}

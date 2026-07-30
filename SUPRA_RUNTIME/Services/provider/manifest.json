@@ -1,0 +1,42 @@
+{
+  "service": "provider",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Provider Service — inventories AI providers, selects the best provider based on context, cost, availability, and capabilities, manages fallback strategies",
+  "responsibilities": [
+    "inventorier les fournisseurs IA",
+    "sélectionner automatiquement le provider le plus adapté selon le contexte, le coût, la disponibilité et les capacités",
+    "gérer les stratégies de repli (fallback)"
+  ],
+  "providers": {
+    "OLLAMA_LOCAL": {
+      "type": "llm",
+      "endpoint": "http://127.0.0.1:11434/v1",
+      "models": ["qwen3-coder:latest"],
+      "cost": "zero",
+      "available": true,
+      "capabilities": ["coding", "reasoning"],
+      "fallback_priority": 1
+    },
+    "opencode-zen": {
+      "type": "llm",
+      "endpoint": "https://api.opencode.ai/zen",
+      "cost": "free",
+      "available": false,
+      "capabilities": ["coding", "reasoning", "analysis"],
+      "fallback_priority": 2
+    },
+    "openai": {
+      "type": "llm",
+      "endpoint": "https://api.openai.com/v1",
+      "cost": "paid",
+      "available": false,
+      "capabilities": ["coding", "reasoning", "vision"],
+      "fallback_priority": 3
+    }
+  },
+  "selection_criteria": ["context", "cost", "availability", "capabilities"],
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/provider/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

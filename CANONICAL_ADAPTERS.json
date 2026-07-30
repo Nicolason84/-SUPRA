@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 5
+  },
+  "adapters": [
+    {
+      "id": "ADP-001",
+      "identifier": "CAnnoNicoAdapter",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "protocol",
+      "concurrency": "Sendable",
+      "requirements": ["static var adapterID: String", "func snapshot() -> CAnnoNicoSourceReference"]
+    },
+    {
+      "id": "ADP-002",
+      "identifier": "VideoSwapAdapter",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "struct",
+      "conforms_to": ["CAnnoNicoAdapter"],
+      "adapter_id": "video.swap",
+      "external_ref": "~/NOVA_OS/SUPRA_VIDEO_SWAP_V2"
+    },
+    {
+      "id": "ADP-003",
+      "identifier": "NicoAppAdapter",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "struct",
+      "conforms_to": ["CAnnoNicoAdapter"],
+      "adapter_id": "nico.app",
+      "external_ref": "~/NOVA_OS/NICO_APP_V1"
+    },
+    {
+      "id": "ADP-004",
+      "identifier": "PucheroMemoryAdapter",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "struct",
+      "conforms_to": ["CAnnoNicoAdapter"],
+      "adapter_id": "puchero.memory",
+      "external_ref": "~/NOVA_OS/PUCHERO_V1"
+    },
+    {
+      "id": "ADP-005",
+      "identifier": "SUPRAChatRuntimeAdapter",
+      "path": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "class",
+      "protocol": "SUPRAChatRuntimeProtocol",
+      "concurrency": "@MainActor",
+      "dependencies": ["SUPRAExecutiveStore"],
+      "capabilities": ["checkHealth()", "execute(prompt:mode:)"]
+    }
+  ]
+}

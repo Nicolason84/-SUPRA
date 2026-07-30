@@ -1,0 +1,29 @@
+{
+  "observer": "GO_SUPRA_PRODUCT_RUNTIME_READINESS_V2",
+  "mode": "SOURCE_READ_ONLY",
+  "project": {},
+  "functional_authority": {
+    "verdict": "VALIDATED",
+    "authorities": 7,
+    "confirmed_authorities": 7,
+    "unresolved_authorities": 0,
+    "functional_bridges": 1
+  },
+  "build": {
+    "status": "NOT_STARTED",
+    "exit_code": null,
+    "error_count": 1,
+    "warning_count": 0,
+    "errors": [
+      "xcodebuild -list a échoué:\n"
+    ],
+    "warnings": []
+  },
+  "checks": {
+    "functional_authority_validated": true,
+    "authorities_confirmed": true,
+    "authorities_unresolved_zero": true,
+    "functional_bridge_validated": true
+  },
+  "verdict": "BLOCKED"
+}

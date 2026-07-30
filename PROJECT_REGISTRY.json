@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z"
+  },
+  "projects": [
+    {
+      "id": "SUPRA",
+      "name": "SUPRA",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+      "type": "macOS App (SwiftUI)",
+      "xcodeproj": true,
+      "package_dep": true,
+      "git_repo": true,
+      "branch": "develop",
+      "swift_files": 114,
+      "size_gb": 29.0,
+      "status": "ACTIVE",
+      "build_status": "PASS",
+      "build_tool": "xcodebuild -scheme SUPRA",
+      "note": "Projet principal SUPRA - compilé et fonctionnel"
+    },
+    {
+      "id": "SUPRA_BISECT",
+      "name": "SUPRA_BISECT",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_BISECT",
+      "type": "macOS App (SwiftUI) - copie réduite",
+      "xcodeproj": true,
+      "package_dep": true,
+      "git_repo": false,
+      "swift_files": 29,
+      "size_mb": 17,
+      "status": "ABANDONED",
+      "note": "Copie partielle pour bissection de build, probablement obsolète"
+    },
+    {
+      "id": "SUPRA_RECOVERY",
+      "name": "SUPRA_RECOVERY",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY",
+      "type": "4 variantes de récupération (CHAT, BRIDGE, HEALTH, BASELINE)",
+      "xcodeproj": true,
+      "package_dep": true,
+      "git_repo": false,
+      "swift_files": 97,
+      "size_mb": 11,
+      "status": "ABANDONED",
+      "note": "Snapshots de récupération - versions freeze du projet à divers stades"
+    },
+    {
+      "id": "NICO_APP",
+      "name": "NICO_APP",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP",
+      "type": "iOS App (SwiftUI)",
+      "xcodeproj": true,
+      "git_repo": true,
+      "swift_files": "~800",
+      "status": "ACTIVE",
+      "note": "Application iOS Nico - contient SUPRA_HELENE et SUPRA_MOTHER_BRIDGE intégrés"
+    },
+    {
+      "id": "NICO_APP_CLEAN",
+      "name": "NICO_APP_CLEAN",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP_CLEAN",
+      "type": "iOS App (SwiftUI) - version nettoyée",
+      "xcodeproj": true,
+      "git_repo": true,
+      "size_gb": 5.3,
+      "status": "ACTIVE",
+      "note": "Version clean de NICO_APP, dérivés Xcode massifs"
+    },
+    {
+      "id": "HELENE_APP",
+      "name": "SUPRA_HELENE",
+      "path": "/Users/nicolasalonso/NOVA_OS/HELENE_APP_IOS/SUPRA_HELENE",
+      "type": "iOS App (SwiftUI)",
+      "xcodeproj": true,
+      "git_repo": true,
+      "size_kb": 408,
+      "status": "ACTIVE",
+      "note": "Version autonome SUPRA_HELENE, légère"
+    },
+    {
+      "id": "SUPRA_VIDEO_SWAP_V3",
+      "name": "SUPRA_VIDEO_SWAP_V3",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3",
+      "type": "Multi-package Swift (Foundation, MediaEngine, URLEngine, ImportEngine)",
+      "xcodeproj": false,
+      "package_dep": true,
+      "git_repo": false,
+      "swift_files": 293,
+      "size_mb": 49,
+      "status": "ACTIVE",
+      "note": "Version V3 de VideoSwap - 4 engines spécialisés + App test"
+    },
+    {
+      "id": "SUPRA_VIDEO_SWAP_APP_V1",
+      "name": "SUPRA_VIDEO_SWAP_APP_V1",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1",
+      "type": "Multi-package Swift (Swap*, App)",
+      "xcodeproj": true,
+      "package_dep": true,
+      "git_repo": false,
+      "swift_files": "~100",
+      "size_mb": 20,
+      "status": "ACTIVE",
+      "note": "Version V1 de VideoSwap - 6 packages + App + nombreux backups/freezes"
+    },
+    {
+      "id": "SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "name": "SUPRA_VIDEO_SWAP_V1_ARCHIVE",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V1_ARCHIVE_20260715_140116",
+      "type": "Archive VideoSwap V1",
+      "xcodeproj": true,
+      "package_dep": true,
+      "git_repo": false,
+      "size_kb": 212,
+      "status": "ARCHIVE",
+      "note": "Archive de VideoSwap V1 - remplacé par V3"
+    },
+    {
+      "id": "NOVA_BUILD_SYSTEM",
+      "name": "NOVA_BUILD_SYSTEM",
+      "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM",
+      "type": "Build/orchestration system (Python/Shell)",
+      "xcodeproj": false,
+      "git_repo": true,
+      "size_mb": 10,
+      "status": "ACTIVE",
+      "note": "Système de build NOVA - nombreuses versions (V1-V17), agents, circuits, orchestrateur"
+    },
+    {
+      "id": "COHERENCE_ENGINE",
+      "name": "COHERENCE_ENGINE_V1",
+      "path": "/Users/nicolasalonso/NOVA_LABS/COHERENCE_ENGINE_V1",
+      "type": "Web engine (HTML/JS)",
+      "xcodeproj": false,
+      "git_repo": true,
+      "size_mb": 1.3,
+      "status": "ABANDONED",
+      "note": "Moteur de cohérence en HTML/JS - nombreuses versions (V3-V20) de simulation"
+    },
+    {
+      "id": "SUPRA_PROJECTS",
+      "name": "SUPRA_PROJECTS",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_PROJECTS",
+      "type": "Dépôt de projets/références",
+      "xcodeproj": false,
+      "git_repo": false,
+      "size_mb": 13,
+      "status": "ARCHIVE"
+    },
+    {
+      "id": "SUPRA_TEMP",
+      "name": "SUPRA_TEMP",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_TEMP",
+      "type": "Dossier temporaire de travail",
+      "xcodeproj": false,
+      "git_repo": false,
+      "size_mb": 33,
+      "status": "ABANDONED"
+    }
+  ],
+  "active_projects": ["SUPRA", "NICO_APP", "NICO_APP_CLEAN", "HELENE_APP", "NOVA_BUILD_SYSTEM", "SUPRA_VIDEO_SWAP_V3"],
+  "abandoned_projects": ["SUPRA_BISECT", "SUPRA_RECOVERY", "COHERENCE_ENGINE", "SUPRA_TEMP"],
+  "archived_projects": ["SUPRA_VIDEO_SWAP_V1_ARCHIVE", "SUPRA_PROJECTS", "_DESKTOP_CLEAN_ARCHIVE_20260630_122028"]
+}

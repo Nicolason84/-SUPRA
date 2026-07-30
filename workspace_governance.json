@@ -1,0 +1,134 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:43:35Z",
+  "scannedObjects": 838,
+  "issues": [
+    {
+      "id": "gov_dup_1",
+      "type": "duplicate",
+      "severity": "warning",
+      "objectId": "workspace:-7574840269660993428",
+      "objectName": "mission_graph_metrics.json",
+      "description": "2 doublons de 'mission_graph_metrics.json'",
+      "recommendation": "Fusionner les doublons",
+      "relatedIds": [
+        "decision:-7574840269660993428"
+      ],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_dup_2",
+      "type": "duplicate",
+      "severity": "warning",
+      "objectId": "workspace:5491043580199480459",
+      "objectName": "SUPRA_RUNTIME_MISSION_EVIDENCE_RESTORE_V1_REPORT.md",
+      "description": "2 doublons de 'supra_runtime_mission_evidence_restore_v1_report.md'",
+      "recommendation": "Fusionner les doublons",
+      "relatedIds": [
+        "workspace:-6762158824899143460"
+      ],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_dup_3",
+      "type": "duplicate",
+      "severity": "critical",
+      "objectId": "workspace:-8071814727851399328",
+      "objectName": "SHA256SUMS.txt",
+      "description": "5 doublons de 'sha256sums.txt'",
+      "recommendation": "Fusionner les doublons",
+      "relatedIds": [
+        "workspace:3755220939173452182",
+        "workspace:-3629647673523236997",
+        "workspace:-8895448956920768835",
+        "workspace:-2874411929014408537"
+      ],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_dup_4",
+      "type": "duplicate",
+      "severity": "critical",
+      "objectId": "workspace:7394285435380203018",
+      "objectName": "SUPRASource.swift",
+      "description": "4 doublons de 'suprasource.swift'",
+      "recommendation": "Fusionner les doublons",
+      "relatedIds": [
+        "workspace:1398016579913656333",
+        "workspace:-7414888470987700767",
+        "workspace:-390264557798719948"
+      ],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_dup_5",
+      "type": "duplicate",
+      "severity": "critical",
+      "objectId": "workspace:-7794460599502115079",
+      "objectName": "SUPRASection.swift",
+      "description": "4 doublons de 'suprasection.swift'",
+      "recommendation": "Fusionner les doublons",
+      "relatedIds": [
+        "workspace:-6392814789140404378",
+        "workspace:-3200460599489401330",
+        "workspace:1513591235134131393"
+      ],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_size_1",
+      "type": "oversized",
+      "severity": "info",
+      "objectId": "workspace:4441318654652886476",
+      "objectName": "SUPRA_RUNTIME_SEARCH.txt",
+      "description": "'SUPRA_RUNTIME_SEARCH.txt' dépasse 1MB (1960290 bytes)",
+      "recommendation": "Vérifier si un allègement est possible",
+      "relatedIds": [],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_size_2",
+      "type": "oversized",
+      "severity": "info",
+      "objectId": "workspace:-7821459140007908168",
+      "objectName": "Adobe Scan 17 mai 2026.pdf",
+      "description": "'Adobe Scan 17 mai 2026.pdf' dépasse 1MB (1267683 bytes)",
+      "recommendation": "Vérifier si un allègement est possible",
+      "relatedIds": [],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_size_3",
+      "type": "oversized",
+      "severity": "info",
+      "objectId": "workspace:3243157219453965305",
+      "objectName": "MÉTHODE OFFICIELLE NOVA OPS Du produit final → vers la technique minimale nécessaire. Pas l’inverse. -combiné (1)-avec compression.pdf",
+      "description": "'MÉTHODE OFFICIELLE NOVA OPS Du produit final → vers la technique minimale nécessaire. Pas l’inverse. -combiné (1)-avec compression.pdf' dépasse 1MB (1479024 bytes)",
+      "recommendation": "Vérifier si un allègement est possible",
+      "relatedIds": [],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_size_4",
+      "type": "oversized",
+      "severity": "info",
+      "objectId": "workspace:8183718082985604967",
+      "objectName": "CAPABILITY_MAP.pdf",
+      "description": "'CAPABILITY_MAP.pdf' dépasse 1MB (1006901 bytes)",
+      "recommendation": "Vérifier si un allègement est possible",
+      "relatedIds": [],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "gov_size_5",
+      "type": "oversized",
+      "severity": "info",
+      "objectId": "workspace:4036679619597748788",
+      "objectName": "Résultat de Terminal.txt",
+      "description": "'Résultat de Terminal.txt' dépasse 1MB (3246159 bytes)",
+      "recommendation": "Vérifier si un allègement est possible",
+      "relatedIds": [],
+      "detectedAt": "2026-07-23T23:43:35Z"
+    }
+  ]
+}

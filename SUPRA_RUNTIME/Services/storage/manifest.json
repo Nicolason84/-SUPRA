@@ -1,0 +1,36 @@
+{
+  "service": "storage",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Storage Service — monitors disk space, detects duplicates, identifies regenerable caches, proposes and executes safe cleanups",
+  "responsibilities": [
+    "surveiller l'espace disque",
+    "détecter les doublons",
+    "identifier les caches régénérables",
+    "proposer et exécuter des nettoyages sûrs"
+  ],
+  "thresholds": {
+    "disk_warning_gb": 10,
+    "disk_critical_gb": 5,
+    "duplicate_size_threshold_mb": 10,
+    "cache_age_days": 30,
+    "max_log_size_mb": 100
+  },
+  "monitored_paths": [
+    "~/Desktop/NOVA_OS/SUPRA",
+    "~/Library/Developer/Xcode/DerivedData",
+    "~/Library/Caches",
+    "~/Library/Logs"
+  ],
+  "recoverable_caches": [
+    "DerivedData",
+    "Xcode archives",
+    "npm cache",
+    "gradle cache",
+    "opencode cache",
+    "ollama models cache"
+  ],
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/storage/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

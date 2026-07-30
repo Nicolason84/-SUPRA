@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "archived_at": "2026-07-24T01:00:00Z",
+  "total_archived": 14,
+  "archives": [
+    {"id": "M-0010", "name": "Model Check Mission 10", "type": "model_check", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "duration_seconds": 20, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0012", "name": "Explore Mission 12", "type": "explore", "agent": "SUPRA-Explorer", "provider": "opencode-zen", "duration_seconds": 45, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0018", "name": "Research Mission 18", "type": "research", "agent": "SUPRA-Research", "provider": "opencode-zen", "duration_seconds": 60, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0022", "name": "Review Mission 22", "type": "review", "agent": "SUPRA-Reviewer", "provider": "ollama", "duration_seconds": 30, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0025", "name": "Audit Mission 25", "type": "audit", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "duration_seconds": 90, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0031", "name": "Runtime Mission 31", "type": "runtime", "agent": "SUPRA-Runtime", "provider": "opencode-zen", "duration_seconds": 55, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0035", "name": "Refactor Mission 35", "type": "refactor", "agent": "SUPRA-Refactor", "provider": "opencode-zen", "duration_seconds": 75, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0042", "name": "Route Mission 42", "type": "route", "agent": "SUPRA-Router", "provider": "opencode-zen", "duration_seconds": 15, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0048", "name": "Architecture Mission 48", "type": "architecture", "agent": "SUPRA-Architect", "provider": "opencode-zen", "duration_seconds": 120, "result": "SUCCESS", "archived_reason": "completed_critical"},
+    {"id": "M-0053", "name": "Report Generation 53", "type": "report_generation", "agent": "SUPRA-Builder", "provider": "opencode-zen", "duration_seconds": 60, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0057", "name": "Compliance Mission 57", "type": "compliance", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "duration_seconds": 80, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0062", "name": "Provider Check 62", "type": "provider_check", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "duration_seconds": 15, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0068", "name": "Benchmark Mission 68", "type": "benchmark", "agent": "SUPRA-Research", "provider": "opencode-zen", "duration_seconds": 100, "result": "SUCCESS", "archived_reason": "completed_routine"},
+    {"id": "M-0075", "name": "Graph Analysis 75", "type": "graph_analysis", "agent": "SUPRA-Architect", "provider": "opencode-zen", "duration_seconds": 130, "result": "SUCCESS", "archived_reason": "completed_critical"}
+  ],
+  "archive_stats": {
+    "total_archived": 14,
+    "total_duration_seconds": 895,
+    "avg_duration_seconds": 63.9,
+    "by_type": {"model_check":1,"explore":1,"research":1,"review":1,"audit":1,"runtime":1,"refactor":1,"route":1,"architecture":1,"report_generation":1,"compliance":1,"provider_check":1,"benchmark":1,"graph_analysis":1},
+    "retention_policy": "keep_forever",
+    "compression": "none"
+  }
+}

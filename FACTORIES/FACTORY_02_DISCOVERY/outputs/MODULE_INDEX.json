@@ -1,0 +1,300 @@
+{
+  "schema_version": "MODULE_INDEX_V1",
+  "generated_on": "2026-07-29",
+  "authority": "FACTORY_02_DISCOVERY",
+  "status": "VALIDATED",
+  "repository_metrics": {
+    "directory_count": 5899,
+    "file_count": 22885,
+    "swift_file_count": 334,
+    "shell_file_count": 98,
+    "json_file_count": 512,
+    "markdown_file_count": 541
+  },
+  "modules": [
+    {
+      "module_id": "SUPRA_APP",
+      "kind": "product",
+      "path": "SUPRA",
+      "exists": true,
+      "purpose": "Primary macOS runtime application source tree",
+      "swift_file_count": 239,
+      "shell_file_count": 0,
+      "json_file_count": 5
+    },
+    {
+      "module_id": "SUPRA_TESTS",
+      "kind": "test-suite",
+      "path": "SUPRATests",
+      "exists": true,
+      "purpose": "Swift XCTest suite present on disk",
+      "swift_file_count": 9,
+      "shell_file_count": 0,
+      "json_file_count": 0
+    },
+    {
+      "module_id": "CANNO_INTEGRATION_PACKAGE",
+      "kind": "swift-package",
+      "path": "Packages/CAnnoNicoIntegrationPackage",
+      "exists": true,
+      "purpose": "Local Swift package for adapter/contracts integration",
+      "swift_file_count": 5,
+      "shell_file_count": 0,
+      "json_file_count": 51
+    },
+    {
+      "module_id": "SUPRA_AST_PLATFORM",
+      "kind": "swift-package",
+      "path": "SUPRA_AST_PLATFORM",
+      "exists": true,
+      "purpose": "Standalone Swift AST/discovery platform",
+      "swift_file_count": 23,
+      "shell_file_count": 0,
+      "json_file_count": 24
+    },
+    {
+      "module_id": "FACTORIES",
+      "kind": "governance",
+      "path": "FACTORIES",
+      "exists": true,
+      "purpose": "Factory governance specifications and outputs",
+      "swift_file_count": 0,
+      "shell_file_count": 7,
+      "json_file_count": 6
+    },
+    {
+      "module_id": "SUPRA_RUNTIME_FS",
+      "kind": "runtime-state",
+      "path": "SUPRA_RUNTIME",
+      "exists": true,
+      "purpose": "Filesystem runtime inbox/outbox/state surface",
+      "swift_file_count": 19,
+      "shell_file_count": 12,
+      "json_file_count": 19
+    },
+    {
+      "module_id": "KERNEL",
+      "kind": "runtime-state",
+      "path": ".kernel",
+      "exists": true,
+      "purpose": "Kernel contracts/providers/storage registry",
+      "swift_file_count": 3,
+      "shell_file_count": 0,
+      "json_file_count": 20
+    },
+    {
+      "module_id": "OPENCODE",
+      "kind": "agent-runtime",
+      "path": ".opencode",
+      "exists": true,
+      "purpose": "Agent runtime, registry, prompts, workflows",
+      "swift_file_count": 0,
+      "shell_file_count": 0,
+      "json_file_count": 88
+    },
+    {
+      "module_id": "SCRIPTS",
+      "kind": "automation",
+      "path": "scripts",
+      "exists": true,
+      "purpose": "Operational automation scripts",
+      "swift_file_count": 0,
+      "shell_file_count": 48,
+      "json_file_count": 0
+    },
+    {
+      "module_id": "DOCS",
+      "kind": "documentation",
+      "path": "docs",
+      "exists": true,
+      "purpose": "Documentation and release governance",
+      "swift_file_count": 0,
+      "shell_file_count": 0,
+      "json_file_count": 0
+    }
+  ],
+  "products": [
+    {
+      "name": "SUPRA.app",
+      "kind": "macOS application",
+      "build_surface": "SUPRA.xcodeproj",
+      "source_root": "SUPRA",
+      "status": "active"
+    },
+    {
+      "name": "CAnnoNicoIntegration",
+      "kind": "Swift package library",
+      "build_surface": "Packages/CAnnoNicoIntegrationPackage/Package.swift",
+      "source_root": "Packages/CAnnoNicoIntegrationPackage/Sources",
+      "status": "active"
+    },
+    {
+      "name": "SUPRA_AST_PLATFORM",
+      "kind": "Swift package workspace",
+      "build_surface": "SUPRA_AST_PLATFORM/Package.swift",
+      "source_root": "SUPRA_AST_PLATFORM/Sources",
+      "status": "active-but-separate"
+    }
+  ],
+  "duplicate_systems": [
+    {
+      "category": "mission proposal engines",
+      "paths": [
+        "SUPRA/MissionProposalEngine.swift",
+        "SUPRA/SUPRAMissionProposalEngine.swift"
+      ],
+      "reason": "Two similarly named engines in the same app source tree suggest overlapping proposal orchestration responsibilities."
+    },
+    {
+      "category": "app entry/app shell",
+      "paths": [
+        "SUPRA/SUPRAOperationalCoreApp.swift",
+        "SUPRA/SUPRAApp.swift"
+      ],
+      "reason": "One active @main app plus one dormant alternative app shell indicates retained duplicate application boot structure."
+    },
+    {
+      "category": "runtime event modeling",
+      "paths": [
+        "SUPRA/RuntimeEvent.swift",
+        "SUPRA/RuntimeEventSource.swift",
+        "SUPRA/SUPRARuntimeEvents.swift"
+      ],
+      "reason": "Three runtime event surfaces exist with adjacent naming and overlapping event concerns."
+    },
+    {
+      "category": "knowledge graph/runtime knowledge",
+      "paths": [
+        "SUPRA/NOVAKnowledgeKernel.swift",
+        "SUPRA/WorkspaceKnowledgeGraph.swift",
+        "SUPRA/KnowledgeGraph.swift"
+      ],
+      "reason": "Multiple knowledge graph/kernel implementations exist in the compiled app tree."
+    },
+    {
+      "category": "control center dashboards",
+      "paths": [
+        "SUPRA/DashboardView.swift",
+        "SUPRA/UniverseDashboard.swift",
+        "SUPRA/SUPRAOperationalControlCenterView.swift",
+        "SUPRA/SupraControlCenterView.swift",
+        "SUPRA/TotalControlTowerView.swift",
+        "SUPRA/SUPRAOSCommandCenterView.swift"
+      ],
+      "reason": "Multiple overlapping dashboard/control-center views increase UI surface duplication."
+    }
+  ],
+  "obsolete_or_non_runtime_systems": [
+    {
+      "path": "build",
+      "classification": "derived-artifacts",
+      "reason": "Local build output, not canonical source."
+    },
+    {
+      "path": "SUPRA_AST_PLATFORM/.build",
+      "classification": "derived-artifacts",
+      "reason": "SwiftPM build artifacts."
+    },
+    {
+      "path": "Packages/CAnnoNicoIntegrationPackage/.build",
+      "classification": "derived-artifacts",
+      "reason": "SwiftPM build artifacts."
+    },
+    {
+      "path": "Freeze",
+      "classification": "archive",
+      "reason": "Archived freeze snapshots, not active runtime code."
+    },
+    {
+      "path": "_SUPRA_BACKUPS",
+      "classification": "backup",
+      "reason": "Historical backup area."
+    },
+    {
+      "path": "_NON_RUNTIME_ARCHITECTURE",
+      "classification": "archive",
+      "reason": "Architecture archive outside active runtime."
+    },
+    {
+      "path": ".analysis",
+      "classification": "analysis-cache",
+      "reason": "Temporary analysis output."
+    },
+    {
+      "path": ".analysis_20260723_022133",
+      "classification": "analysis-cache",
+      "reason": "Timestamped analysis output."
+    },
+    {
+      "path": ".backup_ui_model",
+      "classification": "backup",
+      "reason": "UI model backup folder."
+    },
+    {
+      "path": ".mechanical_extract_backup_20260723_211359",
+      "classification": "backup",
+      "reason": "Mechanical extraction backup."
+    },
+    {
+      "path": ".restore_build",
+      "classification": "recovery-artifacts",
+      "reason": "Build recovery artifacts."
+    },
+    {
+      "path": "EXECUTIVE_ARCHIVES",
+      "classification": "archive",
+      "reason": "Historical executive handoff snapshots."
+    }
+  ],
+  "validation_findings": [
+    "All published module and product paths exist on disk.",
+    "SUPRATests is present but not configured as an Xcode native target in the primary project.",
+    "The compiled app target depends on the local CAnnoNicoIntegration package.",
+    "The repository contains substantial archive and derived-artifact areas that are not part of the primary runtime build path."
+  ],
+  "validated_paths": [
+    ".analysis",
+    ".analysis_20260723_022133",
+    ".backup_ui_model",
+    ".kernel",
+    ".mechanical_extract_backup_20260723_211359",
+    ".opencode",
+    ".restore_build",
+    "EXECUTIVE_ARCHIVES",
+    "FACTORIES",
+    "Freeze",
+    "Packages/CAnnoNicoIntegrationPackage",
+    "Packages/CAnnoNicoIntegrationPackage/.build",
+    "Packages/CAnnoNicoIntegrationPackage/Package.swift",
+    "SUPRA",
+    "SUPRA.xcodeproj",
+    "SUPRA.xcodeproj/project.pbxproj",
+    "SUPRA/DashboardView.swift",
+    "SUPRA/KnowledgeGraph.swift",
+    "SUPRA/MissionProposalEngine.swift",
+    "SUPRA/NOVAKnowledgeKernel.swift",
+    "SUPRA/RuntimeEvent.swift",
+    "SUPRA/RuntimeEventSource.swift",
+    "SUPRA/SUPRAApp.swift",
+    "SUPRA/SUPRAMissionProposalEngine.swift",
+    "SUPRA/SUPRAOSCommandCenterView.swift",
+    "SUPRA/SUPRAOperationalControlCenterView.swift",
+    "SUPRA/SUPRAOperationalCoreApp.swift",
+    "SUPRA/SUPRARuntimeEvents.swift",
+    "SUPRA/SupraControlCenterView.swift",
+    "SUPRA/TotalControlTowerView.swift",
+    "SUPRA/UniverseDashboard.swift",
+    "SUPRA/WorkspaceKnowledgeGraph.swift",
+    "SUPRATests",
+    "SUPRA_AST_PLATFORM",
+    "SUPRA_AST_PLATFORM/.build",
+    "SUPRA_AST_PLATFORM/Package.swift",
+    "SUPRA_RUNTIME",
+    "_NON_RUNTIME_ARCHITECTURE",
+    "_SUPRA_BACKUPS",
+    "build",
+    "docs",
+    "scripts"
+  ],
+  "missing_paths": []
+}

@@ -1,0 +1,28 @@
+{
+  "memory": "MEMORY_PRODUCTS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "PRD-001", "name": "SUPRA macOS App", "type": "product", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "build": "PASS", "platform": "macOS 26.5"
+    },
+    {
+      "uuid": "PRD-002", "name": "SUPRA_VIDEO_SWAP V3", "type": "product", "project": "SUPRA_VIDEO_SWAP_V3", "status": "active", "canonical": false, "archive": false, "reusable": true, "note": "Version V3 du VideoSwap engine"
+    },
+    {
+      "uuid": "PRD-003", "name": "SUPRA_VIDEO_SWAP V1", "type": "product", "project": "SUPRA_VIDEO_SWAP_APP_V1", "status": "legacy", "canonical": false, "archive": true, "reusable": false, "note": "Version V1 legacy, remplacée par V3"
+    },
+    {
+      "uuid": "PRD-004", "name": "NICO_APP iOS", "type": "product", "project": "NICO_APP", "status": "active", "canonical": false, "archive": false, "reusable": true, "platform": "iOS"
+    },
+    {
+      "uuid": "PRD-005", "name": "SUPRA_HELENE iOS", "type": "product", "project": "HELENE_APP", "status": "active", "canonical": false, "archive": false, "reusable": true, "platform": "iOS", "note": "Version standalone de SUPRA_HELENE"
+    },
+    {
+      "uuid": "PRD-006", "name": "SUPRA_OS Shell", "type": "product_concept", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["SUPRAOSCommandCenterView", "SUPRAOSHomeView", "SUPRAOSLiveView", "SUPRAOSMissionCanvasView", "SUPRAOSProductRootView", "SUPRAOSTwinCenterView", "SUPRAOSUniverseView", "SUPRAOSGlobalSearchView", "SUPRAOSWorkspaceExplorerView"]
+    },
+    {
+      "uuid": "PRD-007", "name": "SUPRA Digital Twin Platform", "type": "product_concept", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["TwinAnalytics", "TwinBindings", "TwinComparison", "TwinExplorer", "TwinFactory", "TwinIdentity", "TwinLifecycle", "TwinRegistry", "TwinRenderer", "TwinSynchronizer", "TwinUniverse"]
+    }
+  ]
+}

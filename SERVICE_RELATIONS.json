@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 2
+  },
+  "services": [
+    {
+      "id": "SVC-001",
+      "identifier": "RuntimeDataService",
+      "path": "SUPRA/RuntimeDataService.swift",
+      "type": "class",
+      "concurrency": "@MainActor ObservableObject",
+      "consumers": [
+        {"name": "DashboardView", "type": "view", "usage": "runtime data"},
+        {"name": "MissionGraphView", "type": "view", "usage": "graph data"},
+        {"name": "MissionCenterView", "type": "view", "usage": "mission data"},
+        {"name": "MissionDetailView", "type": "view", "usage": "detail data"},
+        {"name": "RuntimeView", "type": "view", "usage": "runtime display"},
+        {"name": "RuntimeMonitor", "type": "monitor", "usage": "monitoring"},
+        {"name": "SettingsView", "type": "view", "usage": "settings"},
+        {"name": "WorkerPoolView", "type": "view", "usage": "worker data"},
+        {"name": "CockpitNavigation", "type": "nav", "usage": "navigation state"},
+        {"name": "OpenCodeClient", "type": "client", "usage": "opencode data"},
+        {"name": "JSONRuntimeSource", "type": "source", "usage": "json data"},
+        {"name": "SupraControlCenterView", "type": "view", "usage": "control"}
+      ],
+      "data_sources": [
+        "runtime_trace.json",
+        "delegation_trace.json",
+        "runtime_metrics.json",
+        "agent_execution.json",
+        "execution_graph.json",
+        "mission_graph_metrics.json",
+        "provider_metrics.json",
+        "dashboard_snapshot.json"
+      ],
+      "related_services": ["RuntimeMonitor", "RuntimeGateway"],
+      "load_pattern": "async auto-refresh"
+    },
+    {
+      "id": "SVC-002",
+      "identifier": "WorkspaceStatisticsService",
+      "path": "SUPRA/WorkspaceStatistics.swift",
+      "type": "class",
+      "concurrency": "@MainActor ObservableObject",
+      "consumers": [
+        {"name": "WorkspaceExplorer", "type": "view", "usage": "statistics"}
+      ],
+      "data_sources": ["WorkspaceIndex"],
+      "related_services": ["WorkspaceIndexer", "WorkspaceGovernor"],
+      "load_pattern": "computed on demand"
+    }
+  ],
+  "service_map": {
+    "central_hub": "RuntimeDataService",
+    "consumer_count": 12,
+    "data_source_count": 8,
+    "architecture": "hub-and-spoke",
+    "note": "RuntimeDataService is the central data distribution hub for the entire application runtime layer"
+  }
+}

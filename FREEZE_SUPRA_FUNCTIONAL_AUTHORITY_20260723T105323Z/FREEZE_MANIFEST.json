@@ -1,0 +1,25 @@
+{
+  "freeze": "SUPRA_FUNCTIONAL_AUTHORITY",
+  "generated_utc": "20260723T105323Z",
+  "status": "VALIDATED",
+  "producer": "GO_SUPRA_FUNCTIONAL_AUTHORITY_RECONCILER_V1",
+  "artifact": "SUPRA_FUNCTIONAL_AUTHORITY_RECONCILED.json",
+  "architecture_authority": {
+    "architecture_freeze": "FREEZE_SUPRA_GRAPHS_20260723T103701Z",
+    "architecture_status": "VALIDATED",
+    "status": "VALIDATED"
+  },
+  "summary": {
+    "files": 18,
+    "types": 94,
+    "functions": 86,
+    "edges": 704,
+    "authorities": 7,
+    "confirmed_authorities": 7,
+    "unresolved_authorities": 0,
+    "functional_bridges": 1,
+    "active_warnings": 0,
+    "superseded_warnings": 1
+  },
+  "verdict": "VALIDATED"
+}

@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "description": "Complete history of all missions processed by the SUPRA Mission Center.",
+  "total_missions": 100,
+  "total_completed": 43,
+  "total_failed": 4,
+  "total_archived": 14,
+  "total_active": 39,
+  "last_updated": "2026-07-24T01:00:00Z",
+  "history": [
+    {"period": "2026-07-24T00:00-00:30", "missions_created": 30, "missions_completed": 5, "missions_failed": 0, "avg_duration": 52},
+    {"period": "2026-07-24T00:30-01:00", "missions_created": 40, "missions_completed": 25, "missions_failed": 2, "avg_duration": 68},
+    {"period": "2026-07-24T01:00-01:30", "missions_created": 30, "missions_completed": 13, "missions_failed": 2, "avg_duration": 71}
+  ],
+  "state_transitions": {
+    "QUEUED_to_READY": 80,
+    "READY_to_PLANNED": 70,
+    "PLANNED_to_RUNNING": 65,
+    "RUNNING_to_SUCCESS": 43,
+    "RUNNING_to_FAILED": 4,
+    "RUNNING_to_WAITING": 5,
+    "RUNNING_to_BLOCKED": 3,
+    "WAITING_to_RUNNING": 5,
+    "BLOCKED_to_QUEUED": 3,
+    "FAILED_to_QUEUED": 3,
+    "SUCCESS_to_ARCHIVED": 14
+  },
+  "per_agent": {
+    "SUPRA-Architect": {"total": 12, "completed": 8, "failed": 1, "avg_duration": 115},
+    "SUPRA-Builder": {"total": 10, "completed": 6, "failed": 0, "avg_duration": 65},
+    "SUPRA-Auditor": {"total": 18, "completed": 12, "failed": 1, "avg_duration": 48},
+    "SUPRA-Reviewer": {"total": 14, "completed": 8, "failed": 1, "avg_duration": 32},
+    "SUPRA-Explorer": {"total": 12, "completed": 4, "failed": 1, "avg_duration": 42},
+    "SUPRA-Research": {"total": 10, "completed": 3, "failed": 0, "avg_duration": 55},
+    "SUPRA-Runtime": {"total": 8, "completed": 2, "failed": 0, "avg_duration": 58},
+    "SUPRA-Refactor": {"total": 8, "completed": 0, "failed": 0, "avg_duration": 70},
+    "SUPRA-Router": {"total": 8, "completed": 0, "failed": 0, "avg_duration": 18}
+  },
+  "per_provider": {
+    "opencode-zen": {"total_missions": 86, "completed": 37, "failed": 4, "avg_duration": 62, "total_duration_seconds": 5332},
+    "ollama": {"total_missions": 14, "completed": 6, "failed": 0, "avg_duration": 32, "total_duration_seconds": 192},
+    "openai": {"total_missions": 0, "completed": 0, "failed": 0, "avg_duration": null, "total_duration_seconds": 0}
+  },
+  "trends": {
+    "completion_rate_trend": "increasing",
+    "avg_duration_trend": "stable",
+    "failure_rate_trend": "decreasing",
+    "queue_depth_trend": "stable"
+  }
+}

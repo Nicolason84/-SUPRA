@@ -7,11 +7,22 @@
 
 import SwiftUI
 
-@main
+// @main moved to SUPRACommandCenterApp.swift
+// kept for reference — remove if unused
+//@main
 struct SUPRAApp: App {
+    @StateObject private var compositionRoot = SUPRACompositionRoot.shared
+
     var body: some Scene {
         WindowGroup {
-            SupraControlCenterView()
+            SUPRAOSProductRootView()
+                .environmentObject(TwinUniverse.shared)
+                .environmentObject(compositionRoot.runtimeDataService)
+                .environmentObject(compositionRoot.missionStore)
+                .environmentObject(compositionRoot.decisionStore)
+                .environmentObject(compositionRoot.runtimeMonitor)
+                .environmentObject(compositionRoot.eventBus)
+                .environmentObject(compositionRoot.controlTowerState)
         }
     }
 }

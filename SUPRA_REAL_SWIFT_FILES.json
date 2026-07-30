@@ -1,0 +1,24 @@
+{
+  "observer": "GO_SUPRA_SOURCE_OF_TRUTH_V1",
+  "mode": "READ_ONLY",
+  "swift_files": [
+    "ArtifactReader.swift",
+    "CAnnoNicoIntegrationBridge.swift",
+    "ContentView.swift",
+    "ControlCenterStore.swift",
+    "Decision.swift",
+    "DecisionDetailView.swift",
+    "DecisionInboxView.swift",
+    "DecisionRow.swift",
+    "DecisionStore.swift",
+    "Mission.swift",
+    "MissionCenterView.swift",
+    "MissionDetailView.swift",
+    "MissionRow.swift",
+    "MissionStore.swift",
+    "SUPRAApp.swift",
+    "SUPRAGabrielConductorRuntime.swift",
+    "Snapshot.swift",
+    "SupraControlCenterView.swift"
+  ]
+}

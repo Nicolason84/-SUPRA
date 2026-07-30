@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_PROVIDER_RUNTIME_V001",
+  "timestamp": "2026-07-24T00:20:00Z",
+  "router": {
+    "id": "SUPRA-Router",
+    "provider": "opencode-zen",
+    "model": "deepseek-v4-flash-free",
+    "mode": "hybrid"
+  },
+  "policies_consulted": [
+    "routing_policy.json → selection_flow (4 steps)",
+    "routing_policy.json → provider_preferences",
+    "routing_policy.json → rules (mandatory_opencode_zen, ollama_acceptable)",
+    "routing_policy.json → fallback_provider_chain",
+    "routing_rules.json → 11 rules evaluated as first_match",
+    "provider_registry.json → 3 providers, 9 models",
+    "provider_capabilities.json → capability scores",
+    "provider_health.json → status of each provider/model",
+    "agent_registry.json → 9 agents with provider/model mappings",
+    "fallbacks.json → fallback chains per model"
+  ],
+  "traces": [
+    {
+      "trace_id": "trace_001",
+      "mission": "architecture_analysis",
+      "classifier_input": "Analyze the provider runtime architecture",
+      "classified_capabilities": ["architecture", "analysis", "planning"],
+      "matched_rule": "rule_architecture (priority 10)",
+      "decision_flow": [
+        {"step": 1, "action": "classify_mission", "result": "architecture_analysis", "time_ms": 0},
+        {"step": 2, "action": "select_provider", "provider_candidates": ["opencode-zen", "ollama"], "policy_check": "mandatory_opencode_zen triggers for architecture", "selected": "opencode-zen", "time_ms": 0},
+        {"step": 3, "action": "select_model", "provider": "opencode-zen", "candidates": ["deepseek-v4-flash-free"], "selected": "deepseek-v4-flash-free", "time_ms": 0},
+        {"step": 4, "action": "select_agent", "agent_candidates": ["SUPRA-Architect"], "selected": "SUPRA-Architect", "time_ms": 0}
+      ],
+      "full_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Architect"]
+    },
+    {
+      "trace_id": "trace_002",
+      "mission": "compliance_audit",
+      "classifier_input": "Audit the provider runtime compliance",
+      "classified_capabilities": ["analysis", "audit", "compliance"],
+      "matched_rule": "rule_analysis (priority 10)",
+      "decision_flow": [
+        {"step": 1, "action": "classify_mission", "result": "compliance_audit", "time_ms": 0},
+        {"step": 2, "action": "select_provider", "provider_candidates": ["opencode-zen", "ollama"], "policy_check": "analysis preferred on opencode-zen per provider_preferences", "selected": "opencode-zen", "time_ms": 0},
+        {"step": 3, "action": "select_model", "provider": "opencode-zen", "candidates": ["deepseek-v4-flash-free"], "selected": "deepseek-v4-flash-free", "time_ms": 0},
+        {"step": 4, "action": "select_agent", "agent_candidates": ["SUPRA-Auditor"], "selected": "SUPRA-Auditor", "time_ms": 0}
+      ],
+      "full_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Auditor"]
+    },
+    {
+      "trace_id": "trace_003",
+      "mission": "provider_review",
+      "classifier_input": "Review the provider runtime layer",
+      "classified_capabilities": ["review", "analysis", "code_quality"],
+      "matched_rule": "rule_review (priority 10)",
+      "decision_flow": [
+        {"step": 1, "action": "classify_mission", "result": "provider_review", "time_ms": 0},
+        {"step": 2, "action": "select_provider", "provider_candidates": ["opencode-zen", "ollama"], "policy_check": "review preferred on opencode-zen, ollama acceptable for lightweight; cost_efficiency trigger → ollama", "selected": "ollama", "time_ms": 0},
+        {"step": 3, "action": "select_model", "provider": "ollama", "candidates": ["qwen3:4b", "qwen2.5-coder:14b(unavailable)", "deepseek-coder-v2:16b(unavailable)"], "selected": "qwen3:4b", "time_ms": 0},
+        {"step": 4, "action": "select_agent", "agent_candidates": ["SUPRA-Reviewer"], "selected": "SUPRA-Reviewer", "time_ms": 0}
+      ],
+      "full_path": ["ollama", "qwen3:4b", "SUPRA-Reviewer"]
+    }
+  ],
+  "summary": {
+    "total_traces": 3,
+    "providers_activated": ["opencode-zen", "ollama"],
+    "models_activated": ["deepseek-v4-flash-free", "qwen3:4b"],
+    "agents_activated": ["SUPRA-Architect", "SUPRA-Auditor", "SUPRA-Reviewer"],
+    "fallbacks_triggered": 0,
+    "selection_flow_verified": "Provider → Model → Agent"
+  }
+}

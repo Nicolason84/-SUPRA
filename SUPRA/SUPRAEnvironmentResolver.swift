@@ -71,6 +71,6 @@ final class SUPRAEnvironmentResolver: ObservableObject {
     }
 
     var projectRoot: String {
-        path(for: "workspaceRoot") ?? ""
+        path(for: "workspaceRoot") ?? FileManager.default.currentDirectoryPath
     }
 }

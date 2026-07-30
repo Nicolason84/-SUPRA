@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "description": "Execution engine that binds Mission Graph → Scheduler → Agent Runtime → Validation.",
+  "pipeline": [
+    {"step": 1, "name": "Mission Intake", "system": "Mission Center", "action": "Receive mission, validate format", "output": "mission_manifest"},
+    {"step": 2, "name": "Planning", "system": "SUPRA-Planner", "action": "Decompose mission into DAG, detect parallelism", "output": "mission_graph"},
+    {"step": 3, "name": "Graph Scheduling", "system": "SUPRA-Scheduler", "action": "Order tasks by priority+dependencies, form parallel groups", "output": "execution_plan"},
+    {"step": 4, "name": "Agent Selection", "system": "Runtime Bindings", "action": "Lookup runtime_bindings.json by task_type → agent+provider+model", "output": "agent_assignment"},
+    {"step": 5, "name": "OpenCode Dispatch", "system": "Runtime Integration", "action": "Dispatch task to OpenCode agent via subagent_task or subagent_direct", "output": "agent_execution_handle"},
+    {"step": 6, "name": "Execution", "system": "OpenCode Agent", "action": "Agent executes task with specified permissions and timeout", "output": "agent_result"},
+    {"step": 7, "name": "Validation", "system": "SUPRA-Validator", "action": "Validate agent output against mission criteria", "output": "validation_report"},
+    {"step": 8, "name": "Mission Complete", "system": "Runtime Integration", "action": "Mark mission completed, archive results, update history", "output": "mission_result"}
+  ],
+  "execution_modes": {
+    "subagent_task": "Launch agent as async task, wait for completion, collect result",
+    "subagent_direct": "Launch agent synchronously for immediate work, stream results",
+    "parallel_broadcast": "Launch multiple agents simultaneously on independent tasks"
+  },
+  "state_machine": {
+    "states": ["CREATED", "PLANNING", "SCHEDULED", "AGENT_SELECTED", "DISPATCHED", "EXECUTING", "VALIDATING", "COMPLETED", "FAILED"],
+    "transitions": {
+      "CREATED": ["PLANNING"],
+      "PLANNING": ["SCHEDULED"],
+      "SCHEDULED": ["AGENT_SELECTED"],
+      "AGENT_SELECTED": ["DISPATCHED"],
+      "DISPATCHED": ["EXECUTING", "FAILED"],
+      "EXECUTING": ["VALIDATING", "FAILED"],
+      "VALIDATING": ["COMPLETED", "FAILED"],
+      "COMPLETED": [],
+      "FAILED": ["PLANNING"]
+    }
+  },
+  "current_execution": null,
+  "execution_history": []
+}

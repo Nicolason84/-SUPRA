@@ -1,0 +1,25 @@
+{
+  "service": "governance",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Governance Service — enforces Runtime policies, controls Runtime Services, guarantees global consistency",
+  "responsibilities": [
+    "appliquer les politiques du Runtime",
+    "contrôler les Runtime Services",
+    "garantir la cohérence globale"
+  ],
+  "policies": {
+    "no_hardcoded_paths": true,
+    "no_direct_filesystem_manipulation": true,
+    "intention_based_expressions": true,
+    "runtime_decides_implementation": true,
+    "single_write_point": true,
+    "no_orphan_artifacts": true,
+    "lifecycle_bound_retention": true,
+    "reversible_first": true
+  },
+  "controlled_services": ["workspace", "storage", "provider", "build", "diagnostics", "health", "snapshot", "recovery"],
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/governance/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

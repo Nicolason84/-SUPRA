@@ -1,0 +1,21 @@
+{
+  "observer": "GO_SUPRA_SAFE_BUILD_SPACE_RECOVERY_V1",
+  "mode": "TARGETED_CLEANUP",
+  "scope": [
+    "SUPRA temporary overlays",
+    "SUPRA temporary build directories",
+    "SUPRA Xcode DerivedData"
+  ],
+  "source_deleted": false,
+  "removed_count": 1,
+  "removed": [
+    "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData/SUPRA-brymtechwigcboblkpbezhswerbq"
+  ],
+  "storage": {
+    "before_gib": 10.13,
+    "after_gib": 10.22,
+    "recovered_gib": 0.09
+  },
+  "build_space_ready": false,
+  "verdict": "INSUFFICIENT_SPACE"
+}

@@ -1,0 +1,73 @@
+{
+  "trace_type": "consensus",
+  "workflow": "consensus",
+  "comparator": {
+    "agent": "SUPRA-Comparator",
+    "outputs_compared": 3,
+    "comparison_matrix": {
+      "agreements": [
+        {
+          "topic": "Configuration integrity",
+          "agents": [
+            "SUPRA-Explorer",
+            "SUPRA-Auditor",
+            "SUPRA-Reviewer"
+          ],
+          "confidence": 0.98,
+          "consensus": "All 9 agents properly defined. All config files valid."
+        },
+        {
+          "topic": "Previous repairs verified",
+          "agents": [
+            "SUPRA-Auditor",
+            "SUPRA-Reviewer"
+          ],
+          "confidence": 0.95,
+          "consensus": "All 5 blocking issues from validation report confirmed fixed."
+        },
+        {
+          "topic": "Build status",
+          "agents": [
+            "SUPRA-Explorer",
+            "SUPRA-Auditor"
+          ],
+          "confidence": 0.9,
+          "consensus": "Build is currently BLOCKED/FAILING (74 errors)"
+        },
+        {
+          "topic": "Agent infrastructure maturity",
+          "agents": [
+            "SUPRA-Explorer",
+            "SUPRA-Auditor",
+            "SUPRA-Reviewer"
+          ],
+          "confidence": 0.96,
+          "consensus": "SUPRA OS has mature agent/registry/workflow infrastructure (50/50)"
+        }
+      ],
+      "divergences": [
+        {
+          "topic": "routing_rules.json existence",
+          "agents": [
+            "SUPRA-Reviewer says MISSING",
+            "SUPRA-Auditor says PRESENT"
+          ],
+          "status": "RESOLVED",
+          "resolution": "File exists and valid (2333 bytes). Reviewer scan was stale."
+        }
+      ]
+    },
+    "consensus_score": 0.94
+  },
+  "fusion_engine": {
+    "agent": "SUPRA-FusionEngine",
+    "strategy": "weighted",
+    "weights": {
+      "SUPRA-Explorer": 0.3,
+      "SUPRA-Auditor": 0.35,
+      "SUPRA-Reviewer": 0.35
+    },
+    "conflicts_resolved": 1,
+    "output": "Unified analysis report produced"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "workspace_registry": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "workspace_id": "supra-node-macbook-pro-de-nicolaslocal",
+    "root_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+    "kernel_path": ".kernel/",
+    "created_at": "2026-07-29T00:00:00Z",
+    "status": "ACTIVE",
+    "description": "Workspace-level registry for the Executive Memory Kernel. Tracks all workspace-scoped objects and their relationships.",
+    "workspace_scopes": {
+      "missions": {
+        "path": "memory/missions/",
+        "description": "All mission objects in this workspace",
+        "index": "projections/mission_index.json",
+        "count": 0
+      },
+      "decisions": {
+        "path": "memory/decisions/",
+        "description": "All decision objects in this workspace",
+        "index": "projections/decision_index.json",
+        "count": 0
+      },
+      "proofs": {
+        "path": "memory/proofs/",
+        "description": "All proof objects in this workspace",
+        "index": "projections/proof_index.json",
+        "count": 0
+      },
+      "adrs": {
+        "path": "memory/adrs/",
+        "description": "All ADR objects in this workspace",
+        "index": "ADR_REGISTRY.json",
+        "count": 0
+      },
+      "components": {
+        "path": "memory/components/",
+        "description": "All living component objects in this workspace",
+        "index": "projections/component_index.json",
+        "count": 0
+      },
+      "dependencies": {
+        "path": "memory/dependencies/",
+        "description": "All dependency relationship objects in this workspace",
+        "count": 0
+      },
+      "snapshots": {
+        "path": "memory/snapshots/",
+        "description": "All state snapshots in this workspace",
+        "count": 0
+      },
+      "events": {
+        "path": "memory/events/",
+        "description": "All event journal entries in this workspace",
+        "journal": "projections/event_journal.jsonl",
+        "count": 0
+      },
+      "runtime_state": {
+        "path": "runtime/",
+        "description": "Runtime state objects for this workspace",
+        "count": 0
+      }
+    },
+    "workspace_metadata": {
+      "hostname": "MacBook-Pro-de-Nicolas.local",
+      "platform": "macos",
+      "architecture": "arm64",
+      "tools": {
+        "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)",
+        "git": "git version 2.50.1 (Apple Git-155)",
+        "ollama": "ollama version is 0.32.3",
+        "opencode": "1.18.5"
+      }
+    },
+    "kernel_link": {
+      "kernel_registry": "KernelRegistry.json",
+      "kernel_version": "1.0.0",
+      "last_sync": "2026-07-29T00:00:00Z"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "rules": [
+    {
+      "id": "rule_architecture",
+      "pattern": "architecture|design|ADR|structure|component",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Architect",
+      "workflow": "single_agent",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Architect"]
+    },
+    {
+      "id": "rule_implementation",
+      "pattern": "implémenter|créer|écrire|implement|create|write|generate|builder|build",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Builder",
+      "workflow": "single_agent",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Builder"]
+    },
+    {
+      "id": "rule_refactoring",
+      "pattern": "refactor|renommer|extraire|simplifier|extract|rename|simplify",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Refactor",
+      "workflow": "review",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Refactor"]
+    },
+    {
+      "id": "rule_analysis",
+      "pattern": "analyser|audit|vérifier|analyze|audit|check|conformité|compliance",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Auditor",
+      "workflow": "single_agent",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Auditor"]
+    },
+    {
+      "id": "rule_research",
+      "pattern": "rechercher|documentation|investiguer|research|investigate|find|how",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Research",
+      "workflow": "single_agent",
+      "priority": 8,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Research"]
+    },
+    {
+      "id": "rule_debugging",
+      "pattern": "bug|crash|erreur|issue|plantage|error|fail|exception",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Runtime",
+      "workflow": "single_agent",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Runtime"]
+    },
+    {
+      "id": "rule_review",
+      "pattern": "review|relecture|vérifier|review|check|validate",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "agent": "SUPRA-Reviewer",
+      "workflow": "review",
+      "priority": 10,
+      "selection_path": ["ollama", "qwen3:4b", "SUPRA-Reviewer"]
+    },
+    {
+      "id": "rule_critical_decision",
+      "pattern": "décision critique|architecture critique|security audit",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Architect",
+      "workflow": "consensus",
+      "priority": 10,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Architect"]
+    },
+    {
+      "id": "rule_exploration",
+      "pattern": "explorer|naviguer|carte|explore|navigate|map|locate",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Explorer",
+      "workflow": "single_agent",
+      "priority": 8,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Explorer"]
+    },
+    {
+      "id": "rule_ollama_review",
+      "pattern": "revue rapide|quick review|simple check|light audit",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "agent": "SUPRA-Reviewer",
+      "workflow": "single_agent",
+      "priority": 6,
+      "selection_path": ["ollama", "qwen3:4b", "SUPRA-Reviewer"]
+    },
+    {
+      "id": "rule_fallback_default",
+      "pattern": "*",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "agent": "SUPRA-Explorer",
+      "workflow": "fallback",
+      "priority": 1,
+      "selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Explorer"]
+    }
+  ],
+  "evaluation": {
+    "mode": "first_match",
+    "case_sensitive": false
+  },
+  "provider_first": true,
+  "selection_flow": ["provider", "model", "agent"]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "SUPRA_Cognitive_Cycle_Projection_V1",
+  "projectionId": "proj:json:cognitive-cycle-demo-001",
+  "format": "json",
+  "canonicalId": "can:knowledge:cognitive-cycle-demo-001",
+  "canonicalName": "SUPRA Cognitive Cycle Demonstration",
+  "version": "V1",
+  "tick": 4,
+  "stages": [
+    {"id": "tuv5", "name": "TUV5 — Comprendre", "order": 1, "input": "conversation, idée, document, code, décision", "output": "Knowledge Package V1", "validated": true},
+    {"id": "puchero", "name": "PUCHERO — Mûrir", "order": 2, "input": "Knowledge Package", "output": "Knowledge Candidate", "validated": true},
+    {"id": "canonico", "name": "CANNoNICO — Canoniser", "order": 3, "input": "Knowledge Candidate", "output": "Canonical Knowledge Object", "validated": true},
+    {"id": "projection", "name": "ProjectionEngine — Projeter", "order": 4, "input": "Canonical Knowledge Object", "output": "Projections in 8 formats", "validated": true},
+    {"id": "runtime", "name": "Runtime — Interpréter", "order": 5, "input": "Projections", "output": "Execution Proof with Feedback", "validated": true}
+  ],
+  "confidence": 0.91,
+  "coherence": 0.92,
+  "nambrohoraRef": 4,
+  "trace": [
+    "can:knowledge:tuv5-package",
+    "can:knowledge:puchero-candidate",
+    "can:knowledge:cognitive-cycle-demo-001"
+  ]
+}

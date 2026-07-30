@@ -1,0 +1,83 @@
+{
+  "memory": "MEMORY_BRIDGES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "BRG-001",
+      "name": "CAnnoNicoIntegrationBridge",
+      "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "type": "integration_bridge",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "imports": ["CAnnoNicoContracts", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter"],
+      "used_by": ["ContentView"],
+      "note": "Bridge central d'intégration - fabrique le snapshot d'intégration"
+    },
+    {
+      "uuid": "BRG-002",
+      "name": "CAnnoNicoObject",
+      "file": "SUPRA/CAnnoNicoObject.swift",
+      "type": "bridge_model",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Objet bridge CAnnoNico"
+    },
+    {
+      "uuid": "BRG-003",
+      "name": "OpenCodeBridge",
+      "file": "SUPRA/OpenCodeBridge.swift",
+      "type": "bridge",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Bridge vers l'interface OpenCode CLI"
+    },
+    {
+      "uuid": "BRG-004",
+      "name": "OpenCodeClient",
+      "file": "SUPRA/OpenCodeClient.swift",
+      "type": "client",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Client pour l'API OpenCode"
+    },
+    {
+      "uuid": "BRG-005",
+      "name": "SUPRAChatRuntimeAdapter",
+      "file": "SUPRA/SUPRAChatRuntimeAdapter.swift",
+      "type": "runtime_adapter",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "note": "Adaptateur runtime pour le chat SUPRA"
+    },
+    {
+      "uuid": "BRG-006",
+      "name": "SUPRAGabrielConductorRuntime",
+      "file": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "type": "conductor_runtime",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "used_by": ["ContentView"],
+      "exports": ["SUPRAGabrielConductorSnapshot"],
+      "note": "Runtime du conducteur Gabriel"
+    }
+  ]
+}

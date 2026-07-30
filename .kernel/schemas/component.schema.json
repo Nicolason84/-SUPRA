@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/component.schema.json",
+  "title": "Component",
+  "description": "A living component in the system - a piece of code, service, module, or capability with identity, version, and lifecycle.",
+  "type": "object",
+  "required": ["id", "name", "type", "status", "version", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the component"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the component"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["MODULE", "SERVICE", "BRIDGE", "ADAPTER", "PROVIDER", "MODEL", "CAPABILITY", "AGENT", "WORKER", "PACKAGE", "PROJECT", "WORKSPACE"],
+      "description": "Type of component"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "REGISTERED", "VALIDATING", "ACTIVE", "DEGRADED", "SUSPENDED", "FAILED", "DEPRECATED", "FROZEN", "RETIRED"],
+      "description": "Operational status of the component"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the component"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the component's purpose"
+    },
+    "owner": {
+      "type": "string",
+      "description": "Agent type or team owning this component"
+    },
+    "source_path": {
+      "type": ["string", "null"],
+      "description": "Filesystem path to the component source"
+    },
+    "contract": {
+      "type": ["string", "null"],
+      "description": "Reference to the component's contract/interface"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "IDs of components this component depends on"
+    },
+    "dependents": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "IDs of components that depend on this component"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Capabilities this component provides"
+    },
+    "permissions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Permissions required by this component"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for categorization and search"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of creation"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last update"
+    },
+    "frozen_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when frozen (if applicable)"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the component artifact"
+    }
+  }
+}

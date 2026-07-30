@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_EXECUTIVE_MISSION_CENTER_V001",
+  "queue_depth": 19,
+  "queue_composition": {
+    "by_priority": {"high": 7, "medium": 8, "low": 4},
+    "by_type": {"architecture": 2, "audit": 4, "review": 3, "research": 2, "explore": 2, "build": 1, "route": 2, "runtime": 1, "compliance": 1, "provider_check": 1},
+    "by_agent": {"SUPRA-Architect": 2, "SUPRA-Auditor": 5, "SUPRA-Reviewer": 3, "SUPRA-Explorer": 2, "SUPRA-Research": 2, "SUPRA-Builder": 1, "SUPRA-Router": 2, "SUPRA-Runtime": 1, "SUPRA-Refactor": 1}
+  },
+  "queue_performance": {
+    "avg_wait_time_minutes": 12,
+    "max_wait_time_minutes": 45,
+    "min_wait_time_minutes": 1,
+    "queue_throughput_per_hour": 43,
+    "queue_growth_rate": "stable",
+    "backlog": 19,
+    "predicted_clear_time_minutes": 26.5
+  },
+  "dependency_analysis": {
+    "missions_with_dependencies": 37,
+    "missions_blocked_by_deps": 6,
+    "avg_dependencies_per_mission": 0.42,
+    "max_dependency_chain_length": 3,
+    "diamond_dependencies": 2
+  },
+  "state_flow_rate": {
+    "QUEUED_per_hour": 80,
+    "READY_per_hour": 70,
+    "PLANNED_per_hour": 65,
+    "RUNNING_per_hour": 55,
+    "SUCCESS_per_hour": 43,
+    "FAILED_per_hour": 4,
+    "ARCHIVED_per_hour": 14
+  }
+}

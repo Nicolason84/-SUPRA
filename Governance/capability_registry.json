@@ -1,0 +1,22 @@
+{
+  "registry_id": "supra.capabilities",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "source_registries": [
+    ".opencode/registry/capability_registry.json",
+    ".opencode/runtime/provider_registry.json",
+    "CANONICAL_WORKERS.json",
+    "_FOUNDATION_MEMORY/MEMORY_CAPABILITIES.json"
+  ],
+  "capabilities": [
+    { "id": "mission.read_write", "provider": "MissionStore", "dependencies": ["composition_root"], "cost": "local", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "runtime.orchestrate", "provider": "SUPRANucleoOrchestrator", "dependencies": ["execution_pipeline", "scheduler"], "cost": "local_or_provider", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "runtime.execute", "provider": "SUPRAExecutionPipeline", "dependencies": ["provider_broker", "provider_registry"], "cost": "provider_dependent", "availability": "configured", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "runtime.schedule", "provider": "SUPRAScheduler", "dependencies": ["provider_plugin_registry", "transmission_locks"], "cost": "local", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "runtime.monitor", "provider": "RuntimeDataService", "dependencies": ["filesystem", "process_info", "xcodebuild"], "cost": "local", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "continuity.restore", "provider": "ContinuityManager", "dependencies": ["continuity_files", "freeze_metadata"], "cost": "local", "availability": "validated_with_warnings", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "workflow.execute", "provider": "ExecutiveWorkflowRegistry", "dependencies": ["world_model", "decision_store"], "cost": "local_or_provider", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "worker.opencode", "provider": "OpenCodeClient", "dependencies": ["runtime_data_service"], "cost": "provider_dependent", "availability": "configured", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" },
+    { "id": "environment.hardware", "provider": "SUPRAHardwareTwin", "dependencies": ["process_info", "system_apis"], "cost": "local", "availability": "validated", "performance": "not_benchmarked", "state": "active", "version": "1.0.0" }
+  ]
+}

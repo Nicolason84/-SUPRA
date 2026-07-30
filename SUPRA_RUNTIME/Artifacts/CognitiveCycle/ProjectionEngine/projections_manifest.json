@@ -1,0 +1,80 @@
+{
+  "$schema": "SUPRA_Projection_Manifest_V1",
+  "manifestId": "proj:manifest:cognitive-cycle-demo-001",
+  "version": "V1",
+  "stage": "ProjectionEngine",
+  "createdAt": "2026-07-29",
+  "tick": 4,
+  "derivedFrom": "can:knowledge:cognitive-cycle-demo-001",
+  "canonicalSource": "CANNoNICO Canonical Knowledge Object V1",
+  "projections": [
+    {
+      "projectionId": "proj:swift:main",
+      "format": "swift",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_projection.swift",
+      "type": "executable_source",
+      "description": "Swift source code projection of the canonical cycle model",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:bash:orchestrator",
+      "format": "bash",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_orchestrator.sh",
+      "type": "executable_script",
+      "description": "Bash orchestration script projection of the cycle pipeline",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:json:data",
+      "format": "json",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_data.json",
+      "type": "data_artifact",
+      "description": "JSON data projection of the canonical model with all stage outputs",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:markdown:documentation",
+      "format": "markdown",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_documentation.md",
+      "type": "documentation",
+      "description": "Markdown documentation projection with complete traceability",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:yaml:configuration",
+      "format": "yaml",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_config.yaml",
+      "type": "configuration",
+      "description": "YAML configuration projection of the cycle parameters",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:api:definition",
+      "format": "api",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_api.yaml",
+      "type": "api_definition",
+      "description": "OpenAPI API definition projection of the canonical model",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:html:visualization",
+      "format": "html",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_visualization.html",
+      "type": "visualization",
+      "description": "HTML visualization projection of the cognitive cycle",
+      "validated": true
+    },
+    {
+      "projectionId": "proj:sql:schema",
+      "format": "sql",
+      "target": "Artifacts/CognitiveCycle/ProjectionEngine/cognitive_cycle_schema.sql",
+      "type": "schema",
+      "description": "SQL schema projection of the canonical data model",
+      "validated": true
+    }
+  ],
+  "derivationRule": "exclusively_from_canonical_model",
+  "noBusinessInfoInjection": true,
+  "reprojectionOnChange": true,
+  "tick": 4
+}

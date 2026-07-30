@@ -1,0 +1,16 @@
+{
+  "schema":"supra.execution-scoreboard.v1",
+  "generatedAt":"2026-07-30T00:00:00Z",
+  "mission":"EXECUTION_ERA_001",
+  "status":"PARTIAL",
+  "principles":{"total":16,"pass":7,"partial":9,"fail":0,"mapped":16,"coverage":1.0},
+  "evidence":{"principlesWithEvidence":16,"coverage":1.0,"reproducibleItems":9,"totalItems":12,"reproducibility":0.75},
+  "proof":{"claims":6,"pass":5,"gap":1,"coverage":0.8333},
+  "factory":{"total":10,"operational":7,"partial":3,"missing":0,"capabilityCoverage":1.0},
+  "runtimeProof":{"bootstrap":"PASS","autonomousIteration":"PASS","missionLifecycle":"PASS","inferenceGateway":"PASS","memoryContinuity":"PARTIAL"},
+  "constitutionalScore":0.6875,
+  "interpretation":"All principles are mapped and evidence-backed. Seven are presently demonstrated as PASS; nine require enforcement or reproducibility work.",
+  "nextPriority":"Governed Evidence Gate",
+  "nextMission":"Implement pre-change evidence manifest and canonical policy-source validation.",
+  "source":"CONSTITUTION_COMPLIANCE.json"
+}

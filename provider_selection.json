@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_PROVIDER_RUNTIME_V001",
+  "timestamp": "2026-07-24T00:20:00Z",
+  "decisions": [
+    {
+      "mission_intent": "architecture_analysis",
+      "extracted_capabilities": ["architecture", "analysis", "planning"],
+      "router_decision": {
+        "step_1_classify": "Mission requires architecture analysis — high reasoning and structural analysis capabilities needed",
+        "step_2_select_provider": {
+          "policy_applied": "routing_policy.json → rule 'mandatory_opencode_zen': capability 'architecture' pinned to opencode-zen",
+          "selected_provider": "opencode-zen",
+          "reason": "Architecture capability requires highest quality model (score 0.94). Only opencode-zen supports architecture per provider_capabilities.json.",
+          "alternatives_considered": ["ollama/qwen3:4b — score 0.60 for planning, no architecture capability"],
+          "fallback_provider": "ollama",
+          "fallback_model": "qwen3:4b"
+        },
+        "step_3_select_model": {
+          "policy_applied": "best_in_provider strategy",
+          "provider": "opencode-zen",
+          "selected_model": "deepseek-v4-flash-free",
+          "reason": "Only available model in opencode-zen provider. Quality score 0.92, context 131072 tokens, cost free.",
+          "alternatives_in_provider": [],
+          "model_fallback": "ollama/qwen3:4b"
+        },
+        "step_4_select_agent": {
+          "policy_applied": "capability_and_model_match",
+          "selected_agent": "SUPRA-Architect",
+          "reason": "Agent with architecture capability, mapped to opencode-zen/deepseek-v4-flash-free in agent_registry.json.",
+          "routing_rule_matched": "rule_architecture (priority 10)"
+        }
+      },
+      "full_selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Architect"]
+    },
+    {
+      "mission_intent": "compliance_audit",
+      "extracted_capabilities": ["analysis", "audit", "compliance"],
+      "router_decision": {
+        "step_1_classify": "Mission requires compliance audit — analysis and security audit capabilities needed",
+        "step_2_select_provider": {
+          "policy_applied": "routing_policy.json → preference: analysis preferred on opencode-zen",
+          "selected_provider": "opencode-zen",
+          "reason": "Analysis capability preferred on opencode-zen per policy (score 0.92). Ollama acceptable (score 0.68) but not optimal for compliance audit.",
+          "alternatives_considered": ["ollama/qwen3:4b — score 0.68 for analysis"],
+          "fallback_provider": "ollama",
+          "fallback_model": "qwen3:4b"
+        },
+        "step_3_select_model": {
+          "policy_applied": "best_in_provider strategy",
+          "provider": "opencode-zen",
+          "selected_model": "deepseek-v4-flash-free",
+          "reason": "Only available model in opencode-zen. Quality score 0.92 for analysis capability.",
+          "alternatives_in_provider": [],
+          "model_fallback": "ollama/qwen3:4b"
+        },
+        "step_4_select_agent": {
+          "policy_applied": "capability_and_model_match",
+          "selected_agent": "SUPRA-Auditor",
+          "reason": "Agent with analysis/compliance capabilities, mapped to opencode-zen/deepseek-v4-flash-free.",
+          "routing_rule_matched": "rule_analysis (priority 10)"
+        }
+      },
+      "full_selection_path": ["opencode-zen", "deepseek-v4-flash-free", "SUPRA-Auditor"]
+    },
+    {
+      "mission_intent": "provider_review",
+      "extracted_capabilities": ["review", "analysis", "code_quality"],
+      "router_decision": {
+        "step_1_classify": "Mission requires code review — review and code quality capabilities needed",
+        "step_2_select_provider": {
+          "policy_applied": "routing_policy.json → preference: review preferred on opencode-zen, ollama acceptable for lightweight",
+          "selected_provider": "ollama",
+          "reason": "Review task classified as lightweight (no critical/security review). Ollama selected for cost efficiency (free) and to demonstrate multi-provider routing. OpenCode Zen reserved for higher-priority architecture tasks.",
+          "alternatives_considered": ["opencode-zen/deepseek-v4-flash-free — score 0.89 for review, reserved for critical tasks"],
+          "fallback_provider": "opencode-zen",
+          "fallback_model": "deepseek-v4-flash-free"
+        },
+        "step_3_select_model": {
+          "policy_applied": "best_in_provider strategy",
+          "provider": "ollama",
+          "selected_model": "qwen3:4b",
+          "reason": "Only available model in ollama provider. Quality score 0.62 for review, context 32768 tokens, cost free.",
+          "alternatives_in_provider": ["qwen2.5-coder:14b — status=unavailable"],
+          "model_fallback": "opencode-zen/deepseek-v4-flash-free"
+        },
+        "step_4_select_agent": {
+          "policy_applied": "capability_and_model_match",
+          "selected_agent": "SUPRA-Reviewer",
+          "reason": "Agent with review capability, mapped to ollama/qwen3:4b in agent_registry.json.",
+          "routing_rule_matched": "rule_review (priority 10)"
+        }
+      },
+      "full_selection_path": ["ollama", "qwen3:4b", "SUPRA-Reviewer"]
+    }
+  ],
+  "summary": {
+    "missions_routed": 3,
+    "providers_used": ["opencode-zen", "ollama"],
+    "models_used": ["deepseek-v4-flash-free", "qwen3:4b"],
+    "agents_dispatched": ["SUPRA-Architect", "SUPRA-Auditor", "SUPRA-Reviewer"],
+    "multi_provider": true,
+    "multi_model": true,
+    "selection_flow_verified": "Provider → Model → Agent"
+  }
+}

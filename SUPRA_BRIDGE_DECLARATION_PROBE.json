@@ -1,0 +1,36 @@
+{
+  "observer": "GO_SUPRA_BRIDGE_DECLARATION_PROBE_V2",
+  "mode": "READ_ONLY",
+  "summary": {
+    "bridge_files": 1,
+    "declarations": 1,
+    "bridge_named_declarations": 0,
+    "cannonico_named_declarations": 1
+  },
+  "files": [
+    {
+      "name": "CAnnoNicoIntegrationBridge.swift",
+      "path": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "absolute_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "declarations": [
+        {
+          "kind": "enum",
+          "name": "SUPRACAnnoNicoIntegration",
+          "line": 6,
+          "contains_bridge": false,
+          "contains_cannonico": true
+        }
+      ]
+    }
+  ],
+  "declarations": [
+    {
+      "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "kind": "enum",
+      "name": "SUPRACAnnoNicoIntegration",
+      "line": 6,
+      "contains_bridge": false,
+      "contains_cannonico": true
+    }
+  ]
+}

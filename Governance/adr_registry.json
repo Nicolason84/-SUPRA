@@ -1,0 +1,11 @@
+{
+  "registry_id": "supra.adrs",
+  "version": "1.1.0",
+  "status": "ACTIVE",
+  "records": [
+    { "id": "ADR-0001", "title": "Protected folder access has one canonical coordinator", "status": "ACTIVE", "document": "FREEZE_V1.md", "commits": [], "missions": ["macOS Privacy Refactor V1"], "freezes": ["Freeze/SUPRA_EXECUTIVE_FREEZE_V4.md"], "components": ["ProtectedFolderAccessCoordinator"], "capabilities": ["protected_folder.discovery"], "decisions": ["explicit_discovery_only"], "quality_gates": ["build", "focused_tests", "launch"] },
+    { "id": "ADR-0002", "title": "Runtime data, missions, decisions and monitor use one composition root", "status": "ACTIVE", "document": "SUPRA_COMPOSITION_ROOT_V2_1_REPORT.md", "commits": [], "missions": ["SUPRA V2.1 Lot 1"], "freezes": [], "components": ["SUPRACompositionRoot", "RuntimeDataService", "MissionStore", "DecisionStore", "RuntimeMonitor"], "capabilities": ["composition.injection"], "decisions": ["single_instance_dependencies"], "quality_gates": ["static_audit", "build", "smoke"] },
+    { "id": "ADR-0003", "title": "Constitution and governance are superior to implementation", "status": "ACTIVE", "document": "docs/SUPRA_EXECUTIVE_OS_CONSTITUTION_V1.md", "commits": [], "missions": ["SUPRA Executive OS Constitution"], "freezes": [], "components": [], "capabilities": ["governance.compliance"], "decisions": ["pre_matching_required", "canonical_authorities"], "quality_gates": ["pre_matching", "architecture", "continuity"] },
+    { "id": "ADR-0004", "title": "Provider bootstrap and memory discovery remain canonical and bounded", "status": "ACTIVE", "document": "ROOT_CAUSE_ANALYSIS.md", "commits": [], "missions": ["SUPRA Executive Certification Recovery"], "freezes": ["FREEZE_EXECUTIVE_CERTIFIED_V1.md"], "components": ["SUPRAProviderPluginRegistry", "SUPRAPluginDiscovery", "ConversationMemoryStore"], "capabilities": ["provider.bootstrap", "conversation_memory.discovery"], "decisions": ["builtin_registry_initialization", "idempotent_plugin_registration", "subpaths_filesystem_scan"], "quality_gates": ["targeted_tests", "stability_10x", "stability_25x", "full_suite", "build", "smoke"] }
+  ]
+}

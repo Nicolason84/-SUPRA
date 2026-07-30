@@ -1,0 +1,351 @@
+./SUPRA/MissionContext.swift:36:    init(kernel: NOVAKnowledgeKernel = .shared) {
+./SUPRA/SUPRADataTwin.swift:18:    static let shared = SUPRADataTwin()
+./SUPRA/SUPRADeveloperTwin.swift:21:    static let shared = SUPRADeveloperTwin()
+./SUPRA/SUPRAWorldMapView.swift:24:    static let shared = SUPRAWorldMapState()
+./SUPRA/SUPRAWorldMapView.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAWorldMapView.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:32:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:33:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:34:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:35:    private let intelligence = SUPRAResourceIntelligenceEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:36:    private let evolution = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:37:    private let recommendations = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:105:    @StateObject private var state = SUPRAWorldMapState.shared
+./SUPRA/UniverseDashboard.swift:51:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseDashboard.swift:52:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/UniverseDashboard.swift:54:         bridge: OpenCodeBridge = MainActor.assumeIsolated { OpenCodeBridge.shared }) {
+./SUPRA/UniverseDashboard.swift:61:    func configure() {
+./SUPRA/SUPRACommandCenterState.swift:174:        let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRACommandCenterState.swift:175:        let engine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:176:        let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACommandCenterState.swift:238:    static let shared = SUPRACommandCenterState()
+./SUPRA/SUPRACommandCenterState.swift:243:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACommandCenterState.swift:244:    private let scheduler = SUPRAScheduler.shared
+./SUPRA/SUPRACommandCenterState.swift:245:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRACommandCenterState.swift:246:    private let gateway = RuntimeGateway.shared
+./SUPRA/SUPRACommandCenterState.swift:248:    private let multiMemoryStore = MultiMemoryStore.shared
+./SUPRA/SUPRACommandCenterState.swift:249:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:250:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:257:    func configure(towerState: ControlTowerState, monitor: RuntimeMonitor) {
+./SUPRA/SUPRACommandCenterState.swift:262:        scheduler.register(id: "command_center_refresh", priority: .low, label: "Command Center Refresh", cooldown: 15) { [weak self] in
+./SUPRA/SUPRACommandCenterState.swift:265:        scheduler.register(id: "copilot_refresh", priority: .low, label: "Copilot Refresh", cooldown: 30) { [weak self] in
+./SUPRA/RuntimeMonitor.swift:23:        OpenCodeClient.shared.configure(dataService: dataService)
+./SUPRA/RuntimeMonitor.swift:24:        OpenCodeClient.shared.start()
+./SUPRA/RuntimeMonitor.swift:26:        OpenCodeClient.shared.$events
+./SUPRA/RuntimeMonitor.swift:33:        OpenCodeClient.shared.$health
+./SUPRA/RuntimeMonitor.swift:42:        OpenCodeClient.shared.stop()
+./SUPRA/SUPRAOperationalControlCenterView.swift:4:    @StateObject private var resourceEngine = SUPRAResourceIntelligenceEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:5:    @StateObject private var potential = SUPRAMacPotential.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:6:    @StateObject private var recommendationEngine = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:7:    @StateObject private var evolutionEngine = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:8:    @StateObject private var envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:9:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/ConversationMemoryStore.swift:43:    static let shared = ConversationMemoryStore()
+./SUPRA/ConversationMemoryStore.swift:75:    func configure(knowledgeGraph: KnowledgeGraph, decisionStore: DecisionStore, missionStore: MissionStore) {
+./SUPRA/SettingsView.swift:6:    @ObservedObject private var client = OpenCodeClient.shared
+./SUPRA/TwinRenderer.swift:62:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/ExecutiveSearch.swift:46:    init(kernel: NOVAKnowledgeKernel = .shared, memory: ExecutiveMemory) {
+./SUPRA/CAnnoNicoIntegrationBridge.swift:11:        SUPRAEnvironmentResolver.shared.resolve()
+./SUPRA/CAnnoNicoIntegrationBridge.swift:16:        return SUPRAEnvironmentResolver.shared.path(for: "pucheroRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:22:        return SUPRAEnvironmentResolver.shared.path(for: "nicoAppRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:28:        return SUPRAEnvironmentResolver.shared.path(for: "videoSwapRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:33:    // All UI code must use CAnnoNicoSnapshotStore.shared.currentState
+./SUPRA/CAnnoNicoIntegrationBridge.swift:36:        let pucheroState = SUPRAEnvironmentResolver.shared.state(for: "pucheroRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:37:        let nicoState = SUPRAEnvironmentResolver.shared.state(for: "nicoAppRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:38:        let videoState = SUPRAEnvironmentResolver.shared.state(for: "videoSwapRoot")
+./SUPRA/SUPRAEnvironmentWorldModel.swift:17:    static let shared = SUPRAEnvironmentWorldModel()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:23:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:24:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:25:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:26:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:27:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:17:    static let shared = SUPRAResourceIntelligence()
+./SUPRA/SUPRAResourceIntelligenceView.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:160:    @StateObject private var intelligence = SUPRAResourceIntelligence.shared
+./SUPRA/TwinUniverse.swift:24:    static let shared = TwinUniverse()
+./SUPRA/TwinUniverse.swift:42:        kernel = .shared
+./SUPRA/TwinUniverse.swift:43:        registry = .shared
+./SUPRA/TwinUniverse.swift:52:    func initialize() {
+./SUPRA/SUPRASoftwareTwin.swift:29:    static let shared = SUPRASoftwareTwin()
+./SUPRA/ExecutiveDemoMode.swift:14:    static let shared = ExecutiveDemoMode()
+./SUPRA/ExecutiveDemoMode.swift:21:    private let worldModel = SUPRAWorldModel.shared
+./SUPRA/ExecutiveDemoMode.swift:22:    private let businessPlatform = SUPRABusinessPlatform.shared
+./SUPRA/ExecutiveDemoMode.swift:23:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/ExecutiveDemoMode.swift:24:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/ExecutiveDemoMode.swift:25:    private let intelligenceGraph = SUPRAIntelligenceGraph.shared
+./SUPRA/ExecutiveDemoMode.swift:26:    private let workerFabric = SUPRAWorkerFabric.shared
+./SUPRA/ExecutiveDemoMode.swift:27:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAGabrielConductorRuntime.swift:31:    let sharedSourceMode: String
+./SUPRA/SUPRAGabrielConductorRuntime.swift:44:        case sharedSourceMode = "shared_source_mode"
+./SUPRA/SUPRAGabrielConductorRuntime.swift:58:        sharedSourceMode: "READ_ONLY",
+./SUPRA/SUPRARecommendationCenter.swift:23:    static let shared = SUPRARecommendationEngine()
+./SUPRA/SUPRARecommendationCenter.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRARecommendationCenter.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:32:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:33:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:34:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:35:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRARecommendationCenter.swift:36:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRARecommendationCenter.swift:231:    @StateObject private var engine = SUPRARecommendationEngine.shared
+./SUPRA/NOVAKnowledgeKernel.swift:6:    static let shared = NOVAKnowledgeKernel()
+./SUPRA/NOVAKnowledgeKernel.swift:23:    private lazy var _bridge = OpenCodeBridge.shared
+./SUPRA/NOVAKnowledgeKernel.swift:24:    private lazy var _gateway = RuntimeGateway.shared
+./SUPRA/NOVAKnowledgeKernel.swift:46:    func registerObjects(_ objects: [CAnnoNicoObject]) {
+./SUPRA/NOVAKnowledgeKernel.swift:54:    func registerRelations(_ relations: [KnowledgeRelationship]) {
+./SUPRA/NOVAKnowledgeKernel.swift:59:    func registerSources(_ sources: [KnowledgeSource]) {
+./SUPRA/NOVAKnowledgeKernel.swift:98:            "initialized": isInitialized,
+./SUPRA/MultiMemoryStore.swift:6:    static let shared = MultiMemoryStore()
+./SUPRA/MultiMemoryStore.swift:41:        CAnnoNicoSnapshotStore.shared.$state.sink { [weak self] _ in
+./SUPRA/MultiMemoryStore.swift:69:        let store = CAnnoNicoSnapshotStore.shared
+./SUPRA/TwinAnalytics.swift:31:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinAnalytics.swift:34:         kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared }) {
+./SUPRA/WorkspaceDiscovery.swift:13:    private let factory = WorkspaceObjectFactory.shared
+./SUPRA/CAnnoNicoSnapshotStore.swift:18:    static let shared = CAnnoNicoSnapshotStore()
+./SUPRA/SUPRADecisionRoomView.swift:10:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/SUPRADecisionRoomView.swift:13:                if SUPRAMissionProposalEngine.shared.proposals.isEmpty {
+./SUPRA/SUPRADecisionRoomView.swift:17:                    ForEach(SUPRAMissionProposalEngine.shared.proposals.prefix(10)) { proposal in
+./SUPRA/SUPRADecisionRoomView.swift:47:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRADecisionRoomView.swift:180:                    _ = SUPRAMissionExecutor.shared.execute(p)
+./SUPRA/ConversationTwinView.swift:5:    @StateObject private var store = ConversationMemoryStore.shared
+./SUPRA/SUPRAEvolutionEngineView.swift:4:    @StateObject private var engine = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:4:    @StateObject private var evolution = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:5:    @StateObject private var recommendations = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:168:                ruleCard("Budget CPU <5%", "Respect des ressources", SUPRABackgroundScheduler.shared.cpuBudgetUsed < 0.05 ? .supraGreen : .supraOrange)
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:26:    static let shared = SUPRAEnvironmentSnapshotStore()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:40:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:41:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:42:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:43:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:44:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:45:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:46:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:197:        let resolver = SUPRAEnvironmentResolver.shared
+./SUPRA/SUPRABackgroundScheduler.swift:23:    static let shared = SUPRABackgroundScheduler()
+./SUPRA/SUPRABackgroundScheduler.swift:30:    @Published private(set) var registeredTaskCount = 0
+./SUPRA/SUPRABackgroundScheduler.swift:32:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRABackgroundScheduler.swift:61:    func register(id: String, label: String, interval: TimeInterval = 120, action: @escaping () async -> Void) {
+./SUPRA/SUPRABackgroundScheduler.swift:63:        registeredTaskCount = tasks.count
+./SUPRA/SUPRABackgroundScheduler.swift:66:    func unregister(id: String) {
+./SUPRA/SUPRABackgroundScheduler.swift:68:        registeredTaskCount = tasks.count
+./SUPRA/SUPRABusinessDemoView.swift:4:    @StateObject private var demo = ExecutiveDemoMode.shared
+./SUPRA/SUPRABusinessDemoView.swift:94:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRABusinessDemoView.swift:152:                    SUPRAOSStatCard(label: "Proposals", value: "\(SUPRAMissionProposalEngine.shared.proposals.count)", icon: "doc.text.fill", color: .supraPurple)
+./SUPRA/SUPRABusinessDemoView.swift:155:            if let bp = SUPRABusinessPlatform.shared.customerTwin {
+./SUPRA/SUPRABusinessDemoView.swift:174:            if let w = SUPRAWorldModel.shared.world {
+./SUPRA/SUPRABusinessDemoView.swift:206:                    if let w = SUPRAWorldModel.shared.world {
+./SUPRA/SUPRAExecutiveCockpitView.swift:5:    @StateObject private var client = OpenCodeClient.shared
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:6:    static let shared = SUPRAPassiveRefreshCoordinator()
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:49:        let governor = SUPRAResourceGovernor.shared
+./SUPRA/UniverseEngine.swift:6:    static let shared = UniverseEngine()
+./SUPRA/UniverseEngine.swift:18:        universe = .shared
+./SUPRA/UniverseEngine.swift:19:        knowledge = .shared
+./SUPRA/UniverseEngine.swift:20:        bridge = .shared
+./SUPRA/UniverseEngine.swift:21:        gateway = .shared
+./SUPRA/UniverseEngine.swift:30:        universe.initialize()
+./SUPRA/SUPRAMissionObserver.swift:30:    static let shared = SUPRAMissionObserver()
+./SUPRA/SUPRAMissionObserver.swift:35:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRAMissionObserver.swift:36:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAMissionObserver.swift:37:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAMissionObserver.swift:38:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAScheduler.swift:34:    static let shared = SUPRAScheduler()
+./SUPRA/SUPRAScheduler.swift:48:        governor: SUPRAResourceGovernor = .shared,
+./SUPRA/SUPRAScheduler.swift:49:        store: CAnnoNicoSnapshotStore = .shared
+./SUPRA/SUPRAScheduler.swift:70:    func register(id: String, priority: SchedulerPriority = .medium, label: String,
+./SUPRA/SUPRAScheduler.swift:78:    func unregister(id: String) {
+./SUPRA/SUPRAWorldModel.swift:69:    static let shared = SUPRAWorldModel()
+./SUPRA/SUPRAWorldModel.swift:74:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAWorldModel.swift:75:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRAWorldModel.swift:76:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAWorldModel.swift:77:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/OpenCodeBridge.swift:45:    static let shared = OpenCodeBridge()
+./SUPRA/SUPRAHardwareTwin.swift:26:    static let shared = SUPRAHardwareTwin()
+./SUPRA/SUPRAMissionExecutor.swift:25:    static let shared = SUPRAMissionExecutor()
+./SUPRA/UniverseGraph.swift:15:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseGraph.swift:16:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/KnowledgeIdentity.swift:15:    let registeredAt: String
+./SUPRA/RuntimeGateway.swift:45:    static let shared = RuntimeGateway()
+./SUPRA/TwinBindings.swift:26:    func register(_ binding: TwinBinding) {
+./SUPRA/TwinBindings.swift:46:    func unregister(twinId: String) {
+./SUPRA/TwinExplorer.swift:39:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinExplorer.swift:40:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinComparison.swift:43:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TotalControlTowerView.swift:7:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:6:    static let shared = SUPRAIntelligenceEngine()
+./SUPRA/SUPRAIntelligenceEngine.swift:10:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:11:    private let scheduler = SUPRAScheduler.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:12:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:13:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:86:    static let shared = SUPRACanonicalWorldAccess()
+./SUPRA/SUPRACanonicalWorldAccess.swift:95:        let store = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:118:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:130:        let cc = SUPRACommandCenterState.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:148:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:149:        let ex = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:174:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:184:        let g = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:205:        let mm = MultiMemoryStore.shared.snapshot
+./SUPRA/SUPRACanonicalWorldAccess.swift:227:        h.combine(CAnnoNicoSnapshotStore.shared.state?.cachedAt)
+./SUPRA/SUPRACanonicalWorldAccess.swift:228:        h.combine(MultiMemoryStore.shared.snapshot.lastUpdated)
+./SUPRA/SUPRACanonicalWorldAccess.swift:229:        h.combine(SUPRAResourceGovernor.shared.snapshot.timestamp)
+./SUPRA/SUPRACanonicalWorldAccess.swift:231:        h.combine(SUPRAMissionProposalEngine.shared.proposals.count)
+./SUPRA/SUPRACanonicalWorldAccess.swift:242:    init(access: SUPRACanonicalWorldAccess = .shared) {
+./SUPRA/MissionCopilotView.swift:18:                    if !SUPRAMissionProposalEngine.shared.proposals.isEmpty {
+./SUPRA/MissionCopilotView.swift:24:                        proposalsList(SUPRAMissionProposalEngine.shared.proposals.prefix(5))
+./SUPRA/MissionCopilotView.swift:28:                Text("Copilot not initialized")
+./SUPRA/MissionCopilotView.swift:64:                SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/MissionCopilotView.swift:73:                SUPRAMissionProposalEngine.shared.clear()
+./SUPRA/MissionCopilotView.swift:74:                SUPRAMissionExecutor.shared.clearHistory()
+./SUPRA/MissionCopilotView.swift:100:        let engine = SUPRAMissionProposalEngine.shared
+./SUPRA/MissionCopilotView.swift:101:        let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACompanionView.swift:17:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRACompanionView.swift:18:    private let intelligence = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRACompanionView.swift:60:            let proposals = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:4:    @StateObject private var envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:5:    @StateObject private var copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:6:    @StateObject private var snapshotStore = SUPRAEnvironmentSnapshotStore.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:7:    @StateObject private var autoMissions = SUPRAEnvironmentAutoMissions.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:8:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:3:@main
+./SUPRA/SUPRAOperationalCoreApp.swift:4:struct SUPRAOperationalCoreApp: App {
+./SUPRA/SUPRAOperationalCoreApp.swift:5:    @StateObject private var state = SUPRACommandCenterState.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:6:    @StateObject private var governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:7:    @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:10:        WindowGroup {
+./SUPRA/SUPRAOperationalCoreApp.swift:13:                .environmentObject(TwinUniverse.shared)
+./SUPRA/SUPRAOperationalCoreApp.swift:20:                    state.configure(towerState: towerState, monitor: monitor)
+./SUPRA/SUPRAOperationalCoreApp.swift:23:                    SUPRABackgroundScheduler.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:24:                    SUPRAResourceIntelligenceEngine.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:25:                    SUPRAEvolutionEngine.shared.observe()
+./SUPRA/SUPRAOperationalCoreApp.swift:26:                    SUPRAMacPotential.shared.compute()
+./SUPRA/SUPRAOperationalCoreApp.swift:27:                    SUPRAEnvironmentWorldModel.shared.startAutoRefresh()
+./SUPRA/SUPRAOperationalCoreApp.swift:28:                    SUPRARecommendationEngine.shared.analyze()
+./SUPRA/SUPRAOperationalCoreApp.swift:29:                    SUPRAPassiveRefreshCoordinator.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:30:                    ConversationMemoryStore.shared.startAutoRefresh()
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:6:    static let shared = SUPRAEnvironmentAutoMissions()
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:11:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:12:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/UniverseSearch.swift:16:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseSearch.swift:17:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinLifecycle.swift:58:    func register(_ lifecycle: TwinLifecycle) {
+./SUPRA/TwinRegistry.swift:6:    static let shared = TwinRegistry()
+./SUPRA/TwinRegistry.swift:16:    func register(_ twin: TwinIdentity) {
+./SUPRA/TwinRegistry.swift:25:    func registerBatch(_ newTwins: [TwinIdentity]) {
+./SUPRA/TwinRegistry.swift:27:            register(twin)
+./SUPRA/SUPRAResourceGovernor.swift:61:    static let shared = SUPRAResourceGovernor()
+./SUPRA/SUPRAResourceGovernor.swift:211:        let workspace = NSWorkspace.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:32:    static let shared = SUPRAIntelligenceGraph()
+./SUPRA/SUPRAIntelligenceGraph.swift:38:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:39:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:40:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAMacPotentialMap.swift:17:    static let shared = SUPRAMacPotential()
+./SUPRA/SUPRAMacPotentialMap.swift:25:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:26:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:27:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:28:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:29:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAMacPotentialMap.swift:30:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAMacPotentialMap.swift:150:    @StateObject private var potential = SUPRAMacPotential.shared
+./SUPRA/TwinFactory.swift:24:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinFactory.swift:25:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinFactory.swift:88:        registry.register(identity)
+./SUPRA/TwinFactory.swift:89:        lifecycles.register(lifecycle)
+./SUPRA/TwinFactory.swift:110:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:130:                bindings.register(binding)
+./SUPRA/TwinFactory.swift:151:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:171:                bindings.register(binding)
+./SUPRA/TwinFactory.swift:194:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:214:                bindings.register(binding)
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:30:    static let shared = SUPRAResourceIntelligenceEngine()
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:46:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:47:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:48:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:49:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:50:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAApp.swift:10:// @main moved to SUPRACommandCenterApp.swift
+./SUPRA/SUPRAApp.swift:12://@main
+./SUPRA/SUPRAApp.swift:13:struct SUPRAApp: App {
+./SUPRA/SUPRAApp.swift:15:        WindowGroup {
+./SUPRA/SUPRAApp.swift:17:                .environmentObject(TwinUniverse.shared)
+./SUPRA/ControlTowerState.swift:129:    let openode_agents_configured: Int?
+./SUPRA/ControlTowerState.swift:214:    private let gateway = RuntimeGateway.shared
+./SUPRA/ControlTowerState.swift:217:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAEnvironmentResolver.swift:22:    static let shared = SUPRAEnvironmentResolver()
+./SUPRA/SUPRABusinessPlatform.swift:67:    static let shared = SUPRABusinessPlatform()
+./SUPRA/SUPRABusinessPlatform.swift:72:    private let worldModel = SUPRAWorldModel.shared
+./SUPRA/SUPRABusinessPlatform.swift:73:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRABusinessPlatform.swift:74:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRABusinessPlatform.swift:75:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/RuntimeView.swift:58:                Text("Runtime not initialized")
+./SUPRA/SUPRAWorkerFabric.swift:52:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAWorkerFabric.swift:53:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAWorkerFabric.swift:85:        // Runtime health check — reads from shared RuntimeMonitor
+./SUPRA/SUPRAWorkerFabric.swift:106:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAWorkerFabric.swift:141:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAWorkerFabric.swift:142:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAWorkerFabric.swift:169:    static let shared = SUPRAWorkerFabric()
+./SUPRA/SUPRAOSFoundation.swift:64:    static let shared = SUPRAOSFoundation()
+./SUPRA/SUPRAOSFoundation.swift:73:        engine = .shared
+./SUPRA/SUPRAOSFoundation.swift:85:    func initialize() {
+./SUPRA/SUPRACommandCenterApp.swift:3:// @main moved to SUPRAOperationalCoreApp.swift
+./SUPRA/SUPRACommandCenterApp.swift:4://@main
+./SUPRA/SUPRACommandCenterApp.swift:5:struct SUPRACommandCenterApp: App {
+./SUPRA/SUPRACommandCenterApp.swift:6:    @StateObject private var state = SUPRACommandCenterState.shared
+./SUPRA/SUPRACommandCenterApp.swift:7:    @StateObject private var governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACommandCenterApp.swift:8:    @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRACommandCenterApp.swift:11:        WindowGroup {
+./SUPRA/SUPRACommandCenterApp.swift:20:                    state.configure(towerState: towerState, monitor: monitor)
+./SUPRA/SUPRAEvolutionEngine.swift:30:    static let shared = SUPRAEvolutionEngine()
+./SUPRA/SUPRAEvolutionEngine.swift:38:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAEvolutionEngine.swift:39:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEvolutionEngine.swift:40:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEvolutionEngine.swift:41:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:42:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:43:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:44:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:45:    private let scheduler = SUPRABackgroundScheduler.shared
+./SUPRA/SUPRAEvolutionEngine.swift:54:        scheduler.register(id: "evolution_engine", label: "Evolution Engine", interval: 120) { [weak self] in
+./SUPRA/SUPRAEvolutionEngine.swift:61:        scheduler.unregister(id: "evolution_engine")
+./SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift:73:    static func registerSUPRAAndGabriel() {
+./SUPRA/SUPRAOptimizationCopilot.swift:21:    static let shared = SUPRAOptimizationCopilot()
+./SUPRA/SUPRAOptimizationCopilot.swift:28:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAMissionProposalEngine.swift:6:    static let shared = SUPRAMissionProposalEngine()
+./SUPRA/SUPRAMissionProposalEngine.swift:13:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRAAutonomyControlView.swift:17:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/SUPRAAutonomyControlView.swift:31:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAAutonomyControlView.swift:97:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAAutonomyControlView.swift:122:        let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/ContentView.swift:71:            SUPRATerminalMegabusBridge.registerSUPRAAndGabriel()
+./SUPRA/ContentView.swift:539:        CAnnoNicoSnapshotStore.shared.currentState.snapshot
+./SUPRA/ContentView.swift:915:                                            NSWorkspace.shared.activateFileViewerSelecting([
+./SUPRA/ContentView.swift:1055:                                NSWorkspace.shared.activateFileViewerSelecting([
+./SUPRA/ContentView.swift:1176:                        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./SUPRA/ContentView.swift:1227:                    NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./SUPRA/ContentView.swift:2666:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])
+./SUPRA/ContentView.swift:3060:    ContentView()
+./SUPRA/ContentView.swift:3169:        NSWorkspace.shared.open(architectureURL)
+./SUPRA/ContentView.swift:3173:        NSWorkspace.shared.open(authorityURL)
+./SUPRA/ContentView.swift:3177:        NSWorkspace.shared.open(storageURL)
+./SUPRA/WorkspaceObject.swift:6:    static let shared = WorkspaceObjectFactory()
+./SUPRA/ExecutiveCockpitFoundation.swift:80:    init(kernel: NOVAKnowledgeKernel = .shared,
+./SUPRA/ExecutiveCockpitFoundation.swift:90:    func initialize() {
+./SUPRA/ExecutiveCockpitFoundation.swift:93:        configureWidgets()
+./SUPRA/ExecutiveCockpitFoundation.swift:123:    private func configureWidgets() {
+./SUPRA/ExecutiveCockpitFoundation.swift:156:        guard let state = state else { return "Cockpit not initialized" }
+./SUPRA/TwinSynchronizer.swift:39:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinSynchronizer.swift:40:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinSynchronizer.swift:115:                registry.register(twin)
+./SUPRA/KnowledgeGraph.swift:15:    func registerProvider(_ provider: KnowledgeProvider) {
+./SUPRA/SUPRAMemoryLensView.swift:23:        let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:38:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:72:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:105:            let observations = SUPRAMissionObserver.shared.observations
+./SUPRA/SUPRAMemoryLensView.swift:141:            let eng = SUPRAIntelligenceEngine.shared.state
+./SUPRA/OpenCodeClient.swift:7:    static let shared = OpenCodeClient()
+./SUPRA/OpenCodeClient.swift:24:    func configure(dataService: RuntimeDataService) {
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift:72:    static func registerSUPRAAndGabriel() {
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:48:    ContentView()
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:157:        NSWorkspace.shared.open(architectureURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:161:        NSWorkspace.shared.open(authorityURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:165:        NSWorkspace.shared.open(storageURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift:207:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])

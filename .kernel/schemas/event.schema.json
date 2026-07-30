@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/event.schema.json",
+  "title": "Event",
+  "description": "An event journal entry recording all significant state changes in the Kernel. Events are append-only and form the authoritative log.",
+  "type": "object",
+  "required": ["id", "type", "timestamp", "actor", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the event"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "MISSION_CREATED",
+        "MISSION_STARTED",
+        "MISSION_COMPLETED",
+        "MISSION_FAILED",
+        "MISSION_CANCELLED",
+        "MISSION_BLOCKED",
+        "DECISION_PROPOSED",
+        "DECISION_ANALYZED",
+        "DECISION_RECOMMENDED",
+        "DECISION_PENDING_AUTHORITY",
+        "DECISION_APPROVED",
+        "DECISION_REJECTED",
+        "DECISION_EXECUTING",
+        "DECISION_IMPLEMENTED",
+        "DECISION_VERIFIED",
+        "DECISION_CLOSED",
+        "DECISION_DEFERRED",
+        "DECISION_SUPERSEDED",
+        "DECISION_REVOKED",
+        "PROOF_CREATED",
+        "PROOF_VERIFIED",
+        "PROOF_FAILED",
+        "PROOF_CONFLICTED",
+        "ADR_CREATED",
+        "ADR_ACCEPTED",
+        "ADR_REJECTED",
+        "ADR_DEPRECATED",
+        "ADR_SUPERSEDED",
+        "ADR_ARCHIVED",
+        "COMPONENT_REGISTERED",
+        "COMPONENT_ACTIVATED",
+        "COMPONENT_DEGRADED",
+        "COMPONENT_SUSPENDED",
+        "COMPONENT_FAILED",
+        "COMPONENT_FROZEN",
+        "COMPONENT_RETIRED",
+        "SNAPSHOT_CREATED",
+        "SNAPSHOT_RESTORED",
+        "RUNTIME_STARTED",
+        "RUNTIME_STOPPED",
+        "RUNTIME_ERROR",
+        "AGENT_ASSIGNED",
+        "AGENT_COMPLETED",
+        "GATE_PASSED",
+        "GATE_FAILED",
+        "GATE_BLOCKED",
+        "GATE_BYPASSED",
+        "KERNEL_INITIALIZED",
+        "KERNEL_VERSION_BUMP",
+        "CONFIG_CHANGED"
+      ],
+      "description": "Type of event"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the event occurred"
+    },
+    "actor": {
+      "type": "string",
+      "description": "Agent or system that caused this event (e.g., SUPRA-Builder, SUPRA-Architect, user:nicolas)"
+    },
+    "mission_id": {
+      "type": ["string", "null"],
+      "description": "ID of the mission this event relates to"
+    },
+    "decision_id": {
+      "type": ["string", "null"],
+      "description": "ID of the decision this event relates to"
+    },
+    "object_type": {
+      "type": ["string", "null"],
+      "description": "Type of object affected (mission, decision, proof, adr, component, etc.)"
+    },
+    "object_id": {
+      "type": ["string", "null"],
+      "description": "ID of the object affected"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific data payload"
+    },
+    "before_state": {
+      "type": ["object", "null"],
+      "description": "State before the event (for mutations)"
+    },
+    "after_state": {
+      "type": ["object", "null"],
+      "description": "State after the event (for mutations)"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata (gate, version, etc.)"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the event content for integrity"
+    },
+    "sequence": {
+      "type": "integer",
+      "description": "Monotonic sequence number for ordering"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "memory": "MEMORY_DECISIONS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "DEC-001",
+      "name": "Decision Model",
+      "file": "SUPRA/Decision.swift",
+      "type": "model",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEC-002",
+      "name": "DecisionStore",
+      "file": "SUPRA/DecisionStore.swift",
+      "type": "store",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEC-003",
+      "name": "DecisionInboxView",
+      "file": "SUPRA/DecisionInboxView.swift",
+      "type": "view",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEC-004",
+      "name": "DecisionDetailView",
+      "file": "SUPRA/DecisionDetailView.swift",
+      "type": "view",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEC-005",
+      "name": "DecisionRow",
+      "file": "SUPRA/DecisionRow.swift",
+      "type": "view",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEC-006",
+      "name": "DecisionKnowledgeProvider",
+      "file": "SUPRA/DecisionKnowledgeProvider.swift",
+      "type": "knowledge_provider",
+      "project": "SUPRA",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    }
+  ]
+}

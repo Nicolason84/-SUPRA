@@ -1,0 +1,32 @@
+{
+  "id": "review",
+  "description": "Agent produces output, reviewer validates, returns for fixes if needed",
+  "stages": [
+    {
+      "id": "agent_execution",
+      "type": "execute",
+      "parallel": false,
+      "consensus": false,
+      "description": "Primary agent produces initial output"
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "parallel": false,
+      "consensus": false,
+      "max_iterations": 3,
+      "description": "Reviewer checks output and provides feedback; agent fixes and re-submits"
+    },
+    {
+      "id": "final_validation",
+      "type": "validate",
+      "parallel": false,
+      "consensus": false,
+      "description": "Final validation after review loop completes"
+    }
+  ],
+  "mode": "iterative",
+  "fallback": false,
+  "max_iterations": 3,
+  "use_case": ["code_review", "pr_preparation", "documentation_review", "test_review"]
+}

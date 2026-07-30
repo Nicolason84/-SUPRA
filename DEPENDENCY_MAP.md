@@ -199,3 +199,86 @@ Ces chemins sont des dépendances de données/runtime, pas des packages Swift.
 2. Les stores produit sont séparés (`ControlCenterStore`, `DecisionStore`, `MissionStore`) ; `ContentView` conserve son propre `SUPRAExecutiveStore` dans le même fichier.
 3. Le package CAnnoNico est une dépendance de cible, donc disponible à toutes les sources, mais seuls `ContentView.swift` et `CAnnoNicoIntegrationBridge.swift` l’importent actuellement.
 4. Le groupe Xcode synchronisé rend l’appartenance des sources implicite : ajouter un `.swift` sous `SUPRA/` modifie potentiellement le graphe de compilation sans nouvelle entrée explicite dans `project.pbxproj`.
+
+---
+
+## Mise à jour — SUPRA FOUNDATION MEMORY V1 (2026-07-24)
+
+### Nouvelles dépendances découvertes
+
+| Dépendance | Type | Source |
+|---|---|---|
+| 34 vues SwiftUI (dont 31 actives) | UI | Exploration complète du dossier SUPRA/ |
+| 16 stores/services | Service | Exploration complète |
+| 25 engines/moteurs | Engine | KnowledgeGraph, Executive, Twin, Universe, Workspace |
+| 6 bridges | Bridge | CAnnoNico, OpenCode, ChatRuntime, GabrielConductor |
+| 4 adapters | Adapter | NicoApp, VideoSwap, PucheroMemory, ChatRuntime |
+| 8 dépôts Git | Git | Scan complet de l'environnement |
+| 12 packages SPM | Package | 1 canonique, 5 V3, 6 V1 |
+
+### Graphe complet des vues
+
+```
+SUPRAApp (@main, UI-001)
+  └── SupraControlCenterView (UI-003) ← entry point actif
+        ├── DecisionInboxView (UI-010) → DecisionStore (SVC-002)
+        └── MissionCenterView (UI-005) → MissionStore (SVC-001)
+
+ContentView (UI-002) ← compilé mais NON instancié (11 sous-vues internes)
+  ├── CAnnoNicoIntegrationBridge (BRG-001)
+  └── SUPRAGabrielConductorRuntime (RTE-011)
+
+Vues SUPRAOS* (9 vues, UI-016 à UI-024) ← NON connectées à l'entry point
+  ├── SUPRAOSCommandCenterView, SUPRAOSHomeView, SUPRAOSLiveView
+  ├── SUPRAOSMissionCanvasView, SUPRAOSProductRootView
+  ├── SUPRAOSTwinCenterView, SUPRAOSUniverseView
+  └── SUPRAOSGlobalSearchView, SUPRAOSWorkspaceExplorerView
+
+Vues indépendantes (RuntimeView, SettingsView, SUPRAChatView, WorkerPoolView, etc.)
+```
+
+### Capacités complètes (16)
+
+| ID | Capacité | Nb composants | Statut |
+|----|----------|:-------------:|--------|
+| CAP-001 | Mission Management | 5 | Actif |
+| CAP-002 | Decision Inbox | 4 | Actif |
+| CAP-003 | Control Center | 2 | Actif |
+| CAP-004 | Runtime Monitoring | 5 | Actif |
+| CAP-005 | Knowledge Graph | 9 | Actif |
+| CAP-006 | Executive Cockpit | 5 | Actif |
+| CAP-007 | Digital Twin | 11 | Actif |
+| CAP-008 | Universe Engine | 6 | Actif |
+| CAP-009 | Workspace Intelligence | 7 | Actif |
+| CAP-010 | Chat / Conductor | 3 | Actif |
+| CAP-011 | Knowledge Providers | 5 | Actif |
+| CAP-012 | Artifact Reading | 2 | Actif |
+| CAP-013 | Integration Bridge | 5 | Actif |
+| CAP-014 | OpenCode Bridge | 2 | Actif |
+| CAP-015 | SUPRA OS Shell | 11 | Actif |
+| CAP-016 | VideoSwap Engine | 5 | Actif (V3) |
+
+### Projets externes dépendants
+
+| Projet | Type | Dépend de SUPRA ? | SUPRA en dépend ? |
+|--------|------|:-----------------:|:-----------------:|
+| NICO_APP (iOS) | iOS App | Non (via adapter) | Oui (NicoAppAdapter) |
+| SUPRA_VIDEO_SWAP_V3 | Multi-package | Non (via adapter) | Oui (VideoSwapAdapter) |
+| Puchero Memory | Externe | Non (via adapter) | Oui (PucheroMemoryAdapter) |
+| NOVA_BUILD_SYSTEM | Build | Oui (orchestre builds) | Non |
+
+### Références vers les mémoires fondatrices
+
+Tous les détails sont disponibles dans `_FOUNDATION_MEMORY/` :
+- `MEMORY_PROJECTS.json` — 10 projets
+- `MEMORY_SWIFTUI.json` — 34 vues
+- `MEMORY_SERVICES.json` — 16 services
+- `MEMORY_CAPABILITIES.json` — 16 capacités
+- `MEMORY_BRIDGES.json` — 6 bridges
+- `MEMORY_ADAPTERS.json` — 4 adapters
+- `MEMORY_DEPENDENCIES.json` — 8 dépendances
+- `MEMORY_DUPLICATES.json` — 6 familles de doublons
+- `ARCHITECTURE_MAP.md` — carte architecturale complète
+- `SYSTEM_TOPOLOGY.md` — topologie physique et logique
+- `GLOBAL_KNOWLEDGE_GRAPH.json` — 35 nœuds, 48 arêtes
+- `GLOBAL_MEMORY_INDEX.json` — index global des 24 mémoires

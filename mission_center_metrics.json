@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_EXECUTIVE_MISSION_CENTER_V001",
+  "total_missions_simulated": 100,
+  "system_capacity": {
+    "max_queue_depth": 100,
+    "max_concurrent_running": 20,
+    "max_workers": 20,
+    "max_providers": 3,
+    "max_models": 3
+  },
+  "throughput_metrics": {
+    "missions_per_hour": 43,
+    "avg_completion_time_seconds": 59.2,
+    "avg_queue_wait_seconds": 45,
+    "peak_concurrent_running": 11,
+    "avg_concurrent_running": 7.3
+  },
+  "quality_metrics": {
+    "success_rate_pct": 91.5,
+    "failure_rate_pct": 8.5,
+    "retry_rate_pct": 3.0,
+    "fallback_rate_pct": 0.0
+  },
+  "resource_metrics": {
+    "worker_utilization_pct": 55.0,
+    "provider_utilization_pct": {"opencode-zen": 56.25, "ollama": 50.0, "openai": 0.0},
+    "idle_workers": 9,
+    "busy_workers": 11,
+    "worker_efficiency": 0.92
+  },
+  "priority_distribution": {
+    "critical": 5,
+    "high": 18,
+    "medium": 42,
+    "low": 35
+  },
+  "state_distribution": {
+    "QUEUED": 19, "READY": 10, "PLANNED": 11, "RUNNING": 11,
+    "WAITING": 5, "BLOCKED": 1, "FAILED": 3, "SUCCESS": 29, "ARCHIVED": 14
+  },
+  "level_assessment": {
+    "mission_center": true,
+    "priority_engine": true,
+    "resource_manager": true,
+    "queue_management": true,
+    "fleet_orchestration": true,
+    "notes": "100 missions simulated. 20 workers across 3 providers. Priority engine auto-calculates scores. Resource manager auto-distributes 9 concurrent allocations. Queue depth 19 with 11 running."
+  }
+}

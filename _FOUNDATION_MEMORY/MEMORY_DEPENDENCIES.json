@@ -1,0 +1,100 @@
+{
+  "memory": "MEMORY_DEPENDENCIES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "DEP-001",
+      "name": "SUPRA -> CAnnoNicoIntegrationPackage",
+      "type": "package_dependency",
+      "from": "SUPRA",
+      "to": "CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "critical": true,
+      "note": "Dépendance de package local pour le build"
+    },
+    {
+      "uuid": "DEP-002",
+      "name": "SUPRA -> CAnnoNicoContracts (via ContentView)",
+      "type": "import_dependency",
+      "from": "ContentView.swift",
+      "to": "CAnnoNicoContracts",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "critical": true
+    },
+    {
+      "uuid": "DEP-003",
+      "name": "SUPRA -> SwiftUI / Combine / Foundation / AppKit / CryptoKit",
+      "type": "framework_dependencies",
+      "from": "SUPRA",
+      "to": "Apple SDK frameworks",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "critical": true
+    },
+    {
+      "uuid": "DEP-004",
+      "name": "SUPRAApp -> SupraControlCenterView -> DecisionInboxView/MissionCenterView",
+      "type": "view_hierarchy",
+      "from": "SUPRAApp.swift",
+      "to": "ControlCenterView, DecisionInboxView, MissionCenterView",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEP-005",
+      "name": "CAnnoNicoIntegration -> PucheroMemoryAdapter, NicoAppAdapter, VideoSwapAdapter",
+      "type": "aggregate_dependency",
+      "from": "CAnnoNicoIntegration",
+      "to": "3 adapters",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "DEP-006",
+      "name": "SUPRA -> NOVA_BUILD_SYSTEM (orchestration)",
+      "type": "build_orchestration",
+      "from": "SUPRA",
+      "to": "NOVA_BUILD_SYSTEM",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true,
+      "note": "NOVA_BUILD_SYSTEM orchestre les builds SUPRA"
+    },
+    {
+      "uuid": "DEP-007",
+      "name": "SUPRA_BISECT -> CAnnoNicoIntegrationPackage",
+      "type": "package_dependency",
+      "from": "SUPRA_BISECT",
+      "to": "CAnnoNicoIntegrationPackage",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "DEP-008",
+      "name": "SUPRA_RECOVERY -> CAnnoNicoIntegrationPackage",
+      "type": "package_dependency",
+      "from": "SUPRA_RECOVERY",
+      "to": "CAnnoNicoIntegrationPackage",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    }
+  ]
+}

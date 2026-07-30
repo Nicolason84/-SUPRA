@@ -1,0 +1,55 @@
+{
+  "generated": "2026-07-23T09:46:17.849990Z",
+  "objectVersion": "77",
+  "targets": [
+    {
+      "uuid": "20B095BE300A331E0040C04F",
+      "name": "SUPRA",
+      "product": "SUPRA.app",
+      "sources": [],
+      "frameworks": [],
+      "resources": [],
+      "groups": []
+    }
+  ],
+  "groups": [
+    {
+      "uuid": "20B095B6300A331E0040C04F",
+      "name": null,
+      "isa": "PBXGroup",
+      "children": [
+        {
+          "uuid": "20B095C1300A331E0040C04F",
+          "isa": "PBXFileSystemSynchronizedRootGroup",
+          "path": "SUPRA",
+          "name": null
+        },
+        {
+          "uuid": "20B095C0300A331E0040C04F",
+          "isa": "PBXGroup",
+          "path": null,
+          "name": "Products"
+        }
+      ]
+    },
+    {
+      "uuid": "20B095C0300A331E0040C04F",
+      "name": "Products",
+      "isa": "PBXGroup",
+      "children": [
+        {
+          "uuid": "20B095BF300A331E0040C04F",
+          "isa": "PBXFileReference",
+          "path": "SUPRA.app",
+          "name": null
+        }
+      ]
+    },
+    {
+      "uuid": "20B095C1300A331E0040C04F",
+      "name": "SUPRA",
+      "isa": "PBXFileSystemSynchronizedRootGroup",
+      "children": []
+    }
+  ]
+}

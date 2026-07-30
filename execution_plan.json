@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "mission": "Analyser complètement le dépôt SUPRA",
+  "type": "execution_plan",
+  "generated_by": "SUPRA-Planner + Scheduler",
+  "strategy": "parallel_groups_with_critical_path",
+  "execution_order": [
+    {
+      "phase": 1,
+      "name": "Phase 1 — Analyse initiale parallèle",
+      "group": "G1",
+      "parallel": true,
+      "tasks": ["T1", "T2", "T5", "T6", "T7", "T8"],
+      "agents": ["SUPRA-Explorer", "SUPRA-Runtime", "SUPRA-Auditor", "SUPRA-Research"],
+      "estimated_duration": 60,
+      "optimization": "Tous les agents sont indépendants. Exécution parallèle maximale (6 workers).",
+      "workers_required": 4
+    },
+    {
+      "phase": 2,
+      "name": "Phase 2 — Analyse dépendante",
+      "group": "G2",
+      "parallel": true,
+      "tasks": ["T3", "T4"],
+      "agents": ["SUPRA-Auditor", "SUPRA-Reviewer"],
+      "estimated_duration": 45,
+      "depends_on_phase": 1,
+      "optimization": "T3 attend T2, T4 attend T1. Les deux peuvent s'exécuter en parallèle dès que leurs dépendances sont satisfaites.",
+      "workers_required": 2
+    },
+    {
+      "phase": 3,
+      "name": "Phase 3 — Synthèse architecturale",
+      "group": "G3",
+      "parallel": false,
+      "tasks": ["T9"],
+      "agents": ["SUPRA-Architect"],
+      "estimated_duration": 120,
+      "depends_on_phase": [1, 2],
+      "optimization": "T9 est le goulot d'étranglement (bottleneck). Sa durée détermine la fin de la phase 3.",
+      "workers_required": 1
+    },
+    {
+      "phase": 4,
+      "name": "Phase 4 — Rapport final",
+      "group": "G4",
+      "parallel": false,
+      "tasks": ["T10"],
+      "agents": ["SUPRA-Builder"],
+      "estimated_duration": 60,
+      "depends_on_phase": 3,
+      "optimization": "T10 est la dernière tâche. Single worker.",
+      "workers_required": 1
+    }
+  ],
+  "resource_allocation": {
+    "opencode-zen": {
+      "total_tasks": 9,
+      "parallel_tasks_max": 4,
+      "agents_assigned": ["SUPRA-Explorer", "SUPRA-Auditor", "SUPRA-Runtime", "SUPRA-Research", "SUPRA-Architect", "SUPRA-Builder"]
+    },
+    "ollama": {
+      "total_tasks": 1,
+      "parallel_tasks_max": 1,
+      "agents_assigned": ["SUPRA-Reviewer"]
+    }
+  },
+  "scheduling_optimizations": [
+    "G1 lance 6 tâches en parallèle sur 4 agents (Explorer, Runtime, Auditor, Research)",
+    "G2 lance T3 et T4 en parallèle dès que leurs dépendances G1 sont résolues",
+    "T9 (Architect) commence au max(G1_end, G2_end) = 90s",
+    "T10 (Builder) commence immédiatement après T9",
+    "Fallback si T8 (optionnel) échoue : T9 continue sans dépendance de recherche"
+  ],
+  "estimated_total_duration": 270,
+  "estimated_sequential_duration": 585
+}

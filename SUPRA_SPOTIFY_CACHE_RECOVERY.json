@@ -1,0 +1,15 @@
+{
+  "observer": "GO_SUPRA_SPOTIFY_CACHE_RECOVERY_V1",
+  "mode": "TARGETED_CACHE_CLEANUP",
+  "source_deleted": false,
+  "target": "~/Library/Caches/com.spotify.client",
+  "storage": {
+    "cache_detected_gib": 14.0,
+    "before_gib": 16.94,
+    "after_gib": 30.96,
+    "recovered_gib": 14.01,
+    "target_gib": 20
+  },
+  "build_space_ready": true,
+  "verdict": "PASS"
+}

@@ -1,0 +1,22 @@
+{
+  "service": "snapshot",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Snapshot Service — manages snapshots, ensures consistency, enables controlled rollbacks",
+  "responsibilities": [
+    "gérer les snapshots",
+    "assurer leur cohérence",
+    "permettre les retours arrière contrôlés"
+  ],
+  "snapshot_config": {
+    "directory": "Freeze/",
+    "retention_count": 10,
+    "max_age_days": 90,
+    "consistency_check": true,
+    "compression": true,
+    "hash_algorithm": "SHA-256"
+  },
+  "manifest_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_RUNTIME/Services/snapshot/manifest.json",
+  "created_at": "2026-07-29T05:00:00+02:00",
+  "last_validated": "2026-07-29T05:00:00+02:00"
+}

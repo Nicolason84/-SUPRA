@@ -52,17 +52,17 @@ public final class IdentityRuntime: ObservableObject, ExecutiveEngine {
     private let firstBootKey = "supra.firstBoot"
 
     private init() {
-        // Restore or create persistent identity
-        if let storedNodeID = userDefaults.string(forKey: nodeIDKey) {
-            nodeID = storedNodeID
-        } else {
-            nodeID = "supra-node-\(UUID().uuidString.prefix(8).lowercased())"
-            userDefaults.set(nodeID, forKey: nodeIDKey)
-        }
+        // Initialize all @Published properties before accessing self
+        let storedNodeID = UserDefaults.standard.string(forKey: "supra.nodeID") ?? "supra-node-\(UUID().uuidString.prefix(8).lowercased())"
+        self.nodeID = storedNodeID
+        self.hostname = Host.current().localizedName ?? "MacBook-Pro-de-Nicolas.local"
+        self.sessionID = UUID().uuidString
+        self.platformVersion = ProcessInfo.processInfo.operatingSystemVersionString
 
-        hostname = Host.current().localizedName ?? "MacBook-Pro-de-Nicolas.local"
-        sessionID = UUID().uuidString
-        platformVersion = ProcessInfo.processInfo.operatingSystemVersionString
+        // Now self is fully initialized — persist if new
+        if UserDefaults.standard.string(forKey: "supra.nodeID") == nil {
+            UserDefaults.standard.set(nodeID, forKey: "supra.nodeID")
+        }
     }
 
     // MARK: - Executive Engine Boot

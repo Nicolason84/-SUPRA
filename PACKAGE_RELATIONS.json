@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 6
+  },
+  "relations": [
+    {
+      "source": "CAnnoNicoIntegrationPackage",
+      "target": "SUPRA",
+      "type": "integrated_in",
+      "strength": "direct",
+      "details": "Xcode project imports CAnnoNicoIntegration as local SPM dependency"
+    },
+    {
+      "source": "CAnnoNicoIntegrationPackage.CAnnoNicoContracts",
+      "target": "CAnnoNicoIntegrationPackage.PucheroMemoryAdapter",
+      "type": "dependency_of",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationPackage.CAnnoNicoContracts",
+      "target": "CAnnoNicoIntegrationPackage.NicoAppAdapter",
+      "type": "dependency_of",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationPackage.CAnnoNicoContracts",
+      "target": "CAnnoNicoIntegrationPackage.VideoSwapAdapter",
+      "type": "dependency_of",
+      "strength": "direct"
+    },
+    {
+      "source": "SUPRA_AST_PLATFORM.SUPRAAST",
+      "target": "SUPRA_AST_PLATFORM.CLI",
+      "type": "dependency_of",
+      "strength": "direct"
+    },
+    {
+      "source": "SUPRA_AST_PLATFORM.SUPRAAST",
+      "target": "SUPRA_AST_PLATFORM.SUPRAASTTests",
+      "type": "tested_by",
+      "strength": "direct"
+    }
+  ],
+  "orphan_packages": [
+    {
+      "id": "SUPRA_AST_PLATFORM",
+      "reason": "Not integrated in Xcode project, no dependencies from SUPRA app",
+      "suggested_action": "Either integrate into main project or keep as standalone CLI tool"
+    }
+  ],
+  "external_package_refs": [
+    {
+      "name": "VideoSwap V1 (6 packages)",
+      "path": "~/NOVA_OS/SUPRA_VIDEO_SWAP_V1",
+      "type": "external"
+    },
+    {
+      "name": "VideoSwap V3 (5 engines)",
+      "path": "~/NOVA_OS/SUPRA_VIDEO_SWAP_V3",
+      "type": "external"
+    }
+  ]
+}

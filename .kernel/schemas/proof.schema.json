@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/proof.schema.json",
+  "title": "Proof",
+  "description": "A piece of evidence that supports or refutes an assertion, decision, or claim. Proofs are the atomic units of evidence in the Executive Memory.",
+  "type": "object",
+  "required": ["id", "title", "type", "status", "confidence", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the proof"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable title of the proof"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of what this proof demonstrates"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["COMPILATION", "TEST", "BENCHMARK", "AUDIT", "VERIFICATION", "INSPECTION", "SIMULATION", "MANUAL", "EXTERNAL", "CRYPTOGRAPHIC"],
+      "description": "Type of proof"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "IN_PROGRESS", "PASSED", "FAILED", "INCONCLUSIVE", "EXPIRED", "SUPERSEDED"],
+      "description": "Current validation status of the proof"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["CONFIRMED", "HIGH", "MEDIUM", "LOW", "UNVERIFIED", "CONFLICTED", "INVALID"],
+      "description": "Confidence level in this proof"
+    },
+    "source": {
+      "type": "object",
+      "required": ["type", "location"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["FILE", "COMMAND_OUTPUT", "TEST_RESULT", "BENCHMARK", "AUDIT_REPORT", "EXTERNAL_API", "HUMAN_ATTESTATION", "CRYPTOGRAPHIC"]
+        },
+        "location": {
+          "type": "string",
+          "description": "Path, URL, or identifier of the source"
+        },
+        "sha256": {
+          "type": ["string", "null"],
+          "description": "SHA-256 of the source content"
+        },
+        "version": {
+          "type": ["string", "null"],
+          "description": "Version of the source if applicable"
+        }
+      }
+    },
+    "collector": {
+      "type": "string",
+      "description": "Agent or process that collected this proof"
+    },
+    "collected_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when proof was collected"
+    },
+    "validated_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when proof was validated"
+    },
+    "validator": {
+      "type": ["string", "null"],
+      "description": "Agent or process that validated this proof"
+    },
+    "supports": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of assertions, decisions, or claims this proof supports"
+    },
+    "contradicts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of assertions, decisions, or claims this proof contradicts"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for categorization"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata specific to proof type"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum of the proof object for integrity"
+    }
+  }
+}

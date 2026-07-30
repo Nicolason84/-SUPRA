@@ -1,0 +1,55 @@
+{
+  "memory": "MEMORY_CAPABILITIES",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "CAP-001", "name": "Mission Management", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["MissionStore", "MissionCenterView", "MissionDetailView", "MissionTimelineView", "MissionGraphView"]
+    },
+    {
+      "uuid": "CAP-002", "name": "Decision Inbox", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["DecisionStore", "DecisionInboxView", "DecisionDetailView", "DecisionRow"]
+    },
+    {
+      "uuid": "CAP-003", "name": "Control Center", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["ControlCenterStore", "SupraControlCenterView"]
+    },
+    {
+      "uuid": "CAP-004", "name": "Runtime Monitoring", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["RuntimeMonitor", "RuntimeView", "RuntimeDataService", "RuntimeGateway", "RuntimeHealth"]
+    },
+    {
+      "uuid": "CAP-005", "name": "Knowledge Graph", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["KnowledgeGraph", "KnowledgeAuthority", "KnowledgeExplorer", "KnowledgeIdentity", "KnowledgeLineage", "KnowledgeRelation", "KnowledgeSource", "KnowledgeStatistics", "KnowledgeContextEngine"]
+    },
+    {
+      "uuid": "CAP-006", "name": "Executive Cockpit", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["ExecutiveCockpitFoundation", "ExecutiveGraph", "ExecutiveMemory", "ExecutiveSearch", "ExecutiveTimeline"]
+    },
+    {
+      "uuid": "CAP-007", "name": "Digital Twin", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["TwinAnalytics", "TwinBindings", "TwinComparison", "TwinExplorer", "TwinFactory", "TwinIdentity", "TwinLifecycle", "TwinRegistry", "TwinRenderer", "TwinSynchronizer", "TwinUniverse"]
+    },
+    {
+      "uuid": "CAP-008", "name": "Universe Engine", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["UniverseEngine", "UniverseGraph", "UniverseDashboard", "UniverseNavigator", "UniverseSearch", "UniverseTimeline"]
+    },
+    {
+      "uuid": "CAP-009", "name": "Workspace Intelligence", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["WorkspaceGovernor", "WorkspaceIndexer", "WorkspaceKnowledgeGraph", "WorkspaceMemory", "WorkspaceDiscovery", "WorkspaceRecommendation", "WorkspaceStatistics"]
+    },
+    {
+      "uuid": "CAP-010", "name": "Chat / Conductor", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["SUPRAChatView", "SUPRAChatRuntimeAdapter", "SUPRAGabrielConductorRuntime"]
+    },
+    {
+      "uuid": "CAP-011", "name": "Knowledge Providers", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["ConversationKnowledgeProvider", "DecisionKnowledgeProvider", "GitKnowledgeProvider", "PDFKnowledgeProvider", "ReportKnowledgeProvider"]
+    },
+    {
+      "uuid": "CAP-012", "name": "Artifact Reading", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["ArtifactReader", "Snapshot"]
+    },
+    {
+      "uuid": "CAP-013", "name": "Integration Bridge", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["CAnnoNicoIntegrationBridge", "CAnnoNicoObject", "NicoAppAdapter", "VideoSwapAdapter", "PucheroMemoryAdapter"]
+    },
+    {
+      "uuid": "CAP-014", "name": "OpenCode Bridge", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["OpenCodeBridge", "OpenCodeClient"]
+    },
+    {
+      "uuid": "CAP-015", "name": "SUPRA OS Shell", "type": "capability", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true, "components": ["SUPRAOSCommandCenterView", "SUPRAOSHomeView", "SUPRAOSLiveView", "SUPRAOSMissionCanvasView", "SUPRAOSProductRootView", "SUPRAOSTwinCenterView", "SUPRAOSUniverseView", "SUPRAOSGlobalSearchView", "SUPRAOSWorkspaceExplorerView", "SUPRAOSDesignSystem", "SUPRAOSFoundation"]
+    },
+    {
+      "uuid": "CAP-016", "name": "VideoSwap Engine", "type": "capability", "project": "SUPRA_VIDEO_SWAP_V3", "status": "active", "canonical": false, "archive": false, "reusable": true, "components": ["MediaEngine", "URLEngine", "ImportEngine", "Foundation", "Core"]
+    }
+  ]
+}

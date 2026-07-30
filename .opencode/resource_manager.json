@@ -1,0 +1,88 @@
+{
+  "version": "1.0.0",
+  "manager": "SUPRA Resource Manager",
+  "description": "Auto-distributes workers, providers, and models across missions based on priority, availability, and capability.",
+  "resources": {
+    "workers": {
+      "total": 20,
+      "available": [
+        {"id": "w_arch_01", "agent": "SUPRA-Architect", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_arch_02", "agent": "SUPRA-Architect", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0001"},
+        {"id": "w_build_01", "agent": "SUPRA-Builder", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0015"},
+        {"id": "w_build_02", "agent": "SUPRA-Builder", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_audit_01", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0020"},
+        {"id": "w_audit_02", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0021"},
+        {"id": "w_audit_03", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_review_01", "agent": "SUPRA-Reviewer", "provider": "ollama", "status": "busy", "current_mission": "M-0030"},
+        {"id": "w_review_02", "agent": "SUPRA-Reviewer", "provider": "ollama", "status": "idle"},
+        {"id": "w_explore_01", "agent": "SUPRA-Explorer", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0040"},
+        {"id": "w_explore_02", "agent": "SUPRA-Explorer", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_research_01", "agent": "SUPRA-Research", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_research_02", "agent": "SUPRA-Research", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0050"},
+        {"id": "w_runtime_01", "agent": "SUPRA-Runtime", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_runtime_02", "agent": "SUPRA-Runtime", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0060"},
+        {"id": "w_refactor_01", "agent": "SUPRA-Refactor", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_refactor_02", "agent": "SUPRA-Refactor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0070"},
+        {"id": "w_router_01", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_router_02", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "idle"},
+        {"id": "w_router_03", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0080"}
+      ],
+      "idle": 9,
+      "busy": 11,
+      "utilization_pct": 55.0
+    },
+    "providers": {
+      "opencode-zen": {
+        "total_workers": 16,
+        "workers_used": 9,
+        "available_capacity_pct": 43.75,
+        "models": {"deepseek-v4-flash-free": {"status": "available", "current_load": 9}},
+        "agents": ["SUPRA-Architect","SUPRA-Builder","SUPRA-Auditor","SUPRA-Explorer","SUPRA-Research","SUPRA-Runtime","SUPRA-Refactor","SUPRA-Router"]
+      },
+      "ollama": {
+        "total_workers": 2,
+        "workers_used": 1,
+        "available_capacity_pct": 50.0,
+        "models": {"qwen3:4b": {"status": "available", "current_load": 1}},
+        "agents": ["SUPRA-Reviewer"]
+      },
+      "openai": {
+        "total_workers": 2,
+        "workers_used": 0,
+        "available_capacity_pct": 0,
+        "models": {"gpt-4o": {"status": "unavailable"}, "gpt-4o-mini": {"status": "unavailable"}},
+        "agents": []
+      }
+    }
+  },
+  "allocation_strategy": {
+    "default": "capability_weighted_load_balanced",
+    "load_balancing": "least_loaded_worker",
+    "provider_affinity": "preferred_provider_first",
+    "fallback_provider": "next_available"
+  },
+  "auto_distribution": [
+    {"mission": "M-0001", "assigned_worker": "w_arch_02", "provider": "opencode-zen", "reason": "Architecture mission. Least loaded architect worker."},
+    {"mission": "M-0015", "assigned_worker": "w_build_01", "provider": "opencode-zen", "reason": "Build mission. Sole builder worker."},
+    {"mission": "M-0020", "assigned_worker": "w_audit_01", "provider": "opencode-zen", "reason": "Audit mission. Least loaded auditor worker."},
+    {"mission": "M-0030", "assigned_worker": "w_review_01", "provider": "ollama", "reason": "Review mission. Prefers ollama provider."},
+    {"mission": "M-0040", "assigned_worker": "w_explore_01", "provider": "opencode-zen", "reason": "Exploration mission. Least loaded explorer worker."},
+    {"mission": "M-0050", "assigned_worker": "w_research_02", "provider": "opencode-zen", "reason": "Research mission. Least loaded research worker."},
+    {"mission": "M-0060", "assigned_worker": "w_runtime_01", "provider": "opencode-zen", "reason": "Runtime mission. Idle runtime worker."},
+    {"mission": "M-0070", "assigned_worker": "w_refactor_02", "provider": "opencode-zen", "reason": "Refactor mission. Least loaded refactor worker."},
+    {"mission": "M-0080", "assigned_worker": "w_router_03", "provider": "opencode-zen", "reason": "Router mission. Least loaded router worker."}
+  ],
+  "pending_allocations": [
+    {"mission": "M-0090", "required_agent": "SUPRA-Reviewer", "status": "waiting_for_worker", "queue_position": 1},
+    {"mission": "M-0091", "required_agent": "SUPRA-Auditor", "status": "waiting_for_worker", "queue_position": 2}
+  ],
+  "summary": {
+    "workers_total": 20,
+    "workers_busy": 11,
+    "workers_idle": 9,
+    "providers_active": 2,
+    "allocations_completed": 9,
+    "allocations_pending": 2,
+    "avg_queue_wait_seconds": 45
+  }
+}

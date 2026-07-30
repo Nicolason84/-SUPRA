@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "name": "SUPRA Parallel Read Agent Strategy",
+  "description": "Defines how read-only agents execute in parallel during Stage 5 of the Mission Center pipeline.",
+  "strategy": {
+    "launch_mode": "parallel_broadcast",
+    "description": "All selected read agents receive the mission context simultaneously and execute independently.",
+    "max_parallel": 4,
+    "timeout_seconds": 300,
+    "completion_mode": "wait_all",
+    "partial_results": "accepted (non-blocking agents produce partial if timeout)"
+  },
+  "agent_groups": {
+    "exploration": {
+      "agent": "SUPRA-Explorer",
+      "trigger": "mission requires navigation or codebase mapping",
+      "parallel": true,
+      "output": "exploration_report"
+    },
+    "analysis": {
+      "agent": "SUPRA-Auditor",
+      "trigger": "mission requires compliance check or static analysis",
+      "parallel": true,
+      "output": "analysis_report"
+    },
+    "research": {
+      "agent": "SUPRA-Research",
+      "trigger": "mission requires external research or documentation lookup",
+      "parallel": true,
+      "output": "research_report"
+    },
+    "runtime": {
+      "agent": "SUPRA-Runtime",
+      "trigger": "mission requires runtime analysis or execution tracing",
+      "parallel": true,
+      "output": "runtime_report"
+    },
+    "refactoring": {
+      "agent": "SUPRA-Refactor",
+      "trigger": "mission requires refactoring analysis",
+      "parallel": true,
+      "output": "refactoring_analysis"
+    }
+  },
+  "result_aggregation": {
+    "method": "collect_all",
+    "post_processing": "all results forwarded to Comparator (SUPRA-Reviewer)",
+    "conflict_resolution": "Fusion (SUPRA-Architect) resolves conflicting analyses",
+    "partial_failure_handling": "If an agent times out or fails, its output is excluded. Comparator notes the gap."
+  },
+  "scheduling": {
+    "dispatch": "immediate_broadcast",
+    "order": "no_order (all agents execute simultaneously)",
+    "dependencies": "none between parallel agents"
+  }
+}

@@ -1,0 +1,9 @@
+TASK	REQUIRES	ROUTE	ENGINE_ID	EXPECTED_RAM_MB	EXPECTED_COST_EUR	EXPECTED_CONTEXT	WHY_SELECTED	FALLBACK	REJECTION_REASONS
+SWIFT_MICRO_FIX	CODE,TOOL_USE,16K	local.fast	ollama.qwen3-fast	3072	0	16k	best for bounded Swift corrections	ollama.qwen3-fast	N/A
+QUICK_READ	SHORT_CONTEXT	local.fast	ollama.qwen3-fast	3072	0	4k	fastest response for file reading	ollama.qwen3-fast	N/A
+ARCHITECTURE_REVIEW	DEEP,LONG_CONTEXT	local.deep	ollama.qwen3-deep	24576	0	128k	vision + deep reasoning for cross-module analysis	ollama.qwen3-fast	requires loading 23GB model
+UX_ANALYSIS	VISION	local.vision	ollama.qwen3-deep	24576	0	16k	only model with vision capability	N/A	requires vision-capable model loaded
+CONVERSATION_RETRIEVAL	EMBEDDING,RETRIEVAL	local.memory	N/A	512	0	2k	uses local embedding index	N/A	memory engine not yet installed as separate adapter
+DIFF_REVIEW	CODE,TOOL_USE	local.fast	ollama.qwen3-fast	3072	0	16k	bounded diff analysis	ollama.qwen3-fast	N/A
+COMPILE_CHECK	VALIDATION	shell-validation	shell-validation	100	0	N/A	runs xcodebuild directly	N/A	not an LLM engine
+SOURCEKIT_CHECK	VALIDATION	sourcekit-validation	sourcekit-validation	200	0	N/A	runs SourceKit directly	N/A	not an LLM engine

@@ -1,0 +1,36 @@
+{
+  "observer": "GO_SUPRA_SAFE_XCODE_CACHE_RECOVERY_V1",
+  "mode": "TARGETED_REBUILDABLE_CACHE_CLEANUP",
+  "source_deleted": false,
+  "removed": [
+    {
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData",
+      "size_gib": 1.08
+    },
+    {
+      "path": "/Users/nicolasalonso/Library/Developer/Xcode/iOS DeviceSupport",
+      "size_gib": 5.53
+    },
+    {
+      "path": "/Users/nicolasalonso/Library/Developer/CoreSimulator/Caches",
+      "size_gib": 0.0
+    },
+    {
+      "path": "/Users/nicolasalonso/Library/Caches/com.apple.dt.Xcode",
+      "size_gib": 0.0
+    },
+    {
+      "path": "/Users/nicolasalonso/Library/Caches/org.swift.swiftpm",
+      "size_gib": 0.0
+    }
+  ],
+  "storage": {
+    "before_gib": 10.29,
+    "after_gib": 16.91,
+    "recovered_gib": 6.62,
+    "target_gib": 20,
+    "remaining_to_target_gib": 3.09
+  },
+  "build_space_ready": false,
+  "verdict": "MANUAL_STORAGE_REVIEW_REQUIRED"
+}

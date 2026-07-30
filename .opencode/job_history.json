@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "description": "Historical record of all completed jobs. Used for analytics, learning, and audit.",
+  "total_jobs_completed": 0,
+  "total_success": 0,
+  "total_failed": 0,
+  "total_retries": 0,
+  "jobs": []
+}

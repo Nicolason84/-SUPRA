@@ -1,0 +1,11 @@
+Core/Evidence/SUPRAMissionEvidenceLoader.swift
+Core/Integrity/SUPRASystemIntegrityLoader.swift
+Core/Megabus/SUPRATerminalMegabusBridge.swift
+Models/SUPRAAlert.swift
+Models/SUPRAExecutiveModel.swift
+Models/SUPRAMetrics.swift
+Models/SUPRARecord.swift
+Models/SUPRASection.swift
+Models/SUPRASource.swift
+Models/SUPRASystem.swift
+Store/SUPRAExecutiveStore.swift

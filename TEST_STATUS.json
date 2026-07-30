@@ -1,0 +1,16 @@
+{
+  "schema":"supra.observation.test-status.v1",
+  "observedAt":"2026-07-30T14:27:41+02:00",
+  "status":"PASS",
+  "command":"xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Debug -sdk macosx -derivedDataPath /private/tmp/SUPRA_BASELINE_V1_DERIVED test",
+  "exitCode":0,
+  "durationSeconds":28,
+  "testSuitesStarted":14,
+  "testCasesRecorded":135,
+  "passed":135,
+  "failed":0,
+  "skippedMarkers":1,
+  "failedTests":[],
+  "testResultBundle":"/private/tmp/SUPRA_BASELINE_V1_DERIVED/Logs/Test/Test-SUPRA-2026.07.30_14-27-04-+0200.xcresult",
+  "evidenceLog":"/private/tmp/SUPRA_BASELINE_V1_TEST.log"
+}

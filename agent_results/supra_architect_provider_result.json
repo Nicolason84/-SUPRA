@@ -1,0 +1,16 @@
+{
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "agent": "SUPRA-Architect",
+  "mission": "Provider runtime architecture analysis",
+  "providers_count": 3,
+  "available_providers": ["opencode-zen", "ollama"],
+  "selection_flow": "Provider-first sequential pipeline: (1) Classify mission intent via LLM classifier (anthropic/claude-sonnet-4-6) to extract required capabilities; (2) Select provider using capability-weighted strategy (capability_match=0.5, availability=0.2, speed=0.15, cost=0.15) with mandatory rules pinning critical capabilities (architecture, routing, planning, refactoring) to opencode-zen; (3) Select best model within provider with fallback to next-best in same provider; (4) Route to best-matching agent by capability+model match. Fallback chain: opencode-zen → ollama → openai. Rules evaluated as first-match (priority-based, case-insensitive); catch-all rule routes unmatched missions to opencode-zen/deepseek-v4-flash-free/SUPRA-Explorer. Hybrid router architecture: LLM classifier + weighted scorer + multi-strategy selector (best_score, best_ratio, lowest_latency, top_n, sequential_fallback).",
+  "architecture_score": 7,
+  "recommendations": [
+    "Add multi-provider redundancy for critical capabilities (architecture, routing, planning, refactoring) — currently pinned exclusively to opencode-zen with only ollama/qwen3:4b as fallback, which scores 0.65 vs 0.92+ on these capabilities, creating a single-provider dependency for the most architecture-critical decisions.",
+    "Implement auto-healing for unavailable models — 7 of 9 registered models are unavailable; add a lazy-pull mechanism to download Ollama models on-demand when fallback is triggered, and introduce periodic auto-discovery polling for the OpenAI provider (currently 100% unavailable with no retry or reconfiguration path).",
+    "Decouple the router's LLM classifier from the external anthropic/claude-sonnet-4-6 model — routing classification should use an internal or cached model to avoid cascade failure when the external API is unreachable, since the entire provider+model+agent selection depends on this single classification step."
+  ],
+  "analysis": "The provider runtime architecture follows a clean Provider→Model→Agent selection flow with well-structured capability-weighted routing, health-check integration, fallback chains at every level, and priority-based rule evaluation. Strengths include explicit capability scoring, task-specific provider preferences, and the hybrid router design (LLM classifier + weighted scorer + multi-strategy selector). The main structural weakness is heavy centralization: opencode-zen is the sole provider for 7 of 9 agents and all critical capabilities (architecture, routing, planning, refactoring). The ollama provider has only 1 of 7 models available, and OpenAI is fully unavailable with no reconfiguration path. The router's LLM classifier dependency on anthropic/claude-sonnet-4-6 introduces an external single point of failure for the entire routing pipeline. Overall, a well-designed but over-centralized architecture that would benefit from provider diversification and automated model lifecycle management."
+}

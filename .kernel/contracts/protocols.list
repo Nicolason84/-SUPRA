@@ -1,0 +1,10 @@
+# SUPRA Kernel Protocols — V1
+# Chaque ligne : <protocol_name> <version> <description>
+supra.node.identity  1.0  Identité et configuration du nœud
+supra.node.mission   1.0  Cycle de vie des missions
+supra.node.memory    1.0  Stockage et indexation mémoire
+supra.node.routing   1.0  Routage des missions vers agents/modèles
+supra.node.execution 1.0  Exécution et orchestration des tâches
+supra.node.audit     1.0  Audit et conformité
+supra.node.benchmark 1.0  Benchmarking des modèles
+supra.node.storage   1.0  Stockage persistant des artefacts

@@ -209,7 +209,7 @@ public final class ExecutiveSnapshotBuilder: Sendable {
         runtimeCore: ExecutiveRuntimeCore,
         vision: VisionEngine?,
         presence: PresenceEngine?,
-        context: ContextEngine?,
+        context: ExecutiveContextEngine?,
         digitalTwin: DigitalTwinRuntime?,
         identity: IdentityRuntime?
     ) -> ExecutiveContextSnapshot {
@@ -260,7 +260,7 @@ public final class ExecutiveSnapshotBuilder: Sendable {
         )
     }
 
-    private func buildContextSnapshot(_ context: ContextEngine?) -> ExecutiveContextSnapshot.ContextSnapshot {
+    private func buildContextSnapshot(_ context: ExecutiveContextEngine?) -> ExecutiveContextSnapshot.ContextSnapshot {
         guard let context else { return .initial }
         return ExecutiveContextSnapshot.ContextSnapshot(
             currentMission: context.currentMission,

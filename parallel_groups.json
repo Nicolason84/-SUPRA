@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "mission": "Analyser complètement le dépôt SUPRA",
+  "type": "parallel_groups",
+  "generated_by": "SUPRA-Planner (SUPRA-Router)",
+  "total_parallel_groups": 4,
+  "total_estimated_time_optimized": 270,
+  "total_estimated_time_sequential": 585,
+  "speedup_factor": 2.17,
+  "groups": [
+    {
+      "group_id": "G1",
+      "name": "Analyse initiale parallèle",
+      "description": "Tâches indépendantes qui peuvent être exécutées simultanément",
+      "parallel": true,
+      "tasks": [
+        {"id": "T1", "name": "Mapper la structure du dépôt", "agent": "SUPRA-Explorer", "duration": 60},
+        {"id": "T2", "name": "Indexer les configurations", "agent": "SUPRA-Explorer", "duration": 30},
+        {"id": "T5", "name": "Analyser le runtime", "agent": "SUPRA-Runtime", "duration": 60},
+        {"id": "T6", "name": "Vérifier le provider registry", "agent": "SUPRA-Auditor", "duration": 20},
+        {"id": "T7", "name": "Vérifier le model registry", "agent": "SUPRA-Auditor", "duration": 20},
+        {"id": "T8", "name": "Rechercher dépendances externes", "agent": "SUPRA-Research", "duration": 40}
+      ],
+      "agents": ["SUPRA-Explorer", "SUPRA-Runtime", "SUPRA-Auditor", "SUPRA-Research"],
+      "providers": ["opencode-zen"],
+      "models": ["deepseek-v4-flash-free"],
+      "max_duration": 60,
+      "parallelism": 6
+    },
+    {
+      "group_id": "G2",
+      "name": "Analyse dépendante",
+      "description": "Tâches qui dépendent des résultats du groupe G1",
+      "parallel": false,
+      "tasks": [
+        {"id": "T3", "name": "Auditer les configurations", "agent": "SUPRA-Auditor", "duration": 45, "starts_after": "T2"},
+        {"id": "T4", "name": "Analyser les résultats agents", "agent": "SUPRA-Reviewer", "duration": 30, "starts_after": "T1"}
+      ],
+      "agents": ["SUPRA-Auditor", "SUPRA-Reviewer"],
+      "providers": ["opencode-zen", "ollama"],
+      "models": ["deepseek-v4-flash-free", "qwen3:4b"],
+      "max_duration": 45,
+      "parallelism": 2,
+      "parallel": true
+    },
+    {
+      "group_id": "G3",
+      "name": "Synthèse architecturale",
+      "description": "Fusion de toutes les analyses en une évaluation unique",
+      "parallel": false,
+      "depends_on_all": ["G1", "G2"],
+      "tasks": [
+        {"id": "T9", "name": "Analyse architecturale complète", "agent": "SUPRA-Architect", "duration": 120, "starts_after_all": ["T3", "T4", "T5", "T6", "T7", "T8"]}
+      ],
+      "agents": ["SUPRA-Architect"],
+      "providers": ["opencode-zen"],
+      "models": ["deepseek-v4-flash-free"],
+      "max_duration": 120,
+      "parallelism": 1
+    },
+    {
+      "group_id": "G4",
+      "name": "Production du rapport",
+      "description": "Compilation du rapport final d'analyse",
+      "parallel": false,
+      "depends_on": ["G3"],
+      "tasks": [
+        {"id": "T10", "name": "Compiler le rapport final", "agent": "SUPRA-Builder", "duration": 60}
+      ],
+      "agents": ["SUPRA-Builder"],
+      "providers": ["opencode-zen"],
+      "models": ["deepseek-v4-flash-free"],
+      "max_duration": 60,
+      "parallelism": 1
+    }
+  ]
+}

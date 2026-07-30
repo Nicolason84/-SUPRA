@@ -168,7 +168,7 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
     }
 
     public func reset() async throws {
-        await shutdown()
+        try await shutdown()
         try await boot()
     }
 

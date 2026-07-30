@@ -1,0 +1,471 @@
+===========================================
+SUPRA COMPILATION INVESTIGATION
+===========================================
+
+ROOT : /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA
+DATE : ven. 24 juil. 2026 15:23:09 CEST
+
+============================================================
+1. VIDEO SWAP
+============================================================
+./SUPRA/CAnnoNicoIntegrationBridge.swift:5:import VideoSwapAdapter
+./SUPRA/CAnnoNicoIntegrationBridge.swift:28:                VideoSwapAdapter(
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:14:                "VideoSwapAdapter"
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:29:            name: "VideoSwapAdapter",
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:4:public struct VideoSwapAdapter: CAnnoNicoAdapter {
+
+./SUPRA/CAnnoNicoIntegrationBridge.swift:5:import VideoSwapAdapter
+./SUPRA/CAnnoNicoIntegrationBridge.swift:28:                VideoSwapAdapter(
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:14:                "VideoSwapAdapter"
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:29:            name: "VideoSwapAdapter",
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:4:public struct VideoSwapAdapter: CAnnoNicoAdapter {
+
+============================================================
+2. CANNONICO
+============================================================
+./SUPRA/MissionContext.swift:7:    let requiredTypes: [CAnnoNicoType]?
+./SUPRA/MissionContext.swift:14:    let objects: [CAnnoNicoObject]
+./SUPRA/MissionContext.swift:62:        let scored = candidates.map { obj -> (CAnnoNicoObject, Double) in
+./SUPRA/CAnnoNicoIntegrationBridge.swift:2:import CAnnoNicoContracts
+./SUPRA/CAnnoNicoIntegrationBridge.swift:7:enum SUPRACAnnoNicoIntegration {
+./SUPRA/CAnnoNicoIntegrationBridge.swift:8:    static let packageID = "CAnnoNicoIntegrationPackage"
+./SUPRA/CAnnoNicoIntegrationBridge.swift:19:    static func snapshot() -> CAnnoNicoIntegrationSnapshot {
+./SUPRA/CAnnoNicoIntegrationBridge.swift:20:        CAnnoNicoIntegrationSnapshot(
+./SUPRA/NOVAKnowledgeKernel.swift:25:    private var allObjects: [CAnnoNicoObject] = []
+./SUPRA/NOVAKnowledgeKernel.swift:45:    func registerObjects(_ objects: [CAnnoNicoObject]) {
+./SUPRA/NOVAKnowledgeKernel.swift:63:    func allObjectsSnapshot() -> [CAnnoNicoObject] { allObjects }
+./SUPRA/NOVAKnowledgeKernel.swift:67:    func findObject(byId id: String) -> CAnnoNicoObject? {
+./SUPRA/NOVAKnowledgeKernel.swift:71:    func findObjects(byProject project: String) -> [CAnnoNicoObject] {
+./SUPRA/NOVAKnowledgeKernel.swift:75:    func findObjects(byType type: CAnnoNicoType) -> [CAnnoNicoObject] {
+./SUPRA/NOVAKnowledgeKernel.swift:79:    func findObjects(bySource source: CAnnoNicoSource) -> [CAnnoNicoObject] {
+./SUPRA/ExecutiveGraph.swift:129:    private func typeColor(for type: CAnnoNicoType) -> String {
+./SUPRA/WorkspaceGovernor.swift:52:    func scan(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:66:    private func detectDuplicates(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:86:    private func detectOrphans(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:108:    private func detectOutdated(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:130:    private func detectAbandonedProjects(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:155:    private func detectNonCanonical(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceGovernor.swift:172:    private func detectOversized(_ objects: [CAnnoNicoObject]) {
+./SUPRA/Models/SUPRASource.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRASection.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRARecord.swift:6:import CAnnoNicoContracts
+./SUPRA/TwinBindings.swift:53:    static func createBinding(twinId: String, object: CAnnoNicoObject, strength: Double = 1.0) -> TwinBinding {
+./SUPRA/TwinExplorer.swift:18:    let sourceObjects: [CAnnoNicoObject]
+./SUPRA/TwinFactory.swift:93:    private func buildProjectTwin(_ objects: [CAnnoNicoObject]) {
+./SUPRA/TwinFactory.swift:115:    private func buildWorkspaceTwin(_ objects: [CAnnoNicoObject]) {
+./SUPRA/TwinFactory.swift:134:    private func buildMissionTwins(_ objects: [CAnnoNicoObject]) {
+./SUPRA/TwinFactory.swift:156:    private func buildDecisionTwins(_ objects: [CAnnoNicoObject]) {
+./SUPRA/TwinFactory.swift:175:    private func buildKnowledgeTwin(_ objects: [CAnnoNicoObject]) {
+./SUPRA/TwinFactory.swift:199:    private func buildRuntimeTwin(_ objects: [CAnnoNicoObject]) {
+./SUPRA/WorkspaceRecommendation.swift:48:    func generate(from issues: [GovernanceIssue], objects: [CAnnoNicoObject]) {
+./SUPRA/CAnnoNicoObject.swift:3:struct CAnnoNicoObject: Identifiable, Codable, Equatable {
+./SUPRA/CAnnoNicoObject.swift:5:    let type: CAnnoNicoType
+./SUPRA/CAnnoNicoObject.swift:6:    let source: CAnnoNicoSource
+./SUPRA/CAnnoNicoObject.swift:21:    static func == (lhs: CAnnoNicoObject, rhs: CAnnoNicoObject) -> Bool {
+./SUPRA/CAnnoNicoObject.swift:26:enum CAnnoNicoType: String, Codable, CaseIterable, Identifiable {
+./SUPRA/CAnnoNicoObject.swift:51:enum CAnnoNicoSource: String, Codable, CaseIterable, Identifiable {
+./SUPRA/Views/SUPRAStructureNavigatorView.swift:2:import CAnnoNicoContracts
+./SUPRA/Views/CAnnoNicoCircuitBoardView.swift:8:                    Text("CAnnoNico Closed Circuit").font(.title2.bold())
+./SUPRA/Views/CAnnoNicoCircuitBoardView.swift:20:                    Text("CAnnoNico contracts").font(.caption).foregroundStyle(.secondary)
+./SUPRA/ContentView.swift:6:import CAnnoNicoContracts
+./SUPRA/ContentView.swift:125:                structureHero("ATOMIUM", title: "Comprendre le système comme un organisme vivant.", subtitle: "Noyau SUPRA, modules CAnnoNico, Gabriel et décisions humaines.", symbol: "atom")
+./SUPRA/ContentView.swift:197:            structureCard("CAnnoNico", role: "Contrats, modules, lineage", status: "ACTIVE", symbol: "atom")
+./SUPRA/ContentView.swift:538:    var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
+./SUPRA/ContentView.swift:539:        SUPRACAnnoNicoIntegration.snapshot()
+./SUPRA/ContentView.swift:542:    var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
+./SUPRA/ContentView.swift:548:    private var cannonicoPendingReferences: [CAnnoNicoSourceReference] {
+./SUPRA/ContentView.swift:675:                            Text("CAnnoNico Integration Snapshot")
+./SUPRA/ContentView.swift:934:                            Text("CAnnoNico Total · Parallel Lane")
+./SUPRA/KnowledgeExplorer.swift:4:    let types: [CAnnoNicoType]?
+./SUPRA/KnowledgeExplorer.swift:5:    let sources: [CAnnoNicoSource]?
+./SUPRA/KnowledgeExplorer.swift:19:    let object: CAnnoNicoObject
+./SUPRA/KnowledgeExplorer.swift:36:    private var objects: [CAnnoNicoObject] = []
+./SUPRA/KnowledgeExplorer.swift:38:    func load(_ objects: [CAnnoNicoObject]) {
+./SUPRA/KnowledgeExplorer.swift:80:        let scored = candidates.map { obj -> (CAnnoNicoObject, Double, [String], [String]) in
+./SUPRA/KnowledgeExplorer.swift:138:    func searchByType(_ type: CAnnoNicoType) {
+./SUPRA/KnowledgeExplorer.swift:146:    func searchBySource(_ source: CAnnoNicoSource) {
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:5:    name: "CAnnoNicoIntegrationPackage",
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:9:            name: "CAnnoNicoIntegration",
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:11:                "CAnnoNicoContracts",
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:19:        .target(name: "CAnnoNicoContracts"),
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:22:            dependencies: ["CAnnoNicoContracts"]
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:26:            dependencies: ["CAnnoNicoContracts"]
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:30:            dependencies: ["CAnnoNicoContracts"]
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:4:public struct PucheroMemoryAdapter: CAnnoNicoAdapter {
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:13:    public func snapshot() -> CAnnoNicoSourceReference {
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:18:        return CAnnoNicoSourceReference(
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:4:public struct NicoAppAdapter: CAnnoNicoAdapter {
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:13:    public func snapshot() -> CAnnoNicoSourceReference {
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:18:        return CAnnoNicoSourceReference(
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:4:public struct VideoSwapAdapter: CAnnoNicoAdapter {
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:13:    public func snapshot() -> CAnnoNicoSourceReference {
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:18:        return CAnnoNicoSourceReference(
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:3:public enum CAnnoNicoIntegrationState: String, Codable, Sendable {
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:9:public struct CAnnoNicoSourceReference: Codable, Sendable, Hashable {
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:13:    public let state: CAnnoNicoIntegrationState
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:22:        state: CAnnoNicoIntegrationState,
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:37:public protocol CAnnoNicoAdapter: Sendable {
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:39:    func snapshot() -> CAnnoNicoSourceReference
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:42:public struct CAnnoNicoIntegrationSnapshot: Codable, Sendable {
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:44:    public let references: [CAnnoNicoSourceReference]
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:48:        references: [CAnnoNicoSourceReference]
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:6:import CAnnoNicoContracts
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:639:                structureHero("ATOMIUM", title: "Comprendre le système comme un organisme vivant.", subtitle: "Noyau SUPRA, modules CAnnoNico, Gabriel et décisions humaines.", symbol: "atom")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:690:                    Text("CAnnoNico Closed Circuit").font(.title2.bold())
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:702:                    Text("CAnnoNico contracts").font(.caption).foregroundStyle(.secondary)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:808:            structureCard("CAnnoNico", role: "Contrats, modules, lineage", status: "ACTIVE", symbol: "atom")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1149:    private var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1150:        SUPRACAnnoNicoIntegration.snapshot()
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1153:    private var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1159:    private var cannonicoPendingReferences: [CAnnoNicoSourceReference] {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1286:                            Text("CAnnoNico Integration Snapshot")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1545:                            Text("CAnnoNico Total · Parallel Lane")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:6:import CAnnoNicoContracts
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:639:                structureHero("ATOMIUM", title: "Comprendre le système comme un organisme vivant.", subtitle: "Noyau SUPRA, modules CAnnoNico, Gabriel et décisions humaines.", symbol: "atom")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:690:                    Text("CAnnoNico Closed Circuit").font(.title2.bold())
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:702:                    Text("CAnnoNico contracts").font(.caption).foregroundStyle(.secondary)
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:808:            structureCard("CAnnoNico", role: "Contrats, modules, lineage", status: "ACTIVE", symbol: "atom")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1149:    private var cannonicoIntegrationSnapshot: CAnnoNicoIntegrationSnapshot {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1150:        SUPRACAnnoNicoIntegration.snapshot()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1153:    private var cannonicoRecoveredReferences: [CAnnoNicoSourceReference] {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1159:    private var cannonicoPendingReferences: [CAnnoNicoSourceReference] {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1286:                            Text("CAnnoNico Integration Snapshot")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1545:                            Text("CAnnoNico Total · Parallel Lane")
+
+
+============================================================
+3. BRIDGES
+============================================================
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift
+./SUPRA/CAnnoNicoIntegrationBridge.swift
+./SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift
+./SUPRA/OpenCodeBridge.swift
+
+============================================================
+4. ADAPTERS
+============================================================
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift
+./SUPRA/SUPRAChatRuntimeAdapter.swift
+
+============================================================
+5. RUNTIME
+============================================================
+./SUPRA/RuntimeConnectionState.swift
+./SUPRA/RuntimeDataService.swift
+./SUPRA/RuntimeEvent.swift
+./SUPRA/RuntimeEventSource.swift
+./SUPRA/RuntimeGateway.swift
+./SUPRA/RuntimeHealth.swift
+./SUPRA/RuntimeModels.swift
+./SUPRA/RuntimeMonitor.swift
+./SUPRA/RuntimeSourceProtocol.swift
+./SUPRA/RuntimeView.swift
+./SUPRA/SUPRAChatRuntimeAdapter.swift
+./SUPRA/SUPRAGabrielConductorRuntime.swift
+
+============================================================
+6. GATEWAY
+============================================================
+./SUPRA/RuntimeGateway.swift
+
+============================================================
+7. OPENCODE
+============================================================
+./SUPRA/OpenCodeBridge.swift
+./SUPRA/OpenCodeClient.swift
+
+============================================================
+8. IMPORTS SUSPECTS
+============================================================
+./SUPRA/RuntimeModels.swift:1:import Foundation
+./SUPRA/RuntimeMonitor.swift:1:import Foundation
+./SUPRA/RuntimeMonitor.swift:2:import Combine
+./SUPRA/RuntimeMonitor.swift:3:import SwiftUI
+./SUPRA/RuntimeConnectionState.swift:1:import Foundation
+./SUPRA/RuntimeDataService.swift:1:import Foundation
+./SUPRA/RuntimeDataService.swift:2:import Combine
+./SUPRA/CAnnoNicoIntegrationBridge.swift:1:import Foundation
+./SUPRA/CAnnoNicoIntegrationBridge.swift:2:import CAnnoNicoContracts
+./SUPRA/CAnnoNicoIntegrationBridge.swift:3:import PucheroMemoryAdapter
+./SUPRA/CAnnoNicoIntegrationBridge.swift:4:import NicoAppAdapter
+./SUPRA/CAnnoNicoIntegrationBridge.swift:5:import VideoSwapAdapter
+./SUPRA/SUPRAGabrielConductorRuntime.swift:1:import Foundation
+./SUPRA/RuntimeEventSource.swift:1:import Foundation
+./SUPRA/RuntimeEventSource.swift:2:import Combine
+./SUPRA/RuntimeEventSource.swift:3:import SwiftUI
+./SUPRA/Models/SUPRASource.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRASection.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRARecord.swift:6:import CAnnoNicoContracts
+./SUPRA/OpenCodeBridge.swift:1:import Foundation
+./SUPRA/RuntimeGateway.swift:1:import Foundation
+./SUPRA/RuntimeHealth.swift:1:import Foundation
+./SUPRA/SUPRAChatRuntimeAdapter.swift:1:import Foundation
+./SUPRA/RuntimeView.swift:1:import SwiftUI
+./SUPRA/CAnnoNicoObject.swift:1:import Foundation
+./SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift:1:import Foundation
+./SUPRA/Views/SUPRAStructureNavigatorView.swift:2:import CAnnoNicoContracts
+./SUPRA/Views/CAnnoNicoCircuitBoardView.swift:1:import SwiftUI
+./SUPRA/ContentView.swift:6:import CAnnoNicoContracts
+./SUPRA/RuntimeEvent.swift:1:import Foundation
+./SUPRA/RuntimeSourceProtocol.swift:1:import Foundation
+./SUPRA/OpenCodeClient.swift:1:import Foundation
+./SUPRA/OpenCodeClient.swift:2:import Combine
+./SUPRA/OpenCodeClient.swift:3:import SwiftUI
+./Packages/CAnnoNicoIntegrationPackage/Package.swift:2:import PackageDescription
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:1:import Foundation
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:1:import Foundation
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:1:import Foundation
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift:1:import Foundation
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:6:import CAnnoNicoContracts
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:6:import CAnnoNicoContracts
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift:1:import Foundation
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift:2:import SwiftUI
+
+============================================================
+9. MODULES INTROUVABLES
+============================================================
+./SUPRA/CAnnoNicoIntegrationBridge.swift:2:import CAnnoNicoContracts
+./SUPRA/CAnnoNicoIntegrationBridge.swift:5:import VideoSwapAdapter
+./SUPRA/Models/SUPRASource.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRASection.swift:6:import CAnnoNicoContracts
+./SUPRA/Models/SUPRARecord.swift:6:import CAnnoNicoContracts
+./SUPRA/Views/SUPRAStructureNavigatorView.swift:2:import CAnnoNicoContracts
+./SUPRA/ContentView.swift:6:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift:2:import CAnnoNicoContracts
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift:2:import CAnnoNicoContracts
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:6:import CAnnoNicoContracts
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:6:import CAnnoNicoContracts
+
+============================================================
+10. FICHIERS QUI REFERENCES VideoSwapAdapter
+============================================================
+./SUPRA/CAnnoNicoIntegrationBridge.swift
+./Packages/CAnnoNicoIntegrationPackage/Package.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift
+
+============================================================
+11. CAnnoNicoIntegrationBridge
+============================================================
+-rw-r--r--@ 1 nicolasalonso  staff  1089 21 juil. 04:23 ./SUPRA/CAnnoNicoIntegrationBridge.swift
+
+import Foundation
+import CAnnoNicoContracts
+import PucheroMemoryAdapter
+import NicoAppAdapter
+import VideoSwapAdapter
+
+enum SUPRACAnnoNicoIntegration {
+    static let packageID = "CAnnoNicoIntegrationPackage"
+
+    static let pucheroSource =
+        "/Users/nicolasalonso/NOVA_OS/PUCHERO"
+
+    static let nicoAppSource =
+        "/Users/nicolasalonso/NOVA_OS/NICO_APP_V1"
+
+    static let videoSwapSource =
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V2"
+
+    static func snapshot() -> CAnnoNicoIntegrationSnapshot {
+        CAnnoNicoIntegrationSnapshot(
+            references: [
+                PucheroMemoryAdapter(
+                    sourcePath: pucheroSource
+                ).snapshot(),
+                NicoAppAdapter(
+                    sourcePath: nicoAppSource
+                ).snapshot(),
+                VideoSwapAdapter(
+                    sourcePath: videoSwapSource
+                ).snapshot()
+            ]
+        )
+    }
+
+    static var recoveredCount: Int {
+        snapshot().references.filter {
+            $0.state == .recovered
+        }.count
+    }
+}
+
+============================================================
+12. SWIFT FILES
+============================================================
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Evidence/SUPRAMissionEvidenceLoader.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Integrity/SUPRASystemIntegrityLoader.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAMetrics.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRARecord.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRASection.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRASource.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRASystem.swift
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRARecord.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRASection.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRASource.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/SUPRARecord.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/SUPRASection.swift
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/SUPRASource.swift
+./.mechanical_extract_backup_20260723_211359/ContentView.swift
+./build/SUPRA.build/Release/SUPRA.build/DerivedSources/GeneratedAssetSymbols.swift
+./Packages/CAnnoNicoIntegrationPackage/Package.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/CAnnoNicoContracts/CAnnoNicoContracts.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/NicoAppAdapter/NicoAppAdapter.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/PucheroMemoryAdapter/PucheroMemoryAdapter.swift
+./Packages/CAnnoNicoIntegrationPackage/Sources/VideoSwapAdapter/VideoSwapAdapter.swift
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRAAST.build/DerivedSources/resource_bundle_accessor.swift
+./SUPRA_AST_PLATFORM/Package.swift
+./SUPRA_AST_PLATFORM/Sources/CLI/main.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/ASTParser.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/DeclarationGraph.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/DependencyGraph.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/DependencyVisitor.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/DiscoveryVisitor.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/RefactoringEngine.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/RuleEngine.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/SUPRAAST.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/Validation.swift
+./SUPRA_AST_PLATFORM/Sources/SUPRAAST/Writer.swift
+./SUPRA_AST_PLATFORM/Tests/DeclarationGraphTests.swift
+./SUPRA_AST_PLATFORM/Tests/DependencyTests.swift
+./SUPRA_AST_PLATFORM/Tests/DiscoveryTests.swift
+./SUPRA_AST_PLATFORM/Tests/ParserTests.swift
+./SUPRA_AST_PLATFORM/Tests/RefactoringTests.swift
+./SUPRA_AST_PLATFORM/Tests/RuleEngineTests.swift
+./SUPRA_AST_PLATFORM/Tests/SUPRAASTTests.swift
+./SUPRA_AST_PLATFORM/Tests/WriterValidationTests.swift
+./SUPRA/ArtifactReader.swift
+./SUPRA/CAnnoNicoIntegrationBridge.swift
+./SUPRA/CAnnoNicoObject.swift
+./SUPRA/CockpitNavigation.swift
+./SUPRA/ContentView.swift
+./SUPRA/ContextEngine.swift
+./SUPRA/ControlCenterStore.swift
+./SUPRA/ConversationKnowledgeProvider.swift
+./SUPRA/DashboardView.swift
+./SUPRA/Decision.swift
+./SUPRA/DecisionDetailView.swift
+./SUPRA/DecisionInboxView.swift
+./SUPRA/DecisionKnowledgeProvider.swift
+./SUPRA/DecisionRow.swift
+./SUPRA/DecisionStore.swift
+./SUPRA/EvidenceExplorerView.swift
+./SUPRA/ExecutiveCockpitFoundation.swift
+./SUPRA/ExecutiveGraph.swift
+./SUPRA/ExecutiveMemory.swift
+./SUPRA/ExecutiveSearch.swift
+./SUPRA/ExecutiveTimeline.swift
+./SUPRA/GitKnowledgeProvider.swift
+./SUPRA/Infrastructure/SUPRAMissionEvidenceLoader.swift
+./SUPRA/Infrastructure/SUPRASystemIntegrity.swift
+./SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift
+./SUPRA/KnowledgeAuthority.swift
+./SUPRA/KnowledgeContextEngine.swift
+./SUPRA/KnowledgeExplorer.swift
+./SUPRA/KnowledgeGraph.swift
+./SUPRA/KnowledgeIdentity.swift
+./SUPRA/KnowledgeLineage.swift
+./SUPRA/KnowledgeObject.swift
+./SUPRA/KnowledgeProvider.swift
+./SUPRA/KnowledgeRelation.swift
+./SUPRA/KnowledgeRelationship.swift
+./SUPRA/KnowledgeSource.swift
+./SUPRA/KnowledgeStatistics.swift
+./SUPRA/Mission.swift
+./SUPRA/MissionCenterView.swift
+./SUPRA/MissionContext.swift
+./SUPRA/MissionDetailView.swift
+./SUPRA/MissionGraphView.swift
+./SUPRA/MissionRow.swift
+./SUPRA/MissionStore.swift
+./SUPRA/MissionTimelineView.swift
+./SUPRA/Models/SUPRAHumanStage.swift
+./SUPRA/Models/SUPRARecord.swift
+./SUPRA/Models/SUPRASection.swift
+./SUPRA/Models/SUPRASource.swift
+./SUPRA/Models/SUPRAStructureMode.swift
+./SUPRA/NOVAKnowledgeKernel.swift
+./SUPRA/OpenCodeBridge.swift
+./SUPRA/OpenCodeClient.swift
+./SUPRA/PDFKnowledgeProvider.swift
+./SUPRA/ReportKnowledgeProvider.swift
+./SUPRA/RuntimeConnectionState.swift
+./SUPRA/RuntimeDataService.swift
+./SUPRA/RuntimeEvent.swift
+./SUPRA/RuntimeEventSource.swift
+./SUPRA/RuntimeGateway.swift
+./SUPRA/RuntimeHealth.swift
+./SUPRA/RuntimeModels.swift
+./SUPRA/RuntimeMonitor.swift
+./SUPRA/RuntimeSourceProtocol.swift
+./SUPRA/RuntimeView.swift
+./SUPRA/SettingsView.swift
+./SUPRA/Snapshot.swift
+./SUPRA/SUPRAApp.swift
+./SUPRA/SUPRAChatRuntimeAdapter.swift
+./SUPRA/SUPRAChatView.swift
+./SUPRA/SupraControlCenterView.swift
+./SUPRA/SUPRAExecutiveCockpitView.swift
+./SUPRA/SUPRAGabrielConductorRuntime.swift
+./SUPRA/SUPRAOSCommandCenterView.swift
+./SUPRA/SUPRAOSDesignSystem.swift
+./SUPRA/SUPRAOSFoundation.swift
+./SUPRA/SUPRAOSGlobalSearchView.swift
+./SUPRA/SUPRAOSHomeView.swift
+./SUPRA/SUPRAOSLiveView.swift
+./SUPRA/SUPRAOSMissionCanvasView.swift
+./SUPRA/SUPRAOSProductRootView.swift
+./SUPRA/SUPRAOSTwinCenterView.swift
+./SUPRA/SUPRAOSUniverseView.swift
+./SUPRA/SUPRAOSWorkspaceExplorerView.swift
+./SUPRA/TwinAnalytics.swift
+./SUPRA/TwinBindings.swift
+./SUPRA/TwinComparison.swift
+./SUPRA/TwinExplorer.swift
+./SUPRA/TwinFactory.swift
+./SUPRA/TwinIdentity.swift
+./SUPRA/TwinLifecycle.swift
+./SUPRA/TwinRegistry.swift
+./SUPRA/TwinRenderer.swift
+./SUPRA/TwinSynchronizer.swift
+./SUPRA/TwinUniverse.swift
+./SUPRA/UniverseDashboard.swift
+./SUPRA/UniverseEngine.swift
+./SUPRA/UniverseGraph.swift
+./SUPRA/UniverseNavigator.swift
+./SUPRA/UniverseSearch.swift
+./SUPRA/UniverseTimeline.swift
+./SUPRA/Views/CAnnoNicoCircuitBoardView.swift
+./SUPRA/Views/SUPRAStructureNavigatorView.swift
+./SUPRA/WorkerPoolView.swift
+./SUPRA/WorkspaceConfiguration.swift
+./SUPRA/WorkspaceDiscovery.swift
+./SUPRA/WorkspaceGovernor.swift
+./SUPRA/WorkspaceIndexer.swift
+./SUPRA/WorkspaceKnowledgeGraph.swift
+./SUPRA/WorkspaceMemory.swift
+./SUPRA/WorkspaceModels.swift
+./SUPRA/WorkspaceObject.swift
+./SUPRA/WorkspaceRecommendation.swift
+./SUPRA/WorkspaceStatistics.swift
+
+============================================================
+FIN
+============================================================
+
+Rapport généré : SUPRA_COMPILATION_INVESTIGATION_20260724_152309.txt
+]7;file://MacBook-Pro-de-Nicolas.local/Users/nicolasalonso/Desktop/NOVA_OS/SUPRAzsh: no such file or directory: #/bin/bash

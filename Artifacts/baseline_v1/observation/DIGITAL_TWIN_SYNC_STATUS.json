@@ -1,0 +1,22 @@
+{
+  "schema":"supra.observation.digital-twin-sync-status.v1",
+  "observedAt":"2026-07-30T14:27:41+02:00",
+  "status":"PASS",
+  "canonicalTwinCandidate":"TwinRegistry/TwinSynchronizer/TwinUniverse implementation plus twin_registry.json",
+  "twinImplementationPresent":true,
+  "twinRegistryPresent":true,
+  "twinSynchronizerPresent":true,
+  "lastObservedTwinSync":"2026-07-30T12:27:41Z",
+  "repositoryObservation":"2026-07-30T14:27:41+02:00",
+  "ageSeconds":0,
+  "entityGraphCoverage":"VERIFIED",
+  "projectionGeneration":"VERIFIED",
+  "projectionConsistency":"PASS",
+  "facts":[
+    "twin_registry.json, twin_bindings.json, and twin_lifecycle.json were regenerated at the current observation timestamp.",
+    "GLOBAL_VIEW.json now reports the 2 project targets observed by the current Xcode test graph.",
+    "Current full-suite test evidence and target discovery are recorded for this synchronization."
+  ],
+  "projectionsChecked":["CONSTITUTION_COMPLIANCE.json","EXECUTION_SCOREBOARD.json","FACTORY_CAPABILITY_MATRIX.json","PROOF_REGISTRY.json","EVIDENCE_REGISTRY.json","STATUS.json","GLOBAL_VIEW.json"],
+  "staleProjections":[]
+}

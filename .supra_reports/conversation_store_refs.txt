@@ -1,0 +1,5 @@
+./SUPRA/ConversationMemoryStore.swift:42:final class ConversationMemoryStore: ObservableObject {
+./SUPRA/ConversationMemoryStore.swift:43:    static let shared = ConversationMemoryStore()
+./SUPRA/ConversationTwinView.swift:5:    @StateObject private var store = ConversationMemoryStore.shared
+./SUPRA/ConversationTwinView.swift:149:                ForEach(ConversationMemoryStore.allTags, id: \.self) { tag in
+./SUPRA/SUPRAOperationalCoreApp.swift:30:                    ConversationMemoryStore.shared.startAutoRefresh()

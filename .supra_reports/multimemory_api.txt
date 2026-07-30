@@ -1,0 +1,24 @@
+24:    func refresh() {
+29:    private func loadRegistries() {
+34:    private func loadJSON<T: Codable>(_ filename: String) -> T? {
+35:        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(filename)
+40:    private func subscribeToStores() {
+43:        }.store(in: &cancellables)
+46:        }.store(in: &cancellables)
+49:    private func rebuild() {
+57:        let disconnected = memories.filter { !$0.isConnected }
+62:            globalHealth: disconnected.isEmpty && !hasAnomalies ? "healthy"
+63:                : disconnected.count <= 2 ? "degraded" : "critical",
+68:    private func buildCannonicoMemory() -> MemorySourceInfo {
+69:        let store = CAnnoNicoSnapshotStore.shared
+73:            icon: "memorychip",
+74:            objectCount: store.references.count,
+75:            lastSync: store.cachedAt,
+76:            confidence: store.state.map { $0.sourceCount > 0 ? 1.0 : 0.5 } ?? 0,
+77:            anomalies: store.lastRefreshError.map { [$0] } ?? [],
+78:            isConnected: store.state != nil
+82:    private func buildProjectMemory() -> MemorySourceInfo {
+97:    private func buildRuntimeMemory() -> MemorySourceInfo {
+106:            anomalies: health.isConnected ? [] : ["Runtime disconnected"],
+111:    private func buildMissionMemory() -> MemorySourceInfo {
+125:    private func buildFileSystemMemory() -> MemorySourceInfo {

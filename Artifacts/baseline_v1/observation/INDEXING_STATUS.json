@@ -1,0 +1,16 @@
+{
+  "schema":"supra.observation.indexing-status.v1",
+  "observedAt":"2026-07-30T14:23:28+02:00",
+  "status":"PASS",
+  "project":"SUPRA.xcodeproj",
+  "xcodeProjectListing":"PASS",
+  "standaloneIndexAction":"NOT_EXPOSED_BY_XCODEBUILD_HELP",
+  "indexingCompleted":"PASS",
+  "indexingDurationSeconds":37,
+  "indexingErrors":[],
+  "unresolvedSymbols":[],
+  "indexStore":{"status":"PASS","path":"/private/tmp/SUPRA_OBSERVATION_CYCLE_DERIVED/Index.noindex/DataStore","nonEmptyRecordCount":2674},
+  "compileProxy":{"status":"PASS","buildDurationSeconds":null,"sourceFilesInRepository":328},
+  "observedDiagnostics":{"compilerErrors":0,"compilerWarnings":74},
+  "evidence":{"projectListLog":"/private/tmp/SUPRA_OBSERVATION_LIST.log","buildLog":"/private/tmp/SUPRA_OBSERVATION_CYCLE_TEST.log","indexSettingsLog":"/private/tmp/SUPRA_INDEX_SETTINGS.log"}
+}

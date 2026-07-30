@@ -1,0 +1,75 @@
+{
+  "read_contracts": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "description": "Read contracts for all agents accessing the Kernel. Anyone may read, but must respect access controls.",
+    "permissions": {
+      "all_agents": [
+        "GET /kernel/registry/missions",
+        "GET /kernel/registry/decisions", 
+        "GET /kernel/registry/proofs",
+        "GET /kernel/registry/components",
+        "GET /kernel/registry/providers",
+        "GET /kernel/registry/graphs",
+        "GET /kernel/registry/events",
+        "GET /kernel/registry/snapshots",
+        "GET /kernel/registry/adrs",
+        "GET /kernel/executive/memory",
+        "GET /kernel/runtime/state",
+        "GET /kernel/runtime/metrics",
+        "GET /kernel/workspace/info",
+        "GET /kernel/projections/*",
+        "HEAD /kernel/registry/*"
+      ],
+      "validated_agents": [
+        "GET /kernel/registry/missions/*",
+        "GET /kernel/registry/decisions/*",
+        "GET /kernel/registry/proofs/*",
+        "GET /kernel/registry/components/*",
+        "GET /kernel/registry/providers/*",
+        "GET /kernel/registry/snapshots/*",
+        "GET /kernel/registry/events/*"
+      ]
+    },
+    "access_patterns": {
+      "agents": "All validated agents may read any public records",
+      "auditors": "Full read access + audit logs",
+      "architects": "Full read + schema validation",
+      "builder": "Full read + write (single writer)",
+      "runtime": "Runtime state + metrics",
+      "explorer": "Discovery operations",
+      "research": "Knowledge queries"
+    },
+    "rate_limits": {
+      "reads_per_minute": 100,
+      "bulk_operations": {
+        "allowed": true,
+        "max_count": 50,
+        "pattern": "GET /kernel/registry/*"
+      }
+    },
+    "filters": {
+      "required_fields": ["id", "schema_version"],
+      "redacted_fields": [
+        "password",
+        "secret_key", 
+        "token",
+        "private_data"
+      ]
+    },
+    "temporal_validity": {
+      "cache_duration_minutes": 5,
+      "stale_after_minutes": 30,
+      "eventual_consistency": true
+    },
+    "security": {
+      "authentication": "JWT via opencode-zen",
+      "authorization": "RBAC based on agent registry",
+      "audit_log": "memory/audit_trail.jsonl",
+      "data_classification": {
+        "public": ["missions", "decisions", "proofs"],
+        "internal": ["runtime", "metrics"],
+        "confidential": ["runtime_state", "access_logs"]
+      }
+    }
+  }
+}

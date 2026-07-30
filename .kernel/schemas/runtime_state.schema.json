@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/runtime_state.schema.json",
+  "title": "Runtime State",
+  "description": "Current state of the runtime including active missions, agents, health, and metrics.",
+  "type": "object",
+  "required": ["id", "timestamp", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this runtime state snapshot"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of this state snapshot"
+    },
+    "kernel_version": {
+      "type": "string",
+      "description": "Kernel version this runtime state belongs to"
+    },
+    "node_identity": {
+      "type": "object",
+      "required": ["node_id", "hostname", "platform", "architecture"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "hostname": { "type": "string" },
+        "platform": { "type": "string" },
+        "architecture": { "type": "string" },
+        "bootstrap_version": { "type": "string" },
+        "tools": { "type": "object" }
+      }
+    },
+    "active_mission": {
+      "type": ["string", "null"],
+      "description": "ID of currently active mission"
+    },
+    "active_agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent_id", "status", "current_task"],
+        "properties": {
+          "agent_id": { "type": "string" },
+          "status": { "type": "string" },
+          "current_task": { "type": "string" },
+          "started_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "pending_gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate_id", "status"],
+        "properties": {
+          "gate_id": { "type": "string" },
+          "status": { "type": "string" },
+          "blocking_reason": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "IDs of pending next actions"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "total_missions": { "type": "integer" },
+        "completed_missions": { "type": "integer" },
+        "active_missions": { "type": "integer" },
+        "total_decisions": { "type": "integer" },
+        "total_proofs": { "type": "integer" },
+        "total_events": { "type": "integer" },
+        "total_snapshots": { "type": "integer" },
+        "uptime_seconds": { "type": "integer" }
+      }
+    },
+    "health": {
+      "type": "object",
+      "required": ["status", "last_check"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["HEALTHY", "DEGRADED", "UNHEALTHY", "RECOVERING"]
+        },
+        "last_check": { "type": "string", "format": "date-time" },
+        "issues": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum for integrity"
+    }
+  }
+}

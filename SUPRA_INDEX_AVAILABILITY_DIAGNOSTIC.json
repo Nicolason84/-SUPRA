@@ -1,0 +1,167 @@
+{
+  "observer": "GO_SUPRA_INDEX_AVAILABILITY_DIAGNOSTIC_V1",
+  "mode": "READ_ONLY",
+  "summary": {
+    "swift_files": 18,
+    "source_files_with_index_references": 5,
+    "index_path_literals": 1,
+    "existing_expected_paths": 0,
+    "known_index_json_files": 1
+  },
+  "checks": {
+    "swift_sources_found": true,
+    "index_references_found": true,
+    "index_path_literals_found": true,
+    "architecture_index_exists": true,
+    "architecture_index_valid_json": true,
+    "at_least_one_expected_index_path_exists": false
+  },
+  "root_cause": "Les chemins INDEX attendus par l’application sont absents",
+  "source_evidence": [
+    {
+      "file": "SUPRA/ArtifactReader.swift",
+      "index_references": [
+        {
+          "line": 28,
+          "text": "private static let indexURL = URL(fileURLWithPath: \"/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json\")"
+        },
+        {
+          "line": 50,
+          "text": "index: optionalJSONStatus(name: \"INDEX\", url: Self.indexURL),"
+        }
+      ],
+      "file_exists_expressions": [
+        "url.path"
+      ],
+      "file_url_expressions": [
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT1_INSTALLATION_PROOF.json\"",
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT2_INSTALLATION_PROOF.json\"",
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1/proofs/LOT3_INSTALLATION_PROOF.json\"",
+        "\"/Users/nicolasalonso/NOVA_OS/_SYSTEM_BUILD/FULL_BUILD_20260605_120156/BUILD_STATUS.md\"",
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_UI_DATA_BINDER_V1/CURRENT/MANIFEST.json\"",
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_CANNONICO_IMAC_ESTATE_V1/CURRENT/ESTATE_STATE.json\"",
+        "\"/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json\""
+      ]
+    },
+    {
+      "file": "SUPRA/ContentView.swift",
+      "index_references": [
+        {
+          "line": 1022,
+          "text": "subtitle: \"Cartographie et index canoniques\","
+        },
+        {
+          "line": 1030,
+          "text": "subtitle: \"Index mémoire et registre des ressources\","
+        },
+        {
+          "line": 3044,
+          "text": "for (index, value) in action.backupPaths.enumerated() {"
+        },
+        {
+          "line": 3046,
+          "text": "let destination = backup.appendingPathComponent(\"\\(index)-\\(source.lastPathComponent)\")"
+        }
+      ],
+      "file_exists_expressions": [
+        "terminalRegistryURL.path",
+        "url.path",
+        "rootURL.path",
+        "logURL.path",
+        "rollbackURL.path",
+        "raw.path",
+        "source.path",
+        "source.path"
+      ],
+      "file_url_expressions": [
+        "path",
+        "path",
+        "path",
+        "path",
+        "action.scriptPath",
+        "value",
+        "\"/bin/bash\"",
+        "action.scriptPath"
+      ]
+    },
+    {
+      "file": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "index_references": [],
+      "file_exists_expressions": [],
+      "file_url_expressions": [
+        "\"/usr/bin/python3\""
+      ]
+    },
+    {
+      "file": "SUPRA/Snapshot.swift",
+      "index_references": [
+        {
+          "line": 17,
+          "text": "let index: ArtifactStatus"
+        }
+      ],
+      "file_exists_expressions": [],
+      "file_url_expressions": []
+    },
+    {
+      "file": "SUPRA/SupraControlCenterView.swift",
+      "index_references": [
+        {
+          "line": 98,
+          "text": "value: snapshot.index.isAvailable ? \"1 / 1\" : \"0 / 1\","
+        },
+        {
+          "line": 100,
+          "text": "healthy: snapshot.index.isAvailable"
+        },
+        {
+          "line": 149,
+          "text": "let artifacts = snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]"
+        },
+        {
+          "line": 287,
+          "text": "List(snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]) { artifact in"
+        }
+      ],
+      "file_exists_expressions": [],
+      "file_url_expressions": []
+    }
+  ],
+  "artifact_candidates": [
+    {
+      "literal": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+      "resolved_candidates": [
+        {
+          "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+          "exists": false,
+          "is_file": false,
+          "is_directory": false
+        }
+      ]
+    }
+  ],
+  "existing_expected_paths": [],
+  "known_index_files": [
+    {
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json",
+      "exists": true,
+      "size_bytes": 14701,
+      "valid_json": true,
+      "observer": "GO_SUPRA_ARCHITECTURE_INDEX_V1",
+      "summary": {
+        "files": 18,
+        "symbols": 743,
+        "nodes": 770,
+        "edges": 320162,
+        "entrypoints": 1,
+        "views": 18,
+        "stores": 4,
+        "models": 27,
+        "runtimes": 4,
+        "bridges": 2,
+        "readers": 2
+      }
+    }
+  ],
+  "verdict": "INDEX_PATH_MISSING_OR_UNRESOLVED"
+}

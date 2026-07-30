@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z"
+  },
+  "project_duplicates": [
+    {
+      "type": "PROJECT_FORK",
+      "description": "SUPRA_RECOVERY est un fork de SUPRA avec 4 variantes",
+      "canonical": "SUPRA",
+      "duplicates": ["SUPRA_RECOVERY/CHAT", "SUPRA_RECOVERY/BRIDGE", "SUPRA_RECOVERY/HEALTH", "SUPRA_RECOVERY/BASELINE"],
+      "total_swift_files": 97,
+      "risk": "low",
+      "note": "Snapshots de récupération utiles en cas de régression"
+    },
+    {
+      "type": "PROJECT_FORK",
+      "description": "SUPRA_BISECT est une copie réduite de SUPRA",
+      "canonical": "SUPRA",
+      "duplicates": ["SUPRA_BISECT"],
+      "total_swift_files": 29,
+      "risk": "low",
+      "note": "Utilisé pour bissection, peut être supprimé après stabilisation"
+    },
+    {
+      "type": "APP_DUPLICATE",
+      "description": "NICO_APP et NICO_APP_CLEAN sont très proches",
+      "canonical": "NICO_APP (original)",
+      "duplicates": ["NICO_APP_CLEAN"],
+      "risk": "medium",
+      "note": "Deux versions d'iOS app avec 5.3GB de dérivés Xcode dans CLEAN"
+    },
+    {
+      "type": "APP_DUPLICATE",
+      "description": "SUPRA_HELENE existe dans 2 endroits",
+      "canonical": "/NOVA_OS/HELENE_APP_IOS/SUPRA_HELENE",
+      "duplicates": ["/NOVA_OS/NICO_APP_IOS/NICO_APP/SUPRA_HELENE"],
+      "risk": "medium",
+      "note": "SUPRA_HELENE est intégré dans NICO_APP ET en standalone"
+    }
+  ],
+  "video_swap_version_duplicates": [
+    {
+      "description": "VideoSwap V1 et V3 coexistent",
+      "v1_path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1",
+      "v3_path": "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_V3",
+      "risk": "medium",
+      "note": "V3 est plus récent et mieux architecturé (4 engines vs 6 packages)"
+    }
+  ],
+  "desktop_recovery_log_duplicates": [
+    {
+      "description": "Fichiers de récupération massifs sur le Bureau",
+      "total_size_mb": 236,
+      "files": [
+        "SUPRA_TOTAL_RECOVERY_20260724_152930.txt (78.8 MB)",
+        "SUPRA_TOTAL_RECOVERY_20260724_153101.txt (78.5 MB)",
+        "SUPRA_RECOVERY_V2_20260724_153402.txt (88.8 MB)"
+      ],
+      "risk": "low",
+      "note": "Logs de recovery probablement redondants entre eux"
+    }
+  ],
+  "backup_freeze_duplicates": [
+    {
+      "description": "FREEZE_SUPRA_* dossiers dans le projet SUPRA",
+      "count": 4,
+      "names": [
+        "FREEZE_SUPRA_ARCHITECTURE_INDEX_20260723T104017Z",
+        "FREEZE_SUPRA_FUNCTIONAL_AUTHORITY_20260723T105323Z",
+        "FREEZE_SUPRA_GRAPHS_20260723T103701Z",
+        "FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z",
+        "FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z"
+      ],
+      "risk": "low",
+      "note": "Freezes temporels - à archiver après stabilisation"
+    }
+  ],
+  "estimated_recoverable_space_mb": 350
+}

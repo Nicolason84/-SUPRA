@@ -43,7 +43,7 @@ struct ConversationRecord: Identifiable, Codable, Equatable, Sendable {
         case id, title, date, messages, tags, projects, decisions, missions, freezes, evidence, summary, sourceFile, importVersion, sourceCanonicalPath
     }
 
-    init(from decoder: Decoder) throws {
+    nonisolated init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
@@ -61,7 +61,7 @@ struct ConversationRecord: Identifiable, Codable, Equatable, Sendable {
         sourceCanonicalPath = try container.decodeIfPresent(String.self, forKey: .sourceCanonicalPath)
     }
 
-    init(id: String, title: String, date: Date, messages: [ConversationMessage], tags: [String], projects: [String], decisions: [String], missions: [String], freezes: [String], evidence: [String], summary: ConversationSummary? = nil, sourceFile: String, importVersion: Int, sourceCanonicalPath: String? = nil) {
+    nonisolated init(id: String, title: String, date: Date, messages: [ConversationMessage], tags: [String], projects: [String], decisions: [String], missions: [String], freezes: [String], evidence: [String], summary: ConversationSummary? = nil, sourceFile: String, importVersion: Int, sourceCanonicalPath: String? = nil) {
         self.id = id
         self.title = title
         self.date = date
@@ -601,13 +601,14 @@ final class ConversationMemoryStore: ObservableObject {
     }
 
     nonisolated static func findConversationFilesOffMain(in directory: URL) -> [URL] {
-        guard let enumerator = FileManager.default.enumerator(at: directory, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) else { return [] }
         var results: [URL] = []
-        for case let url as URL in enumerator {
-            if url.lastPathComponent == "ConversationMemoryIndex.json" { continue }
-            if url.lastPathComponent == "ConversationMemoryIndex_fingerprints.json" { continue }
-            if url.lastPathComponent == "conversations.json" || url.pathExtension == "json" {
-                results.append(url)
+        if let relativePaths = try? FileManager.default.subpathsOfDirectory(atPath: directory.path) {
+            results = relativePaths.map { URL(fileURLWithPath: directory.appendingPathComponent($0).path) }.filter { url in
+                guard !url.lastPathComponent.hasPrefix("."),
+                      url.lastPathComponent != "ConversationMemoryIndex.json",
+                      url.lastPathComponent != "ConversationMemoryIndex_fingerprints.json"
+                else { return false }
+                return url.lastPathComponent == "conversations.json" || url.pathExtension == "json"
             }
         }
         return results

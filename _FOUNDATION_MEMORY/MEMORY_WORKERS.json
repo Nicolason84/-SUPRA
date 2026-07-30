@@ -1,0 +1,19 @@
+{
+  "memory": "MEMORY_WORKERS",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "WRK-001", "name": "WorkerPoolView", "file": "SUPRA/WorkerPoolView.swift", "type": "view", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "WRK-002", "name": "NOVA_BUILD_SYSTEM agents", "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM/agents", "type": "agent_system", "project": "NOVA_BUILD_SYSTEM", "status": "active", "canonical": false, "archive": false, "reusable": true, "note": "Multiples versions d'agents (v5, v9)"
+    },
+    {
+      "uuid": "WRK-003", "name": "NOVA_BUILD_SYSTEM workers", "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM/execution", "type": "execution_engine", "project": "NOVA_BUILD_SYSTEM", "status": "active", "canonical": false, "archive": false, "reusable": true
+    },
+    {
+      "uuid": "WRK-004", "name": "SUPRA RUNTIME event source", "file": "SUPRA/RuntimeEventSource.swift", "type": "event_worker", "project": "SUPRA", "status": "active", "canonical": true, "archive": false, "reusable": true
+    }
+  ]
+}

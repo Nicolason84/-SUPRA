@@ -1,0 +1,12 @@
+{
+  "observer": "GO_SUPRA_RUNTIME_GRAPH_V1",
+  "mode": "READ_ONLY",
+  "summary": {
+    "files": 0,
+    "symbols": 0,
+    "nodes": 0,
+    "edges": 0
+  },
+  "nodes": [],
+  "edges": []
+}

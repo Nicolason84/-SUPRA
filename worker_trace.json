@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_JOB_SCHEDULER_V001",
+  "worker_pool_size": 6,
+  "workers_used": 3,
+  "traces": [
+    {
+      "worker_id": "worker_architect",
+      "agent": "SUPRA-Architect",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "assigned_job": "job_001",
+      "status": "completed",
+      "trace": [
+        {"t": "00:40:02", "action": "job_001 assigned", "result": "accepted"},
+        {"t": "00:40:03", "action": "reading files: mission_center.json, agent_permissions.json, execution_pipeline.json, builder_guard.json, parallel_strategy.json, job_scheduler.json, worker_pool.json, execution_state.json, agent_registry.json", "result": "9 files read"},
+        {"t": "00:41:00", "action": "analyzing architecture", "result": "in_progress"},
+        {"t": "00:42:00", "action": "producing assessment", "result": "architecture_score=8/10"},
+        {"t": "00:42:02", "action": "writing result to agent_results/job_architect_result.json", "result": "completed"}
+      ],
+      "duration_seconds": 120,
+      "output": "agent_results/job_architect_result.json",
+      "success": true
+    },
+    {
+      "worker_id": "worker_auditor",
+      "agent": "SUPRA-Auditor",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "assigned_job": "job_002",
+      "status": "completed",
+      "trace": [
+        {"t": "00:40:02", "action": "job_002 assigned", "result": "accepted"},
+        {"t": "00:40:03", "action": "auditing single-writer enforcement across 7 config files", "result": "in_progress"},
+        {"t": "00:41:30", "action": "checking: agent permissions, builder guard, access control", "result": "all read-only agents correctly restricted"},
+        {"t": "00:42:00", "action": "producing audit report", "result": "compliance_score=0.89, 7 violations"},
+        {"t": "00:42:02", "action": "writing result to agent_results/job_auditor_result.json", "result": "completed"}
+      ],
+      "duration_seconds": 120,
+      "output": "agent_results/job_auditor_result.json",
+      "success": true
+    },
+    {
+      "worker_id": "worker_reviewer",
+      "agent": "SUPRA-Reviewer",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "assigned_job": "job_003",
+      "status": "completed",
+      "trace": [
+        {"t": "00:40:02", "action": "job_003 assigned", "result": "accepted"},
+        {"t": "00:40:03", "action": "reviewing Scheduler design via API call to localhost:11434", "result": "in_progress"},
+        {"t": "00:40:30", "action": "Scheduler analysis complete", "result": "review_score=8/10"},
+        {"t": "00:40:32", "action": "writing result to agent_results/job_reviewer_result.json", "result": "completed"}
+      ],
+      "duration_seconds": 30,
+      "output": "agent_results/job_reviewer_result.json",
+      "success": true
+    }
+  ],
+  "summary": {
+    "workers_active": 3,
+    "workers_idle": 3,
+    "jobs_completed": 3,
+    "jobs_failed": 0,
+    "total_worker_time_seconds": 270,
+    "avg_job_duration_seconds": 90,
+    "worker_utilization_pct": 50.0
+  }
+}

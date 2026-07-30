@@ -1,0 +1,178 @@
+{
+  "activationSequence": [
+    "CREATE_SERVICES",
+    "BIND_DEPENDENCIES",
+    "PUBLISH_REFERENCES",
+    "ACTIVATE_RUNTIME",
+    "RUNTIME_READY"
+  ],
+  "bindingOrder": [
+    "MissionStore->MissionEvolutionEngine",
+    "MultiMemoryStore->MissionStore",
+    "MultiMemoryStore->RuntimeMonitor",
+    "SUPRAIntelligenceEngine->MultiMemoryStore",
+    "SUPRAIntelligenceEngine->MissionStore",
+    "SUPRAMissionObserver->SUPRAIntelligenceEngine",
+    "SUPRAMissionObserver->MultiMemoryStore",
+    "MissionOpportunityEngine->SUPRAMissionObserver",
+    "MissionEvolutionEngine->MissionOpportunityEngine"
+  ],
+  "cycles": [],
+  "duplicateBindings": [],
+  "edges": [
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "ControlTowerState" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "DecisionStore" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "MissionEvolutionEngine" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "MissionOpportunityEngine" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "MissionStore" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "MultiMemoryStore" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "RuntimeDataService" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "RuntimeMonitor" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "SUPRAIntelligenceEngine" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "SUPRAMissionObserver" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "SUPRARuntimeEvents" },
+    { "from": "SUPRACompositionRoot", "kind": "create", "to": "SUPRARuntimeKernel" },
+    { "from": "ControlTowerState", "kind": "init", "to": "RuntimeDataService" },
+    { "from": "ControlTowerState", "kind": "init", "to": "RuntimeMonitor" },
+    { "from": "MissionEvolutionEngine", "kind": "bind", "to": "MissionOpportunityEngine" },
+    { "from": "MissionOpportunityEngine", "kind": "bind", "to": "SUPRAMissionObserver" },
+    { "from": "MissionStore", "kind": "bind", "to": "MissionEvolutionEngine" },
+    { "from": "MissionStore", "kind": "init", "to": "MissionEvolutionEngine" },
+    { "from": "MultiMemoryStore", "kind": "bind", "to": "MissionStore" },
+    { "from": "MultiMemoryStore", "kind": "bind", "to": "RuntimeMonitor" },
+    { "from": "RuntimeMonitor", "kind": "init", "to": "RuntimeDataService" },
+    { "from": "SUPRAIntelligenceEngine", "kind": "bind", "to": "MissionStore" },
+    { "from": "SUPRAIntelligenceEngine", "kind": "bind", "to": "MultiMemoryStore" },
+    { "from": "SUPRAMissionObserver", "kind": "bind", "to": "MultiMemoryStore" },
+    { "from": "SUPRAMissionObserver", "kind": "bind", "to": "SUPRAIntelligenceEngine" }
+  ],
+  "generatedAt": "2026-07-29T12:00:00Z",
+  "initializationOrder": [
+    "RuntimeDataService",
+    "RuntimeMonitor",
+    "MultiMemoryStore",
+    "SUPRAIntelligenceEngine",
+    "SUPRAMissionObserver",
+    "MissionOpportunityEngine",
+    "MissionEvolutionEngine",
+    "MissionStore",
+    "DecisionStore",
+    "SUPRARuntimeEvents",
+    "ControlTowerState",
+    "SUPRARuntimeKernel"
+  ],
+  "maxDepth": 3,
+  "missingDependencies": [],
+  "nodes": [
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/ControlTowerState.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": ["RuntimeDataService", "RuntimeMonitor"],
+      "lateBindings": [],
+      "name": "ControlTowerState"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/DecisionStore.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": [],
+      "name": "DecisionStore"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/MISSION_EVOLUTION_ENGINE.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": ["MissionOpportunityEngine"],
+      "name": "MissionEvolutionEngine"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/MISSION_OPPORTUNITY_ENGINE.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": ["SUPRAMissionObserver"],
+      "name": "MissionOpportunityEngine"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/MissionStore.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": ["MissionEvolutionEngine"],
+      "lateBindings": ["MissionEvolutionEngine"],
+      "name": "MissionStore"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/MultiMemoryStore.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": ["MissionStore", "RuntimeMonitor"],
+      "name": "MultiMemoryStore"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/RuntimeDataService.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": [],
+      "name": "RuntimeDataService"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/RuntimeMonitor.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": ["RuntimeDataService"],
+      "lateBindings": [],
+      "name": "RuntimeMonitor"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/SUPRAIntelligenceEngine.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": ["MultiMemoryStore", "MissionStore"],
+      "name": "SUPRAIntelligenceEngine"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/SUPRAMissionObserver.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": ["SUPRAIntelligenceEngine", "MultiMemoryStore"],
+      "name": "SUPRAMissionObserver"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/SUPRARuntimeEvents.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": [],
+      "name": "SUPRARuntimeEvents"
+    },
+    {
+      "accessesCompositionRoot": false,
+      "activatesRuntimeInInit": false,
+      "filePath": "SUPRA/SUPRARuntimeKernel.swift",
+      "forbiddenSharedDependenciesInInit": [],
+      "initDependencies": [],
+      "lateBindings": [],
+      "name": "SUPRARuntimeKernel"
+    }
+  ],
+  "orphanServices": [],
+  "root": "SUPRACompositionRoot"
+}

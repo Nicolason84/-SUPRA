@@ -1,0 +1,56 @@
+{
+  "task_type": "research",
+  "agent": "SUPRA-Research",
+  "provider": "opencode-zen",
+  "model": "deepseek-v4-flash-free",
+  "bindings_source": "runtime_bindings.json",
+  "delegation_rule": "DEL_006",
+  "recommended_approach": {
+    "pattern": "UIHostingController-based incremental integration with single-direction state ownership and UIKit-owned navigation",
+    "best_practices": [
+      "Use UIHostingController to embed SwiftUI views in existing UIKit navigation stacks — zero navigation rewrite, push SwiftUI screens onto UINavigationController via hosting controller, remove NavigationStack from embedded views to avoid double navigation bars",
+      "Pick leaf screens first — start with low-traffic, low-complexity screens (settings, static detail, simple forms) that have no child view controllers; avoid migrating the most-trafficked screen first to contain regression blast radius",
+      "Define a feature boundary contract before migrating — UIKit owns navigation and lifecycle, SwiftUI owns rendering and local state, ViewModels coordinate both sides without UI framework imports",
+      "Use @Observable (Observation framework) over ObservableObject + @Published for iOS 18+; UIKit automatic observation tracking (iOS 18+) re-renders views when observable properties change without manual invalidation",
+      "Keep ViewModels UI-framework-agnostic — no UIColor, UIImage, or UIKit imports in ViewModel layer; same ViewModel powers both UIKit and SwiftUI versions, enabling test reuse across migrations",
+      "Add snapshot tests (swift-snapshot-testing by Point-Free) as the primary regression safety net — record golden images on first migration, diff every subsequent run; commit reference images to source control for visual regression detection in CI",
+      "Use .task instead of .onAppear for one-time async operations — .onAppear can fire multiple times during SwiftUI view lifecycle re-renders, causing duplicate API calls",
+      "Enable UIHostingController.sizingOptions = [.intrinsicContentSize] on iOS 16+ when embedding SwiftUI sections within UIKit screens via Auto Layout constraints",
+      "Pass explicit dismiss/pop callbacks to hosted SwiftUI views — @Environment(\\.dismiss) does not work for UIHostingController pushed by UIKit; use closures or a NavigationBridge object",
+      "Apply environment modifiers to the root view before passing it to UIHostingController — the hosting controller does not support adding environment values after creation without reassigning rootView",
+      "Use UIHostingConfiguration for SwiftUI content inside UICollectionViewCell and UITableViewCell — lightweight, preferred over managing child hosting controllers for cell-level migrations",
+      "Run snapshot/visual baseline checks on high-traffic screens and unit tests on feature logic parity; define rollback criteria before each release (e.g., crash rate rises above baseline by X% → rollback within one release window)",
+      "Migrate feature-by-feature, not file-by-file — a feature migration unit must include view, interactions, analytics events, error states, and accessibility checks",
+      "Keep a migration scorecard each sprint tracking: screens migrated, defects introduced, regression incidents, net delivery speed impact"
+    ],
+    "regression_risks": [
+      "Double navigation bars — SwiftUI NavigationStack inside UIHostingController pushed onto UINavigationController creates two navigation bars",
+      "@Environment(\\.dismiss) silent failure — no crash, but dismissal simply does not work when SwiftUI view is pushed via UIHostingController from UIKit navigation stack",
+      "ViewModel recreated repeatedly — using @ObservedObject instead of @StateObject on views that create their own ViewModel causes state loss on every SwiftUI re-render",
+      "Missing environment values crash — SwiftUI view expects @Environment object not provided at UIHostingController creation causes runtime crash",
+      "API calls firing multiple times — using .onAppear for data loading instead of .task causes duplicate network requests during SwiftUI view lifecycle re-renders",
+      "Hosted view zero-size in Auto Layout — UIHostingController without .intrinsicContentSize sizing option on iOS 16+ causes container collapse",
+      "Safe area propagation failure — tab bar insets or custom safe areas from UIKit not respected by hosted SwiftUI view content",
+      "State ownership confusion — shared state mutated from both UIKit and SwiftUI sides creates unpredictable UI state",
+      "Performance regression in lists — SwiftUI recreates views eagerly unlike UIKit's cell reuse; LazyVStack/LazyHGrid mitigate but need profiling for 10,000+ item lists",
+      "Analytics and experiment parity gaps — UIKit navigation tracking hooks may not fire when navigation is handled through SwiftUI NavigationStack or sheet modifiers",
+      "Lifecycle mismatch — SwiftUI state-driven lifecycle may call side effects at unexpected times compared to UIKit's predictable viewWillAppear/viewDidAppear sequence"
+    ],
+    "mitigation_strategies": [
+      "Keep navigation owned by UIKit — do not add NavigationStack inside SwiftUI views embedded in UINavigationController; use UIHostingController as the bridge and pass explicit callbacks for push/pop/dismiss",
+      "Use @StateObject for ViewModel ownership on views that create their own model; use @ObservedObject only when the ViewModel is injected from a parent that already owns it",
+      "Use .task { } modifier for async data loading — it automatically cancels when the view disappears and only fires once per view identity, unlike .onAppear which can fire multiple times",
+      "Pre-set all environment values on root view before passing to UIHostingController — e.g., .environmentObject(MyModel()).environment(\\.managedObjectContext, context) — and wrap in a container view if values need to change after creation",
+      "Always set hostingVC.view.backgroundColor = .clear when embedding SwiftUI over existing UIKit content to avoid opaque white background covering the parent's appearance",
+      "Store UIHostingController in a property — if only held as a child view controller, removing from parent deallocates it and the SwiftUI view disappears",
+      "Establish explicit rollback criteria before each migration release: define crash rate and performance thresholds that trigger automatic rollback within one release window",
+      "Add snapshot tests for every migrated screen state (loading, populated, empty, error) with swift-snapshot-testing; commit golden images to source control and use Git LFS for snapshot files",
+      "Use UIHostingConfiguration for table/collection view cells instead of managing child hosting controllers — lighter weight and handles reuse correctly",
+      "Instrument route transitions for observability — ensure analytics events fire equivalently for both UIKit and SwiftUI navigation paths during migration",
+      "Run a migration scorecard each sprint: track screens migrated, defects introduced, regression incidents, and net delivery speed impact to validate the migration strategy is improving outcomes",
+      "Phase migration rollout: days 1-15 baseline metrics + architecture standards, days 16-30 bridge layer + routing rules, days 31-50 low-risk screens + analytics parity, days 51-70 medium-complexity flows + snapshot checks + canary releases"
+    ]
+  },
+  "duration_seconds": 45,
+  "status": "completed"
+}

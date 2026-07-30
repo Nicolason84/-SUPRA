@@ -35,10 +35,10 @@ public enum ExecutiveEngineStatus: String, Sendable, Codable, CaseIterable {
 public struct ExecutiveEngineReport: Sendable, Codable, Equatable {
     public let engineID: String
     public let name: String
-    public let status: ExecutiveEngineStatus
-    public let uptime: TimeInterval
-    public let lastHeartbeat: Date
-    public let message: String
+    public var status: ExecutiveEngineStatus
+    public var uptime: TimeInterval
+    public var lastHeartbeat: Date
+    public var message: String
     public let version: String
 
     public init(engineID: String, name: String, status: ExecutiveEngineStatus, uptime: TimeInterval, lastHeartbeat: Date, message: String, version: String) {

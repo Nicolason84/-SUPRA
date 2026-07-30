@@ -1,0 +1,130 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-30T12:20:35Z",
+  "lifecycles": [
+    {
+      "id": "lc_twin_workspace_supra",
+      "twinId": "twin_workspace_supra",
+      "status": "active",
+      "createdBy": "TwinFactory",
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": "2026-07-30T12:20:35Z",
+      "lastSyncAt": "2026-07-30T12:20:35Z",
+      "lastVerifiedAt": "2026-07-30T12:20:35Z",
+      "versionHistory": [
+        {
+          "id": "ver_1",
+          "version": 1,
+          "status": "active",
+          "changeDescription": "Cr\u00e9ation initiale",
+          "changedBy": "TwinFactory",
+          "changedAt": "2026-07-23T23:51:02Z",
+          "hash": null
+        }
+      ],
+      "transitionHistory": [
+        {
+          "id": "trans_1",
+          "fromStatus": "creating",
+          "toStatus": "active",
+          "reason": "Cr\u00e9ation initiale",
+          "triggeredBy": "TwinFactory",
+          "triggeredAt": "2026-07-23T23:51:02Z"
+        }
+      ]
+    },
+    {
+      "id": "lc_twin_knowledge_graph",
+      "twinId": "twin_knowledge_graph",
+      "status": "active",
+      "createdBy": "TwinFactory",
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": "2026-07-30T12:20:35Z",
+      "lastSyncAt": "2026-07-30T12:20:35Z",
+      "lastVerifiedAt": "2026-07-30T12:20:35Z",
+      "versionHistory": [
+        {
+          "id": "ver_1",
+          "version": 1,
+          "status": "active",
+          "changeDescription": "Cr\u00e9ation initiale",
+          "changedBy": "TwinFactory",
+          "changedAt": "2026-07-23T23:51:02Z",
+          "hash": null
+        }
+      ],
+      "transitionHistory": [
+        {
+          "id": "trans_1",
+          "fromStatus": "creating",
+          "toStatus": "active",
+          "reason": "Cr\u00e9ation initiale",
+          "triggeredBy": "TwinFactory",
+          "triggeredAt": "2026-07-23T23:51:02Z"
+        }
+      ]
+    },
+    {
+      "id": "lc_twin_runtime_supra",
+      "twinId": "twin_runtime_supra",
+      "status": "active",
+      "createdBy": "TwinFactory",
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": "2026-07-30T12:20:35Z",
+      "lastSyncAt": "2026-07-30T12:20:35Z",
+      "lastVerifiedAt": "2026-07-30T12:20:35Z",
+      "versionHistory": [
+        {
+          "id": "ver_1",
+          "version": 1,
+          "status": "active",
+          "changeDescription": "Cr\u00e9ation initiale",
+          "changedBy": "TwinFactory",
+          "changedAt": "2026-07-23T23:51:02Z",
+          "hash": null
+        }
+      ],
+      "transitionHistory": [
+        {
+          "id": "trans_1",
+          "fromStatus": "creating",
+          "toStatus": "active",
+          "reason": "Cr\u00e9ation initiale",
+          "triggeredBy": "TwinFactory",
+          "triggeredAt": "2026-07-23T23:51:02Z"
+        }
+      ]
+    },
+    {
+      "id": "lc_twin_project_SUPRA",
+      "twinId": "twin_project_SUPRA",
+      "status": "active",
+      "createdBy": "TwinFactory",
+      "createdAt": "2026-07-23T23:51:02Z",
+      "updatedAt": "2026-07-30T12:20:35Z",
+      "lastSyncAt": "2026-07-30T12:20:35Z",
+      "lastVerifiedAt": "2026-07-30T12:20:35Z",
+      "versionHistory": [
+        {
+          "id": "ver_1",
+          "version": 1,
+          "status": "active",
+          "changeDescription": "Cr\u00e9ation initiale",
+          "changedBy": "TwinFactory",
+          "changedAt": "2026-07-23T23:51:02Z",
+          "hash": null
+        }
+      ],
+      "transitionHistory": [
+        {
+          "id": "trans_1",
+          "fromStatus": "creating",
+          "toStatus": "active",
+          "reason": "Cr\u00e9ation initiale",
+          "triggeredBy": "TwinFactory",
+          "triggeredAt": "2026-07-23T23:51:02Z"
+        }
+      ]
+    }
+  ]
+}

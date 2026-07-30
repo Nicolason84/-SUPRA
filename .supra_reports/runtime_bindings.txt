@@ -1,0 +1,670 @@
+./SUPRA/SUPRAChatView.swift:61:    case connected
+./SUPRA/SUPRAChatView.swift:67:        case .connected: "Runtime · Connected"
+./SUPRA/SUPRAChatView.swift:75:        case .connected: "checkmark.circle.fill"
+./SUPRA/SUPRAChatView.swift:83:        case .connected: .green
+./SUPRA/SUPRAChatView.swift:89:        self == .connected
+./SUPRA/SUPRAChatView.swift:348:                runtimeHealth = .connected
+./SUPRA/MissionContext.swift:36:    init(kernel: NOVAKnowledgeKernel = .shared) {
+./SUPRA/SUPRADataTwin.swift:18:    static let shared = SUPRADataTwin()
+./SUPRA/MissionGraphView.swift:15:                    ContentUnavailableView("No graph data", systemImage: "point.connected", description: Text("Run a mission graph to visualize."))
+./SUPRA/SUPRADeveloperTwin.swift:21:    static let shared = SUPRADeveloperTwin()
+./SUPRA/SUPRAWorldMapView.swift:24:    static let shared = SUPRAWorldMapState()
+./SUPRA/SUPRAWorldMapView.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAWorldMapView.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:32:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:33:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:34:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAWorldMapView.swift:35:    private let intelligence = SUPRAResourceIntelligenceEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:36:    private let evolution = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:37:    private let recommendations = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAWorldMapView.swift:105:    @StateObject private var state = SUPRAWorldMapState.shared
+./SUPRA/UniverseDashboard.swift:51:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseDashboard.swift:52:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/UniverseDashboard.swift:54:         bridge: OpenCodeBridge = MainActor.assumeIsolated { OpenCodeBridge.shared }) {
+./SUPRA/SUPRACommandCenterState.swift:94:    let connectionState: RuntimeConnectionState
+./SUPRA/SUPRACommandCenterState.swift:105:        connectionState = monitor.health.connectionState
+./SUPRA/SUPRACommandCenterState.swift:174:        let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRACommandCenterState.swift:175:        let engine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:176:        let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACommandCenterState.swift:238:    static let shared = SUPRACommandCenterState()
+./SUPRA/SUPRACommandCenterState.swift:243:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACommandCenterState.swift:244:    private let scheduler = SUPRAScheduler.shared
+./SUPRA/SUPRACommandCenterState.swift:245:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRACommandCenterState.swift:246:    private let gateway = RuntimeGateway.shared
+./SUPRA/SUPRACommandCenterState.swift:248:    private let multiMemoryStore = MultiMemoryStore.shared
+./SUPRA/SUPRACommandCenterState.swift:249:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:250:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACommandCenterState.swift:262:        scheduler.register(id: "command_center_refresh", priority: .low, label: "Command Center Refresh", cooldown: 15) { [weak self] in
+./SUPRA/SUPRACommandCenterState.swift:265:        scheduler.register(id: "copilot_refresh", priority: .low, label: "Copilot Refresh", cooldown: 30) { [weak self] in
+./SUPRA/RuntimeMonitor.swift:23:        OpenCodeClient.shared.configure(dataService: dataService)
+./SUPRA/RuntimeMonitor.swift:24:        OpenCodeClient.shared.start()
+./SUPRA/RuntimeMonitor.swift:26:        OpenCodeClient.shared.$events
+./SUPRA/RuntimeMonitor.swift:33:        OpenCodeClient.shared.$health
+./SUPRA/RuntimeMonitor.swift:42:        OpenCodeClient.shared.stop()
+./SUPRA/SUPRAOperationalControlCenterView.swift:4:    @StateObject private var resourceEngine = SUPRAResourceIntelligenceEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:5:    @StateObject private var potential = SUPRAMacPotential.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:6:    @StateObject private var recommendationEngine = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:7:    @StateObject private var evolutionEngine = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:8:    @StateObject private var envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:9:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/ConversationMemoryStore.swift:43:    static let shared = ConversationMemoryStore()
+./SUPRA/ConversationMemoryStore.swift:110:        connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:133:            connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:278:    private func connectToKnowledgeGraph() {
+./SUPRA/SettingsView.swift:6:    @ObservedObject private var client = OpenCodeClient.shared
+./SUPRA/SettingsView.swift:46:                            .fill(color(for: client.connectionState))
+./SUPRA/SettingsView.swift:48:                        Text(client.connectionState.rawValue)
+./SUPRA/SettingsView.swift:111:        case .disconnected, .offline: .red
+./SUPRA/SettingsView.swift:112:        case .connecting: .blue
+./SUPRA/SettingsView.swift:113:        case .connected: .green
+./SUPRA/RuntimeConnectionState.swift:4:    case disconnected = "Disconnected"
+./SUPRA/RuntimeConnectionState.swift:5:    case connecting = "Connecting"
+./SUPRA/RuntimeConnectionState.swift:6:    case connected = "Connected"
+./SUPRA/RuntimeConnectionState.swift:12:        case .disconnected: "circle.dashed"
+./SUPRA/RuntimeConnectionState.swift:13:        case .connecting: "arrow.triangle.2.circlepath"
+./SUPRA/RuntimeConnectionState.swift:14:        case .connected: "circle.fill"
+./SUPRA/RuntimeConnectionState.swift:22:        case .disconnected: "gray"
+./SUPRA/RuntimeConnectionState.swift:23:        case .connecting: "blue"
+./SUPRA/RuntimeConnectionState.swift:24:        case .connected: "green"
+./SUPRA/TwinRenderer.swift:59:    private let bindings: TwinBindings
+./SUPRA/TwinRenderer.swift:62:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinRenderer.swift:63:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinRenderer.swift:66:        self.bindings = bindings
+./SUPRA/TwinRenderer.swift:77:            let twinBindings = bindings.bindings(for: twin.id)
+./SUPRA/TwinRenderer.swift:93:                for binding in twinBindings.prefix(config.maxNeighbours) {
+./SUPRA/TwinRenderer.swift:95:                        id: binding.id,
+./SUPRA/TwinRenderer.swift:96:                        label: binding.sourceName,
+./SUPRA/TwinRenderer.swift:97:                        type: "binding",
+./SUPRA/TwinRenderer.swift:102:                        confidence: binding.strength,
+./SUPRA/TwinRenderer.swift:107:                        id: "edge_\(twin.id)_\(binding.id)",
+./SUPRA/TwinRenderer.swift:109:                        targetId: binding.id,
+./SUPRA/TwinRenderer.swift:110:                        label: binding.bindingType,
+./SUPRA/TwinRenderer.swift:111:                        weight: binding.strength,
+./SUPRA/TwinRenderer.swift:112:                        bidirectional: binding.bidirectional
+./SUPRA/SUPRAOSUniverseView.swift:48:                connectionWeb(center: CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2))
+./SUPRA/SUPRAOSUniverseView.swift:87:    private func connectionWeb(center: CGPoint) -> some View {
+./SUPRA/ExecutiveSearch.swift:46:    init(kernel: NOVAKnowledgeKernel = .shared, memory: ExecutiveMemory) {
+./SUPRA/CAnnoNicoIntegrationBridge.swift:11:        SUPRAEnvironmentResolver.shared.resolve()
+./SUPRA/CAnnoNicoIntegrationBridge.swift:16:        return SUPRAEnvironmentResolver.shared.path(for: "pucheroRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:22:        return SUPRAEnvironmentResolver.shared.path(for: "nicoAppRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:28:        return SUPRAEnvironmentResolver.shared.path(for: "videoSwapRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:33:    // All UI code must use CAnnoNicoSnapshotStore.shared.currentState
+./SUPRA/CAnnoNicoIntegrationBridge.swift:36:        let pucheroState = SUPRAEnvironmentResolver.shared.state(for: "pucheroRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:37:        let nicoState = SUPRAEnvironmentResolver.shared.state(for: "nicoAppRoot")
+./SUPRA/CAnnoNicoIntegrationBridge.swift:38:        let videoState = SUPRAEnvironmentResolver.shared.state(for: "videoSwapRoot")
+./SUPRA/SUPRAEnvironmentWorldModel.swift:17:    static let shared = SUPRAEnvironmentWorldModel()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:23:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:24:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:25:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:26:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEnvironmentWorldModel.swift:27:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:17:    static let shared = SUPRAResourceIntelligence()
+./SUPRA/SUPRAResourceIntelligenceView.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceView.swift:160:    @StateObject private var intelligence = SUPRAResourceIntelligence.shared
+./SUPRA/CockpitRuntimeView.swift:17:                    Label("Steps: \(trace.traces.count)", systemImage: "point.connected")
+./SUPRA/TwinUniverse.swift:9:    let bindingCount: Int
+./SUPRA/TwinUniverse.swift:24:    static let shared = TwinUniverse()
+./SUPRA/TwinUniverse.swift:32:    private lazy var bindings = TwinBindings()
+./SUPRA/TwinUniverse.swift:42:        kernel = .shared
+./SUPRA/TwinUniverse.swift:43:        registry = .shared
+./SUPRA/TwinUniverse.swift:52:    func initialize() {
+./SUPRA/TwinUniverse.swift:90:    var bindingsInstance: TwinBindings { bindings }
+./SUPRA/TwinUniverse.swift:111:            bindingCount: bindings.bindings.count,
+./SUPRA/TwinUniverse.swift:126:        Twins: \(s.twinCount) | Bindings: \(s.bindingCount)
+./SUPRA/SUPRASoftwareTwin.swift:29:    static let shared = SUPRASoftwareTwin()
+./SUPRA/ExecutiveDemoMode.swift:14:    static let shared = ExecutiveDemoMode()
+./SUPRA/ExecutiveDemoMode.swift:21:    private let worldModel = SUPRAWorldModel.shared
+./SUPRA/ExecutiveDemoMode.swift:22:    private let businessPlatform = SUPRABusinessPlatform.shared
+./SUPRA/ExecutiveDemoMode.swift:23:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/ExecutiveDemoMode.swift:24:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/ExecutiveDemoMode.swift:25:    private let intelligenceGraph = SUPRAIntelligenceGraph.shared
+./SUPRA/ExecutiveDemoMode.swift:26:    private let workerFabric = SUPRAWorkerFabric.shared
+./SUPRA/ExecutiveDemoMode.swift:27:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAGabrielConductorRuntime.swift:31:    let sharedSourceMode: String
+./SUPRA/SUPRAGabrielConductorRuntime.swift:44:        case sharedSourceMode = "shared_source_mode"
+./SUPRA/SUPRAGabrielConductorRuntime.swift:58:        sharedSourceMode: "READ_ONLY",
+./SUPRA/SUPRARecommendationCenter.swift:23:    static let shared = SUPRARecommendationEngine()
+./SUPRA/SUPRARecommendationCenter.swift:30:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRARecommendationCenter.swift:31:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:32:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:33:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:34:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRARecommendationCenter.swift:35:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRARecommendationCenter.swift:36:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRARecommendationCenter.swift:231:    @StateObject private var engine = SUPRARecommendationEngine.shared
+./SUPRA/NOVAKnowledgeKernel.swift:6:    static let shared = NOVAKnowledgeKernel()
+./SUPRA/NOVAKnowledgeKernel.swift:23:    private lazy var _bridge = OpenCodeBridge.shared
+./SUPRA/NOVAKnowledgeKernel.swift:24:    private lazy var _gateway = RuntimeGateway.shared
+./SUPRA/NOVAKnowledgeKernel.swift:46:    func registerObjects(_ objects: [CAnnoNicoObject]) {
+./SUPRA/NOVAKnowledgeKernel.swift:54:    func registerRelations(_ relations: [KnowledgeRelationship]) {
+./SUPRA/NOVAKnowledgeKernel.swift:59:    func registerSources(_ sources: [KnowledgeSource]) {
+./SUPRA/NOVAKnowledgeKernel.swift:98:            "initialized": isInitialized,
+./SUPRA/MultiMemoryStore.swift:6:    static let shared = MultiMemoryStore()
+./SUPRA/MultiMemoryStore.swift:41:        CAnnoNicoSnapshotStore.shared.$state.sink { [weak self] _ in
+./SUPRA/MultiMemoryStore.swift:57:        let disconnected = memories.filter { !$0.isConnected }
+./SUPRA/MultiMemoryStore.swift:62:            globalHealth: disconnected.isEmpty && !hasAnomalies ? "healthy"
+./SUPRA/MultiMemoryStore.swift:63:                : disconnected.count <= 2 ? "degraded" : "critical",
+./SUPRA/MultiMemoryStore.swift:69:        let store = CAnnoNicoSnapshotStore.shared
+./SUPRA/MultiMemoryStore.swift:106:            anomalies: health.isConnected ? [] : ["Runtime disconnected"],
+./SUPRA/TwinAnalytics.swift:27:    private let bindings: TwinBindings
+./SUPRA/TwinAnalytics.swift:31:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinAnalytics.swift:32:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinAnalytics.swift:34:         kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared }) {
+./SUPRA/TwinAnalytics.swift:36:        self.bindings = bindings
+./SUPRA/TwinAnalytics.swift:43:        let allBindings = bindings.bindings
+./SUPRA/TwinAnalytics.swift:78:        Twin Analytics: \(s.totalTwins) twins, \(s.totalBindings) bindings
+./SUPRA/WorkspaceDiscovery.swift:13:    private let factory = WorkspaceObjectFactory.shared
+./SUPRA/CAnnoNicoSnapshotStore.swift:18:    static let shared = CAnnoNicoSnapshotStore()
+./SUPRA/SUPRADecisionRoomView.swift:10:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/SUPRADecisionRoomView.swift:13:                if SUPRAMissionProposalEngine.shared.proposals.isEmpty {
+./SUPRA/SUPRADecisionRoomView.swift:17:                    ForEach(SUPRAMissionProposalEngine.shared.proposals.prefix(10)) { proposal in
+./SUPRA/SUPRADecisionRoomView.swift:47:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRADecisionRoomView.swift:180:                    _ = SUPRAMissionExecutor.shared.execute(p)
+./SUPRA/ConversationTwinView.swift:5:    @StateObject private var store = ConversationMemoryStore.shared
+./SUPRA/SUPRAOSLiveView.swift:8:        ("Bridge connecté", "il y a 30s", .supraGreen),
+./SUPRA/SUPRAEvolutionEngineView.swift:4:    @StateObject private var engine = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:4:    @StateObject private var evolution = SUPRAEvolutionEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:5:    @StateObject private var recommendations = SUPRARecommendationEngine.shared
+./SUPRA/SUPRAEvolutionRoomView.swift:168:                ruleCard("Budget CPU <5%", "Respect des ressources", SUPRABackgroundScheduler.shared.cpuBudgetUsed < 0.05 ? .supraGreen : .supraOrange)
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:26:    static let shared = SUPRAEnvironmentSnapshotStore()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:40:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:41:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:42:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:43:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:44:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:45:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:46:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:197:        let resolver = SUPRAEnvironmentResolver.shared
+./SUPRA/SUPRABackgroundScheduler.swift:23:    static let shared = SUPRABackgroundScheduler()
+./SUPRA/SUPRABackgroundScheduler.swift:30:    @Published private(set) var registeredTaskCount = 0
+./SUPRA/SUPRABackgroundScheduler.swift:32:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRABackgroundScheduler.swift:61:    func register(id: String, label: String, interval: TimeInterval = 120, action: @escaping () async -> Void) {
+./SUPRA/SUPRABackgroundScheduler.swift:63:        registeredTaskCount = tasks.count
+./SUPRA/SUPRABackgroundScheduler.swift:66:    func unregister(id: String) {
+./SUPRA/SUPRABackgroundScheduler.swift:68:        registeredTaskCount = tasks.count
+./SUPRA/SUPRABusinessDemoView.swift:4:    @StateObject private var demo = ExecutiveDemoMode.shared
+./SUPRA/SUPRABusinessDemoView.swift:94:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRABusinessDemoView.swift:152:                    SUPRAOSStatCard(label: "Proposals", value: "\(SUPRAMissionProposalEngine.shared.proposals.count)", icon: "doc.text.fill", color: .supraPurple)
+./SUPRA/SUPRABusinessDemoView.swift:155:            if let bp = SUPRABusinessPlatform.shared.customerTwin {
+./SUPRA/SUPRABusinessDemoView.swift:174:            if let w = SUPRAWorldModel.shared.world {
+./SUPRA/SUPRABusinessDemoView.swift:206:                    if let w = SUPRAWorldModel.shared.world {
+./SUPRA/SUPRAExecutiveCockpitView.swift:5:    @StateObject private var client = OpenCodeClient.shared
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:6:    static let shared = SUPRAPassiveRefreshCoordinator()
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:49:        let governor = SUPRAResourceGovernor.shared
+./SUPRA/UniverseEngine.swift:6:    static let shared = UniverseEngine()
+./SUPRA/UniverseEngine.swift:18:        universe = .shared
+./SUPRA/UniverseEngine.swift:19:        knowledge = .shared
+./SUPRA/UniverseEngine.swift:20:        bridge = .shared
+./SUPRA/UniverseEngine.swift:21:        gateway = .shared
+./SUPRA/UniverseEngine.swift:30:        universe.initialize()
+./SUPRA/UniverseEngine.swift:86:        Bridge: \(bridge.isConnected ? "connecté" : "déconnecté")
+./SUPRA/RuntimeEventSource.swift:8:    @Published private(set) var connectionState: RuntimeConnectionState = .disconnected
+./SUPRA/RuntimeEventSource.swift:31:        connectionState = .connecting
+./SUPRA/RuntimeEventSource.swift:36:            self.connectionState = .connected
+./SUPRA/RuntimeEventSource.swift:48:        connectionState = .disconnected
+./SUPRA/RuntimeEventSource.swift:153:    @Published private(set) var connectionState: RuntimeConnectionState = .disconnected
+./SUPRA/RuntimeEventSource.swift:156:        connectionState = .connecting
+./SUPRA/RuntimeEventSource.swift:159:            connectionState = .disconnected
+./SUPRA/RuntimeEventSource.swift:164:        connectionState = .disconnected
+./SUPRA/SUPRAMissionObserver.swift:6:    case memoryDisconnected = "MEMORY_DISCONNECTED"
+./SUPRA/SUPRAMissionObserver.swift:30:    static let shared = SUPRAMissionObserver()
+./SUPRA/SUPRAMissionObserver.swift:35:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRAMissionObserver.swift:36:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAMissionObserver.swift:37:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAMissionObserver.swift:38:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAMissionObserver.swift:77:                    id: UUID(), type: .memoryDisconnected,
+./SUPRA/SUPRAMissionObserver.swift:78:                    title: "\(mem.name) disconnected",
+./SUPRA/Models/SUPRAStructureMode.swift:11:        case .arbo: return "point.3.connected.trianglepath.dotted"
+./SUPRA/SUPRAScheduler.swift:34:    static let shared = SUPRAScheduler()
+./SUPRA/SUPRAScheduler.swift:48:        governor: SUPRAResourceGovernor = .shared,
+./SUPRA/SUPRAScheduler.swift:49:        store: CAnnoNicoSnapshotStore = .shared
+./SUPRA/SUPRAScheduler.swift:70:    func register(id: String, priority: SchedulerPriority = .medium, label: String,
+./SUPRA/SUPRAScheduler.swift:78:    func unregister(id: String) {
+./SUPRA/WorkerPoolView.swift:43:                Label(monitor.health.isConnected ? "Connected" : "Disconnected", systemImage: monitor.health.statusIcon)
+./SUPRA/SUPRAWorldModel.swift:26:    let connectionState: String
+./SUPRA/SUPRAWorldModel.swift:69:    static let shared = SUPRAWorldModel()
+./SUPRA/SUPRAWorldModel.swift:74:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAWorldModel.swift:75:    private let intelligenceEngine = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRAWorldModel.swift:76:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAWorldModel.swift:77:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAWorldModel.swift:91:            .autoconnect()
+./SUPRA/SUPRAWorldModel.swift:142:                connectionState: all.runtime.connectionState,
+./SUPRA/OpenCodeBridge.swift:45:    static let shared = OpenCodeBridge()
+./SUPRA/OpenCodeBridge.swift:56:    func connect() {
+./SUPRA/OpenCodeBridge.swift:61:    func disconnect() {
+./SUPRA/SUPRAHardwareTwin.swift:26:    static let shared = SUPRAHardwareTwin()
+./SUPRA/SUPRAMissionExecutor.swift:25:    static let shared = SUPRAMissionExecutor()
+./SUPRA/ProjectsCardView.swift:13:            subtitle: projectsSource.map { $0.isConnected ? "\($0.objectCount) active" : "Disconnected" } ?? "—",
+./SUPRA/ProjectsCardView.swift:26:                    row("Status", value: source.isConnected ? "Connected" : "Disconnected")
+./SUPRA/UniverseGraph.swift:12:    private let bindings: TwinBindings
+./SUPRA/UniverseGraph.swift:15:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseGraph.swift:16:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/UniverseGraph.swift:17:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/UniverseGraph.swift:21:        self.bindings = bindings
+./SUPRA/UniverseGraph.swift:44:            let twinBindings = bindings.bindings(for: twin.id)
+./SUPRA/UniverseGraph.swift:66:            for binding in twinBindings.prefix(5) {
+./SUPRA/UniverseGraph.swift:67:                let bindingNode = UniverseGraphNode(
+./SUPRA/UniverseGraph.swift:68:                    id: binding.id,
+./SUPRA/UniverseGraph.swift:69:                    name: binding.sourceName,
+./SUPRA/UniverseGraph.swift:70:                    type: "binding",
+./SUPRA/UniverseGraph.swift:71:                    group: "binding",
+./SUPRA/UniverseGraph.swift:74:                    description: "Binding: \(binding.bindingType)",
+./SUPRA/UniverseGraph.swift:77:                if !nodes.contains(where: { $0.id == binding.id }) {
+./SUPRA/UniverseGraph.swift:78:                    nodes.append(bindingNode)
+./SUPRA/UniverseGraph.swift:82:                    id: "edge_bind_\(edgeCounter)",
+./SUPRA/UniverseGraph.swift:84:                    targetId: binding.id,
+./SUPRA/UniverseGraph.swift:85:                    type: "binds",
+./SUPRA/UniverseGraph.swift:86:                    weight: binding.strength
+./SUPRA/KnowledgeIdentity.swift:15:    let registeredAt: String
+./SUPRA/SUPRAImmersiveSpaceView.swift:64:                // Composant de données attaché à chaque entité
+./SUPRA/RuntimeGateway.swift:45:    static let shared = RuntimeGateway()
+./SUPRA/RuntimeGateway.swift:56:    func connect() {
+./SUPRA/RuntimeGateway.swift:61:    func disconnect() {
+./SUPRA/KnowledgeContextEngine.swift:11:    func connect(to graph: KnowledgeGraph) {
+./SUPRA/TwinBindings.swift:10:    let bindingType: String
+./SUPRA/TwinBindings.swift:24:    @Published var bindings: [TwinBinding] = []
+./SUPRA/TwinBindings.swift:26:    func register(_ binding: TwinBinding) {
+./SUPRA/TwinBindings.swift:27:        bindings.append(binding)
+./SUPRA/TwinBindings.swift:30:    func bindings(for twinId: String) -> [TwinBinding] {
+./SUPRA/TwinBindings.swift:31:        bindings.filter { $0.twinId == twinId }
+./SUPRA/TwinBindings.swift:34:    func bindings(forSourceId sourceId: String) -> [TwinBinding] {
+./SUPRA/TwinBindings.swift:35:        bindings.filter { $0.sourceId == sourceId }
+./SUPRA/TwinBindings.swift:39:        bindings.filter { $0.twinId == twinId }.map(\.sourceId)
+./SUPRA/TwinBindings.swift:43:        bindings.filter { $0.sourceId == sourceId }.map(\.twinId)
+./SUPRA/TwinBindings.swift:46:    func unregister(twinId: String) {
+./SUPRA/TwinBindings.swift:47:        bindings.removeAll { $0.twinId == twinId }
+./SUPRA/TwinBindings.swift:51:        Dictionary(grouping: bindings, by: { $0.bindingType }).mapValues(\.count)
+./SUPRA/TwinBindings.swift:56:            id: "bind_\(twinId)_\(object.id)",
+./SUPRA/TwinBindings.swift:61:            bindingType: "canonical",
+./SUPRA/TwinExplorer.swift:18:    let bindings: [TwinBinding]
+./SUPRA/TwinExplorer.swift:36:    private let bindings: TwinBindings
+./SUPRA/TwinExplorer.swift:39:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinExplorer.swift:40:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinExplorer.swift:41:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinExplorer.swift:45:        self.bindings = bindings
+./SUPRA/TwinExplorer.swift:79:            let twinBindings = bindings.bindings(for: twin.id)
+./SUPRA/TwinExplorer.swift:105:            let twinBindings = bindings.bindings(for: twin.id)
+./SUPRA/TwinExplorer.swift:110:                bindings.bindings(forSourceId: b.sourceId).map(\.twinId)
+./SUPRA/TwinExplorer.swift:118:                bindings: twinBindings,
+./SUPRA/TwinExplorer.swift:129:    private func scoreExplanation(_ twin: TwinIdentity, _ score: Double, _ bindingCount: Int, _ neighbourCount: Int) -> String {
+./SUPRA/TwinExplorer.swift:130:        "Twin \(twin.name) (\(twin.type.rawValue)): score \(String(format: "%.2f", score)), \(bindingCount) bindings, \(neighbourCount) voisins"
+./SUPRA/TwinComparison.swift:14:    let bindingOverlap: Double
+./SUPRA/TwinComparison.swift:40:    private let bindings: TwinBindings
+./SUPRA/TwinComparison.swift:43:    nonisolated init(registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinComparison.swift:44:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinComparison.swift:47:        self.bindings = bindings
+./SUPRA/TwinComparison.swift:52:        let bindingsA = Set(bindings.bindings(for: twinA.id).map(\.sourceId))
+./SUPRA/TwinComparison.swift:53:        let bindingsB = Set(bindings.bindings(for: twinB.id).map(\.sourceId))
+./SUPRA/TwinComparison.swift:55:        let bindingOverlap = bindingsA.isEmpty && bindingsB.isEmpty ? 0 :
+./SUPRA/TwinComparison.swift:56:            Double(bindingsA.intersection(bindingsB).count) / Double(max(bindingsA.union(bindingsB).count, 1))
+./SUPRA/TwinComparison.swift:76:        let overall = (bindingOverlap * 0.3) + (descOverlap * 0.2) + (nameOverlap * 0.2) +
+./SUPRA/TwinComparison.swift:94:            sourceOverlap: Double(bindingsA.intersection(bindingsB).count),
+./SUPRA/TwinComparison.swift:95:            bindingOverlap: bindingOverlap,
+./SUPRA/RuntimeHealth.swift:13:    var connectionState: RuntimeConnectionState = .disconnected
+./SUPRA/TotalControlTowerView.swift:7:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:6:    static let shared = SUPRAIntelligenceEngine()
+./SUPRA/SUPRAIntelligenceEngine.swift:10:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:11:    private let scheduler = SUPRAScheduler.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:12:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:13:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:86:            result.append(SUPRAInsight(id: "health_critical", category: .health, severity: .critical, confidence: 0.95, message: "MultiMemory health is critical", suggestedAction: "Inspect memory source connectivity"))
+./SUPRA/SUPRAIntelligenceEngine.swift:102:                id: "mm_disconnected_\(memory.id)",
+./SUPRA/SUPRAIntelligenceEngine.swift:106:                message: "\(memory.name) memory source is disconnected",
+./SUPRA/SUPRAIntelligenceEngine.swift:158:        let disconnected = mm.memories.filter { !$0.isConnected }.count
+./SUPRA/SUPRAIntelligenceEngine.swift:161:        if disconnected == mm.memories.count {
+./SUPRA/SUPRAIntelligenceEngine.swift:162:            result.append(SUPRAInsight(id: "memory_all_down", category: .anomaly, severity: .critical, confidence: 0.95, message: "All memory sources are disconnected", suggestedAction: "Verify MultiMemoryStore registry files exist"))
+./SUPRA/SUPRAIntelligenceEngine.swift:165:        if lowConfidence > 0 && lowConfidence <= disconnected {
+./SUPRA/SUPRACanonicalWorldAccess.swift:36:    let connectionState: String
+./SUPRA/SUPRACanonicalWorldAccess.swift:86:    static let shared = SUPRACanonicalWorldAccess()
+./SUPRA/SUPRACanonicalWorldAccess.swift:95:        let store = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:118:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:130:        let cc = SUPRACommandCenterState.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:132:            return CanonicalRuntimeState(isConnected: false, agentCount: 0, activeMissions: 0, lastSync: "—", connectionState: "unknown", gatewayConnected: false, gatewayWorkers: 0, eventCount: 0)
+./SUPRA/SUPRACanonicalWorldAccess.swift:139:            connectionState: r.connectionState.rawValue,
+./SUPRA/SUPRACanonicalWorldAccess.swift:148:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:149:        let ex = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:174:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:184:        let g = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:205:        let mm = MultiMemoryStore.shared.snapshot
+./SUPRA/SUPRACanonicalWorldAccess.swift:227:        h.combine(CAnnoNicoSnapshotStore.shared.state?.cachedAt)
+./SUPRA/SUPRACanonicalWorldAccess.swift:228:        h.combine(MultiMemoryStore.shared.snapshot.lastUpdated)
+./SUPRA/SUPRACanonicalWorldAccess.swift:229:        h.combine(SUPRAResourceGovernor.shared.snapshot.timestamp)
+./SUPRA/SUPRACanonicalWorldAccess.swift:231:        h.combine(SUPRAMissionProposalEngine.shared.proposals.count)
+./SUPRA/SUPRACanonicalWorldAccess.swift:242:    init(access: SUPRACanonicalWorldAccess = .shared) {
+./SUPRA/MissionCopilotView.swift:18:                    if !SUPRAMissionProposalEngine.shared.proposals.isEmpty {
+./SUPRA/MissionCopilotView.swift:24:                        proposalsList(SUPRAMissionProposalEngine.shared.proposals.prefix(5))
+./SUPRA/MissionCopilotView.swift:28:                Text("Copilot not initialized")
+./SUPRA/MissionCopilotView.swift:64:                SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/MissionCopilotView.swift:73:                SUPRAMissionProposalEngine.shared.clear()
+./SUPRA/MissionCopilotView.swift:74:                SUPRAMissionExecutor.shared.clearHistory()
+./SUPRA/MissionCopilotView.swift:100:        let engine = SUPRAMissionProposalEngine.shared
+./SUPRA/MissionCopilotView.swift:101:        let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRACompanionView.swift:17:    private let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRACompanionView.swift:18:    private let intelligence = SUPRAIntelligenceEngine.shared
+./SUPRA/SUPRACompanionView.swift:43:            Projects: \(all.projects.totalProjects). Runtime: \(all.runtime.isConnected ? "connected" : "disconnected").
+./SUPRA/SUPRACompanionView.swift:60:            let proposals = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:4:    @StateObject private var envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:5:    @StateObject private var copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:6:    @StateObject private var snapshotStore = SUPRAEnvironmentSnapshotStore.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:7:    @StateObject private var autoMissions = SUPRAEnvironmentAutoMissions.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:8:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:344:                    detailCard("Network", hw.networkReachable ? hw.networkInterface : "Offline", hw.networkReachable ? "Connected" : "Disconnected", hw.networkReachable ? .supraGreen : .supraRed)
+./SUPRA/DecisionKnowledgeProvider.swift:55:            "runtime_bindings.json"
+./SUPRA/SUPRAOperationalCoreApp.swift:5:    @StateObject private var state = SUPRACommandCenterState.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:6:    @StateObject private var governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:7:    @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAOperationalCoreApp.swift:13:                .environmentObject(TwinUniverse.shared)
+./SUPRA/SUPRAOperationalCoreApp.swift:23:                    SUPRABackgroundScheduler.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:24:                    SUPRAResourceIntelligenceEngine.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:25:                    SUPRAEvolutionEngine.shared.observe()
+./SUPRA/SUPRAOperationalCoreApp.swift:26:                    SUPRAMacPotential.shared.compute()
+./SUPRA/SUPRAOperationalCoreApp.swift:27:                    SUPRAEnvironmentWorldModel.shared.startAutoRefresh()
+./SUPRA/SUPRAOperationalCoreApp.swift:28:                    SUPRARecommendationEngine.shared.analyze()
+./SUPRA/SUPRAOperationalCoreApp.swift:29:                    SUPRAPassiveRefreshCoordinator.shared.start()
+./SUPRA/SUPRAOperationalCoreApp.swift:30:                    ConversationMemoryStore.shared.startAutoRefresh()
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:6:    static let shared = SUPRAEnvironmentAutoMissions()
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:11:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:12:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/UniverseSearch.swift:13:    private let bindings: TwinBindings
+./SUPRA/UniverseSearch.swift:16:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/UniverseSearch.swift:17:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/UniverseSearch.swift:18:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/UniverseSearch.swift:22:        self.bindings = bindings
+./SUPRA/TwinLifecycle.swift:58:    func register(_ lifecycle: TwinLifecycle) {
+./SUPRA/TwinRegistry.swift:6:    static let shared = TwinRegistry()
+./SUPRA/TwinRegistry.swift:12:    private lazy var bindings = TwinBindings()
+./SUPRA/TwinRegistry.swift:16:    func register(_ twin: TwinIdentity) {
+./SUPRA/TwinRegistry.swift:25:    func registerBatch(_ newTwins: [TwinIdentity]) {
+./SUPRA/TwinRegistry.swift:27:            register(twin)
+./SUPRA/TwinRegistry.swift:51:    func bindings(for twinId: String) -> [TwinBinding] {
+./SUPRA/TwinRegistry.swift:52:        bindings.bindings(for: twinId)
+./SUPRA/SUPRAResourceGovernor.swift:61:    static let shared = SUPRAResourceGovernor()
+./SUPRA/SUPRAResourceGovernor.swift:211:        let workspace = NSWorkspace.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:32:    static let shared = SUPRAIntelligenceGraph()
+./SUPRA/SUPRAIntelligenceGraph.swift:38:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:39:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAIntelligenceGraph.swift:40:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAMacPotentialMap.swift:17:    static let shared = SUPRAMacPotential()
+./SUPRA/SUPRAMacPotentialMap.swift:25:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:26:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:27:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:28:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAMacPotentialMap.swift:29:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAMacPotentialMap.swift:30:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAMacPotentialMap.swift:150:    @StateObject private var potential = SUPRAMacPotential.shared
+./SUPRA/TwinFactory.swift:21:    private let bindings: TwinBindings
+./SUPRA/TwinFactory.swift:24:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinFactory.swift:25:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinFactory.swift:26:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinFactory.swift:30:        self.bindings = bindings
+./SUPRA/TwinFactory.swift:88:        registry.register(identity)
+./SUPRA/TwinFactory.swift:89:        lifecycles.register(lifecycle)
+./SUPRA/TwinFactory.swift:109:                    let binding = TwinBindings.createBinding(twinId: twin.id, object: obj, strength: 0.9)
+./SUPRA/TwinFactory.swift:110:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:129:                let binding = TwinBindings.createBinding(twinId: twin.id, object: obj, strength: 0.7)
+./SUPRA/TwinFactory.swift:130:                bindings.register(binding)
+./SUPRA/TwinFactory.swift:150:                    let binding = TwinBindings.createBinding(twinId: twin.id, object: obj, strength: 1.0)
+./SUPRA/TwinFactory.swift:151:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:170:                let binding = TwinBindings.createBinding(twinId: twin.id, object: decision, strength: 1.0)
+./SUPRA/TwinFactory.swift:171:                bindings.register(binding)
+./SUPRA/TwinFactory.swift:193:                    let binding = TwinBindings.createBinding(twinId: twin.id, object: first, strength: 0.8)
+./SUPRA/TwinFactory.swift:194:                    bindings.register(binding)
+./SUPRA/TwinFactory.swift:213:                let binding = TwinBindings.createBinding(twinId: twin.id, object: obj, strength: 0.9)
+./SUPRA/TwinFactory.swift:214:                bindings.register(binding)
+./SUPRA/CockpitNavigation.swift:22:        case .graph: "point.connected"
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:30:    static let shared = SUPRAResourceIntelligenceEngine()
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:46:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:47:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:48:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:49:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:50:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAApp.swift:17:                .environmentObject(TwinUniverse.shared)
+./SUPRA/ControlTowerState.swift:214:    private let gateway = RuntimeGateway.shared
+./SUPRA/ControlTowerState.swift:217:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAEnvironmentResolver.swift:22:    static let shared = SUPRAEnvironmentResolver()
+./SUPRA/EvidenceExplorerView.swift:78:        if file.contains("trace") { return "point.connected" }
+./SUPRA/SUPRABusinessPlatform.swift:67:    static let shared = SUPRABusinessPlatform()
+./SUPRA/SUPRABusinessPlatform.swift:72:    private let worldModel = SUPRAWorldModel.shared
+./SUPRA/SUPRABusinessPlatform.swift:73:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRABusinessPlatform.swift:74:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRABusinessPlatform.swift:75:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRABusinessPlatform.swift:101:            runtimeStatus: w.runtime.connectionState,
+./SUPRA/RuntimeView.swift:9:            subtitle: state.runtimeSection.map { $0.isConnected ? "Connected" : "Disconnected" } ?? "—",
+./SUPRA/RuntimeView.swift:19:                    connectionBadge(runtime.connectionState)
+./SUPRA/RuntimeView.swift:58:                Text("Runtime not initialized")
+./SUPRA/RuntimeView.swift:73:    private func connectionBadge(_ state: RuntimeConnectionState) -> some View {
+./SUPRA/RuntimeView.swift:75:            Circle().fill(connectionColor(state)).frame(width: 6, height: 6)
+./SUPRA/RuntimeView.swift:78:                .foregroundColor(connectionColor(state))
+./SUPRA/RuntimeView.swift:82:        .background(connectionColor(state).opacity(0.12))
+./SUPRA/RuntimeView.swift:86:    private func connectionColor(_ state: RuntimeConnectionState) -> Color {
+./SUPRA/RuntimeView.swift:88:        case .connected: .supraGreen
+./SUPRA/RuntimeView.swift:89:        case .connecting: .supraBlue
+./SUPRA/RuntimeView.swift:91:        case .disconnected, .offline: .supraRed
+./SUPRA/SUPRAWorkerFabric.swift:52:    private let snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAWorkerFabric.swift:53:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAWorkerFabric.swift:85:        // Runtime health check — reads from shared RuntimeMonitor
+./SUPRA/SUPRAWorkerFabric.swift:106:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAWorkerFabric.swift:141:    private let proposalEngine = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAWorkerFabric.swift:142:    private let executor = SUPRAMissionExecutor.shared
+./SUPRA/SUPRAWorkerFabric.swift:169:    static let shared = SUPRAWorkerFabric()
+./SUPRA/SUPRAOSFoundation.swift:64:    static let shared = SUPRAOSFoundation()
+./SUPRA/SUPRAOSFoundation.swift:73:        engine = .shared
+./SUPRA/SUPRAOSFoundation.swift:85:    func initialize() {
+./SUPRA/SUPRACommandCenterApp.swift:6:    @StateObject private var state = SUPRACommandCenterState.shared
+./SUPRA/SUPRACommandCenterApp.swift:7:    @StateObject private var governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRACommandCenterApp.swift:8:    @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
+./SUPRA/SUPRAEvolutionEngine.swift:30:    static let shared = SUPRAEvolutionEngine()
+./SUPRA/SUPRAEvolutionEngine.swift:38:    private let governor = SUPRAResourceGovernor.shared
+./SUPRA/SUPRAEvolutionEngine.swift:39:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAEvolutionEngine.swift:40:    private let copilot = SUPRAOptimizationCopilot.shared
+./SUPRA/SUPRAEvolutionEngine.swift:41:    private let hardwareTwin = SUPRAHardwareTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:42:    private let softwareTwin = SUPRASoftwareTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:43:    private let dataTwin = SUPRADataTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:44:    private let developerTwin = SUPRADeveloperTwin.shared
+./SUPRA/SUPRAEvolutionEngine.swift:45:    private let scheduler = SUPRABackgroundScheduler.shared
+./SUPRA/SUPRAEvolutionEngine.swift:54:        scheduler.register(id: "evolution_engine", label: "Evolution Engine", interval: 120) { [weak self] in
+./SUPRA/SUPRAEvolutionEngine.swift:61:        scheduler.unregister(id: "evolution_engine")
+./SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift:73:    static func registerSUPRAAndGabriel() {
+./SUPRA/UniverseTimeline.swift:16:    case bridgeConnected = "bridge_connected"
+./SUPRA/UniverseTimeline.swift:17:    case bridgeDisconnected = "bridge_disconnected"
+./SUPRA/UniverseTimeline.swift:104:            title: "Bridge connecté",
+./SUPRA/UniverseTimeline.swift:105:            description: "OpenCode Bridge connecté au Runtime",
+./SUPRA/Views/CAnnoNicoCircuitBoardView.swift:64:                            ? "point.3.connected.trianglepath.dotted"
+./SUPRA/SUPRAOptimizationCopilot.swift:21:    static let shared = SUPRAOptimizationCopilot()
+./SUPRA/SUPRAOptimizationCopilot.swift:28:    private let envModel = SUPRAEnvironmentWorldModel.shared
+./SUPRA/SUPRAMissionProposalEngine.swift:6:    static let shared = SUPRAMissionProposalEngine()
+./SUPRA/SUPRAMissionProposalEngine.swift:13:    private let observer = SUPRAMissionObserver.shared
+./SUPRA/SUPRAMissionProposalEngine.swift:67:        case .memoryDisconnected:
+./SUPRA/SUPRAMissionProposalEngine.swift:117:        case .memoryDisconnected: "Reconnect memory source"
+./SUPRA/SUPRAAutonomyControlView.swift:17:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/SUPRAAutonomyControlView.swift:31:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAAutonomyControlView.swift:97:        let pe = SUPRAMissionProposalEngine.shared
+./SUPRA/SUPRAAutonomyControlView.swift:122:        let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/ContentView.swift:71:            SUPRATerminalMegabusBridge.registerSUPRAAndGabriel()
+./SUPRA/ContentView.swift:137:                structureHero("ARBO", title: "Naviguer du sens vers la preuve.", subtitle: "Source → module → capacité → produit → preuve → décision → action.", symbol: "point.3.connected.trianglepath.dotted")
+./SUPRA/ContentView.swift:403:                subtitle: "Backend existant connecté à la façade",
+./SUPRA/ContentView.swift:539:        CAnnoNicoSnapshotStore.shared.currentState.snapshot
+./SUPRA/ContentView.swift:642:                        Label("Fuse", systemImage: "point.3.filled.connected.trianglepath.dotted")
+./SUPRA/ContentView.swift:915:                                            NSWorkspace.shared.activateFileViewerSelecting([
+./SUPRA/ContentView.swift:956:                        Label("Lineage", systemImage: "point.3.connected.trianglepath.dotted")
+./SUPRA/ContentView.swift:1055:                                NSWorkspace.shared.activateFileViewerSelecting([
+./SUPRA/ContentView.swift:1176:                        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./SUPRA/ContentView.swift:1227:                    NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./SUPRA/ContentView.swift:1914:                Text("connected")
+./SUPRA/ContentView.swift:2036:                icon: "point.3.connected.trianglepath.dotted"
+./SUPRA/ContentView.swift:2091:                        + "Le registre correspondant doit être reconnecté."
+./SUPRA/ContentView.swift:2190:                    subtitle: "Façade native connectée au modèle canonique",
+./SUPRA/ContentView.swift:2608:                let connection = try baseModel.connectingSemanticProductFeeds()
+./SUPRA/ContentView.swift:2609:                model = connection.model
+./SUPRA/ContentView.swift:2610:                monetizableOpportunities = connection.opportunities
+./SUPRA/ContentView.swift:2666:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])
+./SUPRA/ContentView.swift:2864:    func connectingSemanticProductFeeds() throws -> SUPRASemanticFacadeConnection {
+./SUPRA/ContentView.swift:2889:        let connectedProjects = projectsFeed.projects.map { item in
+./SUPRA/ContentView.swift:2919:        let connectedMetrics = SUPRAMetrics(
+./SUPRA/ContentView.swift:2920:            projects: connectedProjects.count,
+./SUPRA/ContentView.swift:2929:        let connectedSections = sections.map { section in
+./SUPRA/ContentView.swift:2935:                count: section.id == "products" ? productRecords.count : (section.id == "projects" ? connectedProjects.count : section.count),
+./SUPRA/ContentView.swift:2939:        let connectedSources = sources.map { source in
+./SUPRA/ContentView.swift:2949:        let connectedAlerts = alerts.filter {
+./SUPRA/ContentView.swift:2952:        let connectedModel = SUPRAExecutiveModel(
+./SUPRA/ContentView.swift:2960:            metrics: connectedMetrics,
+./SUPRA/ContentView.swift:2961:            sections: connectedSections,
+./SUPRA/ContentView.swift:2962:            projects: connectedProjects,
+./SUPRA/ContentView.swift:2965:            sources: connectedSources,
+./SUPRA/ContentView.swift:2966:            alerts: connectedAlerts
+./SUPRA/ContentView.swift:2968:        return SUPRASemanticFacadeConnection(model: connectedModel, opportunities: opportunityRecords)
+./SUPRA/ContentView.swift:3080:        case .architecture: return "point.3.connected.trianglepath.dotted"
+./SUPRA/ContentView.swift:3169:        NSWorkspace.shared.open(architectureURL)
+./SUPRA/ContentView.swift:3173:        NSWorkspace.shared.open(authorityURL)
+./SUPRA/ContentView.swift:3177:        NSWorkspace.shared.open(storageURL)
+./SUPRA/ContentView.swift:3215:                    Text(model.lastError == nil ? "CURRENT connected" : "CURRENT degraded")
+./SUPRA/ContentView.swift:3404:                    subtitle: "Read-only CURRENT board connection"
+./SUPRA/WorkspaceObject.swift:6:    static let shared = WorkspaceObjectFactory()
+./SUPRA/RuntimeEvent.swift:20:        case .dagGenerated: "point.connected"
+./SUPRA/ExecutiveCockpitFoundation.swift:80:    init(kernel: NOVAKnowledgeKernel = .shared,
+./SUPRA/ExecutiveCockpitFoundation.swift:90:    func initialize() {
+./SUPRA/ExecutiveCockpitFoundation.swift:156:        guard let state = state else { return "Cockpit not initialized" }
+./SUPRA/ExecutiveCockpitFoundation.swift:165:        Bridge: \(state.bridgeConnected ? "connected" : "disconnected")
+./SUPRA/TwinSynchronizer.swift:36:    private let bindings: TwinBindings
+./SUPRA/TwinSynchronizer.swift:39:    nonisolated init(kernel: NOVAKnowledgeKernel = MainActor.assumeIsolated { NOVAKnowledgeKernel.shared },
+./SUPRA/TwinSynchronizer.swift:40:         registry: TwinRegistry = MainActor.assumeIsolated { TwinRegistry.shared },
+./SUPRA/TwinSynchronizer.swift:41:         bindings: TwinBindings = MainActor.assumeIsolated { TwinBindings() },
+./SUPRA/TwinSynchronizer.swift:45:        self.bindings = bindings
+./SUPRA/TwinSynchronizer.swift:57:            let twinBindings = bindings.bindings(for: twin.id)
+./SUPRA/TwinSynchronizer.swift:58:            for binding in twinBindings {
+./SUPRA/TwinSynchronizer.swift:59:                guard binding.sourceType == "workspace" else { continue }
+./SUPRA/TwinSynchronizer.swift:61:                let objectExists = objects.contains { $0.id == binding.sourceId }
+./SUPRA/TwinSynchronizer.swift:64:                        id: "sync_del_\(binding.id)",
+./SUPRA/TwinSynchronizer.swift:67:                        objectId: binding.sourceId,
+./SUPRA/TwinSynchronizer.swift:68:                        objectName: binding.sourceName,
+./SUPRA/TwinSynchronizer.swift:115:                registry.register(twin)
+./SUPRA/KnowledgeGraph.swift:15:    func registerProvider(_ provider: KnowledgeProvider) {
+./SUPRA/SUPRAMemoryLensView.swift:23:        let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:38:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:72:            let access = SUPRACanonicalWorldAccess.shared
+./SUPRA/SUPRAMemoryLensView.swift:105:            let observations = SUPRAMissionObserver.shared.observations
+./SUPRA/SUPRAMemoryLensView.swift:141:            let eng = SUPRAIntelligenceEngine.shared.state
+./SUPRA/RuntimeSourceProtocol.swift:10:    var connectionState: RuntimeConnectionState { get }
+./SUPRA/SUPRAOSHomeView.swift:80:                statItem(value: "\(universe.state?.bindingCount ?? 0)", label: "Liaisons", color: .supraOrange)
+./SUPRA/OpenCodeClient.swift:7:    static let shared = OpenCodeClient()
+./SUPRA/OpenCodeClient.swift:12:    @Published var connectionState: RuntimeConnectionState = .disconnected
+./SUPRA/OpenCodeClient.swift:31:        connectionState = .disconnected
+./SUPRA/OpenCodeClient.swift:44:            source.$connectionState
+./SUPRA/OpenCodeClient.swift:46:                .assign(to: &$connectionState)
+./SUPRA/OpenCodeClient.swift:90:        source.$connectionState
+./SUPRA/OpenCodeClient.swift:92:            .assign(to: &$connectionState)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:78:    static func registerSUPRAAndGabriel() {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:414:        case .arbo: return "point.3.connected.trianglepath.dotted"
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:509:            SUPRATerminalMegabusBridge.registerSUPRAAndGabriel()
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:651:                structureHero("ARBO", title: "Naviguer du sens vers la preuve.", subtitle: "Source → module → capacité → produit → preuve → décision → action.", symbol: "point.3.connected.trianglepath.dotted")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:746:                            ? "point.3.connected.trianglepath.dotted"
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1014:                subtitle: "Backend existant connecté à la façade",
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1253:                        Label("Fuse", systemImage: "point.3.filled.connected.trianglepath.dotted")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1526:                                            NSWorkspace.shared.activateFileViewerSelecting([
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1567:                        Label("Lineage", systemImage: "point.3.connected.trianglepath.dotted")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1666:                                NSWorkspace.shared.activateFileViewerSelecting([
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1787:                        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1838:                    NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:2525:                Text("connected")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:2647:                icon: "point.3.connected.trianglepath.dotted"
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:2702:                        + "Le registre correspondant doit être reconnecté."
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:2801:                    subtitle: "Façade native connectée au modèle canonique",
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3219:                let connection = try baseModel.connectingSemanticProductFeeds()
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3220:                model = connection.model
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3221:                monetizableOpportunities = connection.opportunities
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3277:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3475:    func connectingSemanticProductFeeds() throws -> SUPRASemanticFacadeConnection {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3500:        let connectedProjects = projectsFeed.projects.map { item in
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3530:        let connectedMetrics = SUPRAMetrics(
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3531:            projects: connectedProjects.count,
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3540:        let connectedSections = sections.map { section in
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3546:                count: section.id == "products" ? productRecords.count : (section.id == "projects" ? connectedProjects.count : section.count),
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3550:        let connectedSources = sources.map { source in
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3560:        let connectedAlerts = alerts.filter {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3563:        let connectedModel = SUPRAExecutiveModel(
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3571:            metrics: connectedMetrics,
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3572:            sections: connectedSections,
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3573:            projects: connectedProjects,
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3576:            sources: connectedSources,
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3577:            alerts: connectedAlerts
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3579:        return SUPRASemanticFacadeConnection(model: connectedModel, opportunities: opportunityRecords)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3748:        case .architecture: return "point.3.connected.trianglepath.dotted"
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3837:        NSWorkspace.shared.open(architectureURL)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3841:        NSWorkspace.shared.open(authorityURL)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3845:        NSWorkspace.shared.open(storageURL)
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3883:                    Text(model.lastError == nil ? "CURRENT connected" : "CURRENT degraded")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:4072:                    subtitle: "Read-only CURRENT board connection"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:78:    static func registerSUPRAAndGabriel() {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:414:        case .arbo: return "point.3.connected.trianglepath.dotted"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:509:            SUPRATerminalMegabusBridge.registerSUPRAAndGabriel()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:651:                structureHero("ARBO", title: "Naviguer du sens vers la preuve.", subtitle: "Source → module → capacité → produit → preuve → décision → action.", symbol: "point.3.connected.trianglepath.dotted")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:746:                            ? "point.3.connected.trianglepath.dotted"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1014:                subtitle: "Backend existant connecté à la façade",
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1253:                        Label("Fuse", systemImage: "point.3.filled.connected.trianglepath.dotted")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1526:                                            NSWorkspace.shared.activateFileViewerSelecting([
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1567:                        Label("Lineage", systemImage: "point.3.connected.trianglepath.dotted")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1666:                                NSWorkspace.shared.activateFileViewerSelecting([
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1787:                        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1838:                    NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:2525:                Text("connected")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:2647:                icon: "point.3.connected.trianglepath.dotted"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:2702:                        + "Le registre correspondant doit être reconnecté."
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:2801:                    subtitle: "Façade native connectée au modèle canonique",
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3219:                let connection = try baseModel.connectingSemanticProductFeeds()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3220:                model = connection.model
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3221:                monetizableOpportunities = connection.opportunities
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3277:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3475:    func connectingSemanticProductFeeds() throws -> SUPRASemanticFacadeConnection {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3500:        let connectedProjects = projectsFeed.projects.map { item in
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3530:        let connectedMetrics = SUPRAMetrics(
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3531:            projects: connectedProjects.count,
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3540:        let connectedSections = sections.map { section in
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3546:                count: section.id == "products" ? productRecords.count : (section.id == "projects" ? connectedProjects.count : section.count),
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3550:        let connectedSources = sources.map { source in
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3560:        let connectedAlerts = alerts.filter {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3563:        let connectedModel = SUPRAExecutiveModel(
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3571:            metrics: connectedMetrics,
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3572:            sections: connectedSections,
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3573:            projects: connectedProjects,
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3576:            sources: connectedSources,
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3577:            alerts: connectedAlerts
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3579:        return SUPRASemanticFacadeConnection(model: connectedModel, opportunities: opportunityRecords)
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3748:        case .architecture: return "point.3.connected.trianglepath.dotted"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3837:        NSWorkspace.shared.open(architectureURL)
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3841:        NSWorkspace.shared.open(authorityURL)
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3845:        NSWorkspace.shared.open(storageURL)
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3883:                    Text(model.lastError == nil ? "CURRENT connected" : "CURRENT degraded")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:4072:                    subtitle: "Read-only CURRENT board connection"
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Core/Megabus/SUPRATerminalMegabusBridge.swift:72:    static func registerSUPRAAndGabriel() {
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:198:    func connectingSemanticProductFeeds() throws -> SUPRASemanticFacadeConnection {
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:223:        let connectedProjects = projectsFeed.projects.map { item in
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:253:        let connectedMetrics = SUPRAMetrics(
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:254:            projects: connectedProjects.count,
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:263:        let connectedSections = sections.map { section in
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:269:                count: section.id == "products" ? productRecords.count : (section.id == "projects" ? connectedProjects.count : section.count),
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:273:        let connectedSources = sources.map { source in
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:283:        let connectedAlerts = alerts.filter {
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:286:        let connectedModel = SUPRAExecutiveModel(
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:294:            metrics: connectedMetrics,
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:295:            sections: connectedSections,
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:296:            projects: connectedProjects,
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:299:            sources: connectedSources,
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:300:            alerts: connectedAlerts
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAExecutiveModel.swift:302:        return SUPRASemanticFacadeConnection(model: connectedModel, opportunities: opportunityRecords)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:68:        case .architecture: return "point.3.connected.trianglepath.dotted"
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:157:        NSWorkspace.shared.open(architectureURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:161:        NSWorkspace.shared.open(authorityURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:165:        NSWorkspace.shared.open(storageURL)
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift:149:                let connection = try baseModel.connectingSemanticProductFeeds()
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift:150:                model = connection.model
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift:151:                monetizableOpportunities = connection.opportunities
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Store/SUPRAExecutiveStore.swift:207:        NSWorkspace.shared.activateFileViewerSelecting([modelURL])
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:12:        XCTestObservationCenter.shared.addTestObserver(self)
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:331:    let attachments: [TestAttachment]
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:388:        self.init(type: .assertionFailure, compactDescription: description, detailedDescription: description, associatedError: nil, sourceCodeContext: .init(callStack: [], location: location), attachments: [])
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:396:    init(_ attachment: XCTAttachment) {
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:398:            name: attachment.name,
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:399:            uniformTypeIdentifier: attachment.uniformTypeIdentifier,
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:400:            payload: attachment.value(forKey: "payload") as? Data
+./SUPRA_AST_PLATFORM/.build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORMPackageTests.derived/runner.swift:436:            attachments: issue.attachments.map { .init($0) }

@@ -19,15 +19,20 @@ struct MissionRow: View {
 
             HStack(spacing: 8) {
                 Label(mission.priority.rawValue, systemImage: "flag.fill")
-                Text(mission.category)
+                Text(mission.lifecycle.rawValue)
                 Spacer()
-                Label(mission.owner, systemImage: "person.fill")
+                Label(mission.authority.rawValue, systemImage: "person.fill")
             }
             .font(.caption)
             .foregroundStyle(.secondary)
 
+            Text(mission.currentStep)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+
             HStack(spacing: 10) {
-                Label(dueDateText, systemImage: "calendar")
+                Label(mission.health.rawValue, systemImage: "heart.text.square")
                 Spacer()
                 ProgressView(value: mission.progress)
                     .frame(maxWidth: 100)
@@ -37,10 +42,5 @@ struct MissionRow: View {
             .foregroundStyle(.secondary)
         }
         .padding(.vertical, 6)
-    }
-
-    private var dueDateText: String {
-        guard let dueDate = mission.dueDate else { return "No due date" }
-        return dueDate.formatted(.dateTime.day().month(.abbreviated).year())
     }
 }

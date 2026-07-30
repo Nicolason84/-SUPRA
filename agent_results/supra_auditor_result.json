@@ -1,0 +1,108 @@
+{
+  "agent": "SUPRA-Auditor",
+  "timestamp": "2026-07-23T20:00:00Z",
+  "files_checked": [
+    "opencode.json",
+    "AGENTS.md",
+    ".opencode/registry/agent_registry.json",
+    ".opencode/registry/model_registry.json",
+    ".opencode/registry/capability_registry.json",
+    ".opencode/registry/workflow_registry.json",
+    ".opencode/runtime/router.json",
+    ".opencode/runtime/fallbacks.json",
+    ".opencode/runtime/routing_rules.json",
+    ".opencode/runtime/provider_registry.json",
+    ".opencode/workflows/benchmark.json",
+    ".opencode/workflows/consensus.json",
+    ".opencode/workflows/fallback.json",
+    ".opencode/workflows/parallel.json",
+    ".opencode/workflows/review.json",
+    ".opencode/workflows/single_agent.json",
+    ".gitignore",
+    "SUPRA/ContentView.swift.BACKUP_V5_20260718_080641",
+    "SUPRA/ContentView.swift.before_ollama_swift6_20260720_160224"
+  ],
+  "results": {
+    "opencode.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 9 subagent definitions match agent_registry. 8 commands reference valid agents. References section points to markdown documentation files. Skills paths include .opencode/workflows (exists) and .opencode/skills (exists but empty)."
+    },
+    "AGENTS.md": {
+      "status": "WARN",
+      "details": "Documents 9 agents, matching agent_registry count. Pipeline workflow mentions SUPRA-Planner, SUPRA-Comparator, SUPRA-FusionEngine, SUPRA-Validator which are NOT defined in any registry or opencode.json. These are undocumented pipeline agents with no formal definition."
+    },
+    ".opencode/registry/agent_registry.json": {
+      "status": "WARN",
+      "details": "Valid JSON. 9 unique agent IDs. All model references resolve to model_registry.json. 18 capability names referenced (design, adr, structural_analysis, code_generation, testing, bug_fixing, security_audit, compliance, code_review_static, code_quality, performance_analysis, search, mapping, investigation, bug_analysis, classification, orchestration, planning) are NOT defined in capability_registry.json. These are orphan capability references."
+    },
+    ".opencode/registry/model_registry.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 7 unique model IDs. All provider references (anthropic, ollama) exist in provider_registry.json. All capability references exist in capability_registry.json. All models are referenced by at least one agent, fallback chain, or routing rule. No orphans."
+    },
+    ".opencode/registry/capability_registry.json": {
+      "status": "WARN",
+      "details": "Valid JSON. 11 formal capability definitions and 11 task mappings. All agent references resolve to agent_registry.json. All model references resolve to model_registry.json. Gap: agent_registry references ~18 additional capability names that have no formal definition here, indicating incomplete coverage of the capability taxonomy."
+    },
+    ".opencode/registry/workflow_registry.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 6 workflow definitions with unique IDs. All referenced by routing_rules.json. Each workflow also has a corresponding individual file in .opencode/workflows/. Definitions in registry and individual files are consistent."
+    },
+    ".opencode/runtime/router.json": {
+      "status": "PASS",
+      "details": "Valid JSON. Classifier model anthropic/claude-sonnet-4-6 exists in model_registry. All 9 classifier categories exist in capability_registry. All registry and runtime paths point to existing files. Scoring weights sum to 1.0. Selector strategies are well-defined."
+    },
+    ".opencode/runtime/fallbacks.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 7 model fallback entries, all referencing model IDs that exist in model_registry.json. Fallback chains are acyclic and terminate at codellama:13b (empty chain, retry_count=0). Default fallback chain models all exist. Global timeout and max_retries configured."
+    },
+    ".opencode/runtime/routing_rules.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 9 routing rules with unique IDs. All agent references resolve to agent_registry.json. All model references resolve to model_registry.json. All workflow references resolve to workflow_registry.json. Priority levels: 8 rules at 10, 1 catch-all at 1. First-match evaluation mode. Catch-all pattern \"*\" routes to SUPRA-Explorer with fallback workflow."
+    },
+    ".opencode/runtime/provider_registry.json": {
+      "status": "PASS",
+      "details": "Valid JSON. 4 providers defined (anthropic, ollama, openai, google). anthropic and ollama models reference IDs consistent with model_registry naming (provider/model format). openai and google marked as unavailable with no active references - correctly declared but inactive. No API keys or secrets exposed. Ollama auto-discovery configured."
+    },
+    ".opencode/workflows/benchmark.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'benchmark' matches workflow_registry entry. 4 stages with unique IDs. Mode 'benchmark' correct for evaluation workflows."
+    },
+    ".opencode/workflows/consensus.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'consensus' matches workflow_registry entry. 4 stages with unique IDs. n_agents=3, strategy='weighted' for fusion. Mode 'consensus' correct."
+    },
+    ".opencode/workflows/fallback.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'fallback' matches workflow_registry entry. 4 stages including failure_detection with conditions array. Mode 'sequential_fallback' correct. max_fallbacks=3."
+    },
+    ".opencode/workflows/parallel.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'parallel' matches workflow_registry entry. 3 stages with unique IDs. Mode 'parallel' correct."
+    },
+    ".opencode/workflows/review.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'review' matches workflow_registry entry. 3 stages with unique IDs. max_iterations=3 at both stage and workflow level. Mode 'iterative' correct."
+    },
+    ".opencode/workflows/single_agent.json": {
+      "status": "PASS",
+      "details": "Valid JSON. ID 'single_agent' matches workflow_registry entry. 2 stages with unique IDs. Mode 'sequential' correct. fallback=true, consistent with registry."
+    },
+    ".gitignore": {
+      "status": "WARN",
+      "details": "Covers .DS_Store, Xcode build artifacts, analysis directories, logs, xcuserdata, and backup patterns (*.BACKUP*, *.before_*). Does NOT ignore agent_results/ directory (may be intentional). Backup file patterns are correctly gitignored but backup files exist in source tree (ContentView.swift.BACKUP_V5_20260718_080641, ContentView.swift.before_ollama_swift6_20260720_160224)."
+    },
+    "SUPRA/ContentView.swift.BACKUP_V5_20260718_080641": {
+      "status": "WARN",
+      "details": "Backup file present in source directory. While matched by .gitignore *.BACKUP* pattern, it represents stale artifacts that should be cleaned up."
+    },
+    "SUPRA/ContentView.swift.before_ollama_swift6_20260720_160224": {
+      "status": "WARN",
+      "details": "Pre-refactoring backup file present in source directory. While matched by .gitignore *.before_* pattern, it represents stale artifacts that should be cleaned up."
+    }
+  },
+  "integrity_score": 0.78,
+  "security_issues": [
+    "No API keys, secrets, or credentials found in any configuration file. Provider base URLs are defined without embedded tokens. Anthropic API endpoint is listed as https://api.anthropic.com/v1 (no key hardcoded). OpenCode and OpenAI/Google providers are either unused or marked unavailable. No security concerns detected."
+  ],
+  "summary": "Static configuration audit of 19 files complete. All files pass JSON syntax validation (100%). Cross-references between agent, model, capability, and workflow registries are structurally sound with zero orphan model or agent IDs. Primary integrity gap: agent_registry.json references 18 capability names that lack formal definitions in capability_registry.json, indicating incomplete taxonomy coverage (~67% of agent capability claims undocumented). Secondary issues: AGENTS.md references 4 pipeline-only agents (SUPRA-Planner, SUPRA-Comparator, SUPRA-FusionEngine, SUPRA-Validator) absent from any registry; .opencode/skills/ directory is empty; 2 stale backup files exist in source tree. Overall integrity score 0.78/1.00: registry structure is well-organized and cross-linked, but capability documentation is incomplete. Recommendation: add all agent capability names to capability_registry.json, define missing pipeline agents, clean up backup files, and populate .opencode/skills/ or remove the path reference."
+}

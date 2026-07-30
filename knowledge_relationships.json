@@ -1,0 +1,191 @@
+{
+  "version": "2.0.0",
+  "timestamp": "2026-07-23T23:43:35Z",
+  "relationshipTypes": [
+    {
+      "id": "belongs_to",
+      "name": "Belongs To",
+      "inverse": "contains",
+      "weight": 1.0,
+      "bidirectional": true,
+      "description": "Appartenance hiérarchique"
+    },
+    {
+      "id": "depends_on",
+      "name": "Depends On",
+      "inverse": "required_by",
+      "weight": 0.9,
+      "bidirectional": true,
+      "description": "Dépendance fonctionnelle"
+    },
+    {
+      "id": "references",
+      "name": "References",
+      "inverse": "referenced_by",
+      "weight": 0.7,
+      "bidirectional": true,
+      "description": "Référence croisée"
+    },
+    {
+      "id": "implements",
+      "name": "Implements",
+      "inverse": "implemented_by",
+      "weight": 0.8,
+      "bidirectional": false,
+      "description": "Implémentation"
+    },
+    {
+      "id": "validated_by",
+      "name": "Validated By",
+      "inverse": "validates",
+      "weight": 0.85,
+      "bidirectional": true,
+      "description": "Validation"
+    },
+    {
+      "id": "derived_from",
+      "name": "Derived From",
+      "inverse": "derives",
+      "weight": 0.75,
+      "bidirectional": false,
+      "description": "Dérivation"
+    },
+    {
+      "id": "version_of",
+      "name": "Version Of",
+      "inverse": "has_version",
+      "weight": 0.6,
+      "bidirectional": true,
+      "description": "Versioning"
+    },
+    {
+      "id": "part_of",
+      "name": "Part Of",
+      "inverse": "contains",
+      "weight": 0.9,
+      "bidirectional": true,
+      "description": "Composition"
+    },
+    {
+      "id": "related_to",
+      "name": "Related To",
+      "inverse": "related_to",
+      "weight": 0.5,
+      "bidirectional": true,
+      "description": "Relation générique"
+    },
+    {
+      "id": "commit_for",
+      "name": "Commit For",
+      "inverse": "has_commit",
+      "weight": 0.95,
+      "bidirectional": true,
+      "description": "Commit lié à un objet"
+    },
+    {
+      "id": "report_for",
+      "name": "Report For",
+      "inverse": "has_report",
+      "weight": 0.9,
+      "bidirectional": true,
+      "description": "Rapport lié à un objet"
+    },
+    {
+      "id": "freeze_of",
+      "name": "Freeze Of",
+      "inverse": "has_freeze",
+      "weight": 0.85,
+      "bidirectional": true,
+      "description": "Freeze lié à un objet"
+    },
+    {
+      "id": "caused_by",
+      "name": "Caused By",
+      "inverse": "causes",
+      "weight": 0.7,
+      "bidirectional": false,
+      "description": "Causalité"
+    },
+    {
+      "id": "documents",
+      "name": "Documents",
+      "inverse": "documented_by",
+      "weight": 0.8,
+      "bidirectional": false,
+      "description": "Documentation"
+    },
+    {
+      "id": "analyzes",
+      "name": "Analyzes",
+      "inverse": "analyzed_by",
+      "weight": 0.75,
+      "bidirectional": false,
+      "description": "Analyse"
+    },
+    {
+      "id": "supersedes",
+      "name": "Supersedes",
+      "inverse": "superseded_by",
+      "weight": 0.6,
+      "bidirectional": false,
+      "description": "Remplacement"
+    },
+    {
+      "id": "configures",
+      "name": "Configures",
+      "inverse": "configured_by",
+      "weight": 0.65,
+      "bidirectional": false,
+      "description": "Configuration"
+    },
+    {
+      "id": "extends",
+      "name": "Extends",
+      "inverse": "extended_by",
+      "weight": 0.7,
+      "bidirectional": false,
+      "description": "Extension"
+    },
+    {
+      "id": "supports",
+      "name": "Supports",
+      "inverse": "supported_by",
+      "weight": 0.6,
+      "bidirectional": true,
+      "description": "Support"
+    },
+    {
+      "id": "resolves",
+      "name": "Resolves",
+      "inverse": "resolved_by",
+      "weight": 0.8,
+      "bidirectional": false,
+      "description": "Résolution"
+    },
+    {
+      "id": "blocks",
+      "name": "Blocks",
+      "inverse": "blocked_by",
+      "weight": 0.5,
+      "bidirectional": true,
+      "description": "Blocage"
+    },
+    {
+      "id": "contributes_to",
+      "name": "Contributes To",
+      "inverse": "receives_from",
+      "weight": 0.6,
+      "bidirectional": true,
+      "description": "Contribution"
+    },
+    {
+      "id": "triggers",
+      "name": "Triggers",
+      "inverse": "triggered_by",
+      "weight": 0.55,
+      "bidirectional": false,
+      "description": "Déclenchement"
+    }
+  ],
+  "totalRelations": 1307
+}

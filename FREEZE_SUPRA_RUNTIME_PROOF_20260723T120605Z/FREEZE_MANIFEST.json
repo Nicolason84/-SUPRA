@@ -1,0 +1,20 @@
+{
+  "freeze": "SUPRA_RUNTIME_PROOF",
+  "generated_utc": "20260723T120605Z",
+  "status": "VALIDATED",
+  "producer": "GO_SUPRA_RUNTIME_SMOKE_TEST_V1",
+  "artifact": "SUPRA_RUNTIME_SMOKE_TEST.json",
+  "checks": {
+    "build_succeeded": true,
+    "process_survived_12_seconds": true,
+    "crash_not_detected": true,
+    "application_process_visible": true
+  },
+  "runtime": {
+    "process_alive_after_12_seconds": true,
+    "application_process_visible": true,
+    "crash_detected": false,
+    "premature_exit_code": null
+  },
+  "verdict": "PASS"
+}

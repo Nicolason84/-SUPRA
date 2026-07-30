@@ -1,0 +1,59 @@
+{
+  "event_registry": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "description": "Event registry for tracking all significant state changes in the Kernel. Events are append-only and form the authoritative audit trail.",
+    "created_at": "2026-07-29T00:00:00Z",
+    "status": "FREEZE",
+    "verdict": "PASS",
+    "event_types": {
+      "MISSION_CREATED": "Mission created in Kernel",
+      "MISSION_STARTED": "Mission execution started",
+      "MISSION_COMPLETED": "Mission execution completed successfully",
+      "MISSION_FAILED": "Mission execution failed",
+      "DECISION_PROPOSED": "Decision proposed",
+      "DECISION_ANALYZED": "Decision analyzed",
+      "DECISION_RECOMMENDED": "Decision recommended",
+      "DECISION_APPROVED": "Decision approved by authority",
+      "DECISION_REJECTED": "Decision rejected",
+      "PROBLEM_DETECTED": "Problem detected during validation",
+      "PROBLEM_RESOLVED": "Problem resolved",
+      "COMPONENT_REGISTERED": "Component registered in Kernel",
+      "COMPONENT_ACTIVATED": "Component activated",
+      "COMPONENT_DEACTIVATED": "Component deactivated",
+      "FACTORY_EXECUTED": "Factory execution completed",
+      "GATE_PASSED": "Gate validation passed",
+      "GATE_FAILED": "Gate validation failed",
+      "MEMORY_CONSOLIDATED": "Memory consolidated for continuity",
+      "PROVIDER_CHANGED": "Provider changed automatically",
+      "AUDIT_COMPLETED": "Audit completed successfully",
+      "PROOF_GENERATED": "Proof generated and verified"
+    },
+    "event_schema": {
+      "file": ".kernel/schemas/event.schema.json",
+      "description": "Schema for event journal entries"
+    },
+    "workflow": {
+      "capture": "All significant mutations are automatically captured as events",
+      "append": "Events are append-only and immutable",
+      "validation": "Events are validated before registration"
+    },
+    "indexes": {
+      "by_type": "Events filtered by event type",
+      "by_actor": "Events filtered by actor",
+      "by_timeline": "Events ordered by timestamp",
+      "by_object": "Events filtered by object id"
+    },
+    "journal": {
+      "file": ".kernel/memory/events/journal.jsonl",
+      "format": "JSON Lines",
+      "rotation": "daily",
+      "retention": "365 days"
+    },
+    "event_counts": {
+      "total_events": 0,
+      "events_today": 0,
+      "events_this_week": 0,
+      "events_this_month": 0
+    }
+  }
+}

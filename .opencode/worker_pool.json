@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "name": "SUPRA Worker Pool",
+  "description": "Pool of workers that execute jobs as assigned by the Scheduler. Each worker maps a job to an agent.",
+  "workers": [
+    {
+      "id": "worker_architect",
+      "agent": "SUPRA-Architect",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "idle",
+      "capabilities": ["architecture", "design", "adr", "structural_analysis"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    },
+    {
+      "id": "worker_auditor",
+      "agent": "SUPRA-Auditor",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "idle",
+      "capabilities": ["analysis", "audit", "compliance", "validator"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    },
+    {
+      "id": "worker_reviewer",
+      "agent": "SUPRA-Reviewer",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "status": "idle",
+      "capabilities": ["review", "code_quality", "comparator"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    },
+    {
+      "id": "worker_explorer",
+      "agent": "SUPRA-Explorer",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "idle",
+      "capabilities": ["navigation", "search", "mapping"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    },
+    {
+      "id": "worker_research",
+      "agent": "SUPRA-Research",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "idle",
+      "capabilities": ["research", "investigation", "documentation"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    },
+    {
+      "id": "worker_builder",
+      "agent": "SUPRA-Builder",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "idle",
+      "capabilities": ["code_generation", "testing", "write", "mutation"],
+      "current_job": null,
+      "max_concurrent_jobs": 1,
+      "success_rate": 1.0,
+      "total_jobs_completed": 0
+    }
+  ],
+  "pool_config": {
+    "max_workers": 6,
+    "assignment_strategy": "capability_match",
+    "idle_timeout_ms": 60000,
+    "worker_health_check_interval_ms": 30000
+  }
+}

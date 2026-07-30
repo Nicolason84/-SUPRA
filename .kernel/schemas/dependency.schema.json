@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/schemas/dependency.schema.json",
+  "title": "Dependency",
+  "description": "A dependency relationship between two components or entities in the system.",
+  "type": "object",
+  "required": ["id", "source_id", "target_id", "type", "schema_version"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the dependency"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "ID of the source component"
+    },
+    "target_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "ID of the target component"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["COMPILE_TIME", "RUNTIME", "DATA", "CONTRACT", "ORDERING", "RESOURCE", "KNOWLEDGE"],
+      "description": "Type of dependency"
+    },
+    "strength": {
+      "type": "string",
+      "enum": ["REQUIRED", "OPTIONAL", "WEAK"],
+      "description": "Strength of the dependency"
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Human-readable description of the dependency"
+    },
+    "version_constraint": {
+      "type": ["string", "null"],
+      "description": "Version constraint (e.g., ^1.0.0, >=2.0.0)"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of creation"
+    },
+    "validated_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when validated"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 checksum for integrity verification"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:43:13Z",
+  "sources": [
+    {
+      "id": "src_artifact",
+      "type": "artifact",
+      "name": "Artifact",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 14,
+      "reliability": 0.85
+    },
+    {
+      "id": "src_decision",
+      "type": "decision",
+      "name": "Decision",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 10,
+      "reliability": 0.85
+    },
+    {
+      "id": "src_freeze",
+      "type": "freeze",
+      "name": "Freeze",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 11,
+      "reliability": 0.85
+    },
+    {
+      "id": "src_git",
+      "type": "git",
+      "name": "Git",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 29,
+      "reliability": 0.95
+    },
+    {
+      "id": "src_report",
+      "type": "report",
+      "name": "Report",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 30,
+      "reliability": 0.85
+    },
+    {
+      "id": "src_workspace",
+      "type": "workspace",
+      "name": "Workspace",
+      "path": null,
+      "version": "1.0",
+      "lastAccessed": "2026-07-23T23:43:13Z",
+      "objectCount": 744,
+      "reliability": 0.95
+    }
+  ]
+}

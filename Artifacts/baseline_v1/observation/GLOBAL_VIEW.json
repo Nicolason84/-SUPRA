@@ -1,0 +1,48 @@
+{
+  "observer": "GO_SUPRA_OBSERVER_V4",
+  "mode": "READ_ONLY",
+  "generated": "2026-07-30T12:27:41Z",
+  "authority": {
+    "project": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj",
+    "pbxproj": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj/project.pbxproj"
+  },
+  "versions": {
+    "archiveVersion": "1",
+    "objectVersion": "77"
+  },
+  "graph": {
+    "targets": ["SUPRA", "SUPRATests"],
+    "groups": [
+      "Products",
+      "SUPRA",
+      "SUPRA.app",
+      "SUPRA"
+    ],
+    "products": [
+      "SUPRA.app"
+    ],
+    "sources": [
+      "Sources"
+    ],
+    "frameworks": [
+      "CAnnoNicoIntegration in Frameworks",
+      "Frameworks"
+    ],
+    "resources": [
+      "Resources"
+    ],
+    "configs": [
+      "Debug",
+      "Release"
+    ]
+  },
+  "summary": {
+    "targets": 2,
+    "groups": 4,
+    "products": 1,
+    "sources": 1,
+    "frameworks": 2,
+    "resources": 1,
+    "configs": 2
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "mission": "GO_SUPRA_REMOVE_INLINE_MODEL_DUPLICATES_V1",
+  "timestamp": "2026-07-23T14:34:43.373461",
+  "content_view": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift",
+  "canonical_models": [
+    "SUPRA/_EXTRACTION_PLAN/Models/SUPRARecord.swift",
+    "SUPRA/_EXTRACTION_PLAN/Models/SUPRASection.swift",
+    "SUPRA/_EXTRACTION_PLAN/Models/SUPRASource.swift"
+  ],
+  "removed_inline_declarations": [
+    {
+      "name": "SUPRARecord",
+      "line_count": 32,
+      "backup": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRARecord.swift"
+    },
+    {
+      "name": "SUPRASection",
+      "line_count": 18,
+      "backup": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRASection.swift"
+    },
+    {
+      "name": "SUPRASource",
+      "line_count": 10,
+      "backup": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/EXTRACTED_INLINE_MODELS/SUPRASource.swift"
+    }
+  ],
+  "patch": "APPLIED",
+  "build": "FAILED",
+  "rollback": "COMPLETED",
+  "build_log": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_INLINE_MODEL_DEDUP_BUILD.log"
+}

@@ -1,0 +1,34 @@
+{
+  "manifest_version": "1.0",
+  "bootstrap_version": "3.0.0",
+  "node_id": "supra-node-macbook-pro-de-nicolaslocal",
+  "platform": "macos|arm64|0",
+  "hostname": "MacBook-Pro-de-Nicolas.local",
+  "user": "nicolasalonso",
+  "home": "/Users/nicolasalonso",
+  "supra_root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+  "timestamp": "2026-07-25T00:07:56Z",
+  "duration_seconds": 2,
+  "results": {
+    "pass": 20,
+    "fail": 0,
+    "warn": 2,
+    "skip": 0
+  },
+  "tools": {
+    "bash": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin25.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.68.1",
+    "ollama": "ollama version is 0.32.3",
+    "opencode": "1.18.5"
+  },
+  "components": {
+    "ollama": "installé",
+    "opencode": "installé",
+    "workspace": "initialisé",
+    "config": "configuré",
+    "kernel": "initialisé",
+    "models": "disponibles"
+  },
+  "backup_dir": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_SUPRA_BACKUPS/bootstrap_20260725_020754"
+}

@@ -1,0 +1,138 @@
+{
+  "version": "1.0.0",
+  "description": "Maps each Mission Graph task type to real OpenCode agent bindings. Defines how the Runtime delegates work to agents.",
+  "bindings": [
+    {
+      "task_type": "exploration",
+      "agent": "SUPRA-Explorer",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "task"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "mission_context + target_paths",
+      "output_format": "exploration_report",
+      "timeout_seconds": 120,
+      "max_retries": 2
+    },
+    {
+      "task_type": "research",
+      "agent": "SUPRA-Research",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch", "websearch"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "research_question + context",
+      "output_format": "research_report",
+      "timeout_seconds": 180,
+      "max_retries": 1
+    },
+    {
+      "task_type": "architecture",
+      "agent": "SUPRA-Architect",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "webfetch"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "architecture_question + exploration_results",
+      "output_format": "architecture_analysis",
+      "timeout_seconds": 300,
+      "max_retries": 2
+    },
+    {
+      "task_type": "implementation",
+      "agent": "SUPRA-Builder",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "edit", "bash", "lsp", "glob", "grep"],
+      "dispatch_mode": "subagent_direct",
+      "input_format": "specification + architecture_plan",
+      "output_format": "implementation_files + test_files",
+      "timeout_seconds": 600,
+      "max_retries": 2
+    },
+    {
+      "task_type": "review",
+      "agent": "SUPRA-Reviewer",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "implementation_files + review_criteria",
+      "output_format": "review_report",
+      "timeout_seconds": 120,
+      "max_retries": 2
+    },
+    {
+      "task_type": "audit_compliance",
+      "agent": "SUPRA-Auditor",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "implementation_files + audit_rules",
+      "output_format": "audit_report",
+      "timeout_seconds": 180,
+      "max_retries": 2
+    },
+    {
+      "task_type": "runtime_validation",
+      "agent": "SUPRA-Runtime",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "bash"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "implementation_files + runtime_criteria",
+      "output_format": "runtime_validation_report",
+      "timeout_seconds": 300,
+      "max_retries": 2
+    },
+    {
+      "task_type": "refactoring_analysis",
+      "agent": "SUPRA-Refactor",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "bash"],
+      "dispatch_mode": "subagent_task",
+      "input_format": "existing_code + refactoring_goal",
+      "output_format": "refactoring_plan",
+      "timeout_seconds": 180,
+      "max_retries": 2
+    },
+    {
+      "task_type": "routing",
+      "agent": "SUPRA-Router",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "grep", "glob", "lsp", "bash", "webfetch"],
+      "dispatch_mode": "subagent_direct",
+      "input_format": "mission_intent + context",
+      "output_format": "routing_decision",
+      "timeout_seconds": 60,
+      "max_retries": 1
+    },
+    {
+      "task_type": "finalization",
+      "agent": "SUPRA-Builder",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "permissions": ["read", "edit", "bash", "lsp", "glob", "grep"],
+      "dispatch_mode": "subagent_direct",
+      "input_format": "validation_results + finalization_criteria",
+      "output_format": "final_artifacts",
+      "timeout_seconds": 300,
+      "max_retries": 2
+    }
+  ],
+  "default_binding": {
+    "agent": "SUPRA-Explorer",
+    "provider": "opencode-zen",
+    "model": "deepseek-v4-flash-free",
+    "dispatch_mode": "subagent_task",
+    "timeout_seconds": 120
+  },
+  "binding_resolution": {
+    "strategy": "task_type_match",
+    "fallback": "default_binding",
+    "cache_ttl_seconds": 300
+  }
+}

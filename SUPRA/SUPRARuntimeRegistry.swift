@@ -14,6 +14,8 @@ public final class SUPRARuntimeRegistry: ObservableObject {
 
     private let pluginRegistry = SUPRAPluginRegistry.shared
     private let providerPluginRegistry = SUPRAProviderPluginRegistry.shared
+    private let executionProviderRegistry = SUPRAProviderRegistry.shared
+    private let modelRegistry = SUPRAModelRegistry.shared
     private let events = SUPRARuntimeEvents.shared
 
     private init() {}
@@ -39,6 +41,8 @@ public final class SUPRARuntimeRegistry: ObservableObject {
         allModelDeclarations = providerPluginRegistry.providerPlugins.values
             .flatMap(\.models)
 
+        syncExecutionRuntime()
+
         isInitialized = true
         events.emit(.modelLoaded, "Runtime registry initialized: \(allPlugins.count) plugins, \(allModelDeclarations.count) models",
                      source: "SUPRARuntimeRegistry")
@@ -50,6 +54,7 @@ public final class SUPRARuntimeRegistry: ObservableObject {
         allPluginDeclarations = providerPluginRegistry.declarations
         allModelDeclarations = providerPluginRegistry.providerPlugins.values
             .flatMap(\.models)
+        syncExecutionRuntime()
     }
 
     public func providerPlugin(for providerID: String) -> SUPRAProviderPlugin? {
@@ -83,5 +88,68 @@ public final class SUPRARuntimeRegistry: ObservableObject {
             s += "  \(model.modelName) [\(model.providerID)] - \(model.capabilities.joined(separator: ", "))\n"
         }
         return s
+    }
+
+    private func syncExecutionRuntime() {
+        if !modelRegistry.isLoaded {
+            modelRegistry.loadDefaults()
+        }
+
+        for plugin in allProviderPlugins.values {
+            guard let provider = SUPRAPluginBackedProvider(plugin: plugin) else { continue }
+            guard executionProviderRegistry.provider(for: provider.type) == nil else { continue }
+            executionProviderRegistry.register(provider)
+            events.emit(
+                .providerRegistered,
+                "Execution provider registered: \(plugin.declaration.providerName)",
+                source: "SUPRARuntimeRegistry",
+                metadata: ["provider_id": plugin.declaration.providerID]
+            )
+        }
+
+        for model in allModelDeclarations {
+            let capabilities = model.capabilities.compactMap { capabilityRaw -> SUPRACapability? in
+                switch capabilityRaw.lowercased() {
+                case "reasoning": .reasoning
+                case "coding": .coding
+                case "vision": .vision
+                case "search": .search
+                case "memory": .memory
+                case "planning": .planning
+                case "streaming": .streaming
+                case "embeddings": .embeddings
+                case "conversation": .conversation
+                case "analysis": .analysis
+                default: nil
+                }
+            }
+
+            guard let providerType = providerType(for: model.providerID) else { continue }
+
+            modelRegistry.register(
+                SUPRAModelEntry(
+                    id: model.modelID,
+                    name: model.modelName,
+                    providerType: providerType,
+                    capabilities: capabilities.isEmpty ? [.reasoning] : capabilities,
+                    defaultMaxTokens: model.maxTokens,
+                    defaultTemperature: 0.7
+                )
+            )
+        }
+    }
+
+    private func providerType(for providerID: String) -> SUPRAProviderType? {
+        switch providerID.lowercased() {
+        case "ollama": .ollama
+        case "openai": .openAI
+        case "anthropic": .anthropic
+        case "gemini": .gemini
+        case "codex": .codex
+        case "lmstudio": .lmStudio
+        case "openrouter": .openRouter
+        case "vllm": .vLLM
+        default: nil
+        }
     }
 }

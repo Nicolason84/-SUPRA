@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z",
+    "machine": "Nicolas Alonso iMac (arm64)",
+    "os": "macOS 26.5",
+    "total_desktop_size_gb": 29.0,
+    "notes": "Scan complet de l'environnement de développement"
+  },
+  "home_directories": {
+    "desktop": {
+      "path": "/Users/nicolasalonso/Desktop",
+      "size_gb": 29.0,
+      "subdirs": {
+        "NOVA_OS": { "size_gb": 29.0, "is_git": true, "status": "active" },
+        "SUPRA_VIDEO_SWAP_V3": { "size_mb": 49, "is_git": false, "status": "active" },
+        "SUPRA_TEMP": { "size_mb": 33, "is_git": false, "status": "abandoned" },
+        "SUPRA_VIDEO_SWAP_APP_V1": { "size_mb": 20, "is_git": false, "status": "active" },
+        "SUPRA_PROJECTS": { "size_mb": 13, "is_git": false, "status": "active" },
+        "_DESKTOP_CLEAN_ARCHIVE_20260630_122028": { "size_mb": 4.4, "is_git": false, "status": "archive" },
+        "SUPRA_VIDEO_SWAP_V1_ARCHIVE_20260715_140116": { "size_mb": 0.2, "is_git": false, "status": "archive" }
+      }
+    },
+    "nova_os": {
+      "path": "/Users/nicolasalonso/NOVA_OS",
+      "subdirs": {
+        "NICO_APP_IOS": { "size": "5.3GB+", "is_git": true, "status": "active" },
+        "HELENE_APP_IOS": { "size_mb": 0.4, "is_git": true, "status": "active" }
+      }
+    },
+    "nova_labs": {
+      "path": "/Users/nicolasalonso/NOVA_LABS",
+      "subdirs": {
+        "COHERENCE_ENGINE_V1": { "size_mb": 1.3, "is_git": true, "status": "active" }
+      }
+    },
+    "nova_build_system": {
+      "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM",
+      "size_mb": 10,
+      "is_git": true,
+      "status": "active",
+      "note": "Architecture massive (>100 sous-répertoires, multiples versions V1-V17)"
+    },
+    "documents": {
+      "path": "/Users/nicolasalonso/Documents",
+      "size_kb": 12,
+      "note": "Contenu minimal, fichiers JSON légers"
+    }
+  },
+  "desktop_recovery_files": {
+    "total_count": 12,
+    "total_size_mb": 236,
+    "largest": [
+      { "file": "SUPRA_TOTAL_RECOVERY_20260724_152930.txt", "size_mb": 78.8 },
+      { "file": "SUPRA_TOTAL_RECOVERY_20260724_153101.txt", "size_mb": 78.5 },
+      { "file": "SUPRA_RECOVERY_V2_20260724_153402.txt", "size_mb": 88.8 },
+      { "file": "SUPRA_RUNTIME_SEARCH.txt", "size_mb": 2.0 }
+    ]
+  }
+}

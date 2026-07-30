@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "description": "Persistent execution memory for the adaptive Router. Each entry records a complete routing decision cycle.",
+  "total_executions": 3,
+  "last_updated": "2026-07-24T00:21:00Z",
+  "executions": [
+    {
+      "id": "exec_001",
+      "timestamp": "2026-07-24T00:18:00Z",
+      "mission_id": "SUPRA_PROVIDER_RUNTIME_V001",
+      "mission_type": "architecture_analysis",
+      "router_decision": {
+        "provider": "opencode-zen",
+        "model": "deepseek-v4-flash-free",
+        "agent": "SUPRA-Architect",
+        "workflow": "single_agent",
+        "reasoning": "Architecture capability pinned to opencode-zen via mandatory_opencode_zen rule"
+      },
+      "execution": {
+        "duration_seconds": 120,
+        "status": "completed",
+        "confidence_score": 0.94,
+        "quality_score": 7,
+        "errors": [],
+        "fallback_triggered": false,
+        "fallback_path": null
+      },
+      "outcome": "success"
+    },
+    {
+      "id": "exec_002",
+      "timestamp": "2026-07-24T00:18:00Z",
+      "mission_id": "SUPRA_PROVIDER_RUNTIME_V001",
+      "mission_type": "compliance_audit",
+      "router_decision": {
+        "provider": "opencode-zen",
+        "model": "deepseek-v4-flash-free",
+        "agent": "SUPRA-Auditor",
+        "workflow": "single_agent",
+        "reasoning": "Analysis preferred on opencode-zen per provider_preferences"
+      },
+      "execution": {
+        "duration_seconds": 120,
+        "status": "completed",
+        "confidence_score": 0.92,
+        "quality_score": 7,
+        "errors": [],
+        "fallback_triggered": false,
+        "fallback_path": null
+      },
+      "outcome": "success"
+    },
+    {
+      "id": "exec_003",
+      "timestamp": "2026-07-24T00:19:00Z",
+      "mission_id": "SUPRA_PROVIDER_RUNTIME_V001",
+      "mission_type": "provider_review",
+      "router_decision": {
+        "provider": "ollama",
+        "model": "qwen3:4b",
+        "agent": "SUPRA-Reviewer",
+        "workflow": "single_agent",
+        "reasoning": "Lightweight review, cost efficiency → ollama. OpenCode Zen reserved for critical tasks."
+      },
+      "execution": {
+        "duration_seconds": 30,
+        "status": "completed",
+        "confidence_score": 0.62,
+        "quality_score": 7,
+        "errors": [],
+        "fallback_triggered": false,
+        "fallback_path": null
+      },
+      "outcome": "success"
+    }
+  ]
+}

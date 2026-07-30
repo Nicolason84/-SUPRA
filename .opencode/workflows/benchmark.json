@@ -1,0 +1,37 @@
+{
+  "id": "benchmark",
+  "description": "Compare agent-model combinations on standardized tasks",
+  "stages": [
+    {
+      "id": "task_dispatch",
+      "type": "dispatch",
+      "parallel": true,
+      "consensus": false,
+      "description": "Same benchmark task dispatched to multiple agent-model combinations"
+    },
+    {
+      "id": "execution",
+      "type": "execute",
+      "parallel": true,
+      "consensus": false,
+      "description": "Each combination executes the task independently"
+    },
+    {
+      "id": "scoring",
+      "type": "score",
+      "parallel": false,
+      "consensus": false,
+      "description": "Score each result on quality, latency, token usage"
+    },
+    {
+      "id": "ranking",
+      "type": "rank",
+      "parallel": false,
+      "consensus": false,
+      "description": "Rank combinations by overall performance score"
+    }
+  ],
+  "mode": "benchmark",
+  "fallback": false,
+  "use_case": ["model_evaluation", "agent_performance", "regression_testing"]
+}

@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "description": "Job queue for the SUPRA Scheduler. Jobs are processed by priority and dependency order.",
+  "queue": [
+    {
+      "id": "job_001",
+      "name": "Architecture Analysis",
+      "mission": "analyze_provider_runtime",
+      "priority": 10,
+      "dependencies": [],
+      "state": "QUEUED",
+      "agent": "SUPRA-Architect",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "workflow": "single_agent",
+      "created_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null,
+      "result": null,
+      "retry_count": 0,
+      "max_retries": 2
+    },
+    {
+      "id": "job_002",
+      "name": "Compliance Audit",
+      "mission": "audit_provider_compliance",
+      "priority": 8,
+      "dependencies": [],
+      "state": "QUEUED",
+      "agent": "SUPRA-Auditor",
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "workflow": "single_agent",
+      "created_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null,
+      "result": null,
+      "retry_count": 0,
+      "max_retries": 2
+    },
+    {
+      "id": "job_003",
+      "name": "Provider Review",
+      "mission": "review_provider_layer",
+      "priority": 6,
+      "dependencies": [],
+      "state": "QUEUED",
+      "agent": "SUPRA-Reviewer",
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "workflow": "single_agent",
+      "created_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null,
+      "result": null,
+      "retry_count": 0,
+      "max_retries": 2
+    }
+  ],
+  "scheduling_policy": {
+    "order": "priority_desc",
+    "parallel_execution": true,
+    "max_concurrent_jobs": 3,
+    "dependency_resolution": "block_on_dependents",
+    "retry_policy": "failed_only",
+    "state_transitions": {
+      "QUEUED": ["PLANNED"],
+      "PLANNED": ["RUNNING", "BLOCKED"],
+      "RUNNING": ["SUCCESS", "FAILED", "WAITING"],
+      "WAITING": ["RUNNING", "BLOCKED"],
+      "BLOCKED": ["QUEUED", "FAILED"],
+      "FAILED": ["QUEUED"],
+      "SUCCESS": []
+    }
+  }
+}

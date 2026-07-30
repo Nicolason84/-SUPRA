@@ -1,0 +1,89 @@
+=== CHECK 1: Kernel independence ===
+--- Check 1a: Decision Engine references to providers ---
+0
+--- Check 1b: Execution Planner references ---
+0
+--- Check 1c: Routing Policy references ---
+0
+--- Check 1d: Fallback Engine references ---
+0
+--- Check 1e: Scheduler references ---
+0
+--- Check 1f: Learning Engine references ---
+0
+--- Check 1g: Runtime Registry references ---
+0
+--- Check 1h: Runtime Graph references ---
+0
+--- Check 1i: Runtime Events references ---
+0
+--- Check 1j: Runtime Metrics references ---
+0
+=== CHECK 2: SUPRAProviderProtocols (legacy) has hardcoded types ===
+(note: SUPRAProviderType is legacy — new code uses String-based IDs)
+=== CHECK 3: Only OllamaProvider references Ollama ===
+=== CHECK 4: Auto-discovery path ===
+=== CHECK 5: Decision Engine → Planner → Broker chain ===
+=== CHECK 6: RoutingPolicy selection ===
+=== CHECK 7: Fallback reachable ===
+=== CHECK 8: Events/metrics/learning data flow ===
+=== CHECK 9: Hardcoded model names in Kernel ===
+None found (good)
+=== CHECK 2: SUPRAProviderProtocols (legacy) has hardcoded types ===
+4:    case ollama
+5:    case openAI
+6:    case anthropic
+7:    case gemini
+8:    case codex
+9:    case lmStudio
+10:    case openRouter
+(note: SUPRAProviderType is legacy enum — new code uses String-based IDs)
+=== CHECK 3: Files referencing SUPRAOllamaProvider ===
+SUPRA/SUPRAOllamaProvider.swift
+SUPRA/SUPRAPluginDiscovery.swift
+=== CHECK 4: Auto-discovery path ===
+@MainActor
+public enum SUPRAAliveDemo {
+    public static func bootstrap() {
+        let logger = SUPRARuntimeLogger.shared
+        let events = SUPRARuntimeEvents.shared
+--
+        Task {
+            logger.log(.mission, "Découverte automatique des plugins...")
+            let discoveryResults = await SUPRAPluginDiscovery.shared.discoverAll()
+
+            for result in discoveryResults {
+26:                    SUPRAAliveDemo.bootstrap()
+=== CHECK 5: Decision → Planner → Fallback chain ===
+32:        let planner = SUPRAExecutionPlanner.shared
+45:        let decision = await decisionEngine.decide(
+61:        let plan = await planner.plan(decision: decision, prompt: "Bonjour SUPRA, réponds de manière amicale et concise.",
+63:        events.emit(.capabilityResolved, "\(plan.tasks.count) tasks planned", source: "ExecutionPlanner")
+66:        guard let selection = await routingPolicy.selectProvider(for: requirements) else {
+75:            let result = try await fallbackEngine.executeWithFallback(
+=== CHECK 6: RoutingPolicy selects ===
+78:    public func selectProvider(for requirements: SUPRARoutingRequirements) async -> SUPRAProviderSelection? {
+=== CHECK 7: FallbackEngine ===
+15:    public func executeWithFallback(prompt: String, systemPrompt: String,
+=== CHECK 8: Events/metrics/learning fed ===
+6:        let logger = SUPRARuntimeLogger.shared
+9:        logger.log(.mission, "=== SUPRA ORCHESTRATION BOOTSTRAP ===")
+12:            logger.log(.mission, "Découverte automatique des plugins...")
+16:                events.emit(.pluginDiscovered,
+24:            logger.log(.mission, "Bootstrap terminé: \(discoveryResults.count) plugins découverts")
+25:            events.emit(.modelLoaded, "Runtime ready: \(SUPRARuntimeRegistry.shared.allPlugins.count) plugins, \(SUPRARuntimeRegistry.shared.allModelDeclarations.count) models",
+38:        let logger = SUPRARuntimeLogger.shared
+40:        logger.clear()
+41:        logger.log(.mission, "=== MISSION DE DÉMONSTRATION ORCHESTRATION ===")
+42:        events.emit(.executionStarted, "Starting demo: 'Bonjour SUPRA'", source: "Demo")
+44:        logger.log(.decision, "Phase 1: Décision...")
+50:        events.emit(.decisionCreated, "\(decision.steps.count) orchestration steps", source: "DecisionEngine")
+51:        logger.log(.decision, "\(decision.steps.count) étapes d'orchestration")
+53:        logger.log(.capability, "Phase 2: Planification...")
+63:        events.emit(.capabilityResolved, "\(plan.tasks.count) tasks planned", source: "ExecutionPlanner")
+65:        logger.log(.provider, "Phase 3: Routage...")
+67:            events.emit(.executionFailed, "No provider available", source: "RoutingPolicy")
+68:            logger.log(.error, "Aucun provider disponible")
+71:        events.emit(.routingSelected, "Selected \(selection.providerID)/\(selection.modelID)", source: "RoutingPolicy")
+73:        logger.log(.executor, "Phase 4: Exécution via FallbackEngine...")
+=== CHECK 9: Hardcoded model names in Kernel ===

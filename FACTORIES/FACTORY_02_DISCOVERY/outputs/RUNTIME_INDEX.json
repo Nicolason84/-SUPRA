@@ -1,0 +1,99 @@
+{
+  "schema_version": "RUNTIME_INDEX_V1",
+  "generated_on": "2026-07-29",
+  "authority": "FACTORY_02_DISCOVERY",
+  "status": "VALIDATED",
+  "repository_root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+  "primary_runtime": {
+    "name": "SUPRA",
+    "type": "macOS SwiftUI application",
+    "project": "SUPRA.xcodeproj",
+    "source_root": "SUPRA",
+    "product_target": "SUPRA",
+    "product_type": "com.apple.product-type.application",
+    "bundle_identifier": "com.nicolasalonso.SUPRA",
+    "active_entrypoints": [
+      "SUPRA/SUPRAOperationalCoreApp.swift"
+    ],
+    "alternate_app_shells": [
+      "SUPRA/SUPRAApp.swift"
+    ],
+    "composition_root": "SUPRA/SUPRACompositionRoot.swift",
+    "runtime_kernel": "SUPRA/SUPRARuntimeKernel.swift",
+    "mission_store": "SUPRA/MissionStore.swift",
+    "provider_runtime": "SUPRA/ProviderRuntime.swift",
+    "provider_registry": "SUPRA/SUPRAProviderRegistry.swift"
+  },
+  "build_surfaces": [
+    {
+      "name": "SUPRA Xcode Project",
+      "path": "SUPRA.xcodeproj",
+      "kind": "xcodeproj",
+      "targets": [
+        "SUPRA"
+      ],
+      "package_dependencies": [
+        "Packages/CAnnoNicoIntegrationPackage"
+      ]
+    },
+    {
+      "name": "CAnnoNicoIntegrationPackage",
+      "path": "Packages/CAnnoNicoIntegrationPackage/Package.swift",
+      "kind": "swift-package",
+      "products": [
+        "CAnnoNicoIntegration"
+      ]
+    },
+    {
+      "name": "SUPRA_AST_PLATFORM",
+      "path": "SUPRA_AST_PLATFORM/Package.swift",
+      "kind": "swift-package",
+      "products": [
+        "CLI",
+        "SUPRAAST"
+      ]
+    }
+  ],
+  "runtime_support_surfaces": [
+    {
+      "name": "Runtime filesystem",
+      "path": "SUPRA_RUNTIME",
+      "role": "mission and artifact state directories"
+    },
+    {
+      "name": "Kernel store",
+      "path": ".kernel",
+      "role": "contracts, providers, storage, registry"
+    },
+    {
+      "name": "OpenCode runtime",
+      "path": ".opencode",
+      "role": "agent runtime and workflow state"
+    }
+  ],
+  "observations": [
+    "Exactly one active @main entrypoint was found in the compiled app source tree.",
+    "SUPRAApp.swift remains as a dormant alternate app shell with @main commented out.",
+    "SUPRATests exists on disk but no PBXNativeTarget test target was found in SUPRA.xcodeproj/project.pbxproj.",
+    "The Xcode project is file-system-synchronized to the SUPRA directory and links one local Swift package dependency."
+  ],
+  "validated_paths": [
+    ".kernel",
+    ".opencode",
+    "Packages/CAnnoNicoIntegrationPackage/Package.swift",
+    "SUPRA",
+    "SUPRA.xcodeproj",
+    "SUPRA.xcodeproj/project.pbxproj",
+    "SUPRA/MissionStore.swift",
+    "SUPRA/ProviderRuntime.swift",
+    "SUPRA/SUPRAApp.swift",
+    "SUPRA/SUPRACompositionRoot.swift",
+    "SUPRA/SUPRAOperationalCoreApp.swift",
+    "SUPRA/SUPRAProviderRegistry.swift",
+    "SUPRA/SUPRARuntimeKernel.swift",
+    "SUPRATests",
+    "SUPRA_AST_PLATFORM/Package.swift",
+    "SUPRA_RUNTIME"
+  ],
+  "missing_paths": []
+}

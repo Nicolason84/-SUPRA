@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 35
+  },
+  "relations": [
+    {
+      "source": "RuntimeDataService",
+      "target": "RuntimeModels",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeDataService",
+      "target": "RuntimeEvent",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeDataService",
+      "target": "RuntimeGateway",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeGateway",
+      "target": "BridgeRequest",
+      "type": "handles",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeGateway",
+      "target": "BridgeResponse",
+      "type": "produces",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeMonitor",
+      "target": "RuntimeDataService",
+      "type": "consumes",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeMonitor",
+      "target": "OpenCodeClient",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "JSONRuntimeSource",
+      "target": "RuntimeSourceProtocol",
+      "type": "conforms_to",
+      "strength": "direct"
+    },
+    {
+      "source": "JSONRuntimeSource",
+      "target": "RuntimeDataService",
+      "type": "depends_on",
+      "strength": "direct"
+    },
+    {
+      "source": "OpenCodeRuntimeSource",
+      "target": "RuntimeSourceProtocol",
+      "type": "conforms_to",
+      "strength": "direct"
+    },
+    {
+      "source": "OpenCodeRuntimeSource",
+      "target": "RuntimeDataService",
+      "type": "depends_on",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeView",
+      "target": "RuntimeDataService",
+      "type": "consumes",
+      "strength": "direct"
+    },
+    {
+      "source": "RuntimeView",
+      "target": "RuntimeMonitor",
+      "type": "consumes",
+      "strength": "direct"
+    },
+    {
+      "source": "OpenCodeBridge",
+      "target": "RuntimeGateway",
+      "type": "depends_on",
+      "strength": "direct"
+    },
+    {
+      "source": "OpenCodeBridge",
+      "target": "BridgeRequest",
+      "type": "defines",
+      "strength": "direct"
+    },
+    {
+      "source": "OpenCodeBridge",
+      "target": "BridgeResponse",
+      "type": "defines",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationBridge",
+      "target": "PucheroMemoryAdapter",
+      "type": "imports",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationBridge",
+      "target": "NicoAppAdapter",
+      "type": "imports",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationBridge",
+      "target": "VideoSwapAdapter",
+      "type": "imports",
+      "strength": "direct"
+    },
+    {
+      "source": "CAnnoNicoIntegrationBridge",
+      "target": "CAnnoNicoContracts",
+      "type": "imports",
+      "strength": "direct"
+    },
+    {
+      "source": "PucheroMemoryAdapter",
+      "target": "CAnnoNicoAdapter",
+      "type": "conforms_to",
+      "strength": "direct"
+    },
+    {
+      "source": "NicoAppAdapter",
+      "target": "CAnnoNicoAdapter",
+      "type": "conforms_to",
+      "strength": "direct"
+    },
+    {
+      "source": "VideoSwapAdapter",
+      "target": "CAnnoNicoAdapter",
+      "type": "conforms_to",
+      "strength": "direct"
+    },
+    {
+      "source": "NOVAKnowledgeKernel",
+      "target": "OpenCodeBridge",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "NOVAKnowledgeKernel",
+      "target": "KnowledgeGraph",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "UniverseEngine",
+      "target": "OpenCodeBridge",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "UniverseEngine",
+      "target": "TwinRegistry",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "ExecutiveCockpitFoundation",
+      "target": "OpenCodeBridge",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "WorkspaceGovernor",
+      "target": "WorkspaceKnowledgeGraph",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "WorkspaceGovernor",
+      "target": "WorkspaceMemory",
+      "type": "uses",
+      "strength": "direct"
+    },
+    {
+      "source": "WorkspaceStatisticsService",
+      "target": "WorkspaceIndex",
+      "type": "depends_on",
+      "strength": "direct"
+    },
+    {
+      "source": "SUPRAGabrielConductorRuntime",
+      "target": "SUPRAGabrielWorkerSnapshot",
+      "type": "defines",
+      "strength": "direct"
+    },
+    {
+      "source": "WorkerPoolView",
+      "target": "RuntimeMonitor",
+      "type": "consumes",
+      "strength": "direct"
+    },
+    {
+      "source": "WorkerPoolView",
+      "target": "RuntimeDataService",
+      "type": "consumes",
+      "strength": "direct"
+    },
+    {
+      "source": "SUPRAChatRuntimeAdapter",
+      "target": "SUPRAExecutiveStore",
+      "type": "depends_on",
+      "strength": "direct"
+    }
+  ]
+}

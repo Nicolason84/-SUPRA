@@ -1,0 +1,102 @@
+{
+  "memory": "MEMORY_ENVIRONMENT",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "ENV-001",
+      "name": "iMac Development Workstation",
+      "type": "machine",
+      "os": "macOS 26.5 arm64",
+      "hostname": "Nicolas Alonso iMac",
+      "specs": "Apple Silicon, 16+ GB RAM",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "owner": "nicolasalonso"
+    },
+    {
+      "uuid": "ENV-002",
+      "name": "Xcode 16",
+      "type": "ide",
+      "version": "16.x (Swift 6.0)",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "ENV-003",
+      "name": "Desktop Workspace",
+      "path": "/Users/nicolasalonso/Desktop",
+      "type": "workspace",
+      "size_gb": 29,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "entries": 164,
+      "note": "Dossier de travail principal contenant NOVA_OS, VideoSwap, projets"
+    },
+    {
+      "uuid": "ENV-004",
+      "name": "NOVA_OS Workspace",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS",
+      "type": "workspace",
+      "size_gb": 29,
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "subdirs": ["SUPRA", "SUPRA_BISECT", "SUPRA_RECOVERY", "MEMORY_CORE", "_IMMUNITY"]
+    },
+    {
+      "uuid": "ENV-005",
+      "name": "NOVA_OS Home",
+      "path": "/Users/nicolasalonso/NOVA_OS",
+      "type": "workspace",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "subdirs": ["NICO_APP_IOS", "HELENE_APP_IOS"]
+    },
+    {
+      "uuid": "ENV-006",
+      "name": "NOVA_BUILD_SYSTEM",
+      "path": "/Users/nicolasalonso/NOVA_BUILD_SYSTEM",
+      "type": "build_orchestrator",
+      "size_mb": 10,
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true,
+      "git": true,
+      "note": "Système d'orchestration de builds Python/Shell avec multiples versions (V1-V17)"
+    },
+    {
+      "uuid": "ENV-007",
+      "name": "NOVA_LABS",
+      "path": "/Users/nicolasalonso/NOVA_LABS",
+      "type": "workspace",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": false,
+      "subdirs": ["COHERENCE_ENGINE_V1"]
+    },
+    {
+      "uuid": "ENV-008",
+      "name": "Documents",
+      "path": "/Users/nicolasalonso/Documents",
+      "type": "workspace",
+      "size_kb": 12,
+      "status": "inactive",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "Contenu minimal, fichiers JSON de missions"
+    }
+  ]
+}

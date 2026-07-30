@@ -1,0 +1,25 @@
+{
+  "observer": "MANUAL_VISUAL_VALIDATION",
+  "mode": "READ_ONLY",
+  "evidence": "Capture d’écran 2026-07-23 14:21",
+  "application": {
+    "name": "SUPRA",
+    "window_visible": true,
+    "dashboard_loaded": true,
+    "crash_visible": false
+  },
+  "dashboard": {
+    "runtime_status": "Operational",
+    "build_status": "Available",
+    "required_artifacts": "6/6",
+    "optional_artifacts": "0/1",
+    "lot1": "Available",
+    "lot2": "Available",
+    "lot3": "Available",
+    "build": "Available",
+    "manifest": "Available",
+    "estate": "Available",
+    "index": "Unavailable"
+  },
+  "verdict": "PASS_WITH_INDEX_WARNING"
+}

@@ -1,0 +1,13 @@
+{
+  "activationSequenceValid": true,
+  "generatedAt": "2026-07-29T12:00:00Z",
+  "noCompositionRootBackEdges": true,
+  "noDependencyCycle": true,
+  "noDuplicateBindings": true,
+  "noForbiddenSharedAccessInsideInitializers": true,
+  "noMissingDependencies": true,
+  "noOrphanServices": true,
+  "status": "PASS",
+  "validInitializationOrder": true,
+  "violations": []
+}

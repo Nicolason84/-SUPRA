@@ -1,0 +1,90 @@
+{
+  "version": "2.2.0",
+  "generated_at": "2026-07-26T13:30:00+02:00",
+  "project": {
+    "name": "SUPRA",
+    "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+    "branch": "develop",
+    "last_commit": "80ca2f1 feat(runtime): add adaptive multipower transmission",
+    "describe": "SUPRA_AST_PLATFORM_V1_BOOTSTRAP-9-g80ca2f1",
+    "recent_commits": [
+      "80ca2f1 feat(runtime): add adaptive multipower transmission",
+      "39e8900 fix(runtime): bind system dashboard to real local data",
+      "bc66986 fix(memory): reconcile conversations by canonical source identity",
+      "2e88ff1 refactor(views): extract cannonico circuit board",
+      "a6be70f refactor(views): extract structure navigator view"
+    ]
+  },
+  "build": {
+    "status": "SUCCEEDED",
+    "configuration": "Debug",
+    "xcode": "17F113",
+    "last_build_time": "2026-07-26T13:30:00+02:00"
+  },
+  "sandbox": {
+    "status": "FIXED",
+    "before": "ENABLED",
+    "after": "DISABLED"
+  },
+  "artifacts": {
+    "required": 6,
+    "available": 6,
+    "status": "OPERATIONAL"
+  },
+  "pipeline": {
+    "stages": 10,
+    "list": ["BOOT", "ROOT", "DISCOVERY", "ARTIFACT", "MANIFEST", "INDEX", "VALIDATION", "SNAPSHOT", "DASHBOARD", "PERFORMANCE"],
+    "oslog": {
+      "subsystem": "com.novaera.supra.runtime",
+      "categories": "Runtime.<Stage>"
+    },
+    "status": "FULLY_INSTRUMENTED"
+  },
+  "runtime": {
+    "entry_point": "SUPRAOperationalCoreApp",
+    "dashboard_view": "RuntimeDiagnosticsView + ExecutiveWorkflowListView",
+    "pipeline_status": "OPERATIONAL",
+    "last_issue": "Executive Workflows V1 — registry and first workflow added"
+  },
+  "features": {
+    "root_cause_explainer": true,
+    "artefact_explorer_hash_size_date": true,
+    "execution_timeline": true,
+    "executive_dashboard": true,
+    "root_cause_elimination": true,
+    "executive_workflow_registry": true,
+    "business_health_workflow": true,
+    "decision_audit_workflow": true,
+    "monetization_workflow": true,
+    "environment_assessment_workflow": true,
+    "opportunity_discovery_workflow": true,
+    "execution_history": true,
+    "executive_report_auto_generation": true
+  },
+  "workflows": {
+    "registry_version": "1.0.0",
+    "total_workflows": 5,
+    "ready": 5,
+    "partial": 0,
+    "blocked": 0,
+    "executions": 0,
+    "workflow_list": [
+      "business_health",
+      "decision_audit",
+      "monetization_report",
+      "environment_assessment",
+      "opportunity_discovery"
+    ]
+  },
+  "missions": {
+    "completed": [
+      "MISSION_SUPRA_EXECUTIVE_OS_FIRST_BOOT",
+      "MISSION_VALIDATION_DASHBOARD_CONFIRMATION",
+      "MISSION_VALIDATION_EXECUTIVE_COCKPIT_V1",
+      "MISSION_EXECUTIVE_COCKPIT_OPERATIONAL_V2",
+      "MISSION_EXECUTIVE_WORKFLOWS_V1"
+    ],
+    "in_progress": [],
+    "pending": ["MISSION_BUILD_AND_VALIDATE_WORKFLOWS_V1"]
+  }
+}

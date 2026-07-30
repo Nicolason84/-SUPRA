@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 3
+  },
+  "workers": [
+    {
+      "id": "WRK-001",
+      "identifier": "SUPRAGabrielWorkerSnapshot",
+      "path": "SUPRA/SUPRAGabrielConductorRuntime.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "struct",
+      "concurrency": "Codable+Sendable",
+      "description": "Gabriel parallel mission conductor worker"
+    },
+    {
+      "id": "WRK-002",
+      "identifier": "WorkerSummary",
+      "path": "SUPRA/RuntimeModels.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "struct",
+      "concurrency": "Codable",
+      "description": "Worker pool summary (total, busy, idle)"
+    },
+    {
+      "id": "WRK-003",
+      "identifier": "WorkerPoolView",
+      "path": "SUPRA/WorkerPoolView.swift",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "1.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "view",
+      "concurrency": "SwiftUI",
+      "description": "Visual worker pool dashboard",
+      "dependencies": ["RuntimeMonitor", "RuntimeDataService"]
+    }
+  ]
+}

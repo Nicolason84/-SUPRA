@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "dashboard_id": "SUPRA-MC-DASH-001",
+  "snapshot_at": "2026-07-24T01:00:00Z",
+  "overview": {
+    "total_missions": 100,
+    "active_missions": 39,
+    "completed_missions": 43,
+    "failed_missions": 4,
+    "archived_missions": 14,
+    "system_health": "operational",
+    "uptime_hours": 1.0
+  },
+  "queue_status": {
+    "queued": 19,
+    "ready": 10,
+    "planned": 11,
+    "running": 11,
+    "waiting": 5,
+    "blocked": 1,
+    "failed": 3,
+    "success": 29,
+    "archived": 14,
+    "queue_depth": 19,
+    "longest_wait_minutes": 45,
+    "avg_wait_minutes": 12
+  },
+  "resource_usage": {
+    "workers": {"total": 20, "busy": 11, "idle": 9, "utilization_pct": 55.0},
+    "opencode-zen": {"capacity_pct": 56.25, "missions_active": 9, "status": "nominal"},
+    "ollama": {"capacity_pct": 50.0, "missions_active": 1, "status": "nominal"},
+    "openai": {"capacity_pct": 0.0, "missions_active": 0, "status": "unavailable"}
+  },
+  "performance": {
+    "missions_per_hour": 43,
+    "avg_duration_seconds": 59.2,
+    "success_rate": 91.5,
+    "failure_rate": 8.5,
+    "throughput": "43 missions/hour",
+    "bottleneck": "SUPRA-Architect (avg 115s/mission)"
+  },
+  "priority_distribution": {
+    "critical": 5,
+    "high": 18,
+    "medium": 42,
+    "low": 35
+  },
+  "recent_alerts": [
+    {"level": "warning", "message": "Provider openai unavailable — 2 workers idle", "time": "2026-07-24T00:45:00Z"},
+    {"level": "info", "message": "Queue depth exceeded 15 — Scheduler scaling up", "time": "2026-07-24T00:50:00Z"},
+    {"level": "info", "message": "SUPRA-Refactor workers at 50% utilization — no missions in refactor pipeline", "time": "2026-07-24T00:55:00Z"},
+    {"level": "success", "message": "43 missions completed with 91.5% success rate", "time": "2026-07-24T01:00:00Z"}
+  ],
+  "top_priorities": [
+    {"mission": "M-0001", "priority": 14, "state": "RUNNING", "agent": "SUPRA-Architect"},
+    {"mission": "M-0005", "priority": 13, "state": "RUNNING", "agent": "SUPRA-Architect"},
+    {"mission": "M-0009", "priority": 12, "state": "PLANNED", "agent": "SUPRA-Router"},
+    {"mission": "M-0003", "priority": 11, "state": "QUEUED", "agent": "SUPRA-Builder"},
+    {"mission": "M-0007", "priority": 10, "state": "RUNNING", "agent": "SUPRA-Auditor"}
+  ]
+}

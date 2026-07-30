@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "mission": "SUPRA_CANONICAL_DISCOVERY_V1",
+    "generated": "2026-07-24T16:35:00Z",
+    "authority": "READ_ONLY",
+    "count": 2
+  },
+  "packages": [
+    {
+      "id": "PKG-001",
+      "identifier": "CAnnoNicoIntegrationPackage",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/Packages/CAnnoNicoIntegrationPackage",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "6.0",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "local_spm",
+      "swift_tools": "6.0",
+      "platform": "macOS 14+",
+      "integrated_in_xcode": true,
+      "products": [
+        {
+          "name": "CAnnoNicoIntegration",
+          "type": "library",
+          "targets": ["CAnnoNicoContracts", "PucheroMemoryAdapter", "NicoAppAdapter", "VideoSwapAdapter"]
+        }
+      ],
+      "targets": [
+        {"name": "CAnnoNicoContracts", "type": "target", "dependencies": []},
+        {"name": "PucheroMemoryAdapter", "type": "target", "dependencies": ["CAnnoNicoContracts"]},
+        {"name": "NicoAppAdapter", "type": "target", "dependencies": ["CAnnoNicoContracts"]},
+        {"name": "VideoSwapAdapter", "type": "target", "dependencies": ["CAnnoNicoContracts"]}
+      ],
+      "external_dependencies": [],
+      "build_dir": "Packages/CAnnoNicoIntegrationPackage/.build/"
+    },
+    {
+      "id": "PKG-002",
+      "identifier": "SUPRA_AST_PLATFORM",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_AST_PLATFORM",
+      "status": "active",
+      "owner": "nicolasalonso",
+      "version": "6.2",
+      "canonical": true,
+      "duplicate": false,
+      "replacement": null,
+      "type": "local_spm",
+      "swift_tools": "6.2",
+      "platform": "macOS (Xcode host)",
+      "integrated_in_xcode": false,
+      "orphan": true,
+      "products": [
+        {"name": "SUPRAAST", "type": "library", "targets": ["SUPRAAST"]},
+        {"name": "supra-ast", "type": "executable", "targets": ["CLI"]}
+      ],
+      "targets": [
+        {"name": "SUPRAAST", "type": "target", "dependencies": []},
+        {"name": "CLI", "type": "executableTarget", "dependencies": ["SUPRAAST"]},
+        {"name": "SUPRAASTTests", "type": "testTarget", "dependencies": ["SUPRAAST"]}
+      ],
+      "external_dependencies": [],
+      "build_dir": "SUPRA_AST_PLATFORM/.build/"
+    }
+  ]
+}

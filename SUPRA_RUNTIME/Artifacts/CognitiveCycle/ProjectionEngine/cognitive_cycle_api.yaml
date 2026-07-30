@@ -1,0 +1,65 @@
+openapi: "3.0.0"
+info:
+  title: SUPRA Cognitive Cycle API
+  version: "V1"
+  description: "API definition derived exclusively from Canonical Knowledge Object"
+  canonicalId: "can:knowledge:cognitive-cycle-demo-001"
+  nambrohoraRef: 4
+paths:
+  /canonical/cognitive-cycle:
+    get:
+      summary: Retrieve the complete cognitive cycle
+      parameters:
+        - name: canonicalId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "can:knowledge:cognitive-cycle-demo-001"
+      responses:
+        '200':
+          description: Complete cognitive cycle with all stage outputs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canId:
+                    type: string
+                    example: "can:knowledge:cognitive-cycle-demo-001"
+                  stages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        order:
+                          type: integer
+                        validated:
+                          type: boolean
+                  confidence:
+                    type: number
+                    example: 0.91
+                  coherence:
+                    type: number
+                    example: 0.92
+  /canonical/cognitive-cycle/trace:
+    get:
+      summary: Retrieve the full traceability chain
+      responses:
+        '200':
+          description: Traceability chain from idea to proof
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trace:
+                    type: array
+                    items:
+                      type: string
+                  nambrohoraRef:
+                    type: integer

@@ -1,0 +1,667 @@
+{
+  "schema_version": "STABILITY_ARCHITECTURE_V1",
+  "generated_on": "2026-07-29",
+  "authority": "FACTORY_02_DISCOVERY",
+  "mission_id": "SUPRA-RUNTIME-STABILITY-003",
+  "mission_stage": "STAGE_2_ARCHITECTURE",
+  "status": "VALIDATED",
+  "inputs": [
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/RUNTIME_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/MODULE_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/DEPENDENCY_GRAPH.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/STABILITY_DISCOVERY.json"
+  ],
+  "architecture_principles": [
+    {
+      "name": "Consolidation Over Accumulation",
+      "decision": "The Stability Faculty is designed as a coordination architecture over existing runtime surfaces instead of a new parallel runtime.",
+      "evidence": "STABILITY_DISCOVERY.cross_domain_findings[0]"
+    },
+    {
+      "name": "Observability Consolidation",
+      "decision": "Runtime event duplication is normalized through a single MetricsCollector and RuntimeStatus aggregation layer.",
+      "evidence": "STABILITY_DISCOVERY.cross_domain_findings[1]"
+    },
+    {
+      "name": "Persistence Without Mission Ownership",
+      "decision": "Checkpoint and recovery architecture depends on runtime persistence surfaces but does not absorb Mission Runtime ownership.",
+      "evidence": "STABILITY_DISCOVERY.stability_domains[checkpoint,persistence] + STABILITY_DISCOVERY.cross_domain_findings[3]"
+    },
+    {
+      "name": "No Architectural Overlap",
+      "decision": "Mission, Provider, Build, and Knowledge systems are treated as external dependency surfaces only.",
+      "evidence": "STABILITY_DISCOVERY.cross_domain_findings[3]"
+    }
+  ],
+  "ownership_model": {
+    "faculty_name": "Stability Faculty",
+    "scope": "Runtime stability orchestration architecture only",
+    "ownership": "Stability Faculty",
+    "non_owned_external_systems": [
+      "Mission Runtime",
+      "Provider Runtime",
+      "Build Runtime",
+      "Knowledge Runtime",
+      "UI surfaces"
+    ]
+  },
+  "external_surfaces": [
+    {
+      "id": "runtime_entrypoint",
+      "name": "Active Runtime Entrypoint",
+      "path": "SUPRA/SUPRAOperationalCoreApp.swift",
+      "kind": "external-runtime-surface",
+      "owned_by": "Runtime",
+      "evidence": "RUNTIME_INDEX.primary_runtime.active_entrypoints[0]"
+    },
+    {
+      "id": "composition_root",
+      "name": "Composition Root",
+      "path": "SUPRA/SUPRACompositionRoot.swift",
+      "kind": "external-runtime-surface",
+      "owned_by": "Runtime",
+      "evidence": "RUNTIME_INDEX.primary_runtime.composition_root"
+    },
+    {
+      "id": "runtime_kernel",
+      "name": "Runtime Kernel",
+      "path": "SUPRA/SUPRARuntimeKernel.swift",
+      "kind": "external-runtime-surface",
+      "owned_by": "Runtime",
+      "evidence": "RUNTIME_INDEX.primary_runtime.runtime_kernel"
+    },
+    {
+      "id": "provider_runtime",
+      "name": "Provider Runtime",
+      "path": "SUPRA/ProviderRuntime.swift",
+      "kind": "external-provider-surface",
+      "owned_by": "Provider Runtime",
+      "evidence": "RUNTIME_INDEX.primary_runtime.provider_runtime"
+    },
+    {
+      "id": "mission_store",
+      "name": "Mission Store",
+      "path": "SUPRA/MissionStore.swift",
+      "kind": "external-mission-surface",
+      "owned_by": "Mission Runtime",
+      "evidence": "RUNTIME_INDEX.primary_runtime.mission_store"
+    },
+    {
+      "id": "runtime_event_cluster",
+      "name": "Runtime Event Modeling Cluster",
+      "paths": [
+        "SUPRA/RuntimeEvent.swift",
+        "SUPRA/RuntimeEventSource.swift",
+        "SUPRA/SUPRARuntimeEvents.swift"
+      ],
+      "kind": "external-observability-surface",
+      "owned_by": "Runtime",
+      "evidence": "MODULE_INDEX.duplicate_systems[category=runtime event modeling]"
+    },
+    {
+      "id": "runtime_filesystem",
+      "name": "Runtime Filesystem",
+      "path": "SUPRA_RUNTIME",
+      "kind": "external-persistence-surface",
+      "owned_by": "Runtime",
+      "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=SUPRA_RUNTIME]"
+    },
+    {
+      "id": "kernel_store",
+      "name": "Kernel Store",
+      "path": ".kernel",
+      "kind": "external-persistence-surface",
+      "owned_by": "Kernel",
+      "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.kernel]"
+    },
+    {
+      "id": "opencode_runtime",
+      "name": "OpenCode Runtime",
+      "path": ".opencode",
+      "kind": "external-agent-runtime-surface",
+      "owned_by": "Agent Runtime",
+      "evidence": "RUNTIME_INDEX.runtime_support_surfaces[path=.opencode]"
+    }
+  ],
+  "components": [
+    {
+      "id": "MetricsCollector",
+      "purpose": "Normalize raw runtime signals into a canonical stability telemetry feed without redefining the underlying emitters.",
+      "responsibilities": [
+        "Ingest raw signals from the runtime event cluster",
+        "Read runtime-adjacent health and persistence indicators from existing external surfaces",
+        "Produce canonical telemetry snapshots for Stability Faculty consumers",
+        "Provide a single observability intake boundary to reduce duplicated monitoring interpretation"
+      ],
+      "inputs": [
+        "runtime_event_cluster",
+        "runtime_kernel",
+        "runtime_filesystem",
+        "kernel_store",
+        "opencode_runtime",
+        "provider_runtime",
+        "mission_store"
+      ],
+      "outputs": [
+        "canonical_metrics_snapshot",
+        "stability_signal_stream"
+      ],
+      "dependencies": [],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not emit provider governance decisions",
+        "Does not own mission state transitions",
+        "Does not redefine runtime event producers"
+      ],
+      "integration_points": [
+        "composition_root",
+        "runtime_event_cluster",
+        "kernel_store"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[metrics]",
+        "STABILITY_DISCOVERY.cross_domain_findings[1]"
+      ]
+    },
+    {
+      "id": "HealthMonitor",
+      "purpose": "Interpret canonical telemetry into runtime health evaluations for stability decision-making.",
+      "responsibilities": [
+        "Evaluate runtime liveness and degradation states",
+        "Detect unhealthy runtime patterns from canonical telemetry",
+        "Publish health assessments to RuntimeStatus"
+      ],
+      "inputs": [
+        "canonical_metrics_snapshot",
+        "stability_signal_stream"
+      ],
+      "outputs": [
+        "health_assessment"
+      ],
+      "dependencies": [
+        "MetricsCollector"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not own runtime execution",
+        "Does not own UI health presentation",
+        "Does not replace provider-specific health checks"
+      ],
+      "integration_points": [
+        "runtime_kernel",
+        "runtime_event_cluster"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[health]",
+        "STABILITY_DISCOVERY.cross_domain_findings[1]"
+      ]
+    },
+    {
+      "id": "ContextMonitor",
+      "purpose": "Assess runtime continuity context across kernel, filesystem, and agent runtime state surfaces.",
+      "responsibilities": [
+        "Evaluate readiness of kernel-backed state surfaces",
+        "Detect continuity drift across runtime filesystem and agent runtime surfaces",
+        "Publish context readiness and continuity risk to RuntimeStatus"
+      ],
+      "inputs": [
+        "canonical_metrics_snapshot",
+        "kernel_store",
+        "runtime_filesystem",
+        "opencode_runtime"
+      ],
+      "outputs": [
+        "context_assessment"
+      ],
+      "dependencies": [
+        "MetricsCollector"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not redefine kernel persistence semantics",
+        "Does not own agent runtime workflows",
+        "Does not own build recovery artifacts"
+      ],
+      "integration_points": [
+        "kernel_store",
+        "runtime_filesystem",
+        "opencode_runtime"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[persistence]",
+        "STABILITY_DISCOVERY.stability_domains[recovery]"
+      ]
+    },
+    {
+      "id": "MissionMonitor",
+      "purpose": "Observe mission-state continuity signals relevant to stability without redesigning Mission Runtime.",
+      "responsibilities": [
+        "Read mission persistence continuity indicators",
+        "Detect mission-state instability relevant to runtime stability decisions",
+        "Publish mission continuity assessment to RuntimeStatus"
+      ],
+      "inputs": [
+        "canonical_metrics_snapshot",
+        "mission_store",
+        "runtime_filesystem"
+      ],
+      "outputs": [
+        "mission_assessment"
+      ],
+      "dependencies": [
+        "MetricsCollector"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not create or transition missions",
+        "Does not own mission execution policy",
+        "Does not replace Mission Runtime persistence"
+      ],
+      "integration_points": [
+        "mission_store",
+        "runtime_filesystem"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[persistence]",
+        "STABILITY_DISCOVERY.cross_domain_findings[3]"
+      ]
+    },
+    {
+      "id": "ProviderMonitor",
+      "purpose": "Observe provider availability and execution-adjacent stability signals without redesigning Provider Runtime.",
+      "responsibilities": [
+        "Read provider availability and degradation signals from existing provider-adjacent surfaces",
+        "Detect provider instability relevant to overall runtime stability",
+        "Publish provider assessment to RuntimeStatus"
+      ],
+      "inputs": [
+        "canonical_metrics_snapshot",
+        "provider_runtime",
+        "stability_signal_stream"
+      ],
+      "outputs": [
+        "provider_assessment"
+      ],
+      "dependencies": [
+        "MetricsCollector"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not route providers",
+        "Does not select models",
+        "Does not own provider execution policy"
+      ],
+      "integration_points": [
+        "provider_runtime",
+        "runtime_event_cluster"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[monitoring]",
+        "STABILITY_DISCOVERY.cross_domain_findings[3]"
+      ]
+    },
+    {
+      "id": "RuntimeStatus",
+      "purpose": "Aggregate monitor outputs into the canonical runtime stability state consumed by recovery, checkpoint, freeze, and resume orchestration.",
+      "responsibilities": [
+        "Aggregate health, context, mission, and provider assessments",
+        "Publish the canonical stability state for the runtime",
+        "Provide one architectural truth for freeze and recovery decisions"
+      ],
+      "inputs": [
+        "health_assessment",
+        "context_assessment",
+        "mission_assessment",
+        "provider_assessment",
+        "canonical_metrics_snapshot"
+      ],
+      "outputs": [
+        "runtime_stability_state",
+        "stability_decision_context"
+      ],
+      "dependencies": [
+        "MetricsCollector",
+        "HealthMonitor",
+        "ContextMonitor",
+        "MissionMonitor",
+        "ProviderMonitor"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not mutate runtime execution directly",
+        "Does not replace runtime kernel state",
+        "Does not overlap with mission, provider, or build status domains"
+      ],
+      "integration_points": [
+        "composition_root",
+        "runtime_kernel"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[health]",
+        "STABILITY_DISCOVERY.stability_domains[execution]",
+        "STABILITY_DISCOVERY.cross_domain_findings[0]"
+      ]
+    },
+    {
+      "id": "CheckpointManager",
+      "purpose": "Define the architecture that decides when and where stable runtime snapshots should be persisted.",
+      "responsibilities": [
+        "Translate RuntimeStatus into checkpoint eligibility decisions",
+        "Coordinate checkpoint persistence targets across existing runtime and kernel state surfaces",
+        "Publish checkpoint manifests and persistence intents"
+      ],
+      "inputs": [
+        "runtime_stability_state",
+        "stability_decision_context",
+        "runtime_filesystem",
+        "kernel_store",
+        "opencode_runtime"
+      ],
+      "outputs": [
+        "checkpoint_intent",
+        "checkpoint_manifest"
+      ],
+      "dependencies": [
+        "RuntimeStatus"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not own mission persistence schema",
+        "Does not own provider registries",
+        "Does not replace kernel storage contracts"
+      ],
+      "integration_points": [
+        "runtime_filesystem",
+        "kernel_store",
+        "opencode_runtime"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[checkpoint]",
+        "STABILITY_DISCOVERY.stability_domains[persistence]"
+      ]
+    },
+    {
+      "id": "RecoveryManager",
+      "purpose": "Determine recovery strategy after instability or restart using canonical status and persisted checkpoint context.",
+      "responsibilities": [
+        "Interpret failure and degradation states from RuntimeStatus",
+        "Select recovery strategy boundaries without mutating provider or mission ownership",
+        "Publish recovery plans and prerequisites for resume"
+      ],
+      "inputs": [
+        "runtime_stability_state",
+        "checkpoint_manifest",
+        "kernel_store",
+        "runtime_filesystem"
+      ],
+      "outputs": [
+        "recovery_plan",
+        "recovery_requirements"
+      ],
+      "dependencies": [
+        "RuntimeStatus",
+        "CheckpointManager"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not execute mission recovery logic itself",
+        "Does not implement provider failover policy",
+        "Does not own build restoration"
+      ],
+      "integration_points": [
+        "runtime_filesystem",
+        "kernel_store",
+        "runtime_kernel"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[recovery]",
+        "STABILITY_DISCOVERY.cross_domain_findings[2]"
+      ]
+    },
+    {
+      "id": "ResumeManager",
+      "purpose": "Define the safe re-entry architecture from recovered state back to a stable executable state.",
+      "responsibilities": [
+        "Validate recovery prerequisites before runtime continuation",
+        "Translate recovery plans into resumable execution intents",
+        "Publish resume readiness and gating outcomes"
+      ],
+      "inputs": [
+        "recovery_plan",
+        "recovery_requirements",
+        "checkpoint_manifest",
+        "runtime_stability_state"
+      ],
+      "outputs": [
+        "resume_intent",
+        "resume_readiness"
+      ],
+      "dependencies": [
+        "CheckpointManager",
+        "RecoveryManager"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not directly restart the runtime",
+        "Does not own mission scheduler semantics",
+        "Does not bypass validation gates"
+      ],
+      "integration_points": [
+        "composition_root",
+        "runtime_entrypoint",
+        "runtime_kernel"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[execution]",
+        "STABILITY_DISCOVERY.cross_domain_findings[2]"
+      ]
+    },
+    {
+      "id": "FreezeManager",
+      "purpose": "Define when runtime state can be declared stable enough for governance freeze without changing the runtime itself.",
+      "responsibilities": [
+        "Evaluate freeze eligibility from RuntimeStatus and checkpoint state",
+        "Require validation completeness before freeze publication",
+        "Publish freeze eligibility and freeze manifest intent"
+      ],
+      "inputs": [
+        "runtime_stability_state",
+        "checkpoint_manifest",
+        "resume_readiness"
+      ],
+      "outputs": [
+        "freeze_eligibility",
+        "freeze_manifest"
+      ],
+      "dependencies": [
+        "RuntimeStatus",
+        "CheckpointManager",
+        "ResumeManager"
+      ],
+      "ownership": "Stability Faculty",
+      "boundaries": [
+        "Does not freeze build outputs",
+        "Does not freeze knowledge artefacts",
+        "Does not override executive approval"
+      ],
+      "integration_points": [
+        "runtime_filesystem",
+        "kernel_store"
+      ],
+      "future_implementation_status": "architecture_only_not_implemented",
+      "evidence": [
+        "STABILITY_DISCOVERY.stability_domains[execution]",
+        "STABILITY_DISCOVERY.cross_domain_findings[0]"
+      ]
+    }
+  ],
+  "responsibility_matrix": {
+    "health_evaluation": "HealthMonitor",
+    "context_continuity_evaluation": "ContextMonitor",
+    "mission_continuity_observation": "MissionMonitor",
+    "provider_stability_observation": "ProviderMonitor",
+    "telemetry_normalization": "MetricsCollector",
+    "canonical_stability_state": "RuntimeStatus",
+    "checkpoint_policy_execution_boundary": "CheckpointManager",
+    "recovery_strategy_boundary": "RecoveryManager",
+    "resume_gating_boundary": "ResumeManager",
+    "freeze_gating_boundary": "FreezeManager"
+  },
+  "non_overlap_contracts": [
+    {
+      "external_system": "Mission Runtime",
+      "owned_surfaces": [
+        "mission_store"
+      ],
+      "stability_boundary": "MissionMonitor may observe mission continuity but cannot create, mutate, schedule, or complete missions.",
+      "evidence": "RUNTIME_INDEX.primary_runtime.mission_store + STABILITY_DISCOVERY.cross_domain_findings[3]"
+    },
+    {
+      "external_system": "Provider Runtime",
+      "owned_surfaces": [
+        "provider_runtime"
+      ],
+      "stability_boundary": "ProviderMonitor may observe availability and degradation but cannot route providers, choose models, or execute provider policy.",
+      "evidence": "RUNTIME_INDEX.primary_runtime.provider_runtime + STABILITY_DISCOVERY.cross_domain_findings[3]"
+    },
+    {
+      "external_system": "Build Runtime",
+      "owned_surfaces": [
+        "SUPRA.xcodeproj"
+      ],
+      "stability_boundary": "The Stability Faculty observes executable readiness only; it does not define build manifests or build commands.",
+      "evidence": "RUNTIME_INDEX.build_surfaces + STABILITY_DISCOVERY.cross_domain_findings[3]"
+    },
+    {
+      "external_system": "Knowledge Runtime",
+      "owned_surfaces": [
+        "knowledge graph/runtime knowledge duplicate cluster"
+      ],
+      "stability_boundary": "Stability does not redesign knowledge graph or knowledge kernel responsibilities.",
+      "evidence": "MODULE_INDEX.duplicate_systems[category=knowledge graph/runtime knowledge] + STABILITY_DISCOVERY.cross_domain_findings[3]"
+    }
+  ],
+  "dependency_graph": {
+    "type": "dag",
+    "edges": [
+      {
+        "from": "MetricsCollector",
+        "to": "HealthMonitor"
+      },
+      {
+        "from": "MetricsCollector",
+        "to": "ContextMonitor"
+      },
+      {
+        "from": "MetricsCollector",
+        "to": "MissionMonitor"
+      },
+      {
+        "from": "MetricsCollector",
+        "to": "ProviderMonitor"
+      },
+      {
+        "from": "MetricsCollector",
+        "to": "RuntimeStatus"
+      },
+      {
+        "from": "HealthMonitor",
+        "to": "RuntimeStatus"
+      },
+      {
+        "from": "ContextMonitor",
+        "to": "RuntimeStatus"
+      },
+      {
+        "from": "MissionMonitor",
+        "to": "RuntimeStatus"
+      },
+      {
+        "from": "ProviderMonitor",
+        "to": "RuntimeStatus"
+      },
+      {
+        "from": "RuntimeStatus",
+        "to": "CheckpointManager"
+      },
+      {
+        "from": "RuntimeStatus",
+        "to": "RecoveryManager"
+      },
+      {
+        "from": "RuntimeStatus",
+        "to": "FreezeManager"
+      },
+      {
+        "from": "CheckpointManager",
+        "to": "RecoveryManager"
+      },
+      {
+        "from": "CheckpointManager",
+        "to": "ResumeManager"
+      },
+      {
+        "from": "RecoveryManager",
+        "to": "ResumeManager"
+      },
+      {
+        "from": "ResumeManager",
+        "to": "FreezeManager"
+      },
+      {
+        "from": "CheckpointManager",
+        "to": "FreezeManager"
+      }
+    ]
+  },
+  "validation_rules": [
+    {
+      "rule": "Every component dependency must resolve to a declared component.",
+      "method": "Validate dependencies against components[].id"
+    },
+    {
+      "rule": "Every external integration point must resolve to a declared external surface.",
+      "method": "Validate integration_points and inputs against external_surfaces[].id where applicable"
+    },
+    {
+      "rule": "The component dependency graph must remain acyclic.",
+      "method": "Topological validation over dependency_graph.edges"
+    },
+    {
+      "rule": "No responsibility may be owned by more than one Stability Faculty component.",
+      "method": "Validate responsibility_matrix for unique ownership"
+    },
+    {
+      "rule": "No component may own mission, provider, build, or knowledge runtime responsibilities.",
+      "method": "Validate against non_overlap_contracts"
+    }
+  ],
+  "validated_paths": [
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/RUNTIME_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/MODULE_INDEX.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/DEPENDENCY_GRAPH.json",
+    "FACTORIES/FACTORY_02_DISCOVERY/outputs/STABILITY_DISCOVERY.json",
+    ".kernel",
+    ".opencode",
+    "SUPRA.xcodeproj",
+    "SUPRA/MissionStore.swift",
+    "SUPRA/ProviderRuntime.swift",
+    "SUPRA/RuntimeEvent.swift",
+    "SUPRA/RuntimeEventSource.swift",
+    "SUPRA/SUPRACompositionRoot.swift",
+    "SUPRA/SUPRAOperationalCoreApp.swift",
+    "SUPRA/SUPRARuntimeEvents.swift",
+    "SUPRA/SUPRARuntimeKernel.swift",
+    "SUPRA_RUNTIME"
+  ],
+  "missing_paths": []
+}

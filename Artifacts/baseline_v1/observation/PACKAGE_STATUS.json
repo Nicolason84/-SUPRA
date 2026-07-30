@@ -1,0 +1,18 @@
+{
+  "schema":"supra.observation.package-status.v1",
+  "observedAt":"2026-07-30T14:27:41+02:00",
+  "status":"PASS",
+  "packageManifests":[
+    {"path":"SUPRA_AST_PLATFORM/Package.swift","type":"swift-package-manifest","present":true},
+    {"path":"Packages/CAnnoNicoIntegrationPackage/Package.swift","type":"swift-package-manifest","present":true}
+  ],
+  "packageResolvedFiles":["SUPRA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"],
+  "resolvedPackages":[
+    {"name":"CAnnoNicoIntegrationPackage","source":"local","path":"Packages/CAnnoNicoIntegrationPackage","status":"RESOLVED"}
+  ],
+  "failedPackages":[],
+  "versionConflicts":[],
+  "missingDependencies":[],
+  "xcodebuildResolution":"PASS",
+  "facts":["The Xcode project uses a local Swift package reference.","Package.resolved is present with an empty pin set because the resolved graph contains no remote dependencies.","Xcode package resolution exited 0 and resolved CAnnoNicoIntegrationPackage from the local path."]
+}

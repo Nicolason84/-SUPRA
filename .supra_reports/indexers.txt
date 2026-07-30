@@ -1,0 +1,268 @@
+./SUPRA/SUPRADataTwin.swift:34:    func refresh() {
+./SUPRA/SUPRADataTwin.swift:60:        let projectDirs = scanForProjects(at: homeURL)
+./SUPRA/SUPRADataTwin.swift:61:        let docDirs = scanForDocuments(at: homeURL)
+./SUPRA/SUPRADataTwin.swift:62:        let archives = scanForArchives(at: homeURL)
+./SUPRA/SUPRADataTwin.swift:63:        let largeFiles = scanLargeFiles(at: homeURL)
+./SUPRA/SUPRADataTwin.swift:80:    private func scanForProjects(at url: URL) -> [String] {
+./SUPRA/SUPRADataTwin.swift:104:    private func scanForDocuments(at url: URL) -> [String] {
+./SUPRA/SUPRADataTwin.swift:121:    private func scanForArchives(at url: URL) -> [String] {
+./SUPRA/SUPRADataTwin.swift:138:    private func scanLargeFiles(at url: URL) -> [String] {
+./SUPRA/SUPRAOSWorkspaceExplorerView.swift:8:        ("Data", "knowledge_graph.json, workspace_index.json", "doc.text", .supraBlue),
+./SUPRA/MissionGraphView.swift:39:            ForEach(Array(nodes.enumerated()), id: \.element.id) { index, node in
+./SUPRA/MissionGraphView.swift:42:                    if index < nodes.count - 1 {
+./SUPRA/SUPRADeveloperTwin.swift:36:    func refresh() {
+./SUPRA/ExecutiveTimeline.swift:15:    case workspaceScanned = "workspace_scanned"
+./SUPRA/SUPRAWorldMapView.swift:41:    func refresh() {
+./SUPRA/SUPRAWorldMapView.swift:121:        .onAppear { state.refresh() }
+./SUPRA/UniverseDashboard.swift:80:    func refresh() {
+./SUPRA/SUPRACommandCenterState.swift:262:        scheduler.register(id: "command_center_refresh", priority: .low, label: "Command Center Refresh", cooldown: 15) { [weak self] in
+./SUPRA/SUPRACommandCenterState.swift:265:        scheduler.register(id: "copilot_refresh", priority: .low, label: "Copilot Refresh", cooldown: 30) { [weak self] in
+./SUPRA/SUPRACommandCenterState.swift:266:            self?.proposalEngine.refresh()
+./SUPRA/SUPRAOperationalControlCenterView.swift:9:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAOperationalControlCenterView.swift:48:                refreshIndicator
+./SUPRA/SUPRAOperationalControlCenterView.swift:264:    private var refreshIndicator: some View {
+./SUPRA/SUPRAOperationalControlCenterView.swift:266:            if let msg = refreshCoordinator.statusMessage {
+./SUPRA/SUPRAOperationalControlCenterView.swift:273:                .fill(refreshCoordinator.isRefreshing ? Color.supraAccent : Color.supraTextTertiary)
+./SUPRA/SUPRAOperationalControlCenterView.swift:275:            Text("Dernière actualisation : \(refreshCoordinator.lastRefresh?.formatted(date: .omitted, time: .standard) ?? "—")")
+./SUPRA/ConversationMemoryStore.swift:51:    @Published private(set) var refreshCount = 0
+./SUPRA/ConversationMemoryStore.swift:98:        let discovered = findConversationFiles(in: conversationsDir)
+./SUPRA/ConversationMemoryStore.swift:100:        let newFiles = discovered.filter { !existingIds.contains(lastPathComponentWithoutExtension($0)) }
+./SUPRA/ConversationMemoryStore.swift:110:        connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:133:            connectToKnowledgeGraph()
+./SUPRA/ConversationMemoryStore.swift:158:    func generateAllSummaries() {
+./SUPRA/ConversationMemoryStore.swift:173:    func refresh() {
+./SUPRA/ConversationMemoryStore.swift:278:    private func connectToKnowledgeGraph() {
+./SUPRA/SettingsView.swift:68:                    Button("Refresh Now") { client.refresh() }
+./SUPRA/RuntimeDataService.swift:20:    private var refreshTask: Task<Void, Never>?
+./SUPRA/RuntimeDataService.swift:69:        refreshTask = Task { [weak self] in
+./SUPRA/RuntimeDataService.swift:79:        refreshTask?.cancel()
+./SUPRA/RuntimeDataService.swift:80:        refreshTask = nil
+./SUPRA/RuntimeDataService.swift:84:        refreshTask?.cancel()
+./SUPRA/SUPRAOSUniverseView.swift:54:                        index: cluster.3,
+./SUPRA/SUPRAOSUniverseView.swift:103:    private func clusterNode(name: String, icon: String, color: Color, index: CGFloat, total: CGFloat, size: CGSize) -> some View {
+./SUPRA/SUPRAOSUniverseView.swift:104:        let angle = Angle.degrees(Double(index / total) * 360 - 90)
+./SUPRA/PDFKnowledgeProvider.swift:13:    func discover() async -> [KnowledgeObject] {
+./SUPRA/PDFKnowledgeProvider.swift:37:                    status: "indexed",
+./SUPRA/PDFKnowledgeProvider.swift:49:        let url = URL(fileURLWithPath: workspacePath).appendingPathComponent("workspace_index.json")
+./SUPRA/SUPRAEnvironmentWorldModel.swift:35:        refresh()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:37:            Task { @MainActor [weak self] in self?.refresh() }
+./SUPRA/SUPRAEnvironmentWorldModel.swift:46:    func refresh() {
+./SUPRA/SUPRAEnvironmentWorldModel.swift:49:        hardwareTwin.refresh()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:50:        softwareTwin.refresh()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:51:        dataTwin.refresh()
+./SUPRA/SUPRAEnvironmentWorldModel.swift:52:        developerTwin.refresh()
+./SUPRA/SUPRAResourceIntelligenceView.swift:37:        refresh()
+./SUPRA/SUPRAResourceIntelligenceView.swift:39:            Task { @MainActor in self?.refresh() }
+./SUPRA/SUPRAResourceIntelligenceView.swift:48:    func refresh() {
+./SUPRA/TwinUniverse.swift:61:        refreshState()
+./SUPRA/TwinUniverse.swift:66:        refreshState()
+./SUPRA/TwinUniverse.swift:72:        refreshState()
+./SUPRA/TwinUniverse.swift:77:        refreshState()
+./SUPRA/TwinUniverse.swift:99:    private func refreshState() {
+./SUPRA/SUPRASoftwareTwin.swift:42:    func refresh() {
+./SUPRA/ExecutiveDemoMode.swift:38:            worldModel.refresh()
+./SUPRA/ExecutiveDemoMode.swift:54:            self.proposalEngine.refresh()
+./SUPRA/ExecutiveDemoMode.swift:72:            self.businessPlatform.refresh()
+./SUPRA/ExecutiveDemoMode.swift:84:            self.intelligenceGraph.refresh()
+./SUPRA/SUPRARecommendationCenter.swift:81:                evidence: "Scan du répertoire ~/Library/Developer/Xcode/DerivedData", impact: "Espace disque gaspillé, indexation lente",
+./SUPRA/SUPRARecommendationCenter.swift:82:                risk: "Xcode devra re-indexer les projets au prochain build (réversible)",
+./SUPRA/MultiMemoryStore.swift:24:    func refresh() {
+./SUPRA/WorkspaceDiscovery.swift:8:    @Published var discoveredCount: Int = 0
+./SUPRA/WorkspaceDiscovery.swift:19:    func scan() async throws -> [WorkspaceObject] {
+./SUPRA/WorkspaceDiscovery.swift:30:        let totalPaths = config.scanPaths.count
+./SUPRA/WorkspaceDiscovery.swift:33:        for scanPath in config.scanPaths {
+./SUPRA/WorkspaceDiscovery.swift:34:            guard FileManager.default.fileExists(atPath: scanPath.path) else {
+./SUPRA/WorkspaceDiscovery.swift:40:            let objects = try await scanDirectory(scanPath, depth: 0)
+./SUPRA/WorkspaceDiscovery.swift:46:            await factory.updateProjectNames(&mutable, rootURL: scanPath)
+./SUPRA/WorkspaceDiscovery.swift:56:        discoveredCount = allObjects.count
+./SUPRA/WorkspaceDiscovery.swift:63:    private func scanDirectory(_ url: URL, depth: Int) async throws -> [WorkspaceObject] {
+./SUPRA/CAnnoNicoSnapshotStore.swift:25:    private var refreshTask: Task<Void, Never>?
+./SUPRA/CAnnoNicoSnapshotStore.swift:35:        return refresh()
+./SUPRA/CAnnoNicoSnapshotStore.swift:51:    func refresh() -> CAnnoNicoSnapshotState {
+./SUPRA/CAnnoNicoSnapshotStore.swift:65:    func refreshIfNeeded() {
+./SUPRA/CAnnoNicoSnapshotStore.swift:67:            refresh()
+./SUPRA/CAnnoNicoSnapshotStore.swift:71:    func refreshAsync() async {
+./SUPRA/CAnnoNicoSnapshotStore.swift:73:        refresh()
+./SUPRA/CAnnoNicoSnapshotStore.swift:79:        refresh()
+./SUPRA/SUPRADecisionRoomView.swift:10:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/ConversationTwinView.swift:88:                    store.generateAllSummaries()
+./SUPRA/Snapshot.swift:17:    let index: ArtifactStatus
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:120:            hardwareTwin.refresh()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:134:                softwareTwin.refresh()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:145:                dataTwin.refresh()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:156:                developerTwin.refresh()
+./SUPRA/SUPRAEnvironmentSnapshotStore.swift:166:            envModel.refresh()
+./SUPRA/WorkspaceGovernor.swift:53:    func scan(_ objects: [CAnnoNicoObject]) {
+./SUPRA/ExecutiveMemory.swift:122:        if let index = entries.firstIndex(where: { $0.id == id }) {
+./SUPRA/ExecutiveMemory.swift:123:            var entry = entries[index]
+./SUPRA/ExecutiveMemory.swift:126:            entries[index] = entry
+./SUPRA/DecisionInboxView.swift:47:            Button("Refresh", systemImage: "arrow.clockwise", action: store.refresh)
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:12:    @Published private(set) var refreshCount = 0
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:33:    func refreshNow() {
+./SUPRA/SUPRAPassiveRefreshCoordinator.swift:69:        refreshCount += 1
+./SUPRA/RuntimeEventSource.swift:51:    func refresh() {
+./SUPRA/RuntimeEventSource.swift:167:    func refresh() {}
+./SUPRA/ContextEngine.swift:9:    private var index: WorkspaceIndex?
+./SUPRA/ContextEngine.swift:18:        index = idx
+./SUPRA/ContextEngine.swift:30:        guard let index = index else {
+./SUPRA/ContextEngine.swift:37:        for object in index.objects {
+./SUPRA/ContextEngine.swift:148:        let relatedObjects = index?.objects.filter { obj in
+./SUPRA/SUPRAMissionObserver.swift:157:                detail: "No snapshot available — refresh needed",
+./SUPRA/SUPRAMissionObserver.swift:165:                detail: "\(Int(snapshotStore.age))s since last refresh",
+./SUPRA/SUPRAScheduler.swift:112:    func refreshSnapshot() {
+./SUPRA/SUPRAScheduler.swift:113:        requestRun(id: "snapshot_refresh")
+./SUPRA/SUPRAScheduler.swift:125:                store.refresh()
+./SUPRA/SUPRAWorldModel.swift:85:    func refresh() {
+./SUPRA/OpenCodeBridge.swift:9:    case getWorkspaceIndex, scanWorkspace
+./SUPRA/SUPRAHardwareTwin.swift:41:    func refresh() {
+./SUPRA/ConversationKnowledgeProvider.swift:13:    func discover() async -> [KnowledgeObject] {
+./SUPRA/ConversationKnowledgeProvider.swift:62:        let conversationFiles = scanConversationFiles(in: baseURL)
+./SUPRA/ConversationKnowledgeProvider.swift:70:    private func scanConversationFiles(in baseURL: URL) -> [KnowledgeObject] {
+./SUPRA/SupraControlCenterView.swift:99:                    value: snapshot.index.isAvailable ? "1 / 1" : "0 / 1",
+./SUPRA/SupraControlCenterView.swift:101:                    healthy: snapshot.index.isAvailable
+./SUPRA/SupraControlCenterView.swift:152:        let artifacts = snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]
+./SUPRA/SupraControlCenterView.swift:293:                List(snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]) { artifact in
+./SUPRA/WorkspaceStatistics.swift:9:    func compute(from index: WorkspaceIndex) -> WorkspaceStatistics {
+./SUPRA/WorkspaceStatistics.swift:12:        let objects = index.objects
+./SUPRA/WorkspaceStatistics.swift:76:            lastIndexed: index.timestamp,
+./SUPRA/TotalControlTowerView.swift:7:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/TotalControlTowerView.swift:79:            if let msg = refreshCoordinator.statusMessage {
+./SUPRA/TotalControlTowerView.swift:86:                .fill(refreshCoordinator.isRefreshing ? Color.supraAccent : Color.supraTextTertiary)
+./SUPRA/TotalControlTowerView.swift:88:            Text("Dernière actualisation : \(refreshCoordinator.lastRefresh?.formatted(date: .omitted, time: .standard) ?? "—")")
+./SUPRA/SUPRAIntelligenceEngine.swift:22:    func refresh() {
+./SUPRA/SUPRAIntelligenceEngine.swift:107:                suggestedAction: "Check \(memory.name) data source and refresh"
+./SUPRA/SUPRAIntelligenceEngine.swift:124:            result.append(SUPRAInsight(id: "cannonico_no_cache", category: .anomaly, severity: .warning, confidence: 1.0, message: "CAnnoNico cache is empty", suggestedAction: "Trigger snapshot refresh"))
+./SUPRA/MissionCopilotView.swift:64:                SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/SUPRAOSMissionCanvasView.swift:64:            ForEach(Array(missions.enumerated()), id: \.offset) { index, mission in
+./SUPRA/SUPRAOSMissionCanvasView.swift:70:                        if index < missions.count - 1 {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:8:    @StateObject private var refreshCoordinator = SUPRAPassiveRefreshCoordinator.shared
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:18:                    discoveryControl
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:37:            refreshAll()
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:43:            Text("Deep scan examines all directories. This may take several seconds and increase CPU usage. Continue?")
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:73:                refreshButton
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:120:    private var refreshButton: some View {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:123:                refreshCoordinator.refreshNow()
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:138:            .disabled(refreshCoordinator.isRefreshing)
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:140:            if let msg = refreshCoordinator.statusMessage {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:154:                .fill(refreshCoordinator.isRefreshing ? Color.supraAccent : Color.supraTextTertiary)
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:156:            Text("Dernière actualisation : \(refreshCoordinator.lastRefresh?.formatted(date: .omitted, time: .standard) ?? "—")")
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:164:    private var discoveryControl: some View {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:198:                scanButton("Quick", icon: "bolt.fill", color: .supraBlue) { snapshotStore.quickRefresh() }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:199:                scanButton("Standard", icon: "arrow.clockwise", color: .supraAccent) { snapshotStore.standardRefresh() }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:200:                scanButton("Deep", icon: "magnifyingglass", color: .supraPurple) { showDeepScanWarning = true }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:203:                    scanButton("Pause", icon: "pause.fill", color: .supraOrange) { snapshotStore.pause() }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:205:                    scanButton("Resume", icon: "play.fill", color: .supraGreen) { snapshotStore.resume() }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:207:                scanButton("Cancel", icon: "xmark", color: .supraRed) { snapshotStore.cancel() }
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:229:    private func scanButton(_ label: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:242:        .accessibilityLabel("\(label) scan")
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:243:        .accessibilityHint(label == "Quick" ? "Scans only hardware changes" : label == "Deep" ? "Full directory scan" : label == "Pause" ? "Pause current scan" : label == "Resume" ? "Resume paused scan" : "\(label) refresh")
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:595:    private func refreshAll() {
+./SUPRA/SUPRAEnvironmentCommandCenterView.swift:596:        envModel.refresh()
+./SUPRA/DecisionKnowledgeProvider.swift:13:    func discover() async -> [KnowledgeObject] {
+./SUPRA/DecisionKnowledgeProvider.swift:77:        let freezeDirs = scanFreezeDirectories(in: baseURL)
+./SUPRA/DecisionKnowledgeProvider.swift:86:        let url = URL(fileURLWithPath: workspacePath).appendingPathComponent("workspace_index.json")
+./SUPRA/DecisionKnowledgeProvider.swift:91:    private func scanFreezeDirectories(in baseURL: URL) -> [KnowledgeObject] {
+./SUPRA/SUPRAOperationalCoreApp.swift:22:                    snapshotStore.refreshIfNeeded()
+./SUPRA/ArtifactReader.swift:28:    private static let indexURL = URL(fileURLWithPath: "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json")
+./SUPRA/ArtifactReader.swift:50:            index: optionalJSONStatus(name: "INDEX", url: Self.indexURL),
+./SUPRA/SUPRAEnvironmentAutoMissions.swift:29:                proposalEngine.refresh()
+./SUPRA/SUPRAOSGlobalSearchView.swift:62:                    resultRow(index: i)
+./SUPRA/SUPRAOSGlobalSearchView.swift:85:    private func resultRow(index: Int) -> some View {
+./SUPRA/SUPRAOSGlobalSearchView.swift:90:                .overlay(Image(systemName: ["cube", "person.2", "folder", "doc.text", "flag"][index % 5])
+./SUPRA/SUPRAOSGlobalSearchView.swift:93:                Text("Résultat \(index + 1)")
+./SUPRA/SUPRAEnvironmentPotential.swift:55:            limits: "V1 — estimé, collecte différée, aucun scan système hors des domaines couverts"
+./SUPRA/GitKnowledgeProvider.swift:13:    func discover() async -> [KnowledgeObject] {
+./SUPRA/TwinRegistry.swift:17:        if let index = twins.firstIndex(where: { $0.id == twin.id }) {
+./SUPRA/TwinRegistry.swift:18:            twins[index] = twin
+./SUPRA/WorkspaceModels.swift:89:        metadata: WorkspaceMetadata(scanDuration: 0, directoriesScanned: 0, filesScanned: 0, errors: [])
+./SUPRA/WorkspaceModels.swift:94:    let scanDuration: TimeInterval
+./SUPRA/SUPRAIntelligenceGraph.swift:45:    func refresh() {
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:56:        refresh()
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:58:            Task { @MainActor in self?.refresh() }
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:67:    func refresh() {
+./SUPRA/SUPRAResourceIntelligenceEngine.swift:198:                impact: "Prévient les corruptions d'index", effort: "Ajouter une phase pré-build",
+./SUPRA/WorkspaceMemory.swift:43:    func recordScan(index: WorkspaceIndex) {
+./SUPRA/WorkspaceMemory.swift:44:        memory.lastIndexed = index.timestamp
+./SUPRA/WorkspaceMemory.swift:47:            timestamp: index.timestamp,
+./SUPRA/WorkspaceMemory.swift:48:            version: index.version,
+./SUPRA/WorkspaceMemory.swift:49:            eventType: "index_completed",
+./SUPRA/WorkspaceMemory.swift:53:            changeDescription: "Indexed \(index.objects.count) objects in \(String(format: "%.1f", index.metadata.scanDuration))s",
+./SUPRA/ControlTowerState.swift:180:    let environment_index: String?
+./SUPRA/WorkspaceIndexer.swift:6:    @Published var index: WorkspaceIndex = .initial
+./SUPRA/WorkspaceIndexer.swift:9:    private let discovery: WorkspaceDiscovery
+./SUPRA/WorkspaceIndexer.swift:10:    private var scanStartTime: CFAbsoluteTime = 0
+./SUPRA/WorkspaceIndexer.swift:12:    init(discovery: WorkspaceDiscovery) {
+./SUPRA/WorkspaceIndexer.swift:13:        self.discovery = discovery
+./SUPRA/WorkspaceIndexer.swift:18:        scanStartTime = CFAbsoluteTimeGetCurrent()
+./SUPRA/WorkspaceIndexer.swift:20:        let objects = try await discovery.scan()
+./SUPRA/WorkspaceIndexer.swift:24:        let scanDuration = CFAbsoluteTimeGetCurrent() - scanStartTime
+./SUPRA/WorkspaceIndexer.swift:29:            scanDuration: scanDuration,
+./SUPRA/WorkspaceIndexer.swift:32:            errors: discovery.errors
+./SUPRA/WorkspaceIndexer.swift:35:        index = WorkspaceIndex(
+./SUPRA/WorkspaceIndexer.swift:44:        return index
+./SUPRA/WorkspaceIndexer.swift:48:        var indexed = Dictionary(uniqueKeysWithValues: objects.map { ($0.id, $0) })
+./SUPRA/WorkspaceIndexer.swift:60:                indexed[child.id] = child
+./SUPRA/WorkspaceIndexer.swift:64:        return Array(indexed.values)
+./SUPRA/WorkspaceIndexer.swift:68:        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("workspace_index.json")
+./SUPRA/WorkspaceIndexer.swift:69:        guard let data = try? JSONEncoder.workspace.encode(index) else { return }
+./SUPRA/WorkspaceRecommendation.swift:164:            rationale: "Les fichiers volumineux ralentissent l'indexation",
+./SUPRA/WorkspaceRecommendation.swift:165:            impact: "Performance d'indexation améliorée",
+./SUPRA/SUPRABusinessPlatform.swift:79:    func refresh() {
+./SUPRA/SUPRABusinessPlatform.swift:80:        worldModel.refresh()
+./SUPRA/MissionStore.swift:74:    func refresh() {
+./SUPRA/DecisionStore.swift:62:    func refresh() {
+./SUPRA/SUPRAWorkerFabric.swift:58:        snapshotStore.refreshIfNeeded()
+./SUPRA/SUPRAWorkerFabric.swift:59:        multiMemory.refresh()
+./SUPRA/SUPRACommandCenterApp.swift:22:                    snapshotStore.refreshIfNeeded()
+./SUPRA/SUPRAEvolutionEngine.swift:105:                impact: "Libère \(dev.derivedDataSizeMB)MB, accélère l'indexation",
+./SUPRA/UniverseTimeline.swift:14:    case governanceScan = "governance_scan"
+./SUPRA/UniverseTimeline.swift:81:            description: "\(objectCount) objets indexés",
+./SUPRA/SUPRAMissionProposalEngine.swift:18:    func refresh() {
+./SUPRA/SUPRAAutonomyControlView.swift:17:                    SUPRAMissionProposalEngine.shared.refresh()
+./SUPRA/ContentView.swift:411:                subtitle: "Cartographie et index canoniques",
+./SUPRA/ContentView.swift:2433:        for (index, value) in action.backupPaths.enumerated() {
+./SUPRA/ContentView.swift:2435:            let destination = backup.appendingPathComponent("\(index)-\(source.lastPathComponent)")
+./SUPRA/ContentView.swift:3125:        reload()
+./SUPRA/ContentView.swift:3128:                self?.reload()
+./SUPRA/ContentView.swift:3138:    func reload() {
+./SUPRA/ContentView.swift:3414:                    "Last refresh: \(model.snapshot.updatedAt.formatted(date: .numeric, time: .standard))"
+./SUPRA/ContentView.swift:3419:                    model.reload()
+./SUPRA/WorkspaceKnowledgeGraph.swift:13:    func build(from index: WorkspaceIndex) -> WorkspaceGraph {
+./SUPRA/WorkspaceKnowledgeGraph.swift:21:        let topObjects = index.objects.filter { $0.importance > 0.3 }
+./SUPRA/WorkspaceKnowledgeGraph.swift:66:                scanDuration: Date().timeIntervalSince(startTime),
+./SUPRA/WorkspaceKnowledgeGraph.swift:67:                directoriesScanned: index.metadata.directoriesScanned,
+./SUPRA/ExecutiveCockpitFoundation.swift:94:        refreshState()
+./SUPRA/ExecutiveCockpitFoundation.swift:103:    func refreshState() {
+./SUPRA/WorkspaceConfiguration.swift:4:    var scanPaths: [URL]
+./SUPRA/WorkspaceConfiguration.swift:10:    var scanInterval: TimeInterval
+./SUPRA/WorkspaceConfiguration.swift:15:        scanPaths: [
+./SUPRA/WorkspaceConfiguration.swift:45:        scanInterval: 300,
+./SUPRA/KnowledgeGraph.swift:24:            let discovered = await provider.discover()
+./SUPRA/KnowledgeGraph.swift:25:            allObjects.append(contentsOf: discovered)
+./SUPRA/KnowledgeProvider.swift:7:    func discover() async -> [KnowledgeObject]
+./SUPRA/RuntimeSourceProtocol.swift:15:    func refresh()
+./SUPRA/OpenCodeClient.swift:58:    func refresh() {
+./SUPRA/OpenCodeClient.swift:59:        jsonSource?.refresh()
+./SUPRA/OpenCodeClient.swift:60:        opencodeSource?.refresh()
+./SUPRA/ReportKnowledgeProvider.swift:13:    func discover() async -> [KnowledgeObject] {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:1022:                subtitle: "Cartographie et index canoniques",
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3044:        for (index, value) in action.backupPaths.enumerated() {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3046:            let destination = backup.appendingPathComponent("\(index)-\(source.lastPathComponent)")
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3793:        reload()
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3796:                self?.reload()
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:3806:    func reload() {
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:4082:                    "Last refresh: \(model.snapshot.updatedAt.formatted(date: .numeric, time: .standard))"
+./.mechanical_extract_backup_20260723_211359/ContentView.swift:4087:                    model.reload()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:1022:                subtitle: "Cartographie et index canoniques",
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3044:        for (index, value) in action.backupPaths.enumerated() {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3046:            let destination = backup.appendingPathComponent("\(index)-\(source.lastPathComponent)")
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3793:        reload()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3796:                self?.reload()
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:3806:    func reload() {
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:4082:                    "Last refresh: \(model.snapshot.updatedAt.formatted(date: .numeric, time: .standard))"
+./_SUPRA_BACKUPS/INLINE_MODELS_20260723_143443/ContentView.swift:4087:                    model.reload()
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:113:        reload()
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:116:                self?.reload()
+./_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740/Models/SUPRAAlert.swift:126:    func reload() {
+./SUPRA_AST_PLATFORM/.build/index-build/arm64-apple-macosx/debug/SUPRAAST.build/DerivedSources/resource_bundle_accessor.swift:6:        let buildPath = "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_AST_PLATFORM/.build/index-build/arm64-apple-macosx/debug/SUPRA_AST_PLATFORM_SUPRAAST.bundle"
+./SUPRA_AST_PLATFORM/Tests/DiscoveryTests.swift:6:        let url = FileManager.default.temporaryDirectory.appendingPathComponent("discovery.swift")

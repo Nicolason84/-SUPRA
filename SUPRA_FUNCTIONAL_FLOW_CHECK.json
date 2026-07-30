@@ -1,0 +1,58 @@
+{
+  "observer": "GO_SUPRA_FUNCTIONAL_FLOW_CHECK_V1",
+  "mode": "READ_ONLY",
+  "verdict": "PASS_WITH_WARNING",
+  "checks": {
+    "mode_read_only": true,
+    "files_present": true,
+    "entrypoint_present": true,
+    "views_present": true,
+    "stores_present": true,
+    "models_present": true,
+    "runtimes_present": true,
+    "readers_present": true,
+    "edges_present": true
+  },
+  "summary": {
+    "files": 18,
+    "types": 94,
+    "functions": 86,
+    "edges": 704,
+    "entrypoints": 1,
+    "views": 20,
+    "stores": 5,
+    "models": 8,
+    "bridges": 0,
+    "runtimes": 3,
+    "readers": 2
+  },
+  "bridge_diagnostic": {
+    "reported_bridge_count": 0,
+    "bridge_files": 1,
+    "bridge_types": 0,
+    "evidence": [
+      {
+        "file": "SUPRA/CAnnoNicoIntegrationBridge.swift",
+        "declarations": [
+          {
+            "kind": "enum",
+            "name": "SUPRACAnnoNicoIntegration",
+            "line": 6
+          }
+        ],
+        "contains_bridge_token": false,
+        "contains_cannonico_token": true
+      }
+    ]
+  },
+  "warnings": [
+    {
+      "code": "BRIDGE_CLASSIFICATION_MISSING",
+      "message": "Un fichier Bridge existe mais aucune couche bridge n'a été classée.",
+      "files": [
+        "SUPRA/CAnnoNicoIntegrationBridge.swift"
+      ]
+    }
+  ],
+  "failures": []
+}

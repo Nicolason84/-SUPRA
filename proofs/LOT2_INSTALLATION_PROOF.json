@@ -1,0 +1,15 @@
+{
+  "project_id": "SUPRA_EXECUTIVE_RUNTIME_V1",
+  "lot": "LOT2",
+  "verdict": "LOT2_PASS",
+  "installed_at": "2026-07-22T10:56:32.756049Z",
+  "runtime_root": "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1",
+  "backup": "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1.before_lot2.20260722_125632",
+  "tests": "PASS",
+  "guarantees": {
+    "external_components_executed": false,
+    "discovered_sources_mutated": false,
+    "daemon_installed": false,
+    "state_writes_atomic": true
+  }
+}

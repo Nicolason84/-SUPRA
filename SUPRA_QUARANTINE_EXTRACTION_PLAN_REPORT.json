@@ -1,0 +1,16 @@
+{
+  "mission": "GO_SUPRA_QUARANTINE_EXTRACTION_PLAN_V1",
+  "timestamp": "2026-07-23T14:37:40.302927",
+  "original_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/_EXTRACTION_PLAN",
+  "quarantine_path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740",
+  "total_files": 14,
+  "swift_files": 11,
+  "source_mutation": "DIRECTORY_MOVED_OUTSIDE_SYNCHRONIZED_RUNTIME_ROOT",
+  "deletion": false,
+  "build": "PASS",
+  "rollback": "NOT_REQUIRED",
+  "build_log": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_QUARANTINE_EXTRACTION_PLAN_BUILD.log",
+  "verdict": "PASS",
+  "runtime_authority": "SUPRA/SUPRA excluding _EXTRACTION_PLAN",
+  "architecture_plan_authority": "_NON_RUNTIME_ARCHITECTURE"
+}

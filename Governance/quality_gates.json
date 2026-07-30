@@ -1,0 +1,19 @@
+{
+  "registry_id": "supra.quality_gates",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "gates": [
+    { "id": "pre_matching", "order": 10, "required_for_lot0": true, "command": "review Governance/PREMATCH_LOT0.md" },
+    { "id": "constitution", "order": 20, "required_for_lot0": true, "command": "validate_governance" },
+    { "id": "authority", "order": 30, "required_for_lot0": true, "command": "validate_governance" },
+    { "id": "adr", "order": 40, "required_for_lot0": true, "command": "validate_governance" },
+    { "id": "architecture", "order": 50, "required_for_lot0": true, "command": "validate_governance" },
+    { "id": "simulation", "order": 60, "required_for_lot0": true, "command": "static_impact_analysis" },
+    { "id": "compilation", "order": 70, "required_for_lot0": false, "command": "xcodebuild" },
+    { "id": "smoke", "order": 80, "required_for_lot0": false, "command": "application_smoke_launch" },
+    { "id": "tests", "order": 90, "required_for_lot0": false, "command": "xcodebuild_test" },
+    { "id": "observability", "order": 100, "required_for_lot0": true, "command": "governance_report" },
+    { "id": "freeze", "order": 110, "required_for_lot0": false, "command": "freeze_report" },
+    { "id": "continuity", "order": 120, "required_for_lot0": true, "command": "continuity_report" }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_JOB_SCHEDULER_V001",
+  "started_at": "2026-07-24T00:40:00Z",
+  "completed_at": "2026-07-24T00:43:00Z",
+  "total_duration_seconds": 180,
+  "jobs": [
+    {
+      "job_id": "job_001",
+      "name": "Architecture Analysis",
+      "priority": 10,
+      "dependencies": [],
+      "scheduler_trace": [
+        {"t": "00:40:00", "state": "QUEUED", "action": "job submitted to queue"},
+        {"t": "00:40:01", "state": "PLANNED", "action": "no dependencies, eligible for execution"},
+        {"t": "00:40:02", "state": "RUNNING", "action": "assigned to worker_architect, provider=opencode-zen, model=deepseek-v4-flash-free"},
+        {"t": "00:42:02", "state": "SUCCESS", "action": "completed in 120s, quality_score=8/10"}
+      ],
+      "worker_assigned": "worker_architect",
+      "duration_seconds": 120,
+      "final_state": "SUCCESS"
+    },
+    {
+      "job_id": "job_002",
+      "name": "Compliance Audit",
+      "priority": 8,
+      "dependencies": [],
+      "scheduler_trace": [
+        {"t": "00:40:00", "state": "QUEUED", "action": "job submitted to queue"},
+        {"t": "00:40:01", "state": "PLANNED", "action": "no dependencies, eligible for execution"},
+        {"t": "00:40:02", "state": "RUNNING", "action": "assigned to worker_auditor, provider=opencode-zen, model=deepseek-v4-flash-free"},
+        {"t": "00:42:02", "state": "SUCCESS", "action": "completed in 120s, compliance_score=0.89"}
+      ],
+      "worker_assigned": "worker_auditor",
+      "duration_seconds": 120,
+      "final_state": "SUCCESS"
+    },
+    {
+      "job_id": "job_003",
+      "name": "Provider Review",
+      "priority": 6,
+      "dependencies": [],
+      "scheduler_trace": [
+        {"t": "00:40:00", "state": "QUEUED", "action": "job submitted to queue"},
+        {"t": "00:40:01", "state": "PLANNED", "action": "no dependencies, eligible for execution"},
+        {"t": "00:40:02", "state": "RUNNING", "action": "assigned to worker_reviewer, provider=ollama, model=qwen3:4b"},
+        {"t": "00:40:32", "state": "SUCCESS", "action": "completed in 30s, review_score=8/10"}
+      ],
+      "worker_assigned": "worker_reviewer",
+      "duration_seconds": 30,
+      "final_state": "SUCCESS"
+    }
+  ],
+  "scheduling_decisions": [
+    {
+      "decision": "parallel_execution",
+      "reason": "All 3 jobs have no dependencies. Max concurrent (3) allows simultaneous execution.",
+      "applied": true
+    },
+    {
+      "decision": "priority_order_within_parallel",
+      "reason": "Jobs dispatched simultaneously but priority 10 runs with priority 8 and 6 concurrently.",
+      "applied": true
+    },
+    {
+      "decision": "no_retries_needed",
+      "reason": "All 3 jobs completed successfully on first attempt.",
+      "applied": true
+    }
+  ],
+  "summary": {
+    "total_jobs": 3,
+    "successful": 3,
+    "failed": 0,
+    "retries": 0,
+    "total_duration_seconds": 180,
+    "parallel_execution": true,
+    "multi_provider": true,
+    "multi_model": true
+  }
+}

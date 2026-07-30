@@ -1,0 +1,163 @@
+{
+  "snapshot_version": "1.0.0",
+  "generated_at": "2026-07-29T00:30:00+02:00",
+  "session_id": "SESSION_20260728_CAMP_BASE_02_FOUNDATION",
+  "status": "CLOSED",
+  "workspace": {
+    "root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+    "branch": "develop",
+    "head_commit": "80ca2f19aa2e1cbf5f8183fb993c2b96abc177ea",
+    "ahead_of_origin": 12,
+    "existing_tags": [
+      "docs-freeze-v1.0.0",
+      "FREEZE_SUPRA_MISSION_CENTER_V1",
+      "SUPRA_AST_PLATFORM_V1_BOOTSTRAP"
+    ],
+    "file_counts": {
+      "swift_files": 214,
+      "test_files": 9,
+      "markdown_docs": 130,
+      "json_files": 123,
+      "shell_scripts": 27,
+      "total_entries": 343
+    }
+  },
+  "manifest": {
+    "path": "WORKSPACE_MANIFEST.json",
+    "version": "CAMP_BASE_02_FOUNDATION_1.0",
+    "created": "2026-07-28",
+    "status_at_close": "COMPLETION_IN_PROGRESS",
+    "integrity": "valid_json",
+    "components": ["Executive", "Provider", "Mission", "Workspace", "Memory", "Policy"],
+    "agents": 9,
+    "execution_state": {
+      "mission_queue": "active",
+      "current_phase": "CAMP_BASE_02_FOUNDATION",
+      "status_global": "PREPARATION"
+    }
+  },
+  "runtime": {
+    "version": "2.2.0",
+    "build_status": "SUCCEEDED",
+    "configuration": "Debug",
+    "platform": "macOS arm64",
+    "xcode_version": "17F113",
+    "entry_point": "SUPRAOperationalCoreApp",
+    "pipeline": {
+      "stages": ["BOOT", "ROOT", "DISCOVERY", "ARTIFACT", "MANIFEST", "INDEX", "VALIDATION", "SNAPSHOT", "DASHBOARD", "PERFORMANCE"],
+      "total_stages": 10,
+      "status": "FULLY_INSTRUMENTED"
+    },
+    "sandbox": "FIXED (DISABLED)",
+    "workflows": {
+      "registry_version": "1.0.0",
+      "total": 5,
+      "ready": 5,
+      "blocked": 0,
+      "executions": 0
+    },
+    "artifacts": {
+      "required": 6,
+      "available": 6,
+      "status": "OPERATIONAL"
+    },
+    "providers": {
+      "OLLAMA_LOCAL": {
+        "type": "local",
+        "model": "qwen3-coder",
+        "status": "healthy",
+        "context_max": 16384,
+        "output_max": 2048
+      }
+    }
+  },
+  "git_status": {
+    "branch": "develop",
+    "unstaged_modified": [
+      "DEPENDENCY_MAP.md",
+      "SUPRA.xcodeproj/project.pbxproj",
+      "SUPRA/ArtifactReader.swift",
+      "SUPRA/CAnnoNicoIntegrationBridge.swift",
+      "SUPRA/ContentView.swift",
+      "SUPRA/ConversationMemoryStore.swift",
+      "SUPRA/DecisionInboxView.swift",
+      "SUPRA/DecisionStore.swift",
+      "SUPRA/Mission.swift",
+      "SUPRA/MissionCenterView.swift",
+      "SUPRA/MissionDetailView.swift",
+      "SUPRA/MissionStore.swift",
+      "SUPRA/SUPRAApp.swift",
+      "SUPRA/SUPRAOperationalControlCenterView.swift"
+    ],
+    "untracked_count": "~200+ files (all artifacts, new Swift files, configs, docs)"
+  },
+  "git_diff_summary": {
+    "files_changed": 14,
+    "insertions": 629,
+    "deletions": 134,
+    "key_diffs": [
+      "SUPRAOperationalControlCenterView.swift: +149/-30 (prompt section, navigation, user missions)",
+      "MissionStore.swift: +142 lines (major expansion)",
+      "DEPENDENCY_MAP.md: +83 lines",
+      "project.pbxproj: +100 lines"
+    ]
+  },
+  "missions_completed": [
+    "MISSION_SUPRA_EXECUTIVE_OS_FIRST_BOOT",
+    "MISSION_VALIDATION_DASHBOARD_CONFIRMATION",
+    "MISSION_VALIDATION_EXECUTIVE_COCKPIT_V1",
+    "MISSION_EXECUTIVE_COCKPIT_OPERATIONAL_V2",
+    "MISSION_EXECUTIVE_WORKFLOWS_V1"
+  ],
+  "missions_pending": [
+    "MISSION_BUILD_AND_VALIDATE_WORKFLOWS_V1",
+    "MISSION_THEORY_ENGINE_V1",
+    "MISSION_TEST_DEBT_RESOLUTION"
+  ],
+  "features_active": [
+    "root_cause_explainer",
+    "execution_timeline",
+    "executive_dashboard",
+    "executive_workflow_registry",
+    "business_health_workflow",
+    "decision_audit_workflow",
+    "monetization_workflow",
+    "environment_assessment_workflow",
+    "opportunity_discovery_workflow",
+    "execution_history",
+    "executive_report_auto_generation",
+    "adaptive_multipower_transmission"
+  ],
+  "issues_fixed_during_session": [
+    "WORKSPACE_MANIFEST.json: invalid control character at line 89 (newline in string)"
+  ],
+  "known_issues": [
+    "SUPRARuntimeProviderProofTests.testFallbackScenario (FAIL)",
+    "ConversationMemory.testINDEX_FILE_EXCLUDED_FROM_SCAN (FAIL)",
+    "ConversationMemory.testUNCHANGED_FILES_NOT_REPARSED (FAIL)"
+  ],
+  "alpha_definition": {
+    "status": "FROZEN",
+    "version_achieved": "ALPHA-01",
+    "criteria_total": 17,
+    "criteria_pass": 17,
+    "next_milestone": "ALPHA-02"
+  },
+  "evidence_available": [
+    "RELEASE_MANIFEST.json",
+    "BUILD_LOG.md",
+    "RUNTIME_STATUS.md",
+    "RUNTIME_STATUS.json",
+    "SUPRA_STATE.json",
+    "ALPHA01_RELEASE_AUDIT.md",
+    "FREEZE_EXECUTIVE_CERTIFIED_V1.md",
+    "FREEZE_V1.md",
+    "SUPRA_VISUAL_VALIDATION_20260723.json"
+  ],
+  "nodes": {
+    "runtime_node_identity": ".kernel/runtime/node_identity.json",
+    "provider_registry": ".opencode/runtime/provider_registry.json",
+    "provider_health": ".opencode/runtime/provider_health.json",
+    "provider_capabilities": ".opencode/runtime/provider_capabilities.json"
+  }
+}

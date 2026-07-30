@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://nova-era.kernel/legacy_importer/schemas/legacy_index.schema.json",
+  "title": "Legacy Index",
+  "description": "Index of all discovered historical SUPRA repositories. This is the output of Stage 1: Repository Discovery.",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "repositories"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Schema version identifier"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when the index was generated"
+    },
+    "importer_version": {
+      "type": "string",
+      "description": "Version of the Legacy Knowledge Importer that generated this index"
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "path", "type", "discovered_at"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this repository"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of the repository"
+          },
+          "path": {
+            "type": "string",
+            "description": "Filesystem path to the repository root"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["XCODE_PROJECT", "XCODE_WORKSPACE", "SWIFT_PACKAGE", "FRAMEWORK", "MODULE", "HYBRID", "OTHER"],
+            "description": "Type of repository"
+          },
+          "discovered_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp of when this repository was discovered"
+          },
+          "artifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type", "path", "exists"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["XCODE_PROJECT", "XCODE_WORKSPACE", "SWIFT_PACKAGE", "FRAMEWORK", "MODULE", "ASSETS", "DOCUMENTATION", "TESTS", "SCRIPTS", "RFC", "AGENTS_MD", "README", "SNAPSHOTS", "BUILD_LOG", "FREEZE_AUDIT", "DEPENDENCY_MAP", "GIT_HYGIENE_REPORT", "MISSION_CENTER_FREEZE_REPORT", "VISUAL_VALIDATION_DASHBOARD", "EXECUTIVE_UI_MODEL", "REMOTE_INTERFACE", "SESSION_LOG", "PYTHON_SCRIPT"],
+                  "description": "Type of artifact"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Relative path from repository root"
+                },
+                "exists": {
+                  "type": "boolean",
+                  "description": "Whether this artifact was found"
+                },
+                "size_bytes": {
+                  "type": ["integer", "null"],
+                  "description": "Size of the artifact in bytes (if file)"
+                },
+                "sha256": {
+                  "type": ["string", "null"],
+                  "description": "SHA-256 checksum of the artifact (if file)"
+                }
+              }
+            },
+            "description": "List of artifacts discovered in this repository"
+          },
+          "git": {
+            "type": ["object", "null"],
+            "properties": {
+              "is_git_repo": {
+                "type": "boolean",
+                "description": "Whether this repository is a git repository"
+              },
+              "branch": {
+                "type": ["string", "null"],
+                "description": "Current git branch"
+              },
+              "commit_hash": {
+                "type": ["string", "null"],
+                "description": "Current commit hash"
+              },
+              "commit_date": {
+                "type": ["string", "null"],
+                "format": "date-time",
+                "description": "ISO 8601 timestamp of last commit"
+              },
+              "last_author": {
+                "type": ["string", "null"],
+                "description": "Last commit author"
+              }
+            },
+            "description": "Git metadata if available"
+          }
+        }
+      },
+      "description": "List of discovered repositories"
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total_repositories": {
+          "type": "integer",
+          "description": "Total number of repositories discovered"
+        },
+        "by_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "description": "Count of repositories by type"
+        },
+        "total_artifacts": {
+          "type": "integer",
+          "description": "Total number of artifacts discovered across all repositories"
+        }
+      },
+      "description": "Summary statistics"
+    }
+  }
+}

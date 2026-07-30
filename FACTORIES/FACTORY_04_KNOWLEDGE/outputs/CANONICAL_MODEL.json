@@ -1,0 +1,92 @@
+{
+  "modelId": "canonical:model:v1",
+  "version": "CANONICAL_MODEL_V1",
+  "timestamp": "2026-07-29T00:00:00Z",
+  "authority": "FACTORY_04_KNOWLEDGE",
+  "entities": [
+    {
+      "name": "Agent",
+      "type": "ENTITY",
+      "definition": "A specialized AI actor with defined permissions and responsibilities",
+      "properties": ["id", "mode", "permissions", "role", "owner"]
+    },
+    {
+      "name": "Mission",
+      "type": "ENTITY",
+      "definition": "A unit of work assigned to one or more agents",
+      "properties": ["id", "description", "status", "owner", "priority", "dependencies"]
+    },
+    {
+      "name": "Factory",
+      "type": "ENTITY",
+      "definition": "A production unit with one mission, one responsibility, one owner, one validation, one output",
+      "properties": ["id", "name", "mission", "owner", "state", "outputs"]
+    },
+    {
+      "name": "Artefact",
+      "type": "ENTITY",
+      "definition": "A certified output produced by a Factory",
+      "properties": ["id", "type", "version", "status", "authority", "certification"]
+    },
+    {
+      "name": "Gate",
+      "type": "ENTITY",
+      "definition": "A quality control checkpoint in factory execution",
+      "properties": ["type", "state", "criteria", "validator"]
+    },
+    {
+      "name": "Knowledge",
+      "type": "ENTITY",
+      "definition": "Structured information about the system, its concepts, and their relationships",
+      "properties": ["id", "type", "content", "confidence", "source", "relations"]
+    },
+    {
+      "name": "Memory",
+      "type": "ENTITY",
+      "definition": "Persistent state preserving continuity across sessions",
+      "properties": ["id", "timestamp", "data", "checksum"]
+    },
+    {
+      "name": "Proof",
+      "type": "ENTITY",
+      "definition": "Validated evidence supporting a claim or assertion",
+      "properties": ["id", "claim", "evidence", "confidence", "status"]
+    },
+    {
+      "name": "Decision",
+      "type": "ENTITY",
+      "definition": "An executive choice that directs factory operations",
+      "properties": ["id", "type", "rationale", "authority", "impacts"]
+    },
+    {
+      "name": "Twin",
+      "type": "ENTITY",
+      "definition": "A digital representation of a system, process, or person",
+      "properties": ["id", "type", "state", "synchronization"]
+    },
+    {
+      "name": "Workspace",
+      "type": "ENTITY",
+      "definition": "A managed view of the file system with index and governance",
+      "properties": ["id", "path", "index", "governance"]
+    },
+    {
+      "name": "Runtime",
+      "type": "ENTITY",
+      "definition": "The execution environment of the SUPRA application",
+      "properties": ["state", "health", "metrics", "events"]
+    }
+  ],
+  "relations": [
+    {"source": "Agent", "target": "Factory", "type": "OWNS"},
+    {"source": "Agent", "target": "Mission", "type": "EXECUTES"},
+    {"source": "Factory", "target": "Artefact", "type": "PRODUCES"},
+    {"source": "Artefact", "target": "Gate", "type": "PASSES_THROUGH"},
+    {"source": "Mission", "target": "Factory", "type": "TRIGGERS"},
+    {"source": "Factory", "target": "Factory", "type": "DEPENDS_ON"},
+    {"source": "Decision", "target": "Factory", "type": "GOVERNS"},
+    {"source": "Knowledge", "target": "Artefact", "type": "DESCRIBES"},
+    {"source": "Memory", "target": "Session", "type": "PRESERVES"},
+    {"source": "Proof", "target": "Claim", "type": "VALIDATES"}
+  ]
+}

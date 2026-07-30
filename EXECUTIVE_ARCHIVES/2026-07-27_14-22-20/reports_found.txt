@@ -1,0 +1,13 @@
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FINAL_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/MACOS_PERMISSION_ARCHITECTURE_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/CONTINUITY_GAP_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_AUDIT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/MACOS_PERMISSION_EXECUTION_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/NEXT_MISSION.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/CONTINUITY.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_EXECUTION_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_V1.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SESSION_SUMMARY.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/EXECUTION_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/EXECUTIVE_SHELL_V1_EXECUTION_REPORT.md
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/HANDOFF.md

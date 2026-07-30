@@ -1,0 +1,44 @@
+{
+  "authorityAvg" : 0.84999999999999998,
+  "authorityDistribution" : {
+    "high" : 513,
+    "low" : 0,
+    "medium" : 325
+  },
+  "confidenceAvg" : 0.94999999999999996,
+  "healthScore" : 9.1999999999999993,
+  "projects" : {
+    "SUPRA" : 838
+  },
+  "sourceBreakdown" : {
+    "artifact" : 14,
+    "decision" : 10,
+    "freeze" : 11,
+    "git" : 29,
+    "report" : 30,
+    "workspace" : 744
+  },
+  "timestamp" : "2026-07-23T23:34:58Z",
+  "totalObjects" : 838,
+  "totalRelations" : 1307,
+  "typeBreakdown" : {
+    "archive" : 76,
+    "artifact_result" : 14,
+    "audit" : 3,
+    "decision" : 2,
+    "document" : 205,
+    "evidence" : 4,
+    "freeze" : 6,
+    "freeze_manifest" : 5,
+    "git_branch" : 9,
+    "git_commit" : 16,
+    "git_repository" : 1,
+    "git_tag" : 3,
+    "mission" : 14,
+    "pdf" : 84,
+    "report" : 25,
+    "script" : 369,
+    "validation" : 2
+  },
+  "version" : "2.0.0"
+}

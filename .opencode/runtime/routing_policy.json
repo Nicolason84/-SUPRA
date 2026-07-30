@@ -1,0 +1,64 @@
+{
+  "version": "1.0.0",
+  "description": "Provider-first routing policy — the Router selects Provider → Model → Agent sequentially",
+  "selection_flow": [
+    {
+      "step": 1,
+      "action": "classify_mission",
+      "description": "Analyze mission intent and extract required capabilities"
+    },
+    {
+      "step": 2,
+      "action": "select_provider",
+      "description": "Select best available provider based on mission capabilities, cost, speed",
+      "strategy": "capability_weighted",
+      "weights": {
+        "capability_match": 0.5,
+        "availability": 0.2,
+        "speed": 0.15,
+        "cost": 0.15
+      }
+    },
+    {
+      "step": 3,
+      "action": "select_model",
+      "description": "Within selected provider, pick the best model for the mission",
+      "strategy": "best_in_provider",
+      "fallback": "next_best_model_same_provider"
+    },
+    {
+      "step": 4,
+      "action": "select_agent",
+      "description": "Route to agent best matched to the selected provider + model + mission",
+      "strategy": "capability_and_model_match",
+      "fallback": "next_best_agent"
+    }
+  ],
+  "provider_preferences": {
+    "architecture": { "preferred": "opencode-zen", "reason": "Highest reasoning and architecture capability scores" },
+    "code_generation": { "preferred": "opencode-zen", "reason": "Superior code generation quality" },
+    "analysis": { "preferred": "opencode-zen", "second": "ollama", "reason": "OpenCode Zen preferred for deep analysis; Ollama acceptable for lightweight checks" },
+    "review": { "preferred": "opencode-zen", "second": "ollama", "reason": "OpenCode Zen for thorough review; Ollama for quick scans" },
+    "research": { "preferred": "opencode-zen", "reason": "Web fetch and web search required" },
+    "classification": { "preferred": "opencode-zen", "second": "ollama", "reason": "Both capable; OpenCode Zen more accurate" },
+    "routing": { "preferred": "opencode-zen", "reason": "Router runs on primary provider" },
+    "runtime": { "preferred": "opencode-zen", "reason": "Debugging requires highest reasoning quality" },
+    "refactoring": { "preferred": "opencode-zen", "reason": "Safe refactoring requires highest code quality" },
+    "default": { "preferred": "opencode-zen", "second": "ollama" }
+  },
+  "fallback_provider_chain": ["opencode-zen", "ollama", "openai"],
+  "rules": [
+    {
+      "id": "mandatory_opencode_zen",
+      "condition": "capability in ['architecture', 'routing', 'planning', 'refactoring']",
+      "provider": "opencode-zen",
+      "reason": "These capabilities require highest quality model"
+    },
+    {
+      "id": "ollama_acceptable",
+      "condition": "capability in ['classification', 'simple_analysis', 'quick_review'] AND mission.cost_sensitive == true",
+      "provider": "ollama",
+      "reason": "Ollama is free and sufficient for lightweight tasks"
+    }
+  ]
+}

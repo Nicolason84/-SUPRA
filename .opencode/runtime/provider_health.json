@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-07-24T00:15:00Z",
+  "checks": [
+    {
+      "provider": "opencode-zen",
+      "model": "deepseek-v4-flash-free",
+      "status": "available",
+      "latency_ms": 0,
+      "checked_at": "2026-07-24T00:15:00Z",
+      "method": "session_active",
+      "details": "Provider active — current execution context"
+    },
+    {
+      "provider": "ollama",
+      "model": "qwen3:4b",
+      "status": "available",
+      "latency_ms": 45,
+      "checked_at": "2026-07-24T00:15:00Z",
+      "method": "api_ping",
+      "details": "Ollama server running on localhost:11434, model qwen3:4b detected via ollama list"
+    },
+    {
+      "provider": "ollama",
+      "model": "qwen2.5-coder:14b",
+      "status": "unavailable",
+      "latency_ms": 0,
+      "checked_at": "2026-07-24T00:15:00Z",
+      "method": "ollama_list_check",
+      "details": "Model not pulled locally"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "status": "unavailable",
+      "latency_ms": 0,
+      "checked_at": "2026-07-24T00:15:00Z",
+      "method": "api_key_check",
+      "details": "No API key configured for OpenAI"
+    }
+  ],
+  "summary": {
+    "total_providers": 3,
+    "available_providers": 2,
+    "available_models": 2,
+    "degraded_providers": 0,
+    "unavailable_providers": 1
+  }
+}

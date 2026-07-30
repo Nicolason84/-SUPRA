@@ -1,0 +1,74 @@
+===== /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA =====
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/RuntimeModels.swift: com.apple.lastuseddate#PS: ;tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/RuntimeModels.swift: com.apple.macl: @‚j]1nJ¡èM∆/mÖog
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/UniverseDashboard.swift: com.apple.macl: @‚j]1nJ¡èM∆/mÖog
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ConversationMemoryStore.swift: com.apple.lastuseddate#PS: Å'dj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/RuntimeConnectionState.swift: com.apple.macl: 
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/RuntimeDataService.swift: com.apple.lastuseddate#PS: ;tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/RuntimeDataService.swift: com.apple.macl: @‚j]1nJ¡èM∆/mÖog
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/.DS_Store: com.apple.FinderInfo:         @
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionRow.swift: com.apple.lastuseddate#PS: ÄZaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionRow.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Mission.swift: com.apple.lastuseddate#PS: ÇZaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Mission.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAGabrielConductorRuntime.swift: com.apple.lastuseddate#PS: àZaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionDetailView.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRA_EXECUTIVE_UI_MODEL.json: com.apple.macl: @oﬁFÆ–Iÿë‰8Tn•ú@ŸNÜæ0D≥uWÂôIˇ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Snapshot.swift: com.apple.lastuseddate#PS: ÖZaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionRow.swift: com.apple.lastuseddate#PS: ‘Yaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionRow.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/.DS_Store: com.apple.FinderInfo:         @
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/AppIcon.appiconset: com.apple.fileprovider.dir#N: 1
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/AppIcon.appiconset: com.apple.quarantine: 0081;00000000;;
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/AccentColor.colorset/Contents.json: com.apple.TextEncoding: utf-8;134217984
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/AccentColor.colorset: com.apple.fileprovider.dir#N: 1
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/AccentColor.colorset: com.apple.quarantine: 0081;00000000;;
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets/Contents.json: com.apple.TextEncoding: utf-8;134217984
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets: com.apple.fileprovider.dir#N: 1
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Assets.xcassets: com.apple.quarantine: 0081;00000000;;
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Decision.swift: com.apple.lastuseddate#PS: |Zaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Decision.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRAHumanStage.swift: com.apple.lastuseddate#PS: ßtcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRASource.swift: com.apple.lastuseddate#PS: ≤tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRASource.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRAStructureMode.swift: com.apple.lastuseddate#PS: ≥tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRAStructureMode.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRASection.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRARecord.swift: com.apple.lastuseddate#PS: ±tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Models/SUPRARecord.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Bridges: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SupraControlCenterView.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRA_REMOTE_INTERFACE.json: com.apple.lastuseddate#PS: u5]j
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/UniverseDashboard.swift.bak: com.apple.lastuseddate#PS: ;tcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift.before_ollama_swift6_20260720_160224: com.apple.lastuseddate#PS: ÁÕ^j
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAOSMissionCanvasView.swift: com.apple.macl: @‚j]1nJ¡èM∆/mÖog
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ArtifactReader.swift: com.apple.lastuseddate#PS: ‡aj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/CockpitNavigation.swift: com.apple.lastuseddate#PS: —ﬁcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAChatRuntimeAdapter.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/SUPRAApp.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionDetailView.swift: com.apple.lastuseddate#PS: }Zaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionDetailView.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/MissionStore.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionStore.swift: com.apple.lastuseddate#PS: ÅZaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/DecisionStore.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Infrastructure/SUPRATerminalMegabusBridge.swift: com.apple.lastuseddate#PS: ∆ﬁcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Infrastructure/SUPRASystemIntegrity.swift: com.apple.lastuseddate#PS: ≈ﬁcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Infrastructure/SUPRAMissionEvidenceLoader.swift: com.apple.lastuseddate#PS: Ωﬁcj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Infrastructure/SUPRAMissionEvidenceLoader.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Infrastructure: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift.BACKUP_V5_20260718_080641: com.apple.lastuseddate#PS: ·Õ^j
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ContentView.swift.BACKUP_V5_20260718_080641: com.apple.metadata:kMDLabel_mq466qyjdqmuztyqzqpn4uz3bi: Ú«Åú⁄2ïlcJâBVÇ(±9{kÓ~ê◊¿®«ª£p]Õœ∆&◊|ÔI¿gCq1`Rero˝±b∂ÚL1üx¸Ú∆dÜ∏´ﬂ•	ù»«jù≈±◊›rAÒvÈó>‰ˇ¶ªÃë∫»åÌ∫ÂÙÙ2£»]ÒÂ{›ÈW#±Édº!@-◊Gò∆·
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Views/CAnnoNicoCircuitBoardView.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/Views: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ControlCenterStore.swift: com.apple.lastuseddate#PS: {Zaj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/ControlCenterStore.swift: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA: com.apple.macl: @ΩWs√LqLUºΩKÑ?≠âÚ
+===== /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRATests =====
+===== /Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj =====
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj/project.xcworkspace: com.apple.FinderInfo: 
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj/project.xcworkspace: com.apple.fileprovider.fpfs#P: 
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj/project.xcworkspace: com.apple.lastuseddate#PS: v˜cj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj: com.apple.FinderInfo: 
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj: com.apple.fileprovider.fpfs#P: 
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj: com.apple.lastuseddate#PS: (dj
+/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj: com.apple.macl: @ 9∆ΩœBW∏¥iÕ•–Ë@ŸNÜæ0D≥uWÂôIˇ@zˇÒz{F‰ü‹àê˝èé@ΩWs√LqLUºΩKÑ?≠âÚ@‚j]1nJ¡èM∆/mÖog

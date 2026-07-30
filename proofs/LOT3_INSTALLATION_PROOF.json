@@ -1,0 +1,27 @@
+{
+  "project_id": "SUPRA_EXECUTIVE_RUNTIME_V1",
+  "lot": "LOT3",
+  "verdict": "LOT3_PASS",
+  "installed_at": "2026-07-22T11:01:46.780602Z",
+  "runtime_root": "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1",
+  "backup": "/Users/nicolasalonso/NOVA_OS/SUPRA_EXECUTIVE_RUNTIME_V1.before_lot3.20260722_130146",
+  "tests": "PASS",
+  "discovery": {
+    "verdict": "LOT3_DISCOVERY_PASS",
+    "generated_at": "2026-07-22T11:01:46.776328Z",
+    "nova_root": "/Users/nicolasalonso/NOVA_OS",
+    "targets_configured": 7,
+    "candidates_found": 110,
+    "capabilities_registered": 97,
+    "duplicates_collapsed": 13,
+    "sources_mutated": false,
+    "external_components_executed": false
+  },
+  "guarantees": {
+    "global_rescan_performed": false,
+    "discovered_sources_mutated": false,
+    "external_components_executed": false,
+    "registry_write_atomic": true,
+    "deduplication_by_sha256": true
+  }
+}

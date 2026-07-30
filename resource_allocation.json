@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "mission": "SUPRA_EXECUTIVE_MISSION_CENTER_V001",
+  "total_missions": 100,
+  "total_workers": 20,
+  "total_providers": 3,
+  "allocations": [
+    {"provider": "opencode-zen", "workers": 16, "missions_assigned": 86, "missions_running": 9, "capacity_pct": 56.25, "status": "nominal"},
+    {"provider": "ollama", "workers": 2, "missions_assigned": 14, "missions_running": 1, "capacity_pct": 50.0, "status": "nominal"},
+    {"provider": "openai", "workers": 2, "missions_assigned": 0, "missions_running": 0, "capacity_pct": 0.0, "status": "unavailable"}
+  ],
+  "worker_assignments": [
+    {"worker": "w_arch_01", "agent": "SUPRA-Architect", "provider": "opencode-zen", "status": "idle", "missions_completed": 4},
+    {"worker": "w_arch_02", "agent": "SUPRA-Architect", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0001", "duration": 120},
+    {"worker": "w_build_01", "agent": "SUPRA-Builder", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0015", "duration": 60},
+    {"worker": "w_build_02", "agent": "SUPRA-Builder", "provider": "opencode-zen", "status": "idle", "missions_completed": 2},
+    {"worker": "w_audit_01", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0020", "duration": 45},
+    {"worker": "w_audit_02", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0021", "duration": 30},
+    {"worker": "w_audit_03", "agent": "SUPRA-Auditor", "provider": "opencode-zen", "status": "idle", "missions_completed": 6},
+    {"worker": "w_review_01", "agent": "SUPRA-Reviewer", "provider": "ollama", "status": "busy", "current_mission": "M-0030", "duration": 30},
+    {"worker": "w_review_02", "agent": "SUPRA-Reviewer", "provider": "ollama", "status": "idle", "missions_completed": 5},
+    {"worker": "w_explore_01", "agent": "SUPRA-Explorer", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0040", "duration": 45},
+    {"worker": "w_explore_02", "agent": "SUPRA-Explorer", "provider": "opencode-zen", "status": "idle", "missions_completed": 3},
+    {"worker": "w_research_01", "agent": "SUPRA-Research", "provider": "opencode-zen", "status": "idle", "missions_completed": 2},
+    {"worker": "w_research_02", "agent": "SUPRA-Research", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0050", "duration": 55},
+    {"worker": "w_runtime_01", "agent": "SUPRA-Runtime", "provider": "opencode-zen", "status": "idle", "missions_completed": 1},
+    {"worker": "w_runtime_02", "agent": "SUPRA-Runtime", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0060", "duration": 60},
+    {"worker": "w_refactor_01", "agent": "SUPRA-Refactor", "provider": "opencode-zen", "status": "idle", "missions_completed": 0},
+    {"worker": "w_refactor_02", "agent": "SUPRA-Refactor", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0070", "duration": 75},
+    {"worker": "w_router_01", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "idle", "missions_completed": 3},
+    {"worker": "w_router_02", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "idle", "missions_completed": 2},
+    {"worker": "w_router_03", "agent": "SUPRA-Router", "provider": "opencode-zen", "status": "busy", "current_mission": "M-0080", "duration": 15}
+  ],
+  "allocation_efficiency": {
+    "workers_utilized_peak": 11,
+    "workers_idle": 9,
+    "avg_worker_utilization_pct": 55.0,
+    "allocation_latency_avg_ms": 120,
+    "reallocation_count": 3
+  }
+}

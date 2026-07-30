@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "mission": "SUPRA_ENVIRONMENT_TWIN_V1",
+    "date": "2026-07-24T17:26:00Z"
+  },
+  "freezes_in_supra_project": [
+    { "name": "FREEZE_SUPRA_ARCHITECTURE_INDEX_20260723T104017Z", "date": "2026-07-23", "type": "index" },
+    { "name": "FREEZE_SUPRA_FUNCTIONAL_AUTHORITY_20260723T105323Z", "date": "2026-07-23", "type": "authority" },
+    { "name": "FREEZE_SUPRA_GRAPHS_20260723T103701Z", "date": "2026-07-23", "type": "graphs" },
+    { "name": "FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z", "date": "2026-07-23", "type": "build" },
+    { "name": "FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z", "date": "2026-07-23", "type": "runtime" }
+  ],
+  "freezes_in_video_swap_v1": {
+    "count": 3,
+    "examples": [
+      "SUPRA_VIDEO_SWAP_FINAL_V1_20260715_123604",
+      "FINAL_PATCH_V1_20260715_123604",
+      "RECOVERY_CANNONICO_V2_20260715_132434"
+    ]
+  },
+  "freezes_in_video_swap_v3": {
+    "count": 5,
+    "examples": [
+      "FOUNDATION_CORE_V1_20260715_162406",
+      "MEDIA_ENGINE_V1_20260715_163015",
+      "IMPORT_ENGINE_V1_20260715_165840",
+      "URL_ENGINE_V1_20260715_171912"
+    ]
+  },
+  "freezes_in_recovery": {
+    "count": 4,
+    "variants": ["CHAT", "BRIDGE", "HEALTH", "BASELINE"]
+  },
+  "total_freeze_artifacts": {
+    "count": 17,
+    "estimated_size_mb": 50,
+    "note": "Freezes temporels et snapshots de récupération"
+  }
+}

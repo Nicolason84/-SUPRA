@@ -1,0 +1,15 @@
+./SUPRA/SUPRACommandCenterState.swift:117:    init(from store: MultiMemoryStore) {
+./SUPRA/SUPRACommandCenterState.swift:248:    private let multiMemoryStore = MultiMemoryStore.shared
+./SUPRA/MultiMemoryStore.swift:5:final class MultiMemoryStore: ObservableObject {
+./SUPRA/MultiMemoryStore.swift:6:    static let shared = MultiMemoryStore()
+./SUPRA/SUPRAMissionObserver.swift:36:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAMissionObserver.swift:80:                    source: "MultiMemoryStore", confidence: 0.9,
+./SUPRA/SUPRAMissionObserver.swift:87:                    source: "MultiMemoryStore", confidence: mem.confidence,
+./SUPRA/SUPRAMissionObserver.swift:95:                    source: "MultiMemoryStore", confidence: 0.8,
+./SUPRA/SUPRAIntelligenceEngine.swift:13:    private let multiMemory = MultiMemoryStore.shared
+./SUPRA/SUPRAIntelligenceEngine.swift:162:            result.append(SUPRAInsight(id: "memory_all_down", category: .anomaly, severity: .critical, confidence: 0.95, message: "All memory sources are disconnected", suggestedAction: "Verify MultiMemoryStore registry files exist"))
+./SUPRA/SUPRACanonicalWorldAccess.swift:118:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:174:        let mm = MultiMemoryStore.shared
+./SUPRA/SUPRACanonicalWorldAccess.swift:205:        let mm = MultiMemoryStore.shared.snapshot
+./SUPRA/SUPRACanonicalWorldAccess.swift:228:        h.combine(MultiMemoryStore.shared.snapshot.lastUpdated)
+./SUPRA/SUPRAWorkerFabric.swift:53:    private let multiMemory = MultiMemoryStore.shared

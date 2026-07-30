@@ -1,0 +1,122 @@
+{
+  "memory": "MEMORY_XCODE",
+  "mission": "SUPRA_FOUNDATION_MEMORY_SYSTEM_V1",
+  "date": "2026-07-24T17:35:00Z",
+  "entries": [
+    {
+      "uuid": "XCODE-001",
+      "name": "SUPRA.xcodeproj",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj",
+      "project": "SUPRA",
+      "type": "xcodeproj",
+      "scheme": "SUPRA",
+      "configuration": "Debug",
+      "platform": "macOS",
+      "deployment_target": "26.5",
+      "swift_version": "5.0",
+      "owner": "nicolasalonso",
+      "status": "active",
+      "canonical": true,
+      "archive": false,
+      "reusable": true,
+      "build_status": "PASS",
+      "package_dep": "CAnnoNicoIntegrationPackage"
+    },
+    {
+      "uuid": "XCODE-002",
+      "name": "SUPRA_BISECT.xcodeproj",
+      "path": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_BISECT/SUPRA.xcodeproj",
+      "project": "SUPRA_BISECT",
+      "type": "xcodeproj",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "XCODE-003",
+      "name": "SUPRA_RECOVERY.xcodeproj (4 variants)",
+      "paths": [
+        "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY/CHAT/SUPRA.xcodeproj",
+        "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY/BRIDGE/SUPRA.xcodeproj",
+        "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY/HEALTH/SUPRA.xcodeproj",
+        "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA_RECOVERY/BASELINE/SUPRA.xcodeproj"
+      ],
+      "project": "SUPRA_RECOVERY",
+      "type": "xcodeproj",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "XCODE-004",
+      "name": "SUPRA_HELENE.xcodeproj",
+      "path": "/Users/nicolasalonso/NOVA_OS/HELENE_APP_IOS/SUPRA_HELENE/SUPRA_HELENE.xcodeproj",
+      "project": "HELENE_APP",
+      "type": "xcodeproj",
+      "platform": "iOS",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "XCODE-005",
+      "name": "SUPRA_HELENE.xcodeproj (in NICO_APP)",
+      "path": "/Users/nicolasalonso/NOVA_OS/NICO_APP_IOS/NICO_APP/SUPRA_HELENE.xcodeproj",
+      "project": "NICO_APP",
+      "type": "xcodeproj",
+      "platform": "iOS",
+      "status": "active",
+      "canonical": false,
+      "archive": false,
+      "reusable": true
+    },
+    {
+      "uuid": "XCODE-006",
+      "name": "SUPRA_VIDEO_SWAP.xcodeproj (multiple versions)",
+      "paths": [
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/App/SupraVideoSwap.xcodeproj",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/App/SupraVideoSwap 2.xcodeproj",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/App/SupraVideoSwap 3.xcodeproj",
+        "/Users/nicolasalonso/Desktop/SUPRA_VIDEO_SWAP_APP_V1/App/SupraVideoSwap 4.xcodeproj"
+      ],
+      "project": "SUPRA_VIDEO_SWAP_APP_V1",
+      "type": "xcodeproj",
+      "status": "legacy",
+      "canonical": false,
+      "archive": true,
+      "reusable": false,
+      "note": "4 variantes de xcodeproj dans V1 (copies numérotées)"
+    },
+    {
+      "uuid": "XCODE-007",
+      "name": "NICO_APP.xcodeproj (recovered)",
+      "path": "/Users/nicolasalonso/Desktop/SUPRA_XCODE_TARGETED_RECOVERY_V1_20260719_230912/05_RECOVERED_LAST_COMPILABLE/PROJECT/NICO_APP.xcodeproj",
+      "project": "NICO_APP_RECOVERED",
+      "type": "xcodeproj",
+      "status": "abandoned",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    },
+    {
+      "uuid": "XCODE-008",
+      "name": "NICO_APP_CLEAN.xcodeproj",
+      "path": "/Users/nicolasalonso/Desktop/_DESKTOP_CLEAN_ARCHIVE_20260630_122028/99_OTHER/NICO_APP_CLEAN/NICO_APP_CLEAN.xcodeproj",
+      "project": "NICO_APP_CLEAN_ARCHIVE",
+      "type": "xcodeproj",
+      "status": "archived",
+      "canonical": false,
+      "archive": true,
+      "reusable": false
+    }
+  ],
+  "summary": {
+    "total_xcodeproj": 12,
+    "canonical": 1,
+    "derivedData_size_estimate_gb": 28,
+    "note": "La majorité des 29 GB de SUPRA est du DerivedData Xcode"
+  }
+}

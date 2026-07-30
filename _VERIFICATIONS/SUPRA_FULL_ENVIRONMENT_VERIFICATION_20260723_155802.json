@@ -1,0 +1,237 @@
+{
+  "observer": "GO_SUPRA_FULL_ENVIRONMENT_VERIFICATION_V1",
+  "generated_at_utc": "2026-07-23T13:58:56.099380+00:00",
+  "mode": "READ_ONLY_SOURCES",
+  "root": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+  "summary": {
+    "total_checks": 34,
+    "pass": 28,
+    "warn": 6,
+    "blocked": 0,
+    "fail": 0,
+    "critical_failures": 0
+  },
+  "business_workspace_confirmed": false,
+  "codex_access": "PASS",
+  "ollama_access": "PASS",
+  "checks": [
+    {
+      "check": "COMMAND_python3",
+      "status": "PASS",
+      "value": "/usr/bin/python3",
+      "detail": "available"
+    },
+    {
+      "check": "COMMAND_xcodebuild",
+      "status": "PASS",
+      "value": "/usr/bin/xcodebuild",
+      "detail": "available"
+    },
+    {
+      "check": "COMMAND_curl",
+      "status": "PASS",
+      "value": "/usr/bin/curl",
+      "detail": "available"
+    },
+    {
+      "check": "COMMAND_pgrep",
+      "status": "PASS",
+      "value": "/usr/bin/pgrep",
+      "detail": "available"
+    },
+    {
+      "check": "COMMAND_find",
+      "status": "PASS",
+      "value": "/usr/bin/find",
+      "detail": "available"
+    },
+    {
+      "check": "COMMAND_shasum",
+      "status": "PASS",
+      "value": "/usr/bin/shasum",
+      "detail": "available"
+    },
+    {
+      "check": "SUPRA_ROOT",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA",
+      "detail": "directory present"
+    },
+    {
+      "check": "XCODE_PROJECT",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA.xcodeproj",
+      "detail": "directory present"
+    },
+    {
+      "check": "SUPRA_SOURCE_ROOT",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA",
+      "detail": "directory present"
+    },
+    {
+      "check": "SWIFT_SOURCES",
+      "status": "PASS",
+      "value": "18",
+      "detail": "Swift source files found"
+    },
+    {
+      "check": "EXTRACTION_PLAN_RUNTIME_ABSENT",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA/_EXTRACTION_PLAN",
+      "detail": "not present in runtime source tree"
+    },
+    {
+      "check": "EXTRACTION_PLAN_QUARANTINED",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_NON_RUNTIME_ARCHITECTURE/_EXTRACTION_PLAN_20260723_143740",
+      "detail": "1 preserved architecture directory/directories"
+    },
+    {
+      "check": "DUPLICATE_SWIFT_TYPES",
+      "status": "WARN",
+      "value": "5",
+      "detail": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/DUPLICATE_TYPES_20260723_155802.txt"
+    },
+    {
+      "check": "ARCHITECTURE_INDEX_JSON",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json",
+      "detail": "valid JSON"
+    },
+    {
+      "check": "INDEX_TARGET_IS_SYMLINK",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+      "detail": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/SUPRA_ARCHITECTURE_INDEX.json"
+    },
+    {
+      "check": "INDEX_TARGET_READABLE",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+      "detail": "readable"
+    },
+    {
+      "check": "INDEX_TARGET_VALID_JSON",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/NOVA_OS/SUPRA_CONTROLLED_STORAGE_RELEASE_V1/INDEX.json",
+      "detail": "valid JSON"
+    },
+    {
+      "check": "INDEX_HASH_MATCH",
+      "status": "PASS",
+      "value": "632565a9dc5b75d72efd56b4cbdab66edd80d076a601bd620dc1767eaec12261",
+      "detail": "source and expected runtime path match"
+    },
+    {
+      "check": "INDEX_SUMMARY",
+      "status": "PASS",
+      "value": "files=18;symbols=743;nodes=770;edges=320162",
+      "detail": "architecture index summary"
+    },
+    {
+      "check": "ARTIFACT_LOT1",
+      "status": "WARN",
+      "value": "0",
+      "detail": "no matching JSON artifact found"
+    },
+    {
+      "check": "ARTIFACT_LOT2",
+      "status": "WARN",
+      "value": "0",
+      "detail": "no matching JSON artifact found"
+    },
+    {
+      "check": "ARTIFACT_LOT3",
+      "status": "WARN",
+      "value": "0",
+      "detail": "no matching JSON artifact found"
+    },
+    {
+      "check": "ARTIFACT_BUILD",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_SUPRA_PRODUCT_BUILD_20260723T120033Z/SUPRA_SYMLINK_OVERLAY_BUILD.json",
+      "detail": "6 candidate(s)"
+    },
+    {
+      "check": "ARTIFACT_MANIFEST",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/FREEZE_SUPRA_RUNTIME_PROOF_20260723T120605Z/FREEZE_MANIFEST.json",
+      "detail": "5 candidate(s)"
+    },
+    {
+      "check": "ARTIFACT_ESTATE",
+      "status": "WARN",
+      "value": "0",
+      "detail": "no matching JSON artifact found"
+    },
+    {
+      "check": "XCODE_BUILD",
+      "status": "PASS",
+      "value": "exit=0 errors=0 warnings=0",
+      "detail": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/SUPRA_FULL_BUILD_20260723_155802.log"
+    },
+    {
+      "check": "SUPRA_APP_PRODUCT",
+      "status": "PASS",
+      "value": "/Users/nicolasalonso/Library/Developer/Xcode/DerivedData/SUPRA-brymtechwigcboblkpbezhswerbq/Build/Products/Debug/SUPRA.app",
+      "detail": "Debug product found"
+    },
+    {
+      "check": "SUPRA_RUNTIME_PROCESS",
+      "status": "PASS",
+      "value": "68389",
+      "detail": "process alive after 8 seconds"
+    },
+    {
+      "check": "OLLAMA_CLI",
+      "status": "PASS",
+      "value": "ollama version is 0.32.1",
+      "detail": "/usr/local/bin/ollama"
+    },
+    {
+      "check": "OLLAMA_API",
+      "status": "PASS",
+      "value": "1 model(s)",
+      "detail": "qwen3:4b"
+    },
+    {
+      "check": "CODEX_CLI",
+      "status": "PASS",
+      "value": "codex-cli 0.145.0",
+      "detail": "/Users/nicolasalonso/.local/bin/codex"
+    },
+    {
+      "check": "CODEX_EXEC_COMMAND",
+      "status": "PASS",
+      "value": "available",
+      "detail": "codex exec --help succeeded"
+    },
+    {
+      "check": "CODEX_REAL_ACCESS",
+      "status": "PASS",
+      "value": "CODEX_ACCESS_OK",
+      "detail": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/CODEX_ACCESS_TEST_20260723_155802.log"
+    },
+    {
+      "check": "CHATGPT_BUSINESS_WORKSPACE",
+      "status": "WARN",
+      "value": "",
+      "detail": "confirmation .eml not found in Downloads, Desktop or Documents"
+    }
+  ],
+  "critical_failures": [],
+  "logs": {
+    "build": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/SUPRA_FULL_BUILD_20260723_155802.log",
+    "codex": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/CODEX_ACCESS_TEST_20260723_155802.log",
+    "ollama": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/OLLAMA_STATUS_20260723_155802.json",
+    "facts": "/Users/nicolasalonso/Desktop/NOVA_OS/SUPRA/_VERIFICATIONS/SUPRA_FULL_FACTS_20260723_155802.tsv"
+  },
+  "verdict": "SUPRA_READY_CODEX_READY",
+  "next_actions": [
+    "Preserve the validated SUPRA build and runtime state.",
+    "Verify the Business workspace from ChatGPT account settings.",
+    "Resume LOT5_SUPRA_CHAT_GATEWAY_V1 with Codex.",
+    "Ollama can serve as the local bounded worker for Supra Chat."
+  ]
+}

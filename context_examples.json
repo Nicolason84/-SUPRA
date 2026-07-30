@@ -1,0 +1,72 @@
+[
+  {
+    "example" : true,
+    "expectedTypes" : [
+      "script"
+    ],
+    "keywords" : [
+      "swift",
+      "cockpit"
+    ],
+    "maxResults" : 5,
+    "query" : "Quels fichiers Swift sont liés au cockpit ?"
+  },
+  {
+    "example" : true,
+    "expectedTypes" : [
+      "pdf",
+      "document"
+    ],
+    "keywords" : [
+      "pdf",
+      "architecture",
+      "supra"
+    ],
+    "maxResults" : 5,
+    "query" : "Existe-t-il un PDF pertinent pour l'architecture SUPRA ?"
+  },
+  {
+    "example" : true,
+    "expectedTypes" : [
+      "project",
+      "module",
+      "script"
+    ],
+    "keywords" : [
+      "runtime",
+      "module",
+      "projet"
+    ],
+    "maxResults" : 10,
+    "query" : "Quels projets sont liés au module Runtime ?"
+  },
+  {
+    "example" : true,
+    "expectedTypes" : [
+      "file",
+      "document"
+    ],
+    "keywords" : [
+      "ancien",
+      "version",
+      "config",
+      "configuration"
+    ],
+    "maxResults" : 5,
+    "query" : "Existe-t-il une ancienne version du fichier de configuration ?"
+  },
+  {
+    "example" : true,
+    "expectedTypes" : [
+      "decision",
+      "evidence"
+    ],
+    "keywords" : [
+      "decision",
+      "ollama",
+      "provider"
+    ],
+    "maxResults" : 10,
+    "query" : "Quelles décisions ont été prises concernant le provider Ollama ?"
+  }
+]

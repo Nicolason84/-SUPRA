@@ -1,0 +1,6 @@
+./SUPRA/SUPRACommandCenterState.swift:247:    private let missionStore = MissionStore()
+./SUPRA/MultiMemoryStore.swift:44:        MissionStore().$missions.sink { [weak self] _ in
+./SUPRA/MultiMemoryStore.swift:112:        let missions = MissionStore().missions
+./SUPRA/SUPRAIntelligenceEngine.swift:14:    private let missionStore = MissionStore()
+./SUPRA/SUPRACanonicalWorldAccess.swift:147:        let ms = MissionStore()
+./SUPRA/SUPRACanonicalWorldAccess.swift:230:        h.combine(MissionStore().missions.count)

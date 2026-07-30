@@ -1,0 +1,10 @@
+{
+  "observer": "GO_SUPRA_DEPENDENCY_GRAPH_V2",
+  "mode": "READ_ONLY",
+  "summary": {
+    "swift_files": 0,
+    "imports": 0,
+    "functions": 0
+  },
+  "files": []
+}

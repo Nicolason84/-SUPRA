@@ -1,0 +1,19 @@
+{
+  "schema":"supra.evidence-registry.v1",
+  "generatedAt":"2026-07-30T00:00:00Z",
+  "evidence":[
+    {"id":"EV-001","type":"source","path":"AGENTS.md","supports":["P03","P05","P15"],"reproducible":true},
+    {"id":"EV-002","type":"source","path":"FACTORIES/SUPRA_FACTORY_CONSTITUTION.md","supports":["P03","P06","P15"],"reproducible":true},
+    {"id":"EV-003","type":"runtime","path":"STATUS.json","supports":["P04","P11","P16"],"reproducible":true},
+    {"id":"EV-004","type":"test","path":"SUPRATests/SUPRARuntimeLoopTests.swift","supports":["P10","P11","P13"],"reproducible":true},
+    {"id":"EV-005","type":"test","path":"SUPRATests/SUPRAMissionExecutionTests.swift","supports":["P04","P11"],"reproducible":true},
+    {"id":"EV-006","type":"architecture","path":"BOOTSTRAP_VALIDATION.json","supports":["P06","P07","P08","P09"],"reproducible":true},
+    {"id":"EV-007","type":"architecture","path":"BOOTSTRAP_PROOF.json","supports":["P07","P08","P09"],"reproducible":true},
+    {"id":"EV-008","type":"knowledge","path":"FACTORIES/FACTORY_04_KNOWLEDGE/outputs/CANONICAL_MODEL.json","supports":["P01"],"reproducible":false},
+    {"id":"EV-009","type":"memory","path":"FACTORIES/FACTORY_05_MEMORY/outputs/MEMORY_STATE.json","supports":["P13"],"reproducible":false},
+    {"id":"EV-010","type":"proof","path":"FACTORIES/FACTORY_06_PROOF/outputs/CERTIFICATION_REPORT.md","supports":["P05","P14"],"reproducible":false},
+    {"id":"EV-011","type":"test","path":"SUPRATests/SUPRAInferenceSovereigntyRuntimeTests.swift","supports":["P12"],"reproducible":true},
+    {"id":"EV-012","type":"report","path":"AUTONOMY_REPORT.md","supports":["P11","P16"],"reproducible":true}
+  ],
+  "coverage":{"principles":16,"principlesWithEvidence":16,"coverage":1.0,"reproducibleEvidenceItems":9,"totalEvidenceItems":12}
+}

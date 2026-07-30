@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2026-07-23T23:43:35Z",
+  "recommendations": [
+    {
+      "id": "rec_001",
+      "action": "merge",
+      "priority": "high",
+      "title": "Fusionner 5 groupes de doublons",
+      "description": "5 groupes d'objets dupliqués détectés dans le workspace",
+      "rationale": "Les doublons fragmentent la connaissance et réduisent la fiabilité du graphe",
+      "impact": "Réduction du nombre d'objets, unification des références",
+      "risk": "Perte potentielle de variations intentionnelles — validation requise",
+      "objects": [
+        "workspace:-7574840269660993428",
+        "workspace:5491043580199480459",
+        "workspace:-8071814727851399328",
+        "workspace:7394285435380203018",
+        "workspace:-7794460599502115079"
+      ],
+      "requiresApproval": true,
+      "createdAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "rec_002",
+      "action": "canonicalize",
+      "priority": "medium",
+      "title": "Appliquer le format canonique CAnnoNico",
+      "description": "Certains objets n'utilisent pas encore le format d'identifiant canonique source:type:id",
+      "rationale": "Le format canonique est requis pour l'interopérabilité entre tous les composants du NOVA Knowledge OS",
+      "impact": "Uniformisation des identifiants à travers tout le graphe",
+      "risk": "Faible — les anciens identifiants doivent être redirigés",
+      "objects": [],
+      "requiresApproval": true,
+      "createdAt": "2026-07-23T23:43:35Z"
+    },
+    {
+      "id": "rec_003",
+      "action": "archive",
+      "priority": "low",
+      "title": "Archiver les artéfacts d'agents obsolètes",
+      "description": "14 artéfacts d'exécution détectés dans agent_results/",
+      "rationale": "Les artéfacts d'exécution s'accumulent sans valeur ajoutée après validation",
+      "impact": "Espace libéré, workspace simplifié",
+      "risk": "Les artéfacts peuvent être nécessaires pour l'audit — archiver plutôt que supprimer",
+      "objects": [
+        "artifact:supra_auditor_result.json",
+        "artifact:supra_reviewer_result.json",
+        "artifact:swiftui_research_result.json",
+        "artifact:supra_auditor_provider_result.json",
+        "artifact:job_auditor_result.json",
+        "artifact:swiftui_architecture_result.json",
+        "artifact:job_architect_result.json",
+        "artifact:supra_reviewer_provider_result.json",
+        "artifact:swiftui_audit_result.json",
+        "artifact:swiftui_exploration_result.json",
+        "artifact:job_reviewer_result.json",
+        "artifact:supra_explorer_result.json",
+        "artifact:supra_architect_provider_result.json",
+        "artifact:swiftui_review_result.json"
+      ],
+      "requiresApproval": true,
+      "createdAt": "2026-07-23T23:43:35Z"
+    }
+  ]
+}
