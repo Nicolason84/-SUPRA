@@ -1,7 +1,17 @@
+// MARK: - Mission Copilot View
+//
+// Reconnected to the Snapshot Bus (Ω6) per PROJECT PHOENIX.
+// Reads copilot stats from ExecutiveSnapshotBus.shared.latestSnapshot.
+// Write operations (refresh, execute, clear) remain direct service calls.
+
 import SwiftUI
 
 struct MissionCopilotView: View {
-    @EnvironmentObject private var state: SUPRACommandCenterState
+    @StateObject private var bus = ExecutiveSnapshotBus.shared
+
+    private var dashboard: ExecutiveContextSnapshot.DashboardSummary {
+        bus.latestSnapshot.context.dashboard
+    }
 
     var body: some View {
         SUPRAOSCard(
@@ -10,40 +20,33 @@ struct MissionCopilotView: View {
             icon: "brain.head.profile",
             color: .supraTeal
         ) {
-            if let copilot = state.copilotSection {
-                VStack(spacing: 12) {
-                    statsRow(copilot)
+            VStack(spacing: 12) {
+                statsRow
+                Divider().background(Color.supraBorder)
+                actionButtons
+                if !SUPRAMissionProposalEngine.shared.proposals.isEmpty {
                     Divider().background(Color.supraBorder)
-                    actionButtons
-                    if !SUPRAMissionProposalEngine.shared.proposals.isEmpty {
-                        Divider().background(Color.supraBorder)
-                        Text("Recent Proposals")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(.supraTextSecondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        proposalsList(SUPRAMissionProposalEngine.shared.proposals.prefix(5))
-                    }
+                    Text("Recent Proposals")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.supraTextSecondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    proposalsList(SUPRAMissionProposalEngine.shared.proposals.prefix(5))
                 }
-            } else {
-                Text("Copilot not initialized")
-                    .font(.system(size: 12))
-                    .foregroundColor(.supraTextTertiary)
             }
         }
     }
 
     private var subtitle: String {
-        guard let c = state.copilotSection else { return "—" }
-        return "\(c.proposalCount) proposals · \(c.autoQueueCount) auto"
+        "\(dashboard.copilotProposalCount) proposals · \(dashboard.copilotAutoQueueCount) auto"
     }
 
-    private func statsRow(_ c: CommandCenterCopilot) -> some View {
+    private var statsRow: some View {
         HStack(spacing: 8) {
-            statPill("🤖", count: c.autoQueueCount, color: .supraGreen)
-            statPill("📥", count: c.proposalCount, color: .supraBlue)
-            statPill("🟡", count: c.supervisionQueueCount, color: .supraOrange)
-            statPill("🔴", count: c.humanQueueCount, color: .supraRed)
-            statPill("✓", count: c.executedCount, color: .supraTeal)
+            statPill("🤖", count: dashboard.copilotAutoQueueCount, color: .supraGreen)
+            statPill("📥", count: dashboard.copilotProposalCount, color: .supraBlue)
+            statPill("🟡", count: dashboard.copilotSupervisionQueueCount, color: .supraOrange)
+            statPill("🔴", count: dashboard.copilotHumanQueueCount, color: .supraRed)
+            statPill("✓", count: dashboard.copilotExecutedCount, color: .supraTeal)
         }
     }
 

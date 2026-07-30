@@ -498,17 +498,22 @@ struct ExecutiveWorkspace: View {
 
 // MARK: - Executive Cockpit
 
-struct ExecutiveCockpit: View {
-    @EnvironmentObject private var runtime: RuntimeDataService
-    @StateObject private var environment = SUPRAEnvironmentWorldModel.shared
-    @StateObject private var recommendations = SUPRARecommendationEngine.shared
-    @StateObject private var evolution = SUPRAEvolutionEngine.shared
-    @StateObject private var conversations = ConversationMemoryStore.shared
-    @EnvironmentObject private var missionStore: MissionStore
-    @EnvironmentObject private var decisionStore: DecisionStore
+// MARK: - Executive Cockpit
+//
+// Reconnected to the Snapshot Bus (Ω6) per PROJECT PHOENIX.
+// Reads all dashboard data from ExecutiveSnapshotBus.shared.latestSnapshot.
+// Write operations (store loads) are handled by the ExecutiveContextEngine.
 
-    @State private var isLoading = true
-    @State private var loadedItems = 0
+struct ExecutiveCockpit: View {
+    @StateObject private var bus = ExecutiveSnapshotBus.shared
+
+    private var dashboard: ExecutiveContextSnapshot.DashboardSummary {
+        bus.latestSnapshot.context.dashboard
+    }
+
+    private var summary: ExecutiveContextSnapshot.MissionsSummary {
+        bus.latestSnapshot.context.missionsSummary
+    }
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -536,26 +541,6 @@ struct ExecutiveCockpit: View {
             .frame(maxWidth: .infinity)
         }
         .background(Color.supraBackground)
-        .task {
-            // Progressive loading simulation
-            isLoading = true
-            loadedItems = 0
-
-            missionStore.load()
-            withAnimation(.easeOut(duration: 0.3)) { loadedItems = 1 }
-
-            decisionStore.load()
-            withAnimation(.easeOut(duration: 0.3).delay(0.1)) { loadedItems = 2 }
-
-            runtime.load()
-            withAnimation(.easeOut(duration: 0.3).delay(0.2)) { loadedItems = 3 }
-
-            runtime.refreshSystemMetrics()
-            withAnimation(.easeOut(duration: 0.3).delay(0.3)) {
-                isLoading = false
-                loadedItems = 4
-            }
-        }
     }
 
     private var cockpitHeader: some View {
@@ -576,11 +561,11 @@ struct ExecutiveCockpit: View {
                     .foregroundStyle(Color.supraTextTertiary)
                 HStack(spacing: 6) {
                     Circle()
-                        .fill(runtime.runtimeMetrics == nil ? Color.supraOrange : Color.supraGreen)
+                        .fill(dashboard.hasRuntimeMetrics ? Color.supraGreen : Color.supraOrange)
                         .frame(width: 6, height: 6)
-                    Text(runtime.runtimeMetrics == nil ? "WAITING FOR DATA" : "LIVE · PUBLISHED")
+                    Text(dashboard.hasRuntimeMetrics ? "LIVE · PUBLISHED" : "WAITING FOR DATA")
                         .font(SUPRAOSDesignSystem.Fonts.label)
-                        .foregroundStyle(runtime.runtimeMetrics == nil ? Color.supraOrange : Color.supraGreen)
+                        .foregroundStyle(dashboard.hasRuntimeMetrics ? Color.supraGreen : Color.supraOrange)
                 }
             }
         }
@@ -589,14 +574,13 @@ struct ExecutiveCockpit: View {
 
     private var kpiGrid: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 145), spacing: SUPRAOSDesignSystem.spacingSmall)], spacing: SUPRAOSDesignSystem.spacingSmall) {
-            kpiCard(label: "Missions", value: "\(missionStore.missions.count)", icon: "flag.fill", color: .supraAccent)
-            kpiCard(label: "Decisions", value: "\(decisionStore.decisions.count)", icon: "checkmark.seal.fill", color: .supraOrange)
-            kpiCard(label: "Knowledge", value: "\(conversations.conversations.count)", icon: "brain.head.profile.fill", color: .supraTeal)
-            kpiCard(label: "Discoveries", value: "\(recommendations.active.count)", icon: "sparkles", color: .supraPurple)
-            kpiCard(label: "Health", value: environment.state == nil ? "SYNC" : "READY", icon: "heart.text.square.fill", color: .supraGreen)
-            kpiCard(label: "Alerts", value: "\(alertCount)", icon: "exclamationmark.triangle.fill", color: alertCount == 0 ? .supraGreen : .supraRed)
+            kpiCard(label: "Missions", value: "\(summary.totalCount)", icon: "flag.fill", color: .supraAccent)
+            kpiCard(label: "Decisions", value: "\(dashboard.decisionCount)", icon: "checkmark.seal.fill", color: .supraOrange)
+            kpiCard(label: "Knowledge", value: "\(dashboard.conversationCount)", icon: "brain.head.profile.fill", color: .supraTeal)
+            kpiCard(label: "Discoveries", value: "\(dashboard.activeRecommendationCount)", icon: "sparkles", color: .supraPurple)
+            kpiCard(label: "Health", value: dashboard.environmentStateExists ? "READY" : "SYNC", icon: "heart.text.square.fill", color: .supraGreen)
+            kpiCard(label: "Alerts", value: "\(dashboard.alertCount)", icon: "exclamationmark.triangle.fill", color: dashboard.alertCount == 0 ? .supraGreen : .supraRed)
         }
-        .skeleton(isLoading: isLoading, shape: .rounded(12))
     }
 
     private func kpiCard(label: String, value: String, icon: String, color: Color) -> some View {
@@ -607,9 +591,9 @@ struct ExecutiveCockpit: View {
     private var executiveHealth: some View {
         ExecutivePanel(title: "Executive Health", icon: "heart.text.square.fill", color: .supraGreen) {
             VStack(spacing: SUPRAOSDesignSystem.spacingTiny) {
-                healthRow("Runtime", runtime.runtimeMetrics == nil ? "Standby" : "Active", runtime.runtimeMetrics == nil ? .supraOrange : .supraGreen)
-                healthRow("Environment", environment.state == nil ? "Synchronizing" : "Operational", environment.state == nil ? .supraOrange : .supraGreen)
-                healthRow("Evolution", "\(evolution.proposals.count) proposals", .supraAccent)
+                healthRow("Runtime", dashboard.hasRuntimeMetrics ? "Active" : "Standby", dashboard.hasRuntimeMetrics ? .supraGreen : .supraOrange)
+                healthRow("Environment", dashboard.environmentStateExists ? "Operational" : "Synchronizing", dashboard.environmentStateExists ? .supraGreen : .supraOrange)
+                healthRow("Evolution", "\(dashboard.evolutionProposalCount) proposals", .supraAccent)
             }
         }
         .frame(maxWidth: .infinity)
@@ -619,7 +603,7 @@ struct ExecutiveCockpit: View {
     private var missionCenter: some View {
         ExecutivePanel(title: "Mission Center", icon: "flag.fill", color: .supraAccent) {
             compactRows(
-                missionStore.missions.prefix(3).map { ($0.title, $0.status.rawValue) },
+                summary.visibleMissions.prefix(3).map { ($0.title, $0.status) },
                 empty: "No active mission"
             )
         }
@@ -629,7 +613,7 @@ struct ExecutiveCockpit: View {
 
     private var knowledgeCenter: some View {
         ExecutivePanel(title: "Knowledge Center", icon: "brain.head.profile.fill", color: .supraTeal) {
-            metric("\(conversations.conversations.count)", "canonical conversations")
+            metric("\(dashboard.conversationCount)", "canonical conversations")
         }
         .frame(maxWidth: .infinity)
         .fadeIn(delay: 0.25)
@@ -637,7 +621,7 @@ struct ExecutiveCockpit: View {
 
     private var discoveryCenter: some View {
         ExecutivePanel(title: "Discovery Center", icon: "sparkles", color: .supraPurple) {
-            metric("\(recommendations.active.count)", "active opportunities")
+            metric("\(dashboard.activeRecommendationCount)", "active opportunities")
         }
         .frame(maxWidth: .infinity)
         .fadeIn(delay: 0.3)
@@ -645,15 +629,15 @@ struct ExecutiveCockpit: View {
 
     private var decisionCenter: some View {
         ExecutivePanel(title: "Decision Center", icon: "checkmark.seal.fill", color: .supraOrange) {
-            metric("\(decisionStore.decisions.count)", "traceable decisions")
+            metric("\(dashboard.decisionCount)", "traceable decisions")
         }
         .frame(maxWidth: .infinity)
         .fadeIn(delay: 0.35)
     }
 
     private var executiveAlerts: some View {
-        ExecutivePanel(title: "Executive Alerts", icon: "exclamationmark.triangle.fill", color: alertCount == 0 ? .supraGreen : .supraRed) {
-            if alertCount == 0 {
+        ExecutivePanel(title: "Executive Alerts", icon: "exclamationmark.triangle.fill", color: dashboard.alertCount == 0 ? .supraGreen : .supraRed) {
+            if dashboard.alertCount == 0 {
                 Label("No critical alert. Executive systems are within operating bounds.", systemImage: "checkmark.circle.fill")
                     .font(SUPRAOSDesignSystem.Fonts.body)
                     .foregroundStyle(Color.supraGreen)
@@ -667,7 +651,7 @@ struct ExecutiveCockpit: View {
     private var timeline: some View {
         ExecutivePanel(title: "Timeline", icon: "clock.fill", color: .supraBlue) {
             compactRows(
-                missionStore.missions.prefix(4).map { ($0.title, $0.currentStatus) },
+                summary.visibleMissions.prefix(4).map { ($0.title, $0.currentStatus) },
                 empty: "Runtime timeline is ready"
             )
         }
@@ -676,12 +660,12 @@ struct ExecutiveCockpit: View {
 
     private var alerts: [(String, String)] {
         var rows: [(String, String)] = []
-        if runtime.runtimeMetrics == nil { rows.append(("Runtime metrics", "Awaiting publication")) }
-        rows.append(contentsOf: recommendations.humanRequired.prefix(2).map { ($0.problem, "Human decision") })
+        if !dashboard.hasRuntimeMetrics { rows.append(("Runtime metrics", "Awaiting publication")) }
+        if dashboard.humanRequiredRecommendationCount > 0 { rows.append(("Human decisions", "\(dashboard.humanRequiredRecommendationCount) pending")) }
         return rows
     }
 
-    private var alertCount: Int { alerts.count }
+    private var alertCount: Int { dashboard.alertCount }
 
     private func healthRow(_ title: String, _ value: String, _ color: Color) -> some View {
         HStack {

@@ -91,6 +91,10 @@ public struct ExecutiveContextSnapshot: Sendable, Codable, Equatable {
 
         public let missionsSummary: MissionsSummary
 
+        // MARK: - Dashboard Summary (Bridge to ExecutiveCockpit)
+
+        public let dashboard: DashboardSummary
+
         public static let initial = ContextSnapshot(
             currentMission: nil,
             currentDecision: nil,
@@ -98,7 +102,73 @@ public struct ExecutiveContextSnapshot: Sendable, Codable, Equatable {
             systemLoad: 0,
             memoryPressure: "unknown",
             networkStatus: "unknown",
-            missionsSummary: .initial
+            missionsSummary: .initial,
+            dashboard: .initial
+        )
+    }
+
+    // MARK: - Dashboard Summary
+
+    /// Aggregated dashboard data for ExecutiveCockpit and ExecutiveMissionControl.
+    /// Populated by the Context Engine from multiple services, distributed via the Snapshot Bus.
+    public struct DashboardSummary: Sendable, Codable, Equatable {
+        // Runtime
+        public let hasRuntimeMetrics: Bool
+        public let runtimeVersion: String
+
+        // Decisions
+        public let decisionCount: Int
+
+        // Conversations
+        public let conversationCount: Int
+
+        // Recommendations
+        public let activeRecommendationCount: Int
+        public let humanRequiredRecommendationCount: Int
+
+        // Environment
+        public let environmentStateExists: Bool
+
+        // Evolution
+        public let evolutionProposalCount: Int
+
+        // ExecutiveMissionControl
+        public let agentCount: Int
+        public let alertCount: Int
+        public let buildStatus: String
+        public let freezeStatus: String
+        public let providerCount: Int
+        public let timelineEventCount: Int
+
+        // Mission Copilot
+        public let copilotProposalCount: Int
+        public let copilotAutoQueueCount: Int
+        public let copilotExecutionQueueCount: Int
+        public let copilotSupervisionQueueCount: Int
+        public let copilotHumanQueueCount: Int
+        public let copilotExecutedCount: Int
+
+        public static let initial = DashboardSummary(
+            hasRuntimeMetrics: false,
+            runtimeVersion: "—",
+            decisionCount: 0,
+            conversationCount: 0,
+            activeRecommendationCount: 0,
+            humanRequiredRecommendationCount: 0,
+            environmentStateExists: false,
+            evolutionProposalCount: 0,
+            agentCount: 0,
+            alertCount: 0,
+            buildStatus: "idle",
+            freezeStatus: "missing",
+            providerCount: 0,
+            timelineEventCount: 0,
+            copilotProposalCount: 0,
+            copilotAutoQueueCount: 0,
+            copilotExecutionQueueCount: 0,
+            copilotSupervisionQueueCount: 0,
+            copilotHumanQueueCount: 0,
+            copilotExecutedCount: 0
         )
     }
 
@@ -370,7 +440,8 @@ public final class ExecutiveSnapshotBuilder: Sendable {
             systemLoad: context.systemLoad,
             memoryPressure: context.memoryPressure,
             networkStatus: context.networkStatus,
-            missionsSummary: context.missionsSummary
+            missionsSummary: context.missionsSummary,
+            dashboard: context.dashboard
         )
     }
 

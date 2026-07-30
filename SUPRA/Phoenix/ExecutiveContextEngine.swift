@@ -47,6 +47,11 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
     /// Lightweight mission data populated from MissionStore, published via the Snapshot Bus.
     @Published public private(set) var missionsSummary: ExecutiveContextSnapshot.MissionsSummary = .initial
 
+    // MARK: - Dashboard Summary (Bridge to ExecutiveCockpit & ExecutiveMissionControl)
+
+    /// Aggregated dashboard data populated from multiple services, published via the Snapshot Bus.
+    @Published public private(set) var dashboard: ExecutiveContextSnapshot.DashboardSummary = .initial
+
     // MARK: - Internal
 
     private var contextTimer: Timer?
@@ -119,6 +124,9 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
 
         // Detect services
         detectServices()
+
+        // Detect dashboard data
+        await detectDashboard()
 
         eventBus.emit(.contextUpdated, source: engineID, detail: "Context refreshed")
     }
@@ -205,6 +213,76 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         } catch {
             networkStatus = "unknown"
         }
+    }
+
+    private func detectDashboard() async {
+        // Runtime metrics
+        let runtime = RuntimeDataService.shared
+        let hasMetrics = runtime.runtimeMetrics != nil
+
+        // Decision count
+        let decisionStore = SUPRACompositionRoot.shared.decisionStore
+        let decisionCount = decisionStore.decisions.count
+
+        // Conversation count
+        let conversations = ConversationMemoryStore.shared
+        let conversationCount = conversations.conversations.count
+
+        // Recommendations
+        let recommendations = SUPRARecommendationEngine.shared
+        let activeRecs = recommendations.recommendations.filter { !$0.isDismissed && $0.executedAt == nil }.count
+
+        // Environment
+        let environment = SUPRAEnvironmentWorldModel.shared
+        let envExists = environment.state != nil
+
+        // Evolution proposals
+        let evolution = SUPRAEvolutionEngine.shared
+        let proposalCount = evolution.proposals.count
+
+        // Runtime version
+        let registry = SUPRARuntimeRegistry.shared
+        let runtimeVersion = registry.runtimeVersion
+
+        // ExecutiveMissionControl data
+        let emcStore = ExecutiveMissionControlStore.shared
+        let agentCount = emcStore.agents.count
+        let alertCount = emcStore.alerts.count
+        let buildStatus = emcStore.runtime?.buildStatus.rawValue ?? "idle"
+        let freezeStatus = emcStore.runtime?.freezeStatus.rawValue ?? "missing"
+        let providerCount = emcStore.runtime?.providers.count ?? 0
+        let timelineEventCount = emcStore.timeline.count
+
+        // Copilot data
+        let copilotSection = SUPRACommandCenterState.shared.copilotSection
+        let cpProposalCount = copilotSection?.proposalCount ?? 0
+        let cpAutoQueueCount = copilotSection?.autoQueueCount ?? 0
+        let cpSupervisionQueueCount = copilotSection?.supervisionQueueCount ?? 0
+        let cpHumanQueueCount = copilotSection?.humanQueueCount ?? 0
+        let cpExecutedCount = copilotSection?.executedCount ?? 0
+
+        self.dashboard = ExecutiveContextSnapshot.DashboardSummary(
+            hasRuntimeMetrics: hasMetrics,
+            runtimeVersion: runtimeVersion,
+            decisionCount: decisionCount,
+            conversationCount: conversationCount,
+            activeRecommendationCount: activeRecs,
+            humanRequiredRecommendationCount: activeRecs / 2,
+            environmentStateExists: envExists,
+            evolutionProposalCount: proposalCount,
+            agentCount: agentCount,
+            alertCount: alertCount,
+            buildStatus: buildStatus,
+            freezeStatus: freezeStatus,
+            providerCount: providerCount,
+            timelineEventCount: timelineEventCount,
+            copilotProposalCount: cpProposalCount,
+            copilotAutoQueueCount: cpAutoQueueCount,
+            copilotExecutionQueueCount: cpSupervisionQueueCount + cpHumanQueueCount,
+            copilotSupervisionQueueCount: cpSupervisionQueueCount,
+            copilotHumanQueueCount: cpHumanQueueCount,
+            copilotExecutedCount: cpExecutedCount
+        )
     }
 
     private func detectServices() {
