@@ -1,89 +1,86 @@
-# EXECUTION PLAN — V1
+# EXECUTION PLAN — FOUNDATION ERA
 
 ## Status: CERTIFIED
 
 | Property | Value |
 |----------|-------|
-| **Version** | EXEC_PLAN_V1 |
-| **Date** | 2026-07-29 |
+| **Version** | EXEC_PLAN_FOUNDATION_ERA_V1 |
+| **Date** | 2026-07-31 |
 | **Authority** | FACTORY_09_EXECUTION |
+| **Mission** | EXECUTIVE BOOTSTRAP V1 — Industrialisation du Runtime SUPRA |
+| **Codename** | FOUNDATION ERA |
+| **Mode** | Architecture First |
+| **Priority** | CRITICAL |
+| **Baseline** | BUILD_CERTIFIED_V1 (immuable) |
 
 ---
 
-## 1. CURRENT MISSION
+## 1. MISSION
 
-**SUPRA ULTIMATE CONSOLIDATED V1**
+Transformer le Runtime SUPRA en architecture canonique à 4 couches (Foundation → Infrastructure → Runtime → Domain) et supprimer toute dépendance directe des modules métier au système de fichiers.
 
-Transform the repository into an autonomous software factory.
-
----
-
-## 2. EXECUTION SEQUENCE
+## 2. SÉQUENCE D'EXÉCUTION
 
 ```
-Phase 1: Foundation (DONE)
-  ├── Create FACTORIES/ directory structure
-  ├── Write SUPRA_FACTORY_CONSTITUTION.md
-  ├── Write 10 Factory specifications
-  └── Write production-grade AGENTS.md
-
-Phase 2: Artefacts (DONE)
-  ├── FACTORY_01_ARCHITECTURE outputs (4 artefacts)
-  ├── FACTORY_02_DISCOVERY outputs (3 artefacts)
-  ├── FACTORY_03_RUNTIME outputs (1 artefact)
-  ├── FACTORY_04_KNOWLEDGE outputs (1 artefact)
-  ├── FACTORY_05_MEMORY outputs (1 artefact)
-  ├── FACTORY_06_PROOF outputs (1 artefact)
-  └── FACTORY_07_QUALITY outputs (1 artefact)
-
-Phase 3: Automation (DONE)
-  ├── supra-factory.sh (orchestrator)
-  ├── supra-pipeline.sh (pipeline)
-  └── Gate validation scripts
-
-Phase 4: Execution (CURRENT)
-  ├── FACTORY_09_EXECUTION plan
-  ├── FACTORY_10_EXECUTIVE decision
-  ├── Final validation
-  └── Publish consolidated V1
-
-Phase 5: Verification (NEXT)
-  ├── Run Xcode build verification
-  ├── Run test suite
-  └── Quality certification
+MISSION FOUNDATION ERA
+  │
+  ├── Phase A: ARCHITECTURE (TERMINÉE ✅)
+  │     ├── Constat d'entrée (4 composants à lecture directe identifiés)
+  │     ├── EXECUTIVE_BOOTSTRAP.md             ✅
+  │     ├── BOOTSTRAP_ARCHITECTURE.md          ✅
+  │     ├── ARTIFACT_REGISTRY_SPEC.md          ✅
+  │     ├── CONTINUITY_ENGINE_SPEC.md          ✅
+  │     ├── RUNTIME_LAYER_DIAGRAM.md           ✅
+  │     ├── MIGRATION_PLAN.md                  ✅
+  │     ├── BOOTSTRAP_VALIDATION.md            ✅
+  │     └── EXECUTION_READINESS.md             ✅ (READY)
+  │
+  ├── Phase B: DÉCISION EXÉCUTIVE (EN ATTENTE)
+  │     └── FACTORY_10 : CONTINUE | ADAPT | REPLAN | HALT
+  │
+  ├── Phase C: IMPLÉMENTATION (MIGRATION_PLAN.md — 4 étapes)
+  │     ├── Étape 1: Foundation Layer (FileSystemPort)          [S]
+  │     ├── Étape 2: Infrastructure Layer (Bootstrap/Registry/ContinuityEngine) [M]
+  │     ├── Étape 3: Bascule Runtime → Registry (suppressions lectures directes) [M]
+  │     └── Étape 4: Certification (FACTORY_06/07, rapport)     [S]
+  │
+  └── Phase D: VALIDATION (BOOTSTRAP_VALIDATION.md)
+        ├── S1 premier lancement · S2 lancements suivants
+        ├── S3 migration · S4 dégradation gracieuse · S5 non-régression
+        └── Budget performance (STARTUP_PROFILE référence)
 ```
 
----
+## 3. GATES
 
-## 3. PARALLELIZATION GROUPS
+| Gate | Critère | Validateur |
+|------|---------|------------|
+| INPUT | 8 livrables d'architecture produits | FACTORY_01 ✅ PASSÉ |
+| EXECUTION | Décision exécutive CONTINUE reçue | FACTORY_10 — EN ATTENTE |
+| OUTPUT | Étapes 1–4 de MIGRATION_PLAN complétées, build + tests verts | FACTORY_07 |
+| CERTIFICATION | Preuves rassemblées (tests, profilage, analyse statique) | FACTORY_06 |
 
-| Group | Factories | Rationale |
-|-------|-----------|-----------|
-| A | FACTORY_01, FACTORY_02 | No interdependency, both read-only |
-| B | FACTORY_03, FACTORY_04 | Both depend on A, no cross-dependency |
-| C | FACTORY_05, FACTORY_06 | Both depend on B, no cross-dependency |
-| D | FACTORY_07 | Single factory, depends on C |
-| E | FACTORY_08 | Depends on D |
-| F | FACTORY_09, FACTORY_10 | Single threaded, plan then decide |
+## 4. PARALLÉLISATION
 
----
+Phase A terminée en séquence (dépendances documentaires internes).
+Phase C : étapes séquentielles (chaque étape dépend de la précédente).
 
-## 4. RESOURCE ALLOCATION
+## 5. RESSOURCES
 
-| Resource | Allocation |
-|----------|------------|
+| Ressource | Allocation |
+|-----------|------------|
 | Writers | 1 (SUPRA-Builder) — Single Writer Rule |
-| Read Agents | 3 (Architect, Explorer, Auditor) |
-| Build Agents | 1 (SUPRA-Runtime) |
-| Models | 1 (qwen3-coder) |
+| Read Agents | Architect, Explorer, Auditor |
+| Build | SUPRA-Runtime (xcodebuild, tests) |
+| Référence perf | STARTUP_PROFILE.md / STARTUP_TIMELINE.md |
+
+## 6. RISQUES
+
+| Risque | Probabilité | Impact | Mitigation |
+|--------|-------------|--------|------------|
+| Régression startup | FAIBLE | ÉLEVÉ | Budget perf BOOTSTRAP_VALIDATION § 4, mesures avant/après |
+| Perte artefacts hérités | FAIBLE | ÉLEVÉ | Copie de migration non destructive (MIGRATION_PLAN étape 3) |
+| Couplage résiduel | MOYENNE | MOYEN | Analyse statique BootstrapGovernance étendue = gate obligatoire |
 
 ---
 
-## 5. RISK ASSESSMENT
-
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Build requires Xcode | HIGH | HIGH | Document build steps, verify manually |
-| Large repo slows down | MEDIUM | MEDIUM | Use targeted searches |
-| Gate scripts incomplete | MEDIUM | LOW | Incremental gate creation |
-| Backward compatibility | LOW | HIGH | Never modify existing code |
+*Plan produit par FACTORY_09_EXECUTION — mission FOUNDATION ERA.*

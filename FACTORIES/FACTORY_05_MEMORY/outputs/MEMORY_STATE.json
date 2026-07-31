@@ -1,48 +1,69 @@
 {
-  "stateId": "memory:state:v1",
-  "version": "MEMORY_STATE_V1",
-  "timestamp": "2026-07-29T00:00:00Z",
+  "stateId": "memory:state:v2",
+  "version": "MEMORY_STATE_V2",
+  "timestamp": "2026-07-31T05:25:00Z",
   "authority": "FACTORY_05_MEMORY",
   "session": {
-    "id": "session_20260729_001",
-    "start": "2026-07-29T00:00:00Z",
-    "status": "ACTIVE",
-    "mission": "SUPRA ULTIMATE CONSOLIDATED V1"
+    "id": "session_20260731_foundation_era",
+    "start": "2026-07-31T00:00:00Z",
+    "status": "PHASE_1_RUNTIME_STATUS_CERTIFIED",
+    "mission": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1 — FOUNDATION ERA"
   },
   "missions": [
     {
-      "id": "mission_consolidated_v1",
-      "name": "SUPRA ULTIMATE CONSOLIDATED V1",
-      "status": "IN_PROGRESS",
-      "started": "2026-07-29T00:00:00Z",
+      "id": "mission_foundation_era",
+      "name": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1",
+      "codename": "FOUNDATION ERA",
+      "mode": "ARCHITECTURE_FIRST",
+      "priority": "CRITICAL",
+      "status": "PHASE_1_RUNTIME_STATUS_CERTIFIED",
+      "started": "2026-07-31T00:00:00Z",
+      "objective": "Industrialiser le Runtime SUPRA en séparant les responsabilités et en supprimant toute dépendance directe des modules métier au système de fichiers",
+      "as_is": {
+        "direct_fs_access_components": [
+          "ExecutiveBootManager (7 lectures directes, 2 spawn git bloquants)",
+          "ContinuityManager (9+ lectures directes, spawn git bloquant)",
+          "ArtifactReader (URL(fileURLWithPath:) câblés en dur)",
+          "SUPRAEnvironmentResolver (expose projectRoot)"
+        ],
+        "residual_anomaly": "Artefacts attendus absents (BUILD_STATUS.md, CONTINUITY.md, NEXT_MISSION.md) — cause : lecture directe des chemins"
+      },
+      "to_be": {
+        "layers": ["Foundation (FileSystemPort)", "Infrastructure (Bootstrap/Registry/ContinuityEngine)", "Runtime (BootOrchestrator/RuntimeDataService/RuntimeMonitor)", "Domain (MissionRuntime)"],
+        "storage": "~/Library/Application Support/SUPRA/",
+        "directories": ["State", "Runtime", "Artifacts", "Continuity", "Snapshots", "Logs", "Cache", "Missions"],
+        "first_launch_artifacts": ["SUPRA_STATE.json", "RUNTIME_STATUS.json", "runtime_diagnostics.json", "BOOT_REPORT.json", "BUILD_STATUS.md", "CONTINUITY.md", "NEXT_MISSION.md", "MISSION_QUEUE.json"]
+      },
+      "deliverables": [
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTIVE_BOOTSTRAP.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_ARCHITECTURE.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_REGISTRY_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/CONTINUITY_ENGINE_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/RUNTIME_LAYER_DIAGRAM.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/MIGRATION_PLAN.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_VALIDATION.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTION_READINESS.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_RUNTIME_STATUS_REPORT.md"
+      ],
+      "phase_1_certification": {
+        "artifact": "RUNTIME_STATUS",
+        "report": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_RUNTIME_STATUS_REPORT.md",
+        "date": "2026-07-31",
+        "gates": {
+          "technical": "PASS",
+          "architecture": "PASS",
+          "performance": "PASS",
+          "product": "PASS"
+        }
+      },
+      "next_phase": "BUILD_STATUS migration (Phase 2)",
       "factory_states": {
         "FACTORY_01_ARCHITECTURE": "CERTIFIED",
-        "FACTORY_02_DISCOVERY": "CERTIFIED",
-        "FACTORY_03_RUNTIME": "CERTIFIED",
-        "FACTORY_04_KNOWLEDGE": "CERTIFIED",
-        "FACTORY_05_MEMORY": "CERTIFIED",
-        "FACTORY_06_PROOF": "PENDING",
-        "FACTORY_07_QUALITY": "PENDING",
-        "FACTORY_08_DOCUMENTATION": "PENDING",
-        "FACTORY_09_EXECUTION": "PENDING",
-        "FACTORY_10_EXECUTIVE": "PENDING"
+        "FACTORY_05_MEMORY": "UPDATED",
+        "FACTORY_09_EXECUTION": "CERTIFIED",
+        "FACTORY_10_EXECUTIVE": "DECISION_PROPOSED"
       },
-      "artefacts": [
-        "FACTORIES/SUPRA_FACTORY_CONSTITUTION.md",
-        "FACTORIES/FACTORY_01_ARCHITECTURE/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_02_DISCOVERY/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_03_RUNTIME/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_04_KNOWLEDGE/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_05_MEMORY/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_06_PROOF/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_07_QUALITY/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_08_DOCUMENTATION/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_09_EXECUTION/specs/FACTORY_SPECIFICATION.md",
-        "FACTORIES/FACTORY_10_EXECUTIVE/specs/FACTORY_SPECIFICATION.md",
-        "AGENTS.md",
-        "FACTORIES/supra-factory.sh",
-        "FACTORIES/supra-pipeline.sh"
-      ]
+      "verdict": "EXECUTION_READINESS = READY (10/10) — Phase 1 RUNTIME_STATUS migration certified, Phase 2 (BUILD_STATUS) authorized"
     }
   ],
   "snapshots": [
@@ -52,6 +73,33 @@
       "type": "CONSOLIDATION",
       "files_count": 30,
       "checksum": "pending"
+    },
+    {
+      "id": "snapshot_foundation_era",
+      "timestamp": "2026-07-31T05:00:00Z",
+      "type": "ARCHITECTURE_CERTIFICATION",
+      "files_count": 8,
+      "location": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/",
+      "checksum": "registered_in_kernel_runtime_json"
+    },
+    {
+      "id": "snapshot_phase_1_runtime_status",
+      "timestamp": "2026-07-31T05:25:00Z",
+      "type": "ARTIFACT_REGISTRY_PHASE_1_CERTIFICATION",
+      "artifact": "RUNTIME_STATUS",
+      "report": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_RUNTIME_STATUS_REPORT.md",
+      "gates": {
+        "technical": "PASS",
+        "architecture": "PASS",
+        "performance": "PASS",
+        "product": "PASS"
+      }
     }
-  ]
+  ],
+  "kernel": {
+    "runtime_state": ".kernel/Runtime.json",
+    "kernel_registry": ".kernel/KernelRegistry.json",
+    "workspace_registry": ".kernel/WorkspaceRegistry.json",
+    "status": "SYNCHRONIZED_20260731T052500Z"
+  }
 }

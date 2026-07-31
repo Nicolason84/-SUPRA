@@ -6,7 +6,7 @@
     "kernel_path": ".kernel/",
     "created_at": "2026-07-29T00:00:00Z",
     "status": "ACTIVE",
-    "description": "Workspace-level registry for the Executive Memory Kernel. Tracks all workspace-scoped objects and their relationships.",
+    "description": "Workspace-level registry for the Executive Memory Kernel. Tracks all workspace-scoped objects and their relationships. FOUNDATION ERA (EXECUTIVE BOOTSTRAP V1) architecture deliverables registered 2026-07-31.",
     "workspace_scopes": {
       "missions": {
         "path": "memory/missions/",
@@ -74,7 +74,33 @@
     "kernel_link": {
       "kernel_registry": "KernelRegistry.json",
       "kernel_version": "1.0.0",
-      "last_sync": "2026-07-29T00:00:00Z"
+      "last_sync": "2026-07-31T05:00:00Z"
+    },
+    "foundation_era_artefacts": {
+      "mission": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1",
+      "codename": "FOUNDATION ERA",
+      "registered_at": "2026-07-31T05:00:00Z",
+      "updated_at": "2026-07-31T05:25:00Z",
+      "authority": "FACTORY_01_ARCHITECTURE",
+      "phase_1_runtime_status": "CERTIFIED",
+      "outputs_dir": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/",
+      "artefacts": [
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTIVE_BOOTSTRAP.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_ARCHITECTURE.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_REGISTRY_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/CONTINUITY_ENGINE_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/RUNTIME_LAYER_DIAGRAM.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/MIGRATION_PLAN.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_VALIDATION.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTION_READINESS.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_RUNTIME_STATUS_REPORT.md"
+      ],
+      "infrastructure": {
+        "foundation_layer": "SUPRA/Foundation/",
+        "artifact_registry": "SUPRA/Infrastructure/SUPRAArtifactRegistry.swift",
+        "file_system_port": "SUPRA/Foundation/SUPRAFileSystemPort.swift"
+      },
+      "runtime_state": ".kernel/Runtime.json"
     }
   }
 }

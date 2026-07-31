@@ -4,13 +4,55 @@
     "kernel_name": "Executive Runtime Kernel — PROJECT PHOENIX",
     "description": "The living, breathing kernel of SUPRA's Executive Runtime. Built through PROJECT PHOENIX reconstruction. This is the single Source of Truth, powered by Executive Context Snapshots, Event Bus, and the ŒIL Perception Layer.",
     "created_at": "2026-07-29T00:00:00Z",
-    "updated_at": "2026-07-31T03:35:00Z",
+    "updated_at": "2026-07-31T05:00:00Z",
     "status": "CERTIFIED",
     "verdict": "BUILD_CERTIFIED_V1 — ALL GATES PASSED",
     "development_line": "V2",
-    "development_status": "AUTHORIZED — awaiting executive approval of Phase II roadmap",
+    "development_status": "FOUNDATION ERA ACTIVE — EXECUTIVE BOOTSTRAP V1 architecture certified (8/8 deliverables), implementation awaiting executive decision",
     "authority": "CONSTITUTIONAL — PROJECT PHOENIX",
     "root_cause": "PROJECT PHOENIX — Executive Runtime Reconstruction (2026-07-30)",
+    "foundation_era": {
+      "codename": "FOUNDATION ERA",
+      "mission": "EXECUTIVE BOOTSTRAP V1",
+      "mode": "ARCHITECTURE_FIRST",
+      "date": "2026-07-31",
+      "objective": "Industrialiser le Runtime SUPRA en séparant les responsabilités et en supprimant toute dépendance directe des modules métier au système de fichiers",
+      "target_architecture": {
+        "layers": [
+          { "name": "Foundation", "owner": "FileSystemPort", "responsibility": "Système de fichiers — opérations élémentaires atomiques" },
+          { "name": "Infrastructure", "owner": "ExecutiveBootstrap / ArtifactRegistry / ContinuityEngine", "responsibility": "Environnement, accès artefacts, persistance" },
+          { "name": "Runtime", "owner": "BootOrchestrator / RuntimeDataService / RuntimeMonitor", "responsibility": "État et orchestration — sans IO directe" },
+          { "name": "Domain", "owner": "MissionRuntime", "responsibility": "Mission → Decision → Execution → Evidence → Memory — sans connaissance du disque" }
+        ]
+      },
+      "single_ownership_rules": {
+        "environment": "ExecutiveBootstrap est le seul composant autorisé à préparer l'environnement",
+        "artifacts": "ArtifactRegistry est le seul point d'accès aux artefacts",
+        "persistence": "ContinuityEngine est le seul responsable de la persistance",
+        "business": "MissionRuntime est exclusivement responsable de l'exécution métier"
+      },
+      "deliverables": {
+        "location": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/",
+        "count": 8,
+        "files": [
+          "EXECUTIVE_BOOTSTRAP.md",
+          "BOOTSTRAP_ARCHITECTURE.md",
+          "ARTIFACT_REGISTRY_SPEC.md",
+          "CONTINUITY_ENGINE_SPEC.md",
+          "RUNTIME_LAYER_DIAGRAM.md",
+          "MIGRATION_PLAN.md",
+          "BOOTSTRAP_VALIDATION.md",
+          "EXECUTION_READINESS.md"
+        ],
+        "status": "CERTIFIED"
+      },
+      "storage": {
+        "root": "~/Library/Application Support/SUPRA/",
+        "directories": ["State", "Runtime", "Artifacts", "Continuity", "Snapshots", "Logs", "Cache", "Missions"],
+        "first_launch_artifacts": 8
+      },
+      "status": "READY_FOR_IMPLEMENTATION"
+    },
     "phoenix": {
       "version": "2.0.0",
       "baseline": "BUILD_CERTIFIED_V1",

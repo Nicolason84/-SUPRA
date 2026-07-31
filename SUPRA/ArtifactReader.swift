@@ -15,6 +15,7 @@ struct ArtifactReader {
         }
     }
 
+    private let fileSystem: FileSystemPort
     private let fileManager: FileManager
 
     private static var lotURLs: [URL] {
@@ -24,9 +25,6 @@ struct ArtifactReader {
             URL(fileURLWithPath: "\(root)/proofs/LOT2_INSTALLATION_PROOF.json"),
             URL(fileURLWithPath: "\(root)/proofs/LOT3_INSTALLATION_PROOF.json"),
         ]
-    }
-    private static var buildURL: URL {
-        URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/BUILD_STATUS.md")
     }
     private static var manifestURL: URL {
         URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/MANIFEST.json")
@@ -38,7 +36,8 @@ struct ArtifactReader {
         URL(fileURLWithPath: "\(SUPRAEnvironmentResolver.shared.projectRoot)/INDEX.json")
     }
 
-    init(fileManager: FileManager = .default) {
+    init(fileSystem: FileSystemPort = DefaultFileSystemPort.live(), fileManager: FileManager = .default) {
+        self.fileSystem = fileSystem
         self.fileManager = fileManager
     }
 
@@ -46,7 +45,7 @@ struct ArtifactReader {
         let lots = Self.lotURLs.enumerated().map { offset, url in
             availableJSONStatus(name: "LOT\(offset + 1)", url: url, preferredKeys: ["verdict", "status", "result"])
         }
-        let build = availableTextStatus(name: "BUILD_STATUS", url: Self.buildURL)
+        let build = buildStatusForSnapshot()
         let manifest = availableJSONStatus(name: "MANIFEST", url: Self.manifestURL, preferredKeys: ["status", "state", "version"])
         let estate = availableJSONStatus(
             name: "Desktop Estate",
@@ -78,13 +77,31 @@ struct ArtifactReader {
         }
     }
 
-    private func availableTextStatus(name: String, url: URL) -> ArtifactStatus {
-        do {
-            return try textStatus(name: name, url: url)
-        } catch {
+    private func buildStatusForSnapshot() -> ArtifactStatus {
+        let location = StorageLocation(directory: .continuity, filename: "BUILD_STATUS.md")
+        guard fileSystem.exists(location) else {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: BUILD_STATUS.md not found via FileSystemPort")
             return status(
-                name: name,
-                url: url,
+                name: "BUILD_STATUS",
+                url: fileSystem.url(for: location),
+                value: "Unavailable",
+                detail: "BUILD_STATUS.md not found in FileSystemPort",
+                available: false
+            )
+        }
+        do {
+            let text = try fileSystem.readString(location)
+            let meaningful = text.split(separator: "\n")
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .first { $0.localizedCaseInsensitiveContains("status") }
+                ?? text.split(separator: "\n").first.map(String.init)
+                ?? "Available"
+            return status(name: "BUILD_STATUS", url: fileSystem.url(for: location), value: meaningful, detail: nil)
+        } catch {
+            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: BUILD_STATUS.md read error via FileSystemPort: \(error.localizedDescription)")
+            return status(
+                name: "BUILD_STATUS",
+                url: fileSystem.url(for: location),
                 value: "Unavailable",
                 detail: error.localizedDescription,
                 available: false
@@ -125,22 +142,6 @@ struct ArtifactReader {
             SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: Optional \(name) unreadable: \(error.localizedDescription)")
             return status(name: name, url: url, value: "Unavailable", detail: "Optional artifact is unreadable", available: false)
         }
-    }
-
-    private func textStatus(name: String, url: URL) throws -> ArtifactStatus {
-        let text: String
-        do {
-            text = try String(contentsOf: url, encoding: .utf8)
-        } catch {
-            SUPRARuntimeLogger.shared.log(.error, "ArtifactReader: \(name) text read failed at \(url.path): \(error.localizedDescription)")
-            throw ReaderError.unreadable(name, url)
-        }
-        let meaningful = text.split(separator: "\n")
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .first { $0.localizedCaseInsensitiveContains("status") }
-            ?? text.split(separator: "\n").first.map(String.init)
-            ?? "Available"
-        return status(name: name, url: url, value: meaningful, detail: nil)
     }
 
     private func jsonDetail(_ object: [String: Any]) -> String? {

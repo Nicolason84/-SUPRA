@@ -1,0 +1,121 @@
+{
+  "registry": "SUPRA Certification Registry",
+  "version": "1.0.0",
+  "created": "2026-07-30T18:30:00Z",
+  "authority": "SUPRA Executive — Evidence First Governance",
+  "description": "Registre officiel des certifications PROJECT PHOENIX",
+  "schema": {
+    "knowledge_uuid": "string — Identifiant unique de l'objet de connaissance",
+    "certification_uuid": "string — Identifiant unique de la certification",
+    "version": "string — Version de la certification",
+    "mission": "string — Identifiant de la mission (Ω1, Ω1.1, etc.)",
+    "runtime_version": "string — Version du Runtime au moment de la certification",
+    "date": "string — Date ISO 8601 de la certification",
+    "commit_hash": "string — Hash du commit Git au moment de la certification",
+    "baseline": "string — Identifiant de la baseline certifiée",
+    "author": "string — Auteur de la certification",
+    "confidence_level": "string — Niveau de confiance (HIGH, MEDIUM, LOW)",
+    "status": "string — Statut (CERTIFIED, FROZEN, REJECTED, REOPENED)",
+    "evidence_references": "array — Références vers les preuves",
+    "root_cause_id": "string — Référence vers la cause racine",
+    "components_impacted": "array — Composants impactés",
+    "files_modified": "array — Fichiers modifiés",
+    "tests_validated": "array — Tests validés",
+    "risks_residual": "array — Risques résiduels",
+    "certification_report": "string — Chemin vers le rapport de certification",
+    "notes": "string — Notes additionnelles"
+  },
+  "certifications": [
+    {
+      "knowledge_uuid": "KNW-000001",
+      "certification_uuid": "PHX-CERT-001-2026-07-30",
+      "version": "1.0.0",
+      "mission": "Ω1",
+      "runtime_version": "PHOENIX-EXEC-001",
+      "date": "2026-07-30T16:47:00Z",
+      "commit_hash": "5c17aba3c9d4e9dbe00c685897071d8da711d24e",
+      "baseline": "BASELINE_RUNTIME_OMEGA1_2026_07_30",
+      "author": "SUPRA Executive / FACTORY_06_PROOF",
+      "confidence_level": "HIGH",
+      "status": "CERTIFIED",
+      "evidence_references": [
+        "SUPRA/Artifacts/ROOT_CAUSE_CERTIFICATION_OMEGA1.md",
+        "SUPRA/Artifacts/CERTIFICATION_OMEGA1_REPORT.md",
+        "SUPRA/Artifacts/FINAL_VALIDATION_REPORT_OMEGA1.md"
+      ],
+      "root_cause_id": "ROOT-CAUSE-001",
+      "components_impacted": [
+        "ExecutiveRuntimeCore",
+        "SUPRAOperationalCoreApp",
+        "PhoenixRuntime"
+      ],
+      "files_modified": [
+        "SUPRA/SUPRAOperationalCoreApp.swift",
+        "SUPRA/Phoenix/ExecutiveRuntimeCore.swift"
+      ],
+      "tests_validated": [
+        "test_runtimeCoreBootsSolo",
+        "test_snapshotBusAccessible",
+        "test_eventBusAccessible",
+        "BootstrapArchitectureTests"
+      ],
+      "risks_residual": [
+        "TEST_HOST configuration may require future optimization",
+        "Actor isolation semantics may evolve in Swift 6"
+      ],
+      "certification_report": "SUPRA/Artifacts/FINAL_VALIDATION_REPORT_OMEGA1.md",
+      "notes": "Première certification PROJECT PHOENIX. Correction du deadlock XCTest/Runtime via guard XCTestConfigurationFilePath."
+    },
+    {
+      "knowledge_uuid": "KNW-000002",
+      "certification_uuid": "PHX-CERT-002-2026-07-30",
+      "version": "1.0.0",
+      "mission": "Ω1.1",
+      "runtime_version": "PHOENIX-EXEC-001",
+      "date": "2026-07-30T18:27:00Z",
+      "commit_hash": "5c17aba3c9d4e9dbe00c685897071d8da711d24e",
+      "baseline": "BASELINE_RUNTIME_OMEGA1_1_2026_07_30",
+      "author": "SUPRA Executive / FACTORY_06_PROOF",
+      "confidence_level": "HIGH",
+      "status": "CERTIFIED",
+      "evidence_references": [
+        "SUPRA/Artifacts/ROOT_CAUSE_CERTIFICATION_OMEGA1_1.md",
+        "SUPRA/Artifacts/OMEGA1_1_FIX_CERTIFICATION.md"
+      ],
+      "root_cause_id": "ROOT-CAUSE-002",
+      "components_impacted": [
+        "MultiMemoryStore",
+        "CAnnoNicoSnapshotStore",
+        "SUPRACompositionRoot"
+      ],
+      "files_modified": [
+        "SUPRA/MultiMemoryStore.swift"
+      ],
+      "tests_validated": [
+        "BootstrapArchitectureTests.testArchitectureGuardPublishesBootstrapArtifacts",
+        "BootstrapArchitectureTests.testBootstrapActivationSequenceIsDeterministic",
+        "StabilityRuntimeTests.*",
+        "SUPRARuntimeLoopTests.*",
+        "ProtectedFolderAccessCoordinatorTests.*"
+      ],
+      "risks_residual": [
+        "Other singleton circular dependencies may exist",
+        "Complete singleton chain analysis recommended"
+      ],
+      "certification_report": "SUPRA/Artifacts/OMEGA1_1_FIX_CERTIFICATION.md",
+      "notes": "Certification de la correction du deadlock dispatch_once dans MultiMemoryStore. Déplacement de subscribeToSnapshotStore() de init() vers bind()."
+    }
+  ],
+  "knowledge_to_certification_index": {
+    "KNW-000001": "PHX-CERT-001-2026-07-30",
+    "KNW-000002": "PHX-CERT-002-2026-07-30"
+  },
+  "statistics": {
+    "total_certifications": 2,
+    "certified": 2,
+    "frozen": 0,
+    "rejected": 0,
+    "reopened": 0,
+    "last_updated": "2026-07-30T18:30:00Z"
+  }
+}

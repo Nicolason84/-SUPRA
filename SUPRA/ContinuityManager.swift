@@ -93,11 +93,16 @@ final class ContinuityManager: ObservableObject {
     @Published var state = ContinuityState()
     @Published var isLoading = false
 
+    private let fileSystem: FileSystemPort
     private let fm = FileManager.default
     private let decoder = JSONDecoder()
 
     private var projectRoot: String {
         SUPRAEnvironmentResolver.shared.projectRoot
+    }
+
+    init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
+        self.fileSystem = fileSystem
     }
 
     func load() {
@@ -389,24 +394,26 @@ final class ContinuityManager: ObservableObject {
             SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md not found for timestamp extraction")
         }
 
-        if let buildData = fm.contents(atPath: "\(projectRoot)/BUILD_STATUS.md") {
-            guard let text = String(data: buildData, encoding: .utf8) else {
-                SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md is not valid UTF-8 text")
-                return
-            }
-            let lines = text.components(separatedBy: .newlines)
-            var found = false
-            for line in lines {
-                if line.contains("Build Version:") {
-                    state.buildVersion = line.replacingOccurrences(of: "Build Version:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                    found = true
+        let buildStatusLocation = StorageLocation(directory: .continuity, filename: "BUILD_STATUS.md")
+        if fileSystem.exists(buildStatusLocation) {
+            do {
+                let text = try fileSystem.readString(buildStatusLocation)
+                let lines = text.components(separatedBy: .newlines)
+                var found = false
+                for line in lines {
+                    if line.contains("Build Version:") {
+                        state.buildVersion = line.replacingOccurrences(of: "Build Version:", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+                        found = true
+                    }
                 }
-            }
-            if !found {
-                SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md missing \"Build Version:\" line")
+                if !found {
+                    SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md missing \"Build Version:\" line")
+                }
+            } catch {
+                SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md read error via FileSystemPort — \(error.localizedDescription)")
             }
         } else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md not found")
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: BUILD_STATUS.md not found via FileSystemPort")
         }
 
         state.gitVersion = "git \(state.gitCommit) on \(state.gitBranch)"

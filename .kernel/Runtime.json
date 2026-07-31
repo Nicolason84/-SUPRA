@@ -1,0 +1,155 @@
+{
+  "runtime": {
+    "format_version": "NOVA_ERA_KERNEL_V1",
+    "runtime_id": "supra-runtime-macbook-pro-de-nicolaslocal",
+    "created_at": "2026-07-31T00:00:00Z",
+    "updated_at": "2026-07-31T05:00:00Z",
+    "status": "ACTIVE",
+    "verdict": "BUILD_CERTIFIED_V1 \u2014 SPRINT 0 COMPLETE",
+    "development_line": "V2",
+    "development_status": "FOUNDATION ERA \u2014 PHASE 1 RUNTIME_STATUS MIGRATION CERTIFIED",
+    "mission": {
+      "id": "mission_foundation_era",
+      "codename": "FOUNDATION ERA",
+      "name": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1",
+      "mode": "ARCHITECTURE_FIRST",
+      "priority": "CRITICAL",
+      "phase": "ARTIFACT_REGISTRY_V1_PHASE_1_RUNTIME_STATUS_CERTIFIED",
+      "status": "PHASE_1_CERTIFIED"
+    },
+    "layers": {
+      "foundation": {
+        "component": "FileSystemPort",
+        "target": "~/Library/Application Support/SUPRA",
+        "directories": [
+          "State",
+          "Runtime",
+          "Artifacts",
+          "Continuity",
+          "Snapshots",
+          "Logs",
+          "Cache",
+          "Missions"
+        ],
+        "status": "SPECIFIED"
+      },
+      "infrastructure": {
+        "components": {
+          "executive_bootstrap": {
+            "status": "SPECIFIED",
+            "file_target": "ExecutiveBootstrap.swift"
+          },
+          "artifact_registry": {
+            "status": "IMPLEMENTED_PHASE_1_CERTIFIED",
+            "file_target": "SUPRAArtifactRegistry.swift",
+            "phase_1": "RUNTIME_STATUS_CERTIFIED",
+            "phases_pending": [
+              "BUILD_STATUS",
+              "NEXT_MISSION",
+              "CONTINUITY"
+            ]
+          },
+          "continuity_engine": {
+            "status": "SPECIFIED",
+            "file_target": "ContinuityEngine.swift"
+          }
+        }
+      },
+      "runtime": {
+        "components": {
+          "boot_orchestrator": {
+            "status": "SPECIFIED",
+            "replaces": "ExecutiveBootManager"
+          },
+          "runtime_data_service": {
+            "status": "EXISTING",
+            "file": "RuntimeDataService.swift"
+          },
+          "runtime_monitor": {
+            "status": "EXISTING",
+            "file": "RuntimeMonitor.swift"
+          }
+        }
+      },
+      "domain": {
+        "component": "MissionRuntime",
+        "sequence": [
+          "Mission",
+          "Decision",
+          "Execution",
+          "Evidence",
+          "Memory"
+        ],
+        "status": "SPECIFIED",
+        "fs_access": "FORBIDDEN"
+      }
+    },
+    "startup_profile": {
+      "reference": "STARTUP_PROFILE.md",
+      "cold_start_ms": 119,
+      "root_view_ms": 9,
+      "on_appear_ms": 5,
+      "exec_boot_ms": 316,
+      "main_thread_charge_ms": 25,
+      "budget": "BOOTSTRAP_VALIDATION.md section 4"
+    },
+    "artifacts": {
+      "architecture_deliverables": [
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTIVE_BOOTSTRAP.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_ARCHITECTURE.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_REGISTRY_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/CONTINUITY_ENGINE_SPEC.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/RUNTIME_LAYER_DIAGRAM.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/MIGRATION_PLAN.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/BOOTSTRAP_VALIDATION.md",
+        "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTION_READINESS.md"
+      ],
+      "minimal_first_launch": [
+        "SUPRA_STATE.json",
+        "RUNTIME_STATUS.json",
+        "runtime_diagnostics.json",
+        "BOOT_REPORT.json",
+        "BUILD_STATUS.md",
+        "CONTINUITY.md",
+        "NEXT_MISSION.md",
+        "MISSION_QUEUE.json"
+      ]
+    },
+    "forbidden_patterns": {
+      "runtime_domain_layers": [
+        "FileManager.default.fileExists(atPath:)",
+        "URL(fileURLWithPath:)",
+        "fm.contents(atPath:)",
+        "process.waitUntilExit()"
+      ]
+    },
+    "next_gate": {
+      "factory": "FACTORY_10_EXECUTIVE",
+      "decision": "CONTINUE | ADAPT | REPLAN | HALT",
+      "action": "Authorize MIGRATION_PLAN step 2 (BUILD_STATUS migration)"
+    },
+    "phase_1_certified": {
+      "artifact": "RUNTIME_STATUS",
+      "report": "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/ARTIFACT_RUNTIME_STATUS_REPORT.md",
+      "date": "2026-07-31",
+      "gates": {
+        "technical": "PASS",
+        "architecture": "PASS",
+        "performance": "PASS",
+        "product": "PASS"
+      }
+    }
+  },
+  "active_migration": "BUILD_STATUS",
+  "phase_2_build_status": {
+    "status": "IMPLEMENTED",
+    "files_migrated": [
+      "SUPRA/ContinuityManager.swift (loadFreezeTimestamp BUILD_STATUS.md read)",
+      "SUPRA/ArtifactReader.swift (buildURL BUILD_STATUS.md read)",
+      "SUPRA/ArtifactReader.swift (availableTextStatus + textStatus \u2192 buildStatusForSnapshot via FileSystemPort)"
+    ],
+    "pattern": "FileSystemPort.readString(StorageLocation(directory: .continuity, filename: BUILD_STATUS.md))",
+    "phase_1_certified": true,
+    "next_phase": "Phase 3 NEXT_MISSION migration"
+  }
+}
