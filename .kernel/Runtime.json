@@ -140,7 +140,7 @@
       }
     }
   },
-  "active_migration": "NEXT_MISSION",
+  "active_migration": "NONE \u2014 Foundation Era locked",
   "phase_2_build_status": {
     "status": "IMPLEMENTED",
     "files_migrated": [
@@ -161,5 +161,19 @@
     "pattern": "FileSystemPort.readString(StorageLocation(directory: .continuity, filename: NEXT_MISSION.md))",
     "phase_2_certified": true,
     "next_phase": "Phase 4 CONTINUITY migration"
+  },
+  "phase_4_continuity": {
+    "status": "IMPLEMENTED",
+    "files_migrated": [
+      "SUPRA/ContinuityManager.swift (loadContinuityMarkdown)",
+      "SUPRA/ContinuityManager.swift (loadFreezeTimestamp)",
+      "SUPRA/ExecutiveBootManager.swift (searchContinuityPack existence check)",
+      "SUPRA/ExecutiveBootManager.swift (completeBoot read)",
+      "SUPRA/ExecutiveBootManager.swift (resumeSession read)"
+    ],
+    "pattern": "FileSystemPort.readString(StorageLocation(directory: .continuity, filename: CONTINUITY.md))",
+    "remaining_direct_fs_access": "NONE \u2014 all CONTINUITY.md access via FileSystemPort",
+    "phase_3_certified": true,
+    "foundation_era": "LOCKED"
   }
 }
