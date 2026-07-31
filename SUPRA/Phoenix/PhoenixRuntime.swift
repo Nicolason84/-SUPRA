@@ -69,6 +69,7 @@ public final class PhoenixRuntime: ObservableObject {
         // Phase 1: Register all engines with the runtime core
         bootProgress = 0.1
         bootMessage = "Registering engines..."
+        BootTrace.mark("PHOENIX_REGISTER_ENGINES_BEGIN")
         runtimeCore.registerEngine(visionEngine)
         runtimeCore.registerEngine(presenceEngine)
         runtimeCore.registerEngine(contextEngine)
@@ -86,31 +87,41 @@ public final class PhoenixRuntime: ObservableObject {
         // First operational capability built upon certified Runtime
         missionExecutor.integrate(with: self)
         executionStrategy.integrate(with: self)
+        BootTrace.mark("PHOENIX_REGISTER_ENGINES_END")
 
         // Phase 2: Boot the runtime core
         bootProgress = 0.2
         bootMessage = "Booting Executive Runtime Core..."
-        await runtimeCore.boot()
+        await BootTrace.measure("PHOENIX_RUNTIME_CORE_BOOT") {
+            await runtimeCore.boot()
+        }
 
         // Phase 3: Start snapshot publishing pipeline
         bootProgress = 0.5
         bootMessage = "Starting snapshot pipeline..."
+        BootTrace.mark("PHOENIX_SNAPSHOT_PIPELINE_BEGIN")
         startSnapshotPipeline()
+        BootTrace.mark("PHOENIX_SNAPSHOT_PIPELINE_END")
 
         // Phase 4: Verify all engines are active
         bootProgress = 0.7
         bootMessage = "Verifying engine health..."
+        BootTrace.mark("PHOENIX_HEALTH_CHECK_BEGIN")
         await runtimeCore.performHealthCheck()
+        BootTrace.mark("PHOENIX_HEALTH_CHECK_END")
 
         // Phase 5: First snapshot
         bootProgress = 0.9
         bootMessage = "Publishing initial snapshot..."
+        BootTrace.mark("PHOENIX_FIRST_SNAPSHOT_BEGIN")
         publishSnapshot()
+        BootTrace.mark("PHOENIX_FIRST_SNAPSHOT_END")
 
         // Phase 6: Complete
         bootProgress = 1.0
         bootMessage = "SUPRA est vivant."
         isBooted = true
+        BootTrace.mark("PHOENIX_BOOT_DONE")
 
         eventBus.emit(.runtimeActive, source: "PhoenixRuntime", detail: "PROJECT PHOENIX — Executive Runtime is alive")
 

@@ -7,6 +7,12 @@ struct SUPRAOSProductRootView: View {
     @State private var bootPhase: BootUIState = .idle
     @State private var showCockpit = false
 
+    // Startup Timeline: the root view is instantiated by WindowGroup when the
+    // window is created — best proxy for the WINDOW_CREATED stage.
+    init() {
+        BootTrace.mark("WINDOW_CREATED")
+    }
+
     enum BootUIState {
         case idle
         case booting

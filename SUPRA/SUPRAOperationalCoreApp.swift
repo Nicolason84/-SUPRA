@@ -2,10 +2,23 @@ import SwiftUI
 
 // MARK: - Boot Trace Instrumentation
 // Structured, captureable startup markers (stdout) — Runtime Hang Investigation.
+// Extended for Startup Timeline profiling: measure() logs BEGIN/END + duration.
 enum BootTrace {
     static func mark(_ stage: String) {
         let ts = String(format: "%.3f", Date().timeIntervalSinceReferenceDate)
         print("[BOOT] \(stage) t=\(ts)")
+        fflush(stdout)
+    }
+
+    static func measure(_ label: String, _ block: () async throws -> Void) async rethrows {
+        let t0 = Date()
+        let ts0 = String(format: "%.3f", t0.timeIntervalSinceReferenceDate)
+        print("[BOOT] \(label)_BEGIN t=\(ts0)")
+        fflush(stdout)
+        try await block()
+        let dt = (Date().timeIntervalSince(t0) * 1000)
+        let ts1 = String(format: "%.3f", Date().timeIntervalSinceReferenceDate)
+        print("[BOOT] \(label)_END t=\(ts1) duration=\(String(format: "%.1f", dt)) ms")
         fflush(stdout)
     }
 }

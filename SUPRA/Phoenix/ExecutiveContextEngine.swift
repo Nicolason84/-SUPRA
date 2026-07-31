@@ -69,7 +69,9 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         contextStartTime = Date()
 
         // Scan initial context
+        BootTrace.mark("ENGINE_CONTEXT_SCAN_BEGIN")
         await scanContext()
+        BootTrace.mark("ENGINE_CONTEXT_SCAN_END")
 
         // Start context refresh timer
         contextTimer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { [weak self] _ in

@@ -125,7 +125,9 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         eventBus.emit(.twinSyncing, source: engineID, detail: "Digital Twin sync started")
 
         // Initial sync
+        BootTrace.mark("ENGINE_TWIN_SYNC_BEGIN")
         await performSync()
+        BootTrace.mark("ENGINE_TWIN_SYNC_END")
 
         // Start periodic sync
         syncTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in

@@ -327,7 +327,9 @@ public final class ExecutiveRuntimeCore: ObservableObject {
             do {
                 engineReports[id]?.status = .initializing
                 engineReports[id]?.message = "Initializing..."
-                try await engine.boot()
+                try await BootTrace.measure("ENGINE_\(id) (\(engine.engineName))", {
+                    try await engine.boot()
+                })
                 engineReports[id]?.status = .active
                 engineReports[id]?.message = "Engine operational"
                 engineReports[id]?.uptime = 0
