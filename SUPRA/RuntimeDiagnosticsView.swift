@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RuntimeDiagnosticsView: View {
     @StateObject private var manager = ContinuityManager.shared
-    @StateObject private var bootManager = ExecutiveBootManager.shared
+    @EnvironmentObject private var bootManager: ExecutiveBootManager
     @StateObject private var logger = SUPRARuntimeLogger.shared
     @State private var selectedLogFilter: LogFilter = .all
     @State private var expandedArtifact: UUID?

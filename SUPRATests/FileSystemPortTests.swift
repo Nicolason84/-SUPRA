@@ -50,9 +50,10 @@ final class FileSystemPortTests: XCTestCase {
     }
 
     func testAllCanonicalDirectoriesAreDeclared() {
-        XCTAssertEqual(StorageDirectory.allCases.count, 8)
+        let canonical = StorageDirectory.allCases.filter { $0 != .root }
+        XCTAssertEqual(canonical.count, 8)
         let expected: Set<String> = ["State", "Runtime", "Artifacts", "Continuity", "Snapshots", "Logs", "Cache", "Missions"]
-        XCTAssertEqual(Set(StorageDirectory.allCases.map(\.directoryName)), expected)
+        XCTAssertEqual(Set(canonical.map(\.directoryName)), expected)
     }
 
     // MARK: Directories

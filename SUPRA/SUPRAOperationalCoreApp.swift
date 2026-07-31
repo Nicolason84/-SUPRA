@@ -30,7 +30,6 @@ struct SUPRAOperationalCoreApp: App {
     @StateObject private var state = SUPRACommandCenterState.shared
     @StateObject private var governor = SUPRAResourceGovernor.shared
     @StateObject private var snapshotStore = CAnnoNicoSnapshotStore.shared
-    @StateObject private var bootManager = ExecutiveBootManager.shared
 
     @State private var showSettings = false
 
@@ -49,6 +48,7 @@ struct SUPRAOperationalCoreApp: App {
                 .environmentObject(compositionRoot.runtimeMonitor)
                 .environmentObject(compositionRoot.eventBus)
                 .environmentObject(compositionRoot.controlTowerState)
+                .environmentObject(compositionRoot.executiveBootManager)
                 .onAppear {
                     BootTrace.mark("ONAPPEAR_BEGIN")
                     nucleo.start()

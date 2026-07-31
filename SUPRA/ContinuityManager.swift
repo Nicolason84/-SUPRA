@@ -94,15 +94,15 @@ final class ContinuityManager: ObservableObject {
     @Published var isLoading = false
 
     private let fileSystem: FileSystemPort
-    private let fm = FileManager.default
     private let decoder = JSONDecoder()
 
     private var projectRoot: String {
         SUPRAEnvironmentResolver.shared.projectRoot
     }
 
-    init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
-        self.fileSystem = fileSystem
+    init(fileSystem: FileSystemPort? = nil) {
+        self.fileSystem = fileSystem ?? DefaultFileSystemPort(rootURL: URL(fileURLWithPath: SUPRAEnvironmentResolver.shared.projectRoot))
+        print("[BOOT 06] ContinuityManager.init() — fileSystem.rootURL: \(self.fileSystem.rootURL.path), projectRoot: \(SUPRAEnvironmentResolver.shared.projectRoot), isResolved: \(SUPRAEnvironmentResolver.shared.isResolved)")
     }
 
     func load() {
@@ -122,7 +122,9 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadVersionJSON() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/version.json") else { return }
+        let versionLocation = StorageLocation(directory: .state, filename: "version.json")
+        guard fileSystem.exists(versionLocation) else { return }
+        guard let data = try? fileSystem.read(versionLocation) else { return }
         guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return }
         if let sv = obj["supra_state_version"] as? String {
             state.runtimeVersion = sv
@@ -131,8 +133,13 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadSupraState() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/SUPRA_STATE.json") else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: SUPRA_STATE.json not found at \(projectRoot)")
+        let stateLocation = StorageLocation(directory: .state, filename: "SUPRA_STATE.json")
+        guard fileSystem.exists(stateLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: SUPRA_STATE.json not found via FileSystemPort")
+            return
+        }
+        guard let data = try? fileSystem.read(stateLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: SUPRA_STATE.json read error via FileSystemPort")
             return
         }
         guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
@@ -162,8 +169,13 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadRuntimeStatus() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/RUNTIME_STATUS.json") else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: RUNTIME_STATUS.json not found at \(projectRoot)")
+        let runtimeStatusLocation = StorageLocation(directory: .state, filename: "RUNTIME_STATUS.json")
+        guard fileSystem.exists(runtimeStatusLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: RUNTIME_STATUS.json not found via FileSystemPort")
+            return
+        }
+        guard let data = try? fileSystem.read(runtimeStatusLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: RUNTIME_STATUS.json read error via FileSystemPort")
             return
         }
         guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
@@ -182,8 +194,13 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadRuntimeDiagnostics() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/runtime_diagnostics.json") else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: runtime_diagnostics.json not found at \(projectRoot)")
+        let diagnosticsLocation = StorageLocation(directory: .root, filename: "runtime_diagnostics.json")
+        guard fileSystem.exists(diagnosticsLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: runtime_diagnostics.json not found via FileSystemPort")
+            return
+        }
+        guard let data = try? fileSystem.read(diagnosticsLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: runtime_diagnostics.json read error via FileSystemPort")
             return
         }
         guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
@@ -217,21 +234,22 @@ final class ContinuityManager: ObservableObject {
     private func loadArtifactDiagnostics(obj: [String: Any]) {
         var artifacts: [ArtifactDiag] = []
 
-        let requiredPaths: [(String, String)] = [
-            ("LOT1", "\(projectRoot)/proofs/LOT1_INSTALLATION_PROOF.json"),
-            ("LOT2", "\(projectRoot)/proofs/LOT2_INSTALLATION_PROOF.json"),
-            ("LOT3", "\(projectRoot)/proofs/LOT3_INSTALLATION_PROOF.json"),
-            ("BUILD_STATUS", "\(projectRoot)/BUILD_STATUS.md"),
-            ("MANIFEST", "\(projectRoot)/MANIFEST.json"),
-            ("ESTATE", "\(projectRoot)/ESTATE_STATE.json"),
-            ("INDEX", "\(projectRoot)/INDEX.json"),
+        let requiredLocations: [(String, StorageLocation, String)] = [
+            ("LOT1", StorageLocation(directory: .root, subpath: "proofs", filename: "LOT1_INSTALLATION_PROOF.json"), "LOT1_INSTALLATION_PROOF.json"),
+            ("LOT2", StorageLocation(directory: .root, subpath: "proofs", filename: "LOT2_INSTALLATION_PROOF.json"), "LOT2_INSTALLATION_PROOF.json"),
+            ("LOT3", StorageLocation(directory: .root, subpath: "proofs", filename: "LOT3_INSTALLATION_PROOF.json"), "LOT3_INSTALLATION_PROOF.json"),
+            ("BUILD_STATUS", StorageLocation(directory: .root, filename: "BUILD_STATUS.md"), "BUILD_STATUS.md"),
+            ("MANIFEST", StorageLocation(directory: .root, filename: "MANIFEST.json"), "MANIFEST.json"),
+            ("ESTATE", StorageLocation(directory: .root, filename: "ESTATE_STATE.json"), "ESTATE_STATE.json"),
+            ("INDEX", StorageLocation(directory: .root, filename: "INDEX.json"), "INDEX.json"),
         ]
 
-        for (name, path) in requiredPaths {
-            let exists = fm.fileExists(atPath: path)
+        for (name, location, filename) in requiredLocations {
+            let path = "\(projectRoot)/\(location.relativePath)"
+            let exists = fileSystem.exists(location)
             let readable: Bool
             if exists {
-                readable = fm.isReadableFile(atPath: path)
+                readable = (try? fileSystem.read(location)) != nil
             } else {
                 readable = false
             }
@@ -243,18 +261,18 @@ final class ContinuityManager: ObservableObject {
             var modificationDate: Date?
 
             if exists {
-                if let attrs = try? fm.attributesOfItem(atPath: path) {
-                    sizeBytes = attrs[.size] as? Int64
-                    modificationDate = attrs[.modificationDate] as? Date
+                if let attrs = try? fileSystem.attributes(of: location) {
+                    sizeBytes = attrs.sizeBytes
+                    modificationDate = attrs.modificationDate
                 } else {
                     SUPRARuntimeLogger.shared.log(.error, "Continuity: Cannot read attributes of \(path)")
                 }
             }
 
             if readable {
-                if let data = fm.contents(atPath: path) {
+                if let data = try? fileSystem.read(location) {
                     hash = data.sha256Hex
-                    if path.hasSuffix(".json") {
+                    if filename.hasSuffix(".json") {
                         do {
                             _ = try JSONSerialization.jsonObject(with: data)
                             decoded = true
@@ -268,7 +286,7 @@ final class ContinuityManager: ObservableObject {
                         validated = true
                     }
                 } else {
-                    failureReason = "File exists but contents(atPath:) returned nil"
+                    failureReason = "File exists but read returned nil"
                     SUPRARuntimeLogger.shared.log(.error, "Continuity: \(name) at \(path) exists but cannot be read")
                 }
             } else if exists {

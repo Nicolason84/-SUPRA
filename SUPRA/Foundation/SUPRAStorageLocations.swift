@@ -37,7 +37,15 @@ public enum StorageDirectory: String, CaseIterable, Sendable, Identifiable {
     public var id: String { rawValue }
 
     /// Directory name on disk (== `rawValue`).
-    public var directoryName: String { rawValue }
+    /// Returns empty string for `.root` so `url(relativeTo:)` resolves to `root/filename`.
+    public var directoryName: String {
+        self == .root ? "" : rawValue
+    }
+
+    /// Special case for files located directly at the storage root.
+    /// When used as the `directory` of a `StorageLocation`, the file is resolved
+    /// directly under `rootURL` without any subdirectory component.
+    case root
 }
 
 /// A typed, canonical location inside the SUPRA storage root.
@@ -70,6 +78,9 @@ public struct StorageLocation: Hashable, Sendable {
 
     /// Resolved URL relative to a given root, without touching the file system.
     public func url(relativeTo root: URL) -> URL {
+        if directory == .root {
+            return root.appendingPathComponent(filename, isDirectory: false)
+        }
         var url = root.appendingPathComponent(directory.directoryName, isDirectory: true)
         if let subpath, !subpath.isEmpty {
             url = url.appendingPathComponent(subpath, isDirectory: true)

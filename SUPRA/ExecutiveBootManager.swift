@@ -121,6 +121,7 @@ final class ExecutiveBootManager: ObservableObject {
 
     init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
         self.fileSystem = fileSystem
+        print("[BOOT 04] ExecutiveBootManager.init() — fileSystem.rootURL: \(fileSystem.rootURL.path), projectRoot: \(projectRoot), isResolved: \(SUPRAEnvironmentResolver.shared.isResolved)")
     }
 
     private let continuityFiles: [(String, String)] = [
@@ -150,19 +151,24 @@ final class ExecutiveBootManager: ObservableObject {
     }
 
     private func searchContinuityPack() {
+        print("[BOOT 08] searchContinuityPack() START — projectRoot: \(projectRoot), isResolved: \(SUPRAEnvironmentResolver.shared.isResolved)")
         updateStep(.executiveBoot, .running, "Scanning for continuity pack...")
 
         var foundCount = 0
         var missingFiles: [String] = []
 
         for (name, _) in continuityFiles {
-            if fm.fileExists(atPath: "\(projectRoot)/\(name)") {
+            let path = "\(projectRoot)/\(name)"
+            let exists = fm.fileExists(atPath: path)
+            print("[BOOT 08] Checking: \(path) — exists: \(exists)")
+            if exists {
                 foundCount += 1
             } else {
                 missingFiles.append(name)
             }
         }
 
+        print("[BOOT 08] searchContinuityPack() END — foundCount: \(foundCount)/\(continuityFiles.count)")
         continuityPackExists = foundCount == continuityFiles.count
 
         if continuityPackExists {

@@ -180,7 +180,7 @@ public struct DefaultFileSystemPort: FileSystemPort, @unchecked Sendable {
     }
 
     public func createAllDirectories() throws {
-        for directory in StorageDirectory.allCases {
+        for directory in StorageDirectory.allCases where directory != .root {
             try createDirectory(directory)
         }
     }

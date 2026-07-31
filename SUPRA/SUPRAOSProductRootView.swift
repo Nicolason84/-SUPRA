@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - Product Root View
 
 struct SUPRAOSProductRootView: View {
-    @StateObject private var bootManager = ExecutiveBootManager.shared
+    @EnvironmentObject private var bootManager: ExecutiveBootManager
     @State private var bootPhase: BootUIState = .idle
     @State private var showCockpit = false
 

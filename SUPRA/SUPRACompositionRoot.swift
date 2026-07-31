@@ -5,6 +5,16 @@ import Combine
 final class SUPRACompositionRoot: ObservableObject {
     static let shared = SUPRACompositionRoot()
 
+    // Phase 0: Environment & Infrastructure
+    let fileSystemPort: FileSystemPort
+    let projectRoot: String
+
+    // Phase 1: Core Services (injected with FileSystemPort)
+    let continuityManager: ContinuityManager
+    let artifactRegistry: ArtifactRegistry
+    let executiveBootManager: ExecutiveBootManager
+
+    // Phase 2: Existing Runtime Services
     let runtimeDataService: RuntimeDataService
     let missionStore: MissionStore
     let decisionStore: DecisionStore
@@ -23,11 +33,39 @@ final class SUPRACompositionRoot: ObservableObject {
     private var hasActivatedRuntime = false
 
     private init() {
-        let creationEvent = BootstrapActivationEvent(
-            state: .creatingServices,
-            timestamp: Date(),
-            detail: "Bootstrap service creation started"
-        )
+        // ============================================================
+        // PHASE 0: ENVIRONMENT BOOTSTRAP
+        // Must run BEFORE any service that depends on projectRoot
+        // ============================================================
+        BootTrace.mark("BOOTSTRAP_BEGIN")
+        SUPRAEnvironmentResolver.shared.resolve()
+
+        guard SUPRAEnvironmentResolver.shared.isResolved else {
+            fatalError("Environment resolution failed — workspace not authorized")
+        }
+
+        let root = SUPRAEnvironmentResolver.shared.projectRoot
+        guard !root.isEmpty else {
+            fatalError("projectRoot is empty after resolution")
+        }
+
+        BootTrace.mark("RESOLVE_COMPLETE")
+        projectRoot = root
+        fileSystemPort = DefaultFileSystemPort(rootURL: URL(fileURLWithPath: root))
+        try? fileSystemPort.createAllDirectories()
+        BootTrace.mark("FILESYSTEM_READY")
+
+        // ============================================================
+        // PHASE 1: CORE SERVICES (injected with FileSystemPort)
+        // ============================================================
+        continuityManager = ContinuityManager(fileSystem: fileSystemPort)
+        artifactRegistry = LiveArtifactRegistry(fileSystem: fileSystemPort)
+        executiveBootManager = ExecutiveBootManager(fileSystem: fileSystemPort)
+        BootTrace.mark("CORE_SERVICES_READY")
+
+        // ============================================================
+        // PHASE 2: EXISTING RUNTIME SERVICES (unchanged wiring)
+        // ============================================================
         let runtimeDataService = RuntimeDataService.shared
         let runtimeMonitor = RuntimeMonitor(dataService: runtimeDataService)
         let multiMemoryStore = MultiMemoryStore.shared
@@ -53,6 +91,12 @@ final class SUPRACompositionRoot: ObservableObject {
         self.missionOpportunityEngine = missionOpportunityEngine
         self.missionEvolutionEngine = missionEvolutionEngine
 
+        // Bootstrap tracking
+        let creationEvent = BootstrapActivationEvent(
+            state: .creatingServices,
+            timestamp: Date(),
+            detail: "Bootstrap service creation started"
+        )
         self.bootstrapEvents = [creationEvent]
         self.bootstrapState = .creatingServices
         record(.bindingDependencies, detail: "Binding bootstrap dependencies")

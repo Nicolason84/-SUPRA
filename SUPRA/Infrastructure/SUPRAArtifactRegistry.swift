@@ -209,7 +209,7 @@ public final class LiveArtifactRegistry: ArtifactRegistry {
 
     private let fileSystem: FileSystemPort
 
-    private init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
+    init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
         self.fileSystem = fileSystem
     }
 

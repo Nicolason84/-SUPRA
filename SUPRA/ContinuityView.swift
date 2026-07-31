@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContinuityView: View {
     @StateObject private var manager = ContinuityManager.shared
-    @StateObject private var bootManager = ExecutiveBootManager.shared
+    @EnvironmentObject private var bootManager: ExecutiveBootManager
 
     var body: some View {
         NavigationStack {
