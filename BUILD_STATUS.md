@@ -1,6 +1,6 @@
 # BUILD_STATUS.md
 
-## État du Build — Certification Sprint 0
+## État du Build — Certification Sprint 0 + Fix runtime hang
 
 | Field | Value |
 |-------|-------|
@@ -8,10 +8,10 @@
 | Date | 2026-07-31 |
 | Branche | `executive-runtime-v2` |
 | Schéma | SUPRA (macOS) |
-| Commande | `xcodebuild -scheme SUPRA clean build` |
-| Log | `/tmp/cert_build.txt` |
+| Commande | `xcodebuild -scheme SUPRA -configuration Debug build` (post-fix) |
+| Log | `/tmp/hang_build3.txt` (post-fix) |
 
-## Résultats
+## Résultats (post-fix)
 
 | Métrique | Résultat |
 |----------|----------|

@@ -120,10 +120,10 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         detectSystemLoad()
 
         // Detect network
-        detectNetwork()
+        await detectNetwork()
 
         // Detect services
-        detectServices()
+        await detectServices()
 
         // Detect dashboard data
         await detectDashboard()
@@ -196,23 +196,46 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         memoryPressure = processInfo.isLowPowerModeEnabled ? "low_power" : "normal"
     }
 
-    private func detectNetwork() {
-        // Simple reachability check
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/sbin/ping")
-        process.arguments = ["-c", "1", "-t", "2", "8.8.8.8"]
+    private func detectNetwork() async {
+        // Simple reachability check — executed OFF the main thread with a hard
+        // timeout. Runtime Hang Investigation: `ping` may block indefinitely
+        // (ICMP/sandbox), and a synchronous `waitUntilExit()` on the main thread
+        // froze the entire app during boot. The network status is now resolved
+        // asynchronously and is always bounded in time.
+        let result = await Task.detached(priority: .utility) { () -> Bool in
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/sbin/ping")
+            process.arguments = ["-c", "1", "-t", "2", "8.8.8.8"]
 
-        let output = Pipe()
-        process.standardOutput = output
-        process.standardError = output
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
 
-        do {
-            try process.run()
-            process.waitUntilExit()
-            networkStatus = process.terminationStatus == 0 ? "connected" : "disconnected"
-        } catch {
-            networkStatus = "unknown"
-        }
+            do {
+                try process.run()
+            } catch {
+                return false
+            }
+
+            // Bounded wait (max 4s): terminate the probe if ping hangs.
+            let deadline = ContinuousClock.now + .seconds(4)
+            while process.isRunning && ContinuousClock.now < deadline {
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            if process.isRunning {
+                process.terminate()
+                // Grace window so terminationStatus settles before reading it.
+                var graceTicks = 0
+                while process.isRunning && graceTicks < 20 {
+                    try? await Task.sleep(for: .milliseconds(50))
+                    graceTicks += 1
+                }
+            }
+
+            return process.terminationStatus == 0
+        }.value
+
+        networkStatus = result ? "connected" : "disconnected"
     }
 
     private func detectDashboard() async {
@@ -285,17 +308,23 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         )
     }
 
-    private func detectServices() {
+    private func detectServices() async {
+        // Service probes run OFF the main thread (bounded async helper).
+        // Runtime Hang Investigation: synchronous subprocess waits on the main
+        // thread freeze the UI during context refreshes.
+        async let gitProbe = probeService("which git 2>/dev/null && git --version 2>/dev/null | head -1 || echo \"not found\"")
+        async let xcodeProbe = probeService("xcode-select -p 2>/dev/null || echo \"not found\"")
+        async let ollamaProbe = probeService("which ollama 2>/dev/null || echo \"not found\"")
+
+        let (gitCheck, xcodeCheck, ollamaCheck) = await (gitProbe, xcodeProbe, ollamaProbe)
+
         // Detect available git
-        let gitCheck = shell("which git 2>/dev/null && git --version 2>/dev/null | head -1 || echo \"not found\"")
         connectedServices["git"] = !gitCheck.contains("not found") && !gitCheck.isEmpty
 
         // Detect Xcode
-        let xcodeCheck = shell("xcode-select -p 2>/dev/null || echo \"not found\"")
         connectedServices["xcode"] = !xcodeCheck.contains("not found") && !xcodeCheck.isEmpty
 
         // Detect ollama
-        let ollamaCheck = shell("which ollama 2>/dev/null || echo \"not found\"")
         connectedServices["ollama"] = !ollamaCheck.contains("not found") && !ollamaCheck.isEmpty
     }
 
@@ -312,23 +341,38 @@ public final class ExecutiveContextEngine: ObservableObject, ExecutiveEngine {
         currentDecision = decisionID
     }
 
-    // MARK: - Shell Helper
+    // MARK: - Shell Probe Helper
 
-    private func shell(_ command: String) -> String {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        process.arguments = ["-c", command]
+    /// Runs a shell probe OFF the main thread with a hard time bound.
+    /// Never blocks the UI, even if a probed command misbehaves.
+    private func probeService(_ command: String) async -> String {
+        await Task.detached(priority: .utility) { () -> String in
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+            process.arguments = ["-c", command]
 
-        let output = Pipe()
-        process.standardOutput = output
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
 
-        do {
-            try process.run()
-            process.waitUntilExit()
+            do {
+                try process.run()
+            } catch {
+                return ""
+            }
+
+            // Bounded wait (max 3s) — terminate a hung probe.
+            let deadline = ContinuousClock.now + .seconds(3)
+            while process.isRunning && ContinuousClock.now < deadline {
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            if process.isRunning {
+                process.terminate()
+            }
+
             let data = output.fileHandleForReading.readDataToEndOfFile()
-            return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        } catch {
-            return ""
-        }
+            return String(data: data, encoding: .utf8)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        }.value
     }
 }

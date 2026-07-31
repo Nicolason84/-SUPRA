@@ -44,6 +44,7 @@ struct SUPRAOSProductRootView: View {
         }
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: showCockpit)
         .onAppear {
+            BootTrace.mark("ROOT_VIEW_READY")
             // Auto-skip boot when continuity is restored
             if bootManager.bootState == .restored {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -284,6 +285,7 @@ struct ExecutiveBootView: View {
             }
         }
         .onAppear {
+            BootTrace.mark("BOOT_VIEW_APPEARED")
             withAnimation(.easeOut(duration: 0.6).delay(0.2)) {
                 showContent = true
             }

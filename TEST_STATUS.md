@@ -1,6 +1,6 @@
 # TEST_STATUS.md
 
-## État des Tests — Certification Sprint 0
+## État des Tests — Certification Sprint 0 + Fix runtime hang
 
 | Field | Value |
 |-------|-------|
@@ -8,14 +8,14 @@
 | Date | 2026-07-31 |
 | Branche | `executive-runtime-v2` |
 | Commande | `xcodebuild -scheme SUPRA test` |
-| Log | `/tmp/cert_test.txt` |
+| Log | `/tmp/hang_test2.txt` (post-fix) |
 
-## Résultats
+## Résultats (post-fix)
 
 | Métrique | Résultat |
 |----------|----------|
-| Tests exécutés | **139** |
-| Tests passés | **139** |
+| Tests exécutés | **140** |
+| Tests passés | **140** |
 | Tests échoués | **0** |
 | Erreurs | **0** |
 | Avertissements Swift | **0** |
@@ -39,16 +39,18 @@
 | ExecutiveMissionControlTests | 2 |
 | BootstrapArchitectureTests | 2 |
 | SUPRARuntimeLoopTests | 1 |
-| SUPRA_SmokeTests | 1 |
+| SUPRA_SmokeTests | 2 |
 
 ## Comparaison avec la baseline
 
 | Référence | Tests | Échecs |
 |-----------|------:|-------:|
 | Manifest baseline BUILD_CERTIFIED_V1 | 139 | 0 |
-| Log test baseline (capture) | 134 | 0 |
-| **Sprint 0 (cette exécution)** | **139** | **0** |
+| Sprint 0 (avant fix) | 139 | 0 |
+| **Post-fix (cette exécution)** | **140** | **0** |
 
-Correspondance exacte avec le manifest baseline (139/139). Variance de capture (134/139) = comportement dynamique préexistant des tests conditionnels ; aucune capture n'a jamais enregistré d'échec. **Aucune régression.**
+Le +1 provient du nouveau test de non-régression `SUPRA_SmokeTests.testBootPipelineCompletesWithoutHang`
+(0.326 s), ajouté pour verrouiller le fix du hang au démarrage. **Aucune régression.**
+Aucun test n'a échoué dans aucune capture (baseline, Sprint 0, post-fix).
 
 **STATUS = GREEN**

@@ -166,7 +166,9 @@ public final class VisionEngine: ObservableObject, ExecutiveEngine {
 
     public func observeNow() {
         scanFileChanges()
-        scanGitChanges()
+        Task { @MainActor [weak self] in
+            await self?.scanGitChanges()
+        }
     }
 
     // MARK: - File Watcher
@@ -225,31 +227,36 @@ public final class VisionEngine: ObservableObject, ExecutiveEngine {
         gitWatcherTimer?.invalidate()
         gitWatcherTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
-                self?.scanGitChanges()
+                await self?.scanGitChanges()
             }
         }
     }
 
-    private func scanGitChanges() {
+    private func scanGitChanges() async {
         let projectDir = FileManager.default.currentDirectoryPath
 
+        // Git probes run OFF the main thread (bounded async helper).
+        // Runtime Hang Investigation: synchronous subprocess waits on the main
+        // thread freeze the UI on every watcher tick.
+        async let branchProbe = probeService("cd \"\(projectDir)\" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo \"unknown\"")
+        async let logProbe = probeService("cd \"\(projectDir)\" && git log --oneline -5 2>/dev/null || echo \"\"")
+        async let statusProbe = probeService("cd \"\(projectDir)\" && git status --porcelain 2>/dev/null || echo \"\"")
+
+        let (branch, log, status) = await (branchProbe, logProbe, statusProbe)
+
         // Check branch
-        let branch = shell("cd \"\(projectDir)\" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo \"unknown\"")
         if !branch.isEmpty {
             let branches = branch.split(separator: "\n").map(String.init)
             activeBranches = branches
         }
 
         // Check recent commits
-        let log = shell("cd \"\(projectDir)\" && git log --oneline -5 2>/dev/null || echo \"\"")
         if !log.isEmpty {
             let commits = log.split(separator: "\n").map(String.init)
             recentCommits = commits
         }
 
         // Check for changes
-        let status = shell("cd \"\(projectDir)\" && git status --porcelain 2>/dev/null || echo \"\"")
-
         if status != lastGitState {
             let changedCount = status.split(separator: "\n").count
             if changedCount > 0 {
@@ -295,23 +302,38 @@ public final class VisionEngine: ObservableObject, ExecutiveEngine {
         eventBus.emit(.visionHealthChanged, source: engineID, detail: "Project health: \(projectHealth)")
     }
 
-    // MARK: - Shell Helper
+    // MARK: - Shell Probe Helper
 
-    private func shell(_ command: String) -> String {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        process.arguments = ["-c", command]
+    /// Runs a shell probe OFF the main thread with a hard time bound.
+    /// Never blocks the UI, even if a probed command misbehaves.
+    private func probeService(_ command: String) async -> String {
+        await Task.detached(priority: .utility) { () -> String in
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+            process.arguments = ["-c", command]
 
-        let output = Pipe()
-        process.standardOutput = output
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
 
-        do {
-            try process.run()
-            process.waitUntilExit()
+            do {
+                try process.run()
+            } catch {
+                return ""
+            }
+
+            // Bounded wait (max 3s) — terminate a hung probe.
+            let deadline = ContinuousClock.now + .seconds(3)
+            while process.isRunning && ContinuousClock.now < deadline {
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            if process.isRunning {
+                process.terminate()
+            }
+
             let data = output.fileHandleForReading.readDataToEndOfFile()
-            return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        } catch {
-            return ""
-        }
+            return String(data: data, encoding: .utf8)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        }.value
     }
 }

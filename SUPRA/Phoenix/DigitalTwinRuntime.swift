@@ -197,8 +197,19 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
     }
 
     private func syncServices() async {
+        // Run all service probes OFF the main thread, in parallel.
+        // Runtime Hang Investigation: the previous implementation spawned
+        // synchronous subprocesses on the main thread every sync (boot + every
+        // 10s), freezing the UI. Probes are now async, bounded, and concurrent.
+        async let gitProbe = probeService("git --version 2>/dev/null || echo \"not found\"")
+        async let xcodeProbe = probeService("xcode-select -p 2>/dev/null || echo \"not found\"")
+        async let ollamaProbe = probeService("ollama --version 2>/dev/null || echo \"not found\"")
+        async let openCodeProbe = probeService("opencode --version 2>/dev/null || echo \"not found\"")
+
+        let (gitVersion, xcodePath, ollamaVersion, openCodeVersion) =
+            await (gitProbe, xcodeProbe, ollamaProbe, openCodeProbe)
+
         // Git
-        let gitVersion = shell("git --version 2>/dev/null || echo \"not found\"")
         serviceMirror["git"] = ServiceTwin(
             name: "Git",
             isConnected: !gitVersion.contains("not found"),
@@ -208,7 +219,6 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         )
 
         // Xcode
-        let xcodePath = shell("xcode-select -p 2>/dev/null || echo \"not found\"")
         serviceMirror["xcode"] = ServiceTwin(
             name: "Xcode",
             isConnected: !xcodePath.contains("not found"),
@@ -218,7 +228,6 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         )
 
         // Ollama
-        let ollamaVersion = shell("ollama --version 2>/dev/null || echo \"not found\"")
         serviceMirror["ollama"] = ServiceTwin(
             name: "Ollama",
             isConnected: !ollamaVersion.contains("not found"),
@@ -228,7 +237,6 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         )
 
         // OpenCode
-        let openCodeVersion = shell("opencode --version 2>/dev/null || echo \"not found\"")
         serviceMirror["opencode"] = ServiceTwin(
             name: "OpenCode",
             isConnected: !openCodeVersion.contains("not found"),
@@ -271,23 +279,38 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         }
     }
 
-    // MARK: - Shell Helper
+    // MARK: - Service Probe Helper
 
-    private func shell(_ command: String) -> String {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        process.arguments = ["-c", command]
+    /// Runs a shell probe OFF the main thread with a hard time bound.
+    /// Never blocks the UI, even if a probed command misbehaves.
+    private func probeService(_ command: String) async -> String {
+        await Task.detached(priority: .utility) { () -> String in
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+            process.arguments = ["-c", command]
 
-        let output = Pipe()
-        process.standardOutput = output
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
 
-        do {
-            try process.run()
-            process.waitUntilExit()
+            do {
+                try process.run()
+            } catch {
+                return ""
+            }
+
+            // Bounded wait (max 3s) — terminate a hung probe.
+            let deadline = ContinuousClock.now + .seconds(3)
+            while process.isRunning && ContinuousClock.now < deadline {
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            if process.isRunning {
+                process.terminate()
+            }
+
             let data = output.fileHandleForReading.readDataToEndOfFile()
-            return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        } catch {
-            return ""
-        }
+            return String(data: data, encoding: .utf8)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        }.value
     }
 }

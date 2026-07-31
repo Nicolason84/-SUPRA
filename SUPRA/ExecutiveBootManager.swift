@@ -134,6 +134,7 @@ final class ExecutiveBootManager: ObservableObject {
         bootError = nil
         divergence = DivergenceReport()
 
+        BootTrace.mark("EXEC_BOOT_START")
         updateStep(.executiveBoot, .running, "Initializing Executive Boot Manager...")
         SUPRARuntimeLogger.shared.log(.boot, "ExecutiveBoot: Boot sequence started")
 
@@ -160,10 +161,12 @@ final class ExecutiveBootManager: ObservableObject {
         continuityPackExists = foundCount == continuityFiles.count
 
         if continuityPackExists {
+            BootTrace.mark("CONTINUITY_PACK_FOUND")
             SUPRARuntimeLogger.shared.log(.boot, "ExecutiveBoot: Continuity pack found (\(foundCount)/\(continuityFiles.count) files)")
             updateStep(.executiveBoot, .pass, "Continuity pack found (\(foundCount)/\(continuityFiles.count))")
             executeRestorePipeline()
         } else {
+            BootTrace.mark("CONTINUITY_PACK_MISSING")
             SUPRARuntimeLogger.shared.log(.boot, "ExecutiveBoot: First boot — no continuity pack found")
             updateStep(.executiveBoot, .warning, "First boot — continuity pack incomplete (\(foundCount)/\(continuityFiles.count), missing: \(missingFiles.joined(separator: ", ")))")
             bootState = .firstBoot
@@ -392,6 +395,7 @@ final class ExecutiveBootManager: ObservableObject {
         }
 
         isBootComplete = true
+        BootTrace.mark("EXEC_BOOT_COMPLETE state=\(bootState.rawValue)")
         SUPRARuntimeLogger.shared.log(.boot, "ExecutiveBoot: Boot sequence complete — state: \(bootState.rawValue)")
     }
 
@@ -446,6 +450,7 @@ final class ExecutiveBootManager: ObservableObject {
     }
 
     private func readCurrentGitCommit() -> String {
+        BootTrace.mark("GIT_COMMIT_SPAWN_BEGIN")
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-c", "cd \"\(projectRoot)\" && git rev-parse --short HEAD 2>/dev/null"]
@@ -458,7 +463,9 @@ final class ExecutiveBootManager: ObservableObject {
             return "—"
         }
         process.waitUntilExit()
-        guard let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) else {
+        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+        BootTrace.mark("GIT_COMMIT_SPAWN_END")
+        guard let output else {
             SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: git commit output not readable as UTF-8")
             return "—"
         }
@@ -466,6 +473,7 @@ final class ExecutiveBootManager: ObservableObject {
     }
 
     private func readCurrentGitBranch() -> String {
+        BootTrace.mark("GIT_BRANCH_SPAWN_BEGIN")
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-c", "cd \"\(projectRoot)\" && git rev-parse --abbrev-ref HEAD 2>/dev/null"]
@@ -478,7 +486,9 @@ final class ExecutiveBootManager: ObservableObject {
             return "—"
         }
         process.waitUntilExit()
-        guard let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) else {
+        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)
+        BootTrace.mark("GIT_BRANCH_SPAWN_END")
+        guard let output else {
             SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: git branch output not readable as UTF-8")
             return "—"
         }

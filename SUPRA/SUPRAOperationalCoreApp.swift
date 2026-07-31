@@ -1,5 +1,15 @@
 import SwiftUI
 
+// MARK: - Boot Trace Instrumentation
+// Structured, captureable startup markers (stdout) — Runtime Hang Investigation.
+enum BootTrace {
+    static func mark(_ stage: String) {
+        let ts = String(format: "%.3f", Date().timeIntervalSinceReferenceDate)
+        print("[BOOT] \(stage) t=\(ts)")
+        fflush(stdout)
+    }
+}
+
 @main
 struct SUPRAOperationalCoreApp: App {
     @StateObject private var compositionRoot = SUPRACompositionRoot.shared
@@ -10,6 +20,10 @@ struct SUPRAOperationalCoreApp: App {
     @StateObject private var bootManager = ExecutiveBootManager.shared
 
     @State private var showSettings = false
+
+    init() {
+        BootTrace.mark("APP_START")
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -23,16 +37,24 @@ struct SUPRAOperationalCoreApp: App {
                 .environmentObject(compositionRoot.eventBus)
                 .environmentObject(compositionRoot.controlTowerState)
                 .onAppear {
+                    BootTrace.mark("ONAPPEAR_BEGIN")
                     nucleo.start()
+                    BootTrace.mark("NUCLEO_STARTED")
                     governor.startMonitoring()
+                    BootTrace.mark("GOVERNOR_STARTED")
                     compositionRoot.runtimeMonitor.start()
+                    BootTrace.mark("MONITOR_STARTED")
                     compositionRoot.controlTowerState.load()
+                    BootTrace.mark("TOWER_LOADED")
                     compositionRoot.loadRuntime()
+                    BootTrace.mark("RUNTIME_LOADED")
                     state.configure(
                         towerState: compositionRoot.controlTowerState,
                         monitor: compositionRoot.runtimeMonitor
                     )
+                    BootTrace.mark("STATE_CONFIGURED")
                     state.loadMissions()
+                    BootTrace.mark("MISSIONS_LOADED")
 
                     // PROJECT PHOENIX — Activate the living executive runtime
                     // NOTE: Désactivé en contexte XCTest (TEST_HOST) pour éviter
@@ -40,9 +62,13 @@ struct SUPRAOperationalCoreApp: App {
                     // Voir ROOT_CAUSE_CERTIFICATION_OMEGA1.md — Hypothèse H1.
                     if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
                         Task {
+                            BootTrace.mark("PHOENIX_BOOT_BEGIN")
                             await PhoenixRuntime.shared.boot()
+                            BootTrace.mark("PHOENIX_BOOT_COMPLETE")
                         }
+                        BootTrace.mark("PHOENIX_BOOT_TASK_LAUNCHED")
                     }
+                    BootTrace.mark("ONAPPEAR_COMPLETE")
                 }
         }
         .windowStyle(.titleBar)
