@@ -323,12 +323,13 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadNextMission() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/NEXT_MISSION.md") else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: NEXT_MISSION.md not found at \(projectRoot)")
+        let nextMissionLocation = StorageLocation(directory: .continuity, filename: "NEXT_MISSION.md")
+        guard fileSystem.exists(nextMissionLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: NEXT_MISSION.md not found via FileSystemPort")
             return
         }
-        guard let text = String(data: data, encoding: .utf8) else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: NEXT_MISSION.md is not valid UTF-8 text")
+        guard let text = try? fileSystem.readString(nextMissionLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: NEXT_MISSION.md is not valid UTF-8 text via FileSystemPort")
             return
         }
 

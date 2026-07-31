@@ -112,10 +112,15 @@ final class ExecutiveBootManager: ObservableObject {
     @Published var bootError: String?
     @Published var continuityPackExists = false
 
+    private let fileSystem: FileSystemPort
     private let fm = FileManager.default
 
     private var projectRoot: String {
         SUPRAEnvironmentResolver.shared.projectRoot
+    }
+
+    init(fileSystem: FileSystemPort = DefaultFileSystemPort.live()) {
+        self.fileSystem = fileSystem
     }
 
     private let continuityFiles: [(String, String)] = [
@@ -414,9 +419,16 @@ final class ExecutiveBootManager: ObservableObject {
             SUPRARuntimeLogger.shared.log(.snapshot, "ExecutiveBoot: SUPRA_STATE.json loaded for resume")
         }
 
-        if let data = fm.contents(atPath: "\(projectRoot)/NEXT_MISSION.md"),
-           let _ = String(data: data, encoding: .utf8) {
-            SUPRARuntimeLogger.shared.log(.manifest, "ExecutiveBoot: NEXT_MISSION.md loaded for resume")
+        let nextMissionLocation = StorageLocation(directory: .continuity, filename: "NEXT_MISSION.md")
+        if fileSystem.exists(nextMissionLocation) {
+            do {
+                let _ = try fileSystem.readString(nextMissionLocation)
+                SUPRARuntimeLogger.shared.log(.manifest, "ExecutiveBoot: NEXT_MISSION.md loaded for resume via FileSystemPort")
+            } catch {
+                SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: NEXT_MISSION.md read error via FileSystemPort — \(error.localizedDescription)")
+            }
+        } else {
+            SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: NEXT_MISSION.md not found via FileSystemPort")
         }
 
         let runtimeStatusPath = "\(projectRoot)/RUNTIME_STATUS.json"
