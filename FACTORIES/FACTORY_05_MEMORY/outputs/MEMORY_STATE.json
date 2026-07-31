@@ -6,8 +6,8 @@
   "session": {
     "id": "session_20260731_foundation_era",
     "start": "2026-07-31T00:00:00Z",
-    "status": "PHASE_1_RUNTIME_STATUS_CERTIFIED",
-    "mission": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1 — FOUNDATION ERA"
+    "status": "PHASE_2_BUILD_STATUS_CERTIFIED",
+    "mission": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1 \u2014 FOUNDATION ERA"
   },
   "missions": [
     {
@@ -16,23 +16,46 @@
       "codename": "FOUNDATION ERA",
       "mode": "ARCHITECTURE_FIRST",
       "priority": "CRITICAL",
-      "status": "PHASE_1_RUNTIME_STATUS_CERTIFIED",
+      "status": "PHASE_2_BUILD_STATUS_CERTIFIED",
       "started": "2026-07-31T00:00:00Z",
-      "objective": "Industrialiser le Runtime SUPRA en séparant les responsabilités et en supprimant toute dépendance directe des modules métier au système de fichiers",
+      "objective": "Industrialiser le Runtime SUPRA en s\u00e9parant les responsabilit\u00e9s et en supprimant toute d\u00e9pendance directe des modules m\u00e9tier au syst\u00e8me de fichiers",
       "as_is": {
         "direct_fs_access_components": [
           "ExecutiveBootManager (7 lectures directes, 2 spawn git bloquants)",
           "ContinuityManager (9+ lectures directes, spawn git bloquant)",
-          "ArtifactReader (URL(fileURLWithPath:) câblés en dur)",
+          "ArtifactReader (URL(fileURLWithPath:) c\u00e2bl\u00e9s en dur)",
           "SUPRAEnvironmentResolver (expose projectRoot)"
         ],
-        "residual_anomaly": "Artefacts attendus absents (BUILD_STATUS.md, CONTINUITY.md, NEXT_MISSION.md) — cause : lecture directe des chemins"
+        "residual_anomaly": "Artefacts attendus absents (BUILD_STATUS.md, CONTINUITY.md, NEXT_MISSION.md) \u2014 cause : lecture directe des chemins"
       },
       "to_be": {
-        "layers": ["Foundation (FileSystemPort)", "Infrastructure (Bootstrap/Registry/ContinuityEngine)", "Runtime (BootOrchestrator/RuntimeDataService/RuntimeMonitor)", "Domain (MissionRuntime)"],
+        "layers": [
+          "Foundation (FileSystemPort)",
+          "Infrastructure (Bootstrap/Registry/ContinuityEngine)",
+          "Runtime (BootOrchestrator/RuntimeDataService/RuntimeMonitor)",
+          "Domain (MissionRuntime)"
+        ],
         "storage": "~/Library/Application Support/SUPRA/",
-        "directories": ["State", "Runtime", "Artifacts", "Continuity", "Snapshots", "Logs", "Cache", "Missions"],
-        "first_launch_artifacts": ["SUPRA_STATE.json", "RUNTIME_STATUS.json", "runtime_diagnostics.json", "BOOT_REPORT.json", "BUILD_STATUS.md", "CONTINUITY.md", "NEXT_MISSION.md", "MISSION_QUEUE.json"]
+        "directories": [
+          "State",
+          "Runtime",
+          "Artifacts",
+          "Continuity",
+          "Snapshots",
+          "Logs",
+          "Cache",
+          "Missions"
+        ],
+        "first_launch_artifacts": [
+          "SUPRA_STATE.json",
+          "RUNTIME_STATUS.json",
+          "runtime_diagnostics.json",
+          "BOOT_REPORT.json",
+          "BUILD_STATUS.md",
+          "CONTINUITY.md",
+          "NEXT_MISSION.md",
+          "MISSION_QUEUE.json"
+        ]
       },
       "deliverables": [
         "FACTORIES/FACTORY_01_ARCHITECTURE/outputs/EXECUTIVE_BOOTSTRAP.md",
@@ -56,14 +79,37 @@
           "product": "PASS"
         }
       },
-      "next_phase": "BUILD_STATUS migration (Phase 2)",
+      "next_phase": "Phase 3 NEXT_MISSION migration",
       "factory_states": {
         "FACTORY_01_ARCHITECTURE": "CERTIFIED",
         "FACTORY_05_MEMORY": "UPDATED",
         "FACTORY_09_EXECUTION": "CERTIFIED",
         "FACTORY_10_EXECUTIVE": "DECISION_PROPOSED"
       },
-      "verdict": "EXECUTION_READINESS = READY (10/10) — Phase 1 RUNTIME_STATUS migration certified, Phase 2 (BUILD_STATUS) authorized"
+      "verdict": "EXECUTION_READINESS = READY (10/10) \u2014 Phase 1 RUNTIME_STATUS migration certified, Phase 2 (BUILD_STATUS) authorized",
+      "phase_2_certification": {
+        "artifact": "BUILD_STATUS",
+        "files_migrated": [
+          "SUPRA/ContinuityManager.swift (loadFreezeTimestamp BUILD_STATUS read)",
+          "SUPRA/ArtifactReader.swift (buildStatusForSnapshot via FileSystemPort)",
+          "SUPRA/ArtifactReader.swift (removed buildURL + availableTextStatus + textStatus)"
+        ],
+        "date": "2026-07-31",
+        "gates": {
+          "technical": "PASS",
+          "build": "PASS",
+          "tests": "PASS",
+          "no_regression": "PASS"
+        }
+      },
+      "phase_completed_order": [
+        "RUNTIME_STATUS (Phase 1)",
+        "BUILD_STATUS (Phase 2)"
+      ],
+      "phase_pending": [
+        "NEXT_MISSION (Phase 3)",
+        "CONTINUITY (Phase 4)"
+      ]
     }
   ],
   "snapshots": [
@@ -93,6 +139,18 @@
         "architecture": "PASS",
         "performance": "PASS",
         "product": "PASS"
+      }
+    },
+    {
+      "id": "snapshot_phase_2_build_status",
+      "timestamp": "2026-07-31T06:00:00Z",
+      "type": "BUILD_STATUS_MIGRATION_CERTIFICATION",
+      "artifact": "BUILD_STATUS",
+      "gates": {
+        "technical": "PASS",
+        "build": "PASS",
+        "tests": "PASS",
+        "no_regression": "PASS"
       }
     }
   ],
