@@ -217,7 +217,7 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
 
     private func updateGaze(from snapshot: ExecutiveContextSnapshot) {
         // Priority-based gaze determination
-        if snapshot.runtimeState == .degrading || snapshot.runtimeState == .regenerating {
+        if snapshot.runtimeState == "degrading" || snapshot.runtimeState == "regenerating" {
             gaze = .runtime
             attentionIntensity = 0.9
             return
@@ -256,16 +256,16 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
 
     private func updateMood(from snapshot: ExecutiveContextSnapshot) {
         switch snapshot.runtimeState {
-        case .dormant, .booting:
+        case "dormant", "booting":
             mood = .observing
-        case .degrading, .regenerating:
+        case "degrading", "regenerating":
             mood = .alert
-        case .active:
+        case "active":
             if snapshot.vision.fileChangeCount > 0 || snapshot.vision.gitChangeCount > 0 {
                 mood = .attentive
-            } else if snapshot.presence.state == "thinking" || snapshot.presence.state == "deciding" {
+            } else if snapshot.presence.rawValue == "thinking" || snapshot.presence.rawValue == "deciding" {
                 mood = .processing
-            } else if snapshot.presence.state == "waiting" {
+            } else if snapshot.presence.rawValue == "waiting" {
                 mood = .waiting
             } else {
                 mood = .serene
@@ -287,7 +287,7 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
         case .files:
             perception = "\(snapshot.vision.fileChangeCount) fichier(s) modifié(s). Dernier changement: \(snapshot.vision.lastChangeDetected?.ISO8601Format() ?? "récent")"
         case .runtime:
-            perception = "Runtime: \(snapshot.runtimeState.rawValue). Moteurs: \(snapshot.runtimeHealthSummary?.activeEngineCount ?? 0)/\(snapshot.runtimeHealthSummary?.engineCount ?? 0) actifs."
+            perception = "Runtime: \(snapshot.runtimeState). Moteurs: \(snapshot.runtimeHealthSummary?.activeEngineCount ?? 0)/\(snapshot.runtimeHealthSummary?.engineCount ?? 0) actifs."
         case .build:
             perception = "Surveillance du build..."
         case .mission:
@@ -295,7 +295,7 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
         case .memory:
             perception = "Consultation de la mémoire..."
         case .system:
-            perception = "Santé système: \(snapshot.runtimeHealthSummary?.overallStatus.rawValue ?? "inconnue")"
+            perception = "Santé système: \(snapshot.runtimeHealthSummary?.overallStatus ?? "inconnue")"
         case .providers:
             perception = "Fournisseurs: \(snapshot.context.activeProviders.joined(separator: ", "))"
         case .user:
@@ -308,13 +308,13 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
     // MARK: - Understanding
 
     private func updateUnderstanding(from snapshot: ExecutiveContextSnapshot) {
-        let runtimeStatus = snapshot.runtimeState.rawValue
-        let presenceState = snapshot.presence.state
+        let runtimeStatus = snapshot.runtimeState
+        let presenceState = snapshot.presence.rawValue
         let visionActive = snapshot.vision.isWatching
 
-        if snapshot.runtimeState == .active && visionActive {
+        if snapshot.runtimeState == "active" && visionActive {
             understanding = "SUPRA est pleinement opérationnel. Tous les capteurs sont actifs."
-        } else if snapshot.runtimeState == .degrading {
+        } else if snapshot.runtimeState == "degrading" {
             understanding = "Un ou plusieurs composants nécessitent mon attention."
         } else {
             understanding = "Analyse en cours..."

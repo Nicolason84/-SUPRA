@@ -70,6 +70,18 @@ public enum ExecutiveEventType: String, Sendable, Codable, CaseIterable {
     case identityEstablished = "identity.established"
     case identityChanged = "identity.changed"
 
+    // Distance Engine events (Ω11 — Executive Distance Engine)
+    case distanceEngineBooting = "distance.engine.booting"
+    case distanceEngineActive = "distance.engine.active"
+    case distanceEngineShutdown = "distance.engine.shutdown"
+    case distanceEngineDegraded = "distance.engine.degraded"
+    case ecuRegistered = "ecu.registered"
+    case ecuMaturityUpdated = "ecu.maturity.updated"
+    case ecuGovernanceUpdated = "ecu.governance.updated"
+    case ecuCompleted = "ecu.completed"
+    case transitionRecorded = "transition.recorded"
+    case dashboardUpdated = "dashboard.updated"
+
     // System
     case warning = "system.warning"
     case error = "system.error"

@@ -4,13 +4,14 @@
     "kernel_name": "Executive Runtime Kernel — PROJECT PHOENIX",
     "description": "The living, breathing kernel of SUPRA's Executive Runtime. Built through PROJECT PHOENIX reconstruction. This is the single Source of Truth, powered by Executive Context Snapshots, Event Bus, and the ŒIL Perception Layer.",
     "created_at": "2026-07-29T00:00:00Z",
-    "updated_at": "2026-07-30T00:00:00Z",
-    "status": "ACTIVE",
-    "verdict": "RECONSTRUCTION",
+    "updated_at": "2026-07-31T03:24:00Z",
+    "status": "CERTIFIED",
+    "verdict": "BUILD_CERTIFIED_V1 — ALL GATES PASSED",
     "authority": "CONSTITUTIONAL — PROJECT PHOENIX",
     "root_cause": "PROJECT PHOENIX — Executive Runtime Reconstruction (2026-07-30)",
     "phoenix": {
       "version": "2.0.0",
+      "baseline": "BUILD_CERTIFIED_V1",
       "branch": "executive-runtime-v2",
       "components": {
         "omega_01": { "name": "Executive Runtime Core", "file": "Phoenix/ExecutiveRuntimeCore.swift", "status": "RECONSTRUCTED" },

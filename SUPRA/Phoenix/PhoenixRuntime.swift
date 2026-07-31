@@ -30,6 +30,21 @@ public final class PhoenixRuntime: ObservableObject {
     public let identity = IdentityRuntime.shared
     public let oeil = OeilPerceptionLayer.shared
 
+    // MARK: - Ω4.D — Runtime Orchestration Layer
+    // Composition layer coordinating certified Authorities II and III.
+    public let orchestrationEngine = SUPRAOrchestrationEngine.shared
+    public let runtimeIntelligence = SUPRARuntimeIntelligence.shared
+
+    // MARK: - Ω5.1 — Mission Execution Engine
+    // First operational capability built upon the certified Runtime.
+    public let missionExecutor = SUPRAMissionExecutor.shared
+    public let executionStrategy = SUPRAExecutionStrategy.shared
+
+    // MARK: - Ω11 — Executive Distance Engine
+    // Measures mission progression independently of time.
+    // Part of the Core Runtime Foundation.
+    public let distanceEngine = SUPRAExecutiveDistanceEngine()
+
     // MARK: - Snapshot Pipeline
 
     private let snapshotBuilder = ExecutiveSnapshotBuilder()
@@ -60,6 +75,17 @@ public final class PhoenixRuntime: ObservableObject {
         runtimeCore.registerEngine(digitalTwin)
         runtimeCore.registerEngine(identity)
         runtimeCore.registerEngine(oeil)
+        runtimeCore.registerEngine(distanceEngine)
+
+        // Phase 1b: Integrate Ω4.D — Runtime Orchestration Layer
+        // Composes upon Authorities II and III without modifying them
+        orchestrationEngine.integrate(with: self)
+        runtimeIntelligence.integrate(with: self)
+
+        // Phase 1c: Integrate Ω5.1 — Mission Execution Engine
+        // First operational capability built upon certified Runtime
+        missionExecutor.integrate(with: self)
+        executionStrategy.integrate(with: self)
 
         // Phase 2: Boot the runtime core
         bootProgress = 0.2
@@ -127,7 +153,12 @@ public final class PhoenixRuntime: ObservableObject {
                 .contextUpdated,
                 .twinSynced,
                 .engineBooted,
-                .engineFailed
+                .engineFailed,
+                .ecuRegistered,
+                .ecuMaturityUpdated,
+                .ecuCompleted,
+                .transitionRecorded,
+                .dashboardUpdated
             ]
             if significantEvents.contains(event.type) {
                 Task { @MainActor [weak self] in
@@ -137,14 +168,15 @@ public final class PhoenixRuntime: ObservableObject {
         }
     }
 
-    private func publishSnapshot() {
+        private func publishSnapshot() {
         let snapshot = snapshotBuilder.build(
             runtimeCore: runtimeCore,
             vision: visionEngine,
             presence: presenceEngine,
             context: contextEngine,
             digitalTwin: digitalTwin,
-            identity: identity
+            identity: identity,
+            distance: distanceEngine
         )
 
         snapshotBus.publish(snapshot)
@@ -170,6 +202,7 @@ public final class PhoenixRuntime: ObservableObject {
         ║ Runtime:  \(runtimeCore.state.rawValue)                          ║
         ║ ŒIL:      \(oeil.isAlive ? "✓ Alive" : "✗ Dormant")                      ║
         ║ Présence: \(presenceEngine.isPresent ? "✓ Present" : "✗ Absent")                      ║
+        ║ Distance: \(distanceEngine.dashboard.missionDistance.remainingTransitions) transitions remaining, \(distanceEngine.dashboard.remainingECUs)/\(distanceEngine.dashboard.totalECUs) ECUs     ║
         ╚══════════════════════════════════════╝
         \(oeil.statusReport())
         """

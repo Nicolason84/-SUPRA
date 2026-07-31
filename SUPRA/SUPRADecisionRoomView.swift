@@ -177,7 +177,9 @@ struct SUPRADecisionRoomView: View {
             Spacer()
             if p.verdict.authority == .autoExecute {
                 SUPRAOSButton(title: "Execute", icon: "play.fill", color: .supraGreen) {
-                    _ = SUPRAMissionExecutor.shared.execute(p)
+                    Task {
+                        _ = await SUPRAMissionExecutor.shared.execute(p)
+                    }
                 }
             }
             if p.verdict.authority == .humanRequired || p.verdict.authority == .sovereignHumanOnly {

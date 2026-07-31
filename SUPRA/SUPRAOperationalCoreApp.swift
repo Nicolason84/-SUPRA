@@ -33,6 +33,16 @@ struct SUPRAOperationalCoreApp: App {
                         monitor: compositionRoot.runtimeMonitor
                     )
                     state.loadMissions()
+
+                    // PROJECT PHOENIX — Activate the living executive runtime
+                    // NOTE: Désactivé en contexte XCTest (TEST_HOST) pour éviter
+                    // la contamination de l'état du singleton avant les tests.
+                    // Voir ROOT_CAUSE_CERTIFICATION_OMEGA1.md — Hypothèse H1.
+                    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+                        Task {
+                            await PhoenixRuntime.shared.boot()
+                        }
+                    }
                 }
         }
         .windowStyle(.titleBar)

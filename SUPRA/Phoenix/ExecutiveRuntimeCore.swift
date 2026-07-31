@@ -110,7 +110,10 @@ public final class ExecutiveRuntimeCore: ObservableObject {
     // MARK: - Internal Registry
 
     private var engines: [String: any ExecutiveEngine] = [:]
-    private var heartbeatTimer: Timer?
+    /// Async heartbeat task — uses Task.sleep instead of Timer.scheduledTimer
+    /// to eliminate RunLoop dependency. Compatible with XCTest, Swift Concurrency,
+    /// and production environments. Canceled on shutdown.
+    private var heartbeatTask: Task<Void, Never>?
     private var healthCheckTask: Task<Void, Never>?
     private let eventBus = ExecutiveEventBus.shared
 
@@ -191,8 +194,8 @@ public final class ExecutiveRuntimeCore: ObservableObject {
         ))
 
         healthCheckTask?.cancel()
-        heartbeatTimer?.invalidate()
-        heartbeatTimer = nil
+        heartbeatTask?.cancel()
+        heartbeatTask = nil
 
         for (id, engine) in engines {
             do {
@@ -351,11 +354,16 @@ public final class ExecutiveRuntimeCore: ObservableObject {
         }
     }
 
+    /// Starts an async heartbeat loop using Task.sleep instead of Timer.
+    /// This avoids RunLoop dependency and works reliably in XCTest, Swift Concurrency,
+    /// and production contexts. The task is canceled on shutdown.
     private func startHeartbeat() {
-        heartbeatTimer?.invalidate()
-        heartbeatTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                await self?.performHealthCheck()
+        heartbeatTask?.cancel()
+        heartbeatTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+                guard !Task.isCancelled, let self else { break }
+                await self.performHealthCheck()
             }
         }
     }

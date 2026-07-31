@@ -63,9 +63,9 @@ public final class ExecutiveSnapshotBus: ObservableObject {
             detail: "Snapshot #\(snapshot.sequenceNumber) published",
             metadata: [
                 "sequenceNumber": "\(snapshot.sequenceNumber)",
-                "runtimeState": snapshot.runtimeState.rawValue,
+                "runtimeState": snapshot.runtimeState,
                 "visionWatching": "\(snapshot.vision.isWatching)",
-                "presenceState": snapshot.presence.state
+                "presenceState": snapshot.presence.rawValue
             ]
         )
     }

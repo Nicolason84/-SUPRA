@@ -302,10 +302,10 @@ public struct OeilView: View {
             let snapshot = snapshotBus.latestSnapshot
 
             VStack(spacing: 6) {
-                systemRow("Runtime", snapshot.runtimeState.rawValue, snapshot.runtimeState == .active ? .supraGreen : .supraOrange)
+                systemRow("Runtime", snapshot.runtimeState, snapshot.runtimeState == "active" ? .supraGreen : .supraOrange)
                 systemRow("Moteurs", "\(snapshot.runtimeHealthSummary?.activeEngineCount ?? 0)/\(snapshot.runtimeHealthSummary?.engineCount ?? 0) actifs", .supraAccent)
                 systemRow("Snapshot", "#\(snapshot.sequenceNumber)", .supraBlue)
-                systemRow("Présence", snapshot.presence.state, presenceColor(snapshot.presence.state))
+                systemRow("Présence", snapshot.presence.rawValue, presenceColor(snapshot.presence.rawValue))
                 systemRow("Jumeau", snapshot.digitalTwin.isSynced ? "Synced" : "Desync", snapshot.digitalTwin.isSynced ? .supraGreen : .supraRed)
             }
         }

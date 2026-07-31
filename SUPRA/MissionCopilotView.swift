@@ -102,8 +102,10 @@ struct MissionCopilotView: View {
     private func executeAutoQueue() {
         let engine = SUPRAMissionProposalEngine.shared
         let executor = SUPRAMissionExecutor.shared
-        for proposal in engine.autoQueue {
-            _ = executor.execute(proposal)
+        Task {
+            for proposal in engine.autoQueue {
+                _ = await executor.execute(proposal)
+            }
         }
     }
 

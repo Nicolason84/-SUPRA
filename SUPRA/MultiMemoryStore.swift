@@ -20,7 +20,9 @@ final class MultiMemoryStore: ObservableObject {
 
     private init() {
         loadRegistries()
-        subscribeToSnapshotStore()
+        // subscribeToSnapshotStore() déplacé vers bind() pour
+        // briser la dépendance circulaire d'initialisation
+        // (MultiMemoryStore → CAnnoNicoSnapshotStore → dispatch_once)
     }
 
     func refresh() {
@@ -31,6 +33,7 @@ final class MultiMemoryStore: ObservableObject {
     func bind(missionStore: MissionStore, runtimeMonitor: RuntimeMonitor) {
         self.missionStore = missionStore
         self.runtimeMonitor = runtimeMonitor
+        subscribeToSnapshotStore()
         subscribeToMissionStore(missionStore)
         rebuild()
     }

@@ -1,0 +1,66 @@
+{
+  "manifest": {
+    "version": "BUILD_CERTIFIED_V1",
+    "format_version": "BASELINE_MANIFEST_V1",
+    "date": "2026-07-31T03:24:00Z",
+    "authority": "FACTORY_10_EXECUTIVE",
+    "description": "Immutable baseline — BUILD CERTIFIED V1. All validation gates passed, all tests green, architecture frozen."
+  },
+  "git": {
+    "commit": "5c17aba3c9d4e9dbe00c685897071d8da711d24e",
+    "branch": "executive-runtime-v2",
+    "message": "DELIVERY-003: Reconnexion ExecutiveCockpit + MissionCopilot au Snapshot Bus"
+  },
+  "build": {
+    "system": "Xcode 16+",
+    "scheme": "SUPRA",
+    "destination": "platform=macOS",
+    "status": "BUILD SUCCEEDED",
+    "errors": 0,
+    "warnings": 0,
+    "swift_source_count": 277,
+    "phoenix_files": 25
+  },
+  "tests": {
+    "status": "TEST SUCCEEDED",
+    "total": 139,
+    "passed": 139,
+    "failed": 0,
+    "omega1_passed": 4
+  },
+  "validation": {
+    "executive_boot": "PASSED",
+    "registry_validation": "PASSED",
+    "workspace_validation": "PASSED",
+    "build_validation": "PASSED",
+    "dependency_injection": "PASSED",
+    "executive_context": "PASSED",
+    "serialization": "PASSED",
+    "startup_sequence": "PASSED",
+    "ui_loading": "PASSED",
+    "governance_integrity": "PASSED"
+  },
+  "reports": [
+    "BUILD_REPORT.md",
+    "VALIDATION_REPORT.md",
+    "GOVERNANCE_REPORT.md",
+    "EXECUTION_REPORT.md"
+  ],
+  "factory_state": {
+    "total_factories": 10,
+    "certified": 10,
+    "idle": 10,
+    "health_score": "1.0"
+  },
+  "governance": {
+    "constitution": "SUPRA_FACTORY_CONSTITUTION_V1",
+    "single_writer_rule": "COMPLIANT",
+    "evidence_rule": "COMPLIANT",
+    "architecture_rule": "COMPLIANT",
+    "memory_rule": "COMPLIANT",
+    "gate_rule": "COMPLIANT",
+    "reuse_rule": "COMPLIANT",
+    "architecture_frozen": true,
+    "omega11_foundation": true
+  }
+}

@@ -651,7 +651,7 @@ struct ExecutiveCockpit: View {
     private var timeline: some View {
         ExecutivePanel(title: "Timeline", icon: "clock.fill", color: .supraBlue) {
             compactRows(
-                summary.visibleMissions.prefix(4).map { ($0.title, $0.currentStatus) },
+                summary.visibleMissions.prefix(4).map { ($0.title, $0.status) },
                 empty: "Runtime timeline is ready"
             )
         }

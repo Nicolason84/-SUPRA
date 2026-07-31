@@ -63,7 +63,7 @@ final class ExecutiveDemoMode: ObservableObject {
 
         await runPhase("Auto Execution", phase: 6) {
             for proposal in self.proposalEngine.autoQueue.prefix(3) {
-                _ = self.executor.execute(proposal)
+                _ = await self.executor.execute(proposal)
             }
             return self.executor.autoExecutedCount > 0
         }

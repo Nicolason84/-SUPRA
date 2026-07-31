@@ -254,7 +254,8 @@ struct MissionSurfaceView: View {
                             .font(.system(size: 12))
                             .foregroundStyle(Color.supraTextSecondary)
                     } else {
-                        ForEach(Array(summary.visibleMissions.prefix(8))) { mission in
+                        let missions = Array(summary.visibleMissions.prefix(8))
+                        ForEach(missions) { mission in
                             Button {
                                 selection = mission.id
                             } label: {
@@ -267,19 +268,14 @@ struct MissionSurfaceView: View {
                                         Text(mission.title)
                                             .font(.system(size: 12, weight: .semibold))
                                             .foregroundStyle(Color.supraText)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                        Text("\(mission.lifecycle) · \(mission.authority)")
+                                            .lineLimit(1)
+                                        Text(mission.currentStatus)
                                             .font(.system(size: 10))
                                             .foregroundStyle(Color.supraTextSecondary)
-                                        if let nextMission = mission.nextMission {
-                                            Text(nextMission)
-                                                .font(.system(size: 10))
-                                                .foregroundStyle(Color.supraTextTertiary)
-                                                .lineLimit(2)
-                                        }
+                                            .lineLimit(1)
                                     }
                                 }
-                                .padding(.vertical, 4)
+                                .padding(.vertical, 5)
                             }
                             .buttonStyle(.plain)
                         }
