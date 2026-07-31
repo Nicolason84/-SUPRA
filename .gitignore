@@ -26,3 +26,10 @@ build/
 *.BACKUP*
 *.before_*
 
+# SUPRA Generated Artifacts
+.supra_reports/
+*.xcresult
+*.xcresult/**
+FREEZE_SUPRA_GRAPHS_*/SUPRA_RUNTIME_GRAPH.json
+SUPRA_RUNTIME_GRAPH.json
+
