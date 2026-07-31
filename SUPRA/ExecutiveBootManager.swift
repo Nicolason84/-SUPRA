@@ -189,7 +189,8 @@ final class ExecutiveBootManager: ObservableObject {
 
         ContinuityManager.shared.load()
 
-        let hasContinuityMd = fm.fileExists(atPath: "\(projectRoot)/CONTINUITY.md")
+        let continuityLocation = StorageLocation(directory: .continuity, filename: "CONTINUITY.md")
+        let hasContinuityMd = fileSystem.exists(continuityLocation)
         let hasStateJson = fm.fileExists(atPath: "\(projectRoot)/SUPRA_STATE.json")
 
         if hasContinuityMd && hasStateJson {
@@ -285,12 +286,13 @@ final class ExecutiveBootManager: ObservableObject {
             SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: SUPRA_STATE.json parse error: \(error.localizedDescription)")
         }
 
-        guard let continuityData = fm.contents(atPath: "\(projectRoot)/CONTINUITY.md") else {
-            SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: CONTINUITY.md not found at \(projectRoot)")
+        let continuityLocation = StorageLocation(directory: .continuity, filename: "CONTINUITY.md")
+        guard fileSystem.exists(continuityLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: CONTINUITY.md not found via FileSystemPort")
             return
         }
-        guard let text = String(data: continuityData, encoding: .utf8) else {
-            SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: CONTINUITY.md is not valid UTF-8 text")
+        guard let text = try? fileSystem.readString(continuityLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "ExecutiveBoot: CONTINUITY.md is not valid UTF-8 text via FileSystemPort")
             return
         }
         guard let range = text.range(of: "Generated:") else {
@@ -409,9 +411,11 @@ final class ExecutiveBootManager: ObservableObject {
 
         ContinuityManager.shared.load()
 
-        if let data = fm.contents(atPath: "\(projectRoot)/CONTINUITY.md"),
-           let _ = String(data: data, encoding: .utf8) {
-            SUPRARuntimeLogger.shared.log(.root, "ExecutiveBoot: CONTINUITY.md loaded for resume")
+        let resumeContinuityLocation = StorageLocation(directory: .continuity, filename: "CONTINUITY.md")
+        if fileSystem.exists(resumeContinuityLocation) {
+            if let _ = try? fileSystem.readString(resumeContinuityLocation) {
+                SUPRARuntimeLogger.shared.log(.root, "ExecutiveBoot: CONTINUITY.md loaded for resume via FileSystemPort")
+            }
         }
 
         if let data = fm.contents(atPath: "\(projectRoot)/SUPRA_STATE.json"),

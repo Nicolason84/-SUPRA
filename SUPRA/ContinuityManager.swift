@@ -299,12 +299,13 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadContinuityMarkdown() {
-        guard let data = fm.contents(atPath: "\(projectRoot)/CONTINUITY.md") else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md not found at \(projectRoot)")
+        let continuityLocation = StorageLocation(directory: .continuity, filename: "CONTINUITY.md")
+        guard fileSystem.exists(continuityLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md not found via FileSystemPort")
             return
         }
-        guard let text = String(data: data, encoding: .utf8) else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md is not valid UTF-8 text")
+        guard let text = try? fileSystem.readString(continuityLocation) else {
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md is not valid UTF-8 text via FileSystemPort")
             return
         }
 
@@ -374,25 +375,26 @@ final class ContinuityManager: ObservableObject {
     }
 
     private func loadFreezeTimestamp() {
-        if let continuityData = fm.contents(atPath: "\(projectRoot)/CONTINUITY.md") {
-            guard let text = String(data: continuityData, encoding: .utf8) else {
-                SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md is not valid UTF-8 text")
-                return
-            }
-            if let range = text.range(of: "Generated:") {
-                let snippet = String(text[range.lowerBound...]).prefix(200)
-                if let endRange = snippet.range(of: "\n") {
-                    state.freezeTimestamp = String(snippet[snippet.startIndex..<endRange.lowerBound])
-                        .replacingOccurrences(of: "Generated:", with: "")
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
+        let continuityLocation = StorageLocation(directory: .continuity, filename: "CONTINUITY.md")
+        if fileSystem.exists(continuityLocation) {
+            if let text = try? fileSystem.readString(continuityLocation) {
+                if let range = text.range(of: "Generated:") {
+                    let snippet = String(text[range.lowerBound...]).prefix(200)
+                    if let endRange = snippet.range(of: "\n") {
+                        state.freezeTimestamp = String(snippet[snippet.startIndex..<endRange.lowerBound])
+                            .replacingOccurrences(of: "Generated:", with: "")
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                    } else {
+                        SUPRARuntimeLogger.shared.log(.error, "Continuity: Cannot parse timestamp from CONTINUITY.md")
+                    }
                 } else {
-                    SUPRARuntimeLogger.shared.log(.error, "Continuity: Cannot parse timestamp from CONTINUITY.md")
+                    SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md missing \"Generated:\" marker for timestamp")
                 }
             } else {
-                SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md missing \"Generated:\" marker for timestamp")
+                SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md is not valid UTF-8 text via FileSystemPort")
             }
         } else {
-            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md not found for timestamp extraction")
+            SUPRARuntimeLogger.shared.log(.error, "Continuity: CONTINUITY.md not found via FileSystemPort")
         }
 
         let buildStatusLocation = StorageLocation(directory: .continuity, filename: "BUILD_STATUS.md")
