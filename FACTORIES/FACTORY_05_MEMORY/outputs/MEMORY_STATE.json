@@ -6,7 +6,7 @@
   "session": {
     "id": "session_20260731_foundation_era",
     "start": "2026-07-31T00:00:00Z",
-    "status": "PHASE_2_BUILD_STATUS_CERTIFIED",
+    "status": "PHASE_3_NEXT_MISSION_CERTIFIED",
     "mission": "EXECUTIVE BOOTSTRAP V1 + ARTIFACT REGISTRY V1 \u2014 FOUNDATION ERA"
   },
   "missions": [
@@ -16,7 +16,7 @@
       "codename": "FOUNDATION ERA",
       "mode": "ARCHITECTURE_FIRST",
       "priority": "CRITICAL",
-      "status": "PHASE_2_BUILD_STATUS_CERTIFIED",
+      "status": "PHASE_3_NEXT_MISSION_CERTIFIED",
       "started": "2026-07-31T00:00:00Z",
       "objective": "Industrialiser le Runtime SUPRA en s\u00e9parant les responsabilit\u00e9s et en supprimant toute d\u00e9pendance directe des modules m\u00e9tier au syst\u00e8me de fichiers",
       "as_is": {
@@ -79,7 +79,7 @@
           "product": "PASS"
         }
       },
-      "next_phase": "Phase 3 NEXT_MISSION migration",
+      "next_phase": "Phase 4 CONTINUITY migration",
       "factory_states": {
         "FACTORY_01_ARCHITECTURE": "CERTIFIED",
         "FACTORY_05_MEMORY": "UPDATED",
@@ -103,13 +103,27 @@
         }
       },
       "phase_completed_order": [
-        "RUNTIME_STATUS (Phase 1)",
-        "BUILD_STATUS (Phase 2)"
+        "RUNTIME_STATUS Phase 1",
+        "BUILD_STATUS Phase 2",
+        "NEXT_MISSION Phase 3"
       ],
       "phase_pending": [
-        "NEXT_MISSION (Phase 3)",
-        "CONTINUITY (Phase 4)"
-      ]
+        "CONTINUITY Phase 4"
+      ],
+      "phase_3_certification": {
+        "artifact": "NEXT_MISSION",
+        "files_migrated": [
+          "SUPRA/ContinuityManager.swift (loadNextMission)",
+          "SUPRA/ExecutiveBootManager.swift (resume path)"
+        ],
+        "date": "2026-07-31",
+        "gates": {
+          "technical": "PASS",
+          "build": "PASS",
+          "tests": "PASS",
+          "no_regression": "PASS"
+        }
+      }
     }
   ],
   "snapshots": [
@@ -146,6 +160,18 @@
       "timestamp": "2026-07-31T06:00:00Z",
       "type": "BUILD_STATUS_MIGRATION_CERTIFICATION",
       "artifact": "BUILD_STATUS",
+      "gates": {
+        "technical": "PASS",
+        "build": "PASS",
+        "tests": "PASS",
+        "no_regression": "PASS"
+      }
+    },
+    {
+      "id": "snapshot_phase_3_next_mission",
+      "timestamp": "2026-07-31T06:15:00Z",
+      "type": "NEXT_MISSION_MIGRATION_CERTIFICATION",
+      "artifact": "NEXT_MISSION",
       "gates": {
         "technical": "PASS",
         "build": "PASS",

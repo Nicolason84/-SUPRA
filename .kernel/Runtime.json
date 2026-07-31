@@ -140,7 +140,7 @@
       }
     }
   },
-  "active_migration": "BUILD_STATUS",
+  "active_migration": "NEXT_MISSION",
   "phase_2_build_status": {
     "status": "IMPLEMENTED",
     "files_migrated": [
@@ -151,5 +151,15 @@
     "pattern": "FileSystemPort.readString(StorageLocation(directory: .continuity, filename: BUILD_STATUS.md))",
     "phase_1_certified": true,
     "next_phase": "Phase 3 NEXT_MISSION migration"
+  },
+  "phase_3_next_mission": {
+    "status": "IMPLEMENTED",
+    "files_migrated": [
+      "SUPRA/ContinuityManager.swift (loadNextMission)",
+      "SUPRA/ExecutiveBootManager.swift (resume path)"
+    ],
+    "pattern": "FileSystemPort.readString(StorageLocation(directory: .continuity, filename: NEXT_MISSION.md))",
+    "phase_2_certified": true,
+    "next_phase": "Phase 4 CONTINUITY migration"
   }
 }
