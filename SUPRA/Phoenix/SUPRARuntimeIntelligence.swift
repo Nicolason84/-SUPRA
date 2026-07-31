@@ -306,7 +306,6 @@ public final class SUPRARuntimeIntelligence: ObservableObject, Sendable {
         let blockedTasks = orchestrationEngine.dependencyGraph.blockedCount
 
         // Read from Authority II
-        let session = stateAuthority.activeSession
         let executionTime = orchestrationEngine.orchestrationDuration
 
         // Calculate metrics
@@ -374,7 +373,6 @@ public final class SUPRARuntimeIntelligence: ObservableObject, Sendable {
         var anomalies: [SUPRAAnomalyReport] = []
 
         // Read from Authority II + III
-        let session = stateAuthority.activeSession
         let healthStatus = continuityEngine.healthStatus
         let recoveryCount = continuityEngine.recoveryCount
 
@@ -538,8 +536,6 @@ public final class SUPRARuntimeIntelligence: ObservableObject, Sendable {
     public func suggestOptimizations() -> [SUPRAOptimizationSuggestion] {
         var newSuggestions: [SUPRAOptimizationSuggestion] = []
         let graph = orchestrationEngine.dependencyGraph
-        let metrics = latestMetrics
-        let healthStatus = continuityEngine.healthStatus
 
         // Suggest: Parallelize tasks
         let parallelGroups = orchestrationEngine.parallelizableGroups()

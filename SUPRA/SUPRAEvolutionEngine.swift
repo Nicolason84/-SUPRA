@@ -135,7 +135,7 @@ final class SUPRAEvolutionEngine: ObservableObject {
             }
         }
 
-        if let hw = state.hardware, let sw = state.software, sw.servicesCount > 80 {
+        if state.hardware != nil, let sw = state.software, sw.servicesCount > 80 {
             let heavy = governor.snapshot.activeProcessCount
             if heavy > 200 {
                 result.append(EvolutionProposal(

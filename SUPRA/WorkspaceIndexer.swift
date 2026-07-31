@@ -49,7 +49,7 @@ final class WorkspaceIndexer: ObservableObject {
         let paths = Dictionary(grouping: objects, by: { URL(fileURLWithPath: $0.path).deletingLastPathComponent().path })
 
         for (parentPath, children) in paths {
-            guard let parent = objects.first(where: { $0.path == parentPath }) else { continue }
+            guard objects.first(where: { $0.path == parentPath }) != nil else { continue }
             for var child in children {
                 let parentPathObj = parentPath
                 if let parentID = objects.first(where: { $0.path == parentPathObj })?.id {

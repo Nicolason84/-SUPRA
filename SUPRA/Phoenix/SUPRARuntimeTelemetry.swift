@@ -198,7 +198,7 @@ public final class SUPRARuntimeTelemetry: ObservableObject, Sendable {
         collectionStartedAt = Date()
 
         // Collect initial snapshot
-        captureSnapshot()
+        _ = captureSnapshot()
 
         // Start periodic collection
         collectionTask = Task { [weak self] in
@@ -206,7 +206,7 @@ public final class SUPRARuntimeTelemetry: ObservableObject, Sendable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 10_000_000_000)
                 guard !Task.isCancelled else { break }
-                await self.performCollectionCycle()
+                self.performCollectionCycle()
             }
         }
 
@@ -254,10 +254,8 @@ public final class SUPRARuntimeTelemetry: ObservableObject, Sendable {
         let completedTasks = graph.completedCount
         let failedTasks = graph.failedCount
         let totalTasks = graph.taskCount
-        let completionPercentage = graph.completionPercentage
 
         // Read from Ω5.1 Mission Executor
-        let executorResult = missionExecutor.lastResult
         let executorCompleted = missionExecutor.tasksCompleted
         let executorFailed = missionExecutor.tasksFailed
 

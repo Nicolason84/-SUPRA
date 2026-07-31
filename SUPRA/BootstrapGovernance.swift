@@ -396,7 +396,6 @@ private struct BootstrapAnalyzer {
             .filter { $0.value > 1 }
             .map(\.key)
             .sorted()
-        let maxDepth = maximumDepth(from: "SUPRACompositionRoot", edges: allEdges)
 
         let graph = BootstrapDependencyGraph(
             root: "SUPRACompositionRoot",

@@ -552,7 +552,6 @@ public final class SUPRAMissionExecutor: ObservableObject, Sendable {
         orchestrationEngine.stopOrchestration()
 
         // Collect final metrics
-        let metrics = intelligence.collectMetrics()
         let quality = intelligence.evaluateQuality()
 
         // Create final checkpoint

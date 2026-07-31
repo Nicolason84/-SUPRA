@@ -55,7 +55,7 @@ final class ConversationKnowledgeProvider: KnowledgeProvider {
                 created: nil, updated: modDate,
                 tags: ["report", "mission", "supra"],
                 relations: [], authority: 0.9, confidence: 1.0,
-                status: "active", metadata: ["format": "markdown", "lines": "\(try? String(contentsOf: url).components(separatedBy: .newlines).count ?? 0)"]
+                status: "active", metadata: ["format": "markdown", "lines": "\((try? String(contentsOf: url, encoding: .utf8))?.components(separatedBy: .newlines).count ?? 0)"]
             ))
         }
 

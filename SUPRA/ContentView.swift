@@ -3124,8 +3124,9 @@ private final class SUPRALiveBoardsModel: ObservableObject {
         stop()
         reload()
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.reload()
+                self.reload()
             }
         }
     }

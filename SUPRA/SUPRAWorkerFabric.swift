@@ -184,13 +184,13 @@ final class SUPRAWorkerFabric: ObservableObject {
     }
 
     func pauseAll() {
-        for var worker in allWorkers {
+        for worker in allWorkers {
             worker.status = .paused
         }
     }
 
     func resumeAll() {
-        for var worker in allWorkers {
+        for worker in allWorkers {
             if worker.status == .paused {
                 worker.status = .idle
             }

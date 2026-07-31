@@ -44,8 +44,9 @@ final class SUPRABackgroundScheduler: ObservableObject {
         isRunning = true
         monitorUserActivity()
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.tick()
+                self.tick()
             }
         }
     }
@@ -136,8 +137,9 @@ final class SUPRABackgroundScheduler: ObservableObject {
 
     private func monitorUserActivity() {
         userActivityTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.checkUserActivity()
+                self.checkUserActivity()
             }
         }
     }

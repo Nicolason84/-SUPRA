@@ -187,7 +187,7 @@ public final class ProviderRuntime: ObservableObject {
     }
     
     public func availability(for providerType: SUPRAProviderType) -> Double {
-        guard let provider = providers[providerType] else { return 0.0 }
+        guard providers[providerType] != nil else { return 0.0 }
         
         let health = healthCache[providerType] ?? false
         let isAvailable = isProviderAvailableCached(for: providerType)

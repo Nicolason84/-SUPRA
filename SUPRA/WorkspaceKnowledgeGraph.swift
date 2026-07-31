@@ -30,7 +30,7 @@ final class WorkspaceKnowledgeGraph: ObservableObject {
 
         for (parentPath, children) in paths {
             guard let parent = topObjects.first(where: { $0.path == parentPath }),
-                  let parentNode = nodeDict[parent.id]
+                  nodeDict[parent.id] != nil
             else { continue }
 
             for child in children where child.id != parent.id {

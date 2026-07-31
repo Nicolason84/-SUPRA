@@ -172,7 +172,7 @@ public final class SUPRAScheduler: ObservableObject {
             }
 
             let runningGroup = groupSlots.map { slot -> SUPRAExecutionSlot in
-                var s = slot
+                let s = slot
                 return SUPRAExecutionSlot(
                     id: s.id, task: s.task,
                     providerID: s.providerID, modelID: s.modelID,

@@ -81,10 +81,9 @@ final class UniverseSearch: ObservableObject {
     private func searchTwins(_ text: String) -> [UniverseSearchResult] {
         registry.twins.compactMap { twin -> UniverseSearchResult? in
             var score = 0.0
-            var matchType = ""
 
-            if twin.name.lowercased().contains(text) { score += 0.9; matchType = "nom" }
-            else if twin.description.lowercased().contains(text) { score += 0.6; matchType = "description" }
+            if twin.name.lowercased().contains(text) { score += 0.9 }
+            else if twin.description.lowercased().contains(text) { score += 0.6 }
             else { return nil }
 
             score += twin.confidence * 0.15

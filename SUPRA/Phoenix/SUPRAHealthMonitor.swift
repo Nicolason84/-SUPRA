@@ -178,7 +178,7 @@ public final class SUPRAHealthMonitor: ObservableObject, Sendable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 5_000_000_000)
                 guard !Task.isCancelled else { break }
-                await self.performHealthCheck()
+                self.performHealthCheck()
             }
         }
     }

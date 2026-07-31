@@ -239,8 +239,8 @@ final class SUPRACanonicalWorldAccess {
 final class CustomerWorldAccess {
     private let access: SUPRACanonicalWorldAccess
 
-    init(access: SUPRACanonicalWorldAccess = .shared) {
-        self.access = access
+    init(access: SUPRACanonicalWorldAccess? = nil) {
+        self.access = access ?? .shared
     }
 
     var memory: CanonicalMemoryState { access.getMemoryState() }

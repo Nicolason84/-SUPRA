@@ -258,7 +258,6 @@ final class RuntimeDataService: ObservableObject {
     }
 
     private func collectServices() async -> SystemMetricState<ServicesInfo> {
-        let workspace = FileManager.default.currentDirectoryPath
         let supraProcs = try? await shell("ps aux 2>/dev/null | grep -i 'supra' | grep -v grep | wc -l")
         let totalStr = supraProcs?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "0"
         let total = Int(totalStr) ?? 0
@@ -421,6 +420,7 @@ final class RuntimeDataService: ObservableObject {
     }
 
     private nonisolated func directorySize(at path: String) throws -> Int64 {
+        let fm = FileManager.default
         guard fm.fileExists(atPath: path) else { return 0 }
         guard let enumerator = fm.enumerator(atPath: path) else { return 0 }
         var total: Int64 = 0

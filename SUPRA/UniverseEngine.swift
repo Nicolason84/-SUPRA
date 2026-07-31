@@ -71,7 +71,7 @@ final class UniverseEngine: ObservableObject {
     }
 
     func dispatchMission(_ missionId: String, description: String) async {
-        await bridge.startMission(missionId, description: description)
+        _ = await bridge.startMission(missionId, description: description)
     }
 
     func universeState() -> UniverseState? {

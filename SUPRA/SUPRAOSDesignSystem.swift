@@ -88,7 +88,6 @@ enum SUPRAOSDesignSystem {
         }
     }
 
-    @ViewBuilder
     /// Apply a shadow from the design system to any view
     static func nsShadow(_ shadow: Shadow) -> NSShadow {
         let ns = NSShadow()

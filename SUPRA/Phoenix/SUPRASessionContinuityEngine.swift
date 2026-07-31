@@ -158,45 +158,54 @@ public final class SUPRAInMemoryCheckpointStore: SUPRACheckpointStore {
     private init() {}
 
     public func save(_ checkpoint: SUPRACheckpoint) async {
-        lock.lock()
-        defer { lock.unlock() }
-        checkpoints.append(checkpoint)
+        withLock {
+            checkpoints.append(checkpoint)
+        }
     }
 
     public func loadLatest(forSessionID sessionID: UUID) async -> SUPRACheckpoint? {
-        lock.lock()
-        defer { lock.unlock() }
-        return checkpoints
-            .filter { $0.sessionID == sessionID }
-            .max { $0.timestamp < $1.timestamp }
+        withLock {
+            checkpoints
+                .filter { $0.sessionID == sessionID }
+                .max { $0.timestamp < $1.timestamp }
+        }
     }
 
     public func loadLatest(forMissionID missionID: String) async -> SUPRACheckpoint? {
-        lock.lock()
-        defer { lock.unlock() }
-        return checkpoints
-            .filter { $0.missionID == missionID }
-            .max { $0.timestamp < $1.timestamp }
+        withLock {
+            checkpoints
+                .filter { $0.missionID == missionID }
+                .max { $0.timestamp < $1.timestamp }
+        }
     }
 
     public func loadAll(forSessionID sessionID: UUID) async -> [SUPRACheckpoint] {
-        lock.lock()
-        defer { lock.unlock() }
-        return checkpoints
-            .filter { $0.sessionID == sessionID }
-            .sorted { $0.timestamp < $1.timestamp }
+        withLock {
+            checkpoints
+                .filter { $0.sessionID == sessionID }
+                .sorted { $0.timestamp < $1.timestamp }
+        }
     }
 
     public func delete(sessionID: UUID) async {
-        lock.lock()
-        defer { lock.unlock() }
-        checkpoints.removeAll { $0.sessionID == sessionID }
+        withLock {
+            checkpoints.removeAll { $0.sessionID == sessionID }
+        }
     }
 
     public func deleteAll() async {
+        withLock {
+            checkpoints.removeAll()
+        }
+    }
+
+    /// Executes `body` while holding the lock, in a synchronous context.
+    /// Locking from a synchronous helper avoids the `noasync` restriction
+    /// that applies to `lock()`/`unlock()` in asynchronous contexts.
+    private func withLock<T>(_ body: () throws -> T) rethrows -> T {
         lock.lock()
         defer { lock.unlock() }
-        checkpoints.removeAll()
+        return try body()
     }
 }
 
@@ -294,8 +303,8 @@ public final class SUPRASessionContinuityEngine: ObservableObject, Sendable {
     private var healthCheckTask: Task<Void, Never>?
     private var runtimeSubscription: ExecutiveEventSubscription?
 
-    private init(checkpointStore: any SUPRACheckpointStore = SUPRAInMemoryCheckpointStore.shared) {
-        self.checkpointStore = checkpointStore
+    private init(checkpointStore: (any SUPRACheckpointStore)? = nil) {
+        self.checkpointStore = checkpointStore ?? SUPRAInMemoryCheckpointStore.shared
     }
 
     // MARK: - Heartbeat
@@ -313,7 +322,7 @@ public final class SUPRASessionContinuityEngine: ObservableObject, Sendable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: UInt64(self.heartbeatInterval * 1_000_000_000))
                 guard !Task.isCancelled else { break }
-                await self.performHeartbeat()
+                self.performHeartbeat()
             }
         }
 
@@ -376,7 +385,7 @@ public final class SUPRASessionContinuityEngine: ObservableObject, Sendable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 5_000_000_000) // Check every 5 seconds
                 guard !Task.isCancelled else { break }
-                await self.performHealthCheck()
+                self.performHealthCheck()
             }
         }
 

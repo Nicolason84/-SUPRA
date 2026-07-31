@@ -324,7 +324,7 @@ final class SUPRANucleoOrchestrator: ObservableObject {
         var status: NucleoStatus = .success
         var cancelled = false
         var timeout = false
-        var cacheHit = false
+        let cacheHit = false
         var data: [String: String]?
 
         let maxRetries = 3

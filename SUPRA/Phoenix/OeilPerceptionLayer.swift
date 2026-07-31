@@ -308,8 +308,6 @@ public final class OeilPerceptionLayer: ObservableObject, ExecutiveEngine {
     // MARK: - Understanding
 
     private func updateUnderstanding(from snapshot: ExecutiveContextSnapshot) {
-        let runtimeStatus = snapshot.runtimeState
-        let presenceState = snapshot.presence.rawValue
         let visionActive = snapshot.vision.isWatching
 
         if snapshot.runtimeState == "active" && visionActive {

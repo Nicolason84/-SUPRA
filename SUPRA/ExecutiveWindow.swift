@@ -175,7 +175,6 @@ struct ExecutiveWindow: View {
         NotificationCenter.default.addObserver(forName: .supraRefresh, object: nil, queue: .main) { _ in
             // Force re-render of current space
             withAnimation(SUPRAOSDesignSystem.Motion.reveal) {
-                let current = destination
                 destination = destination // triggers refresh via onChange
             }
         }

@@ -176,9 +176,9 @@ final class SUPRARecommendationEngine: ObservableObject {
         switch rec.category {
         case "storage" where rec.problem.contains("DerivedData"):
             let path = NSHomeDirectory() + "/Library/Developer/Xcode/DerivedData"
-            try? FileManager.default.removeItem(atPath: path)
+            _ = try? FileManager.default.removeItem(atPath: path)
         case "storage" where rec.problem.contains("Espace disque"):
-            try? shell("rm -rf ~/.Trash/* 2>/dev/null")
+            _ = try? shell("rm -rf ~/.Trash/* 2>/dev/null")
         default: break
         }
     }

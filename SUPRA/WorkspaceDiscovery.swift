@@ -13,11 +13,11 @@ final class WorkspaceDiscovery: ObservableObject {
     private let coordinator: ProtectedFolderAccessCoordinator
 
     init(
-        config: WorkspaceConfiguration = .default,
-        coordinator: ProtectedFolderAccessCoordinator = .shared
+        config: WorkspaceConfiguration? = nil,
+        coordinator: ProtectedFolderAccessCoordinator? = nil
     ) {
-        self.config = config
-        self.coordinator = coordinator
+        self.config = config ?? .default
+        self.coordinator = coordinator ?? .shared
     }
 
     func scan() async throws -> [WorkspaceObject] {

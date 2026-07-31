@@ -99,7 +99,7 @@ struct SUPRACompanionView: View {
                     }
                     .padding(SUPRAOSDesignSystem.spacing)
                 }
-                .onChange(of: model.messages.count) { _ in
+                .onChange(of: model.messages.count) {
                     withAnimation { proxy.scrollTo("bottom", anchor: .bottom) }
                 }
             }

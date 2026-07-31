@@ -649,7 +649,7 @@ public final class SUPRAOrchestrationEngine: ObservableObject, Sendable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 5_000_000_000)
                 guard !Task.isCancelled else { break }
-                await self.performMonitoringCycle()
+                self.performMonitoringCycle()
             }
         }
 

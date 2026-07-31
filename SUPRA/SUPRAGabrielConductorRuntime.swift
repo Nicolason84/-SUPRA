@@ -142,10 +142,11 @@ enum SUPRAGabrielConductorRuntime {
     }
 
     static func run() async {
+        let runtimePath = gabrielRuntimePath
         await Task.detached(priority: .userInitiated) {
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-            process.arguments = [gabrielRuntimePath + "/gabriel_parallel_conductor.py", "run"]
+            process.arguments = [runtimePath + "/gabriel_parallel_conductor.py", "run"]
             process.standardOutput = Pipe()
             process.standardError = Pipe()
 

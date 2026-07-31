@@ -223,7 +223,6 @@ final class ContinuityManager: ObservableObject {
         ]
 
         for (name, path) in requiredPaths {
-            let url = URL(fileURLWithPath: path)
             let exists = fm.fileExists(atPath: path)
             let readable: Bool
             if exists {

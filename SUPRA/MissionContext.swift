@@ -33,8 +33,8 @@ final class MissionContext: ObservableObject {
 
     private let kernel: NOVAKnowledgeKernel
 
-    init(kernel: NOVAKnowledgeKernel = .shared) {
-        self.kernel = kernel
+    init(kernel: NOVAKnowledgeKernel? = nil) {
+        self.kernel = kernel ?? .shared
     }
 
     func prepare(for request: MissionContextRequest) async {
@@ -66,7 +66,7 @@ final class MissionContext: ObservableObject {
                 let lower = keyword.lowercased()
                 if obj.name.lowercased().contains(lower) { score += 0.2 }
                 if obj.description.lowercased().contains(lower) { score += 0.1 }
-                if obj.tags.contains { $0.lowercased().contains(lower) } { score += 0.05 }
+                if obj.tags.contains(where: { $0.lowercased().contains(lower) }) { score += 0.05 }
             }
             if obj.authority != nil { score += 0.1 }
             return (obj, min(score, 1.0))

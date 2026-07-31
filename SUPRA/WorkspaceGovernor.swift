@@ -52,7 +52,6 @@ final class WorkspaceGovernor: ObservableObject {
 
     func scan(_ objects: [CAnnoNicoObject]) {
         issues = []
-        let start = Date()
 
         detectDuplicates(objects)
         detectOrphans(objects)

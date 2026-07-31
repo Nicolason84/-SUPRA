@@ -10,8 +10,8 @@ final class DashboardCoordinator: ObservableObject {
 
     private let state: SUPRACommandCenterState
 
-    init(state: SUPRACommandCenterState = .shared) {
-        self.state = state
+    init(state: SUPRACommandCenterState? = nil) {
+        self.state = state ?? .shared
     }
 
     var isReady: Bool { state.isReady }

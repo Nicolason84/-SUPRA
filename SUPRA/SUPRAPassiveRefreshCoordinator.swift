@@ -39,8 +39,9 @@ final class SUPRAPassiveRefreshCoordinator: ObservableObject {
     private func scheduleNext() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.onTimerTick()
+                self.onTimerTick()
             }
         }
     }

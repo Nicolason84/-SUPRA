@@ -104,7 +104,6 @@ public final class SUPRAFallbackEngine: ObservableObject {
                                             maxRetries: Int = 2,
                                             gear: PowerGear = .G2_STANDARD) async throws -> String {
         let events = SUPRARuntimeEvents.shared
-        let locks = SUPRATransmissionLocks.shared
 
         events.emit(.executionStarted,
                     "Bounded execution via \(providerID)/\(modelID) [\(gear.rawValue)]",

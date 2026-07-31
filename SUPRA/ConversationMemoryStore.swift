@@ -9,7 +9,7 @@ struct ConversationMessage: Identifiable, Codable, Equatable, Sendable {
     let timestamp: Date?
 }
 
-struct ConversationSummary: Codable, Equatable, Sendable {
+nonisolated struct ConversationSummary: Codable, Equatable, Sendable {
     var context: String
     var decisions: [String]
     var nextActions: [String]
@@ -92,12 +92,12 @@ struct ConversationFileFingerprint: Sendable, Equatable, Codable {
     let modificationDate: Date
 }
 
-private struct FingerprintManifest: Codable {
+nonisolated private struct FingerprintManifest: Codable {
     let version: Int
     let fingerprints: [String: ConversationFileFingerprint]
 }
 
-struct ConversationSourceKey: Hashable, Sendable {
+nonisolated struct ConversationSourceKey: Hashable, Sendable {
     let sourceCanonicalPath: String?
     let stableConversationComponent: String
 
@@ -128,7 +128,7 @@ struct ConversationReconciliationResult: Sendable {
     let affectedSources: Set<String>
 }
 
-private func sha256Digest(_ data: Data) -> Data {
+private nonisolated func sha256Digest(_ data: Data) -> Data {
     var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
     data.withUnsafeBytes { buffer in
         _ = CC_SHA256(buffer.baseAddress, CC_LONG(data.count), &hash)
@@ -210,7 +210,10 @@ final class ConversationMemoryStore: ObservableObject {
     func startAutoRefresh() {
         stopAutoRefresh()
         timer = Timer.scheduledTimer(withTimeInterval: 90, repeats: true) { [weak self] _ in
-            self?.refresh()
+            guard let self else { return }
+            Task { @MainActor in
+                self.refresh()
+            }
         }
     }
 
@@ -695,7 +698,6 @@ final class ConversationMemoryStore: ObservableObject {
         for (sourcePath, parsedRecords) in parsedBySource {
             let existingForSource = existingBySource[sourcePath] ?? []
             let existingById: [String: ConversationRecord] = Dictionary(uniqueKeysWithValues: existingForSource.map { ($0.id, $0) })
-            let existingKeys: Set<ConversationSourceKey> = Set(existingForSource.compactMap { ConversationSourceKey.forRecord($0, canonicalPath: sourcePath) })
             var matchedExistingIds: Set<String> = []
 
             for newRecord in parsedRecords {

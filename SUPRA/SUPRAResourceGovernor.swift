@@ -79,8 +79,9 @@ final class SUPRAResourceGovernor: ObservableObject {
         previousLoad = cpuLoad()
         poll()
         timer = Timer.scheduledTimer(withTimeInterval: pollInterval, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.poll()
+                self.poll()
             }
         }
     }

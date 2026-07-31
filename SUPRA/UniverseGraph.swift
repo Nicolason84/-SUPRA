@@ -40,7 +40,6 @@ final class UniverseGraph: ObservableObject {
         nodes.append(universeNode)
 
         for twin in registry.twins {
-            let lc = lifecycles.lifecycle(for: twin.id)
             let twinBindings = bindings.bindings(for: twin.id)
 
             let node = UniverseGraphNode(

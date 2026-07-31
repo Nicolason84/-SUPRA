@@ -256,7 +256,7 @@ final class ExecutiveWorkflowRegistry: ObservableObject {
         }
 
         let decision = "Santé globale: \(overallHealth) (score: \(Int(healthScore * 100))%) — \(risks.isEmpty ? "Aucun risque critique" : "\(risks.count) risques détectés")"
-        var actions = recommendedActions(for: overallHealth, risks: risks, opportunities: opportunities)
+        let actions = recommendedActions(for: overallHealth, risks: risks, opportunities: opportunities)
 
         SUPRARuntimeLogger.shared.log(.dashboard, "Workflow[\(workflow.name)]: Rapport")
         SUPRARuntimeLogger.shared.log(.dashboard, "Workflow[\(workflow.name)]: Archivage")

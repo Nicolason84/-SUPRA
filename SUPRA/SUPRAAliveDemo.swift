@@ -31,7 +31,6 @@ public enum SUPRAAliveDemo {
         let decisionEngine = SUPRADecisionEngine.shared
         let planner = SUPRAExecutionPlanner.shared
         let routingPolicy = SUPRARoutingPolicy.shared
-        let scheduler = SUPRAScheduler.shared
         let fallbackEngine = SUPRAFallbackEngine.shared
         let runtimeMetrics = SUPRARuntimeMetrics.shared
         let events = SUPRARuntimeEvents.shared

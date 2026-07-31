@@ -43,8 +43,8 @@ final class ExecutiveSearch: ObservableObject {
     private let kernel: NOVAKnowledgeKernel
     private let memory: ExecutiveMemory
 
-    init(kernel: NOVAKnowledgeKernel = .shared, memory: ExecutiveMemory) {
-        self.kernel = kernel
+    init(kernel: NOVAKnowledgeKernel? = nil, memory: ExecutiveMemory) {
+        self.kernel = kernel ?? .shared
         self.memory = memory
     }
 

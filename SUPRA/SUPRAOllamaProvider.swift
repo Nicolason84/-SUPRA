@@ -160,7 +160,7 @@ final class SUPRAOllamaProvider: SUPRAProviderPlugin {
     }
 
     func onRegister() async {
-        await healthCheck()
+        _ = await healthCheck()
         startPeriodicHealthCheck()
     }
 

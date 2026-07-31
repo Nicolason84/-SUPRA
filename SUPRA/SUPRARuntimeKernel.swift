@@ -212,10 +212,10 @@ public final class SUPRARuntimeKernel: ObservableObject {
     private func buildState(from manifest: PlatformManifest) {
         var components = instantiateComponents(manifest.components)
         let edges = buildDependencyGraph(components: components)
-        let resolved = resolveInstances(&components, edges: edges)
+        _ = resolveInstances(&components, edges: edges)
         let order = topologicalSort(components: components, edges: edges)
         let contracts = validateContracts(components: components)
-        let health = evaluateHealth(components: components)
+        _ = evaluateHealth(components: components)
 
         let layerBreakdown = Dictionary(grouping: manifest.components, by: \.layer)
             .map { ($0.key, $0.value.count) }

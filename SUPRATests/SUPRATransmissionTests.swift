@@ -158,9 +158,9 @@ final class SUPRATransmissionGearSelectionTests: XCTestCase {
 
     func testLocksReleasedAfterFailure() async {
         let locks = SUPRATransmissionLocks.shared
-        locks.acquire(.developWriter, holder: "test-writer")
-        locks.acquire(.commit, holder: "test-writer")
-        locks.acquire(.modelMemory, holder: "test-writer")
+        XCTAssertTrue(locks.acquire(.developWriter, holder: "test-writer"))
+        XCTAssertTrue(locks.acquire(.commit, holder: "test-writer"))
+        XCTAssertTrue(locks.acquire(.modelMemory, holder: "test-writer"))
 
         XCTAssertTrue(locks.developWriterLock)
         XCTAssertTrue(locks.commitLock)

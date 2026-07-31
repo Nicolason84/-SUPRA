@@ -110,7 +110,6 @@ final class SUPRAIntelligenceGraph: ObservableObject {
 
     func path(from sourceID: UUID, to targetID: UUID) -> [IntelligenceGraphEdge] {
         var visited = Set<UUID>()
-        var result: [IntelligenceGraphEdge] = []
         var queue: [(UUID, [IntelligenceGraphEdge])] = [(sourceID, [])]
 
         while !queue.isEmpty {

@@ -12,8 +12,8 @@ final class ExportService: ObservableObject {
 
     private let state: SUPRACommandCenterState
 
-    init(state: SUPRACommandCenterState = .shared) {
-        self.state = state
+    init(state: SUPRACommandCenterState? = nil) {
+        self.state = state ?? .shared
     }
 
     // MARK: - Export

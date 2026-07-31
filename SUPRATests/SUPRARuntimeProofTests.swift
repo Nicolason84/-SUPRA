@@ -6,7 +6,7 @@ final class SUPRARuntimeProviderProofTests: XCTestCase {
 
     // MARK: - Test Providers
 
-    private final class TestProviderA: SUPRAProviderPlugin {
+    private nonisolated final class TestProviderA: SUPRAProviderPlugin {
         let pluginID = "test.provider.a"
         let pluginVersion = "1.0"
         let pluginCapabilities = ["conversation"]
@@ -34,7 +34,7 @@ final class SUPRARuntimeProviderProofTests: XCTestCase {
         }
     }
 
-    private final class TestProviderB: SUPRAProviderPlugin {
+    private nonisolated final class TestProviderB: SUPRAProviderPlugin {
         let pluginID = "test.provider.b"
         let pluginVersion = "1.0"
         let pluginCapabilities = ["conversation"]
@@ -62,7 +62,7 @@ final class SUPRARuntimeProviderProofTests: XCTestCase {
         }
     }
 
-    private final class FailingProvider: SUPRAProviderPlugin {
+    private nonisolated final class FailingProvider: SUPRAProviderPlugin {
         let pluginID = "test.provider.fail"
         let pluginVersion = "1.0"
         let pluginCapabilities = ["conversation"]
@@ -115,7 +115,7 @@ final class SUPRARuntimeProviderProofTests: XCTestCase {
                                  "claude", "gpt"]
         for file in kernelFiles {
             let path = "SUPRA/" + file + ".swift"
-            if let content = try? String(contentsOfFile: path) {
+            if let content = try? String(contentsOfFile: path, encoding: .utf8) {
                 for provider in concreteProviders {
                     XCTAssertFalse(content.lowercased().contains(provider),
                                    "\(file).swift references concrete provider '\(provider)'")

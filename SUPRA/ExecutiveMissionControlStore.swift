@@ -94,7 +94,7 @@ final class ExecutiveMissionControlStore: ObservableObject {
 
     func evaluateAlerts(now: Date) {
         let published = (try? decodeOptional([ExecutiveRuntimeAlert].self, at: rootURL.appendingPathComponent("alerts.json"))) ?? []
-        alerts = deduplicated((published ?? []) + generatedAlerts(now: now))
+        alerts = deduplicated(published + generatedAlerts(now: now))
             .sorted { $0.timestamp > $1.timestamp }
     }
 

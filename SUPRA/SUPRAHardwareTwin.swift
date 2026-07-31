@@ -103,7 +103,6 @@ final class SUPRAHardwareTwin: ObservableObject {
     }
 
     private func currentCpuUsage() -> Double {
-        let count = ProcessInfo.processInfo.activeProcessorCount
         var cpuInfo = host_cpu_load_info()
         var countPtr = mach_msg_type_number_t(MemoryLayout<host_cpu_load_info_data_t>.size / MemoryLayout<integer_t>.size)
         let result = withUnsafeMutablePointer(to: &cpuInfo) {

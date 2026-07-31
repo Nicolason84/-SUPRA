@@ -77,19 +77,17 @@ final class ExecutiveCockpitFoundation: ObservableObject {
     private let timeline: ExecutiveTimeline
     private let graph: ExecutiveGraph
 
-    init(kernel: NOVAKnowledgeKernel = .shared,
+    init(kernel: NOVAKnowledgeKernel? = nil,
          memory: ExecutiveMemory,
          timeline: ExecutiveTimeline,
          graph: ExecutiveGraph) {
-        self.kernel = kernel
+        self.kernel = kernel ?? .shared
         self.memory = memory
         self.timeline = timeline
         self.graph = graph
     }
 
     func initialize() {
-        let start = Date()
-
         configureWidgets()
         refreshState()
 
@@ -101,9 +99,6 @@ final class ExecutiveCockpitFoundation: ObservableObject {
     }
 
     func refreshState() {
-        let allObjects = kernel.allObjectsSnapshot()
-        let allRelations = kernel.allRelationsSnapshot()
-
         state = CockpitState(
             kernelInitialized: kernel.isInitialized,
             objectCount: kernel.objectCount,

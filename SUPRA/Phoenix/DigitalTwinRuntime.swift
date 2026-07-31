@@ -259,7 +259,6 @@ public final class DigitalTwinRuntime: ObservableObject, ExecutiveEngine {
         let homeDir = NSHomeDirectory()
         if let attrs = try? fileManager.attributesOfFileSystem(forPath: homeDir) {
             let freeSize = (attrs[.systemFreeSize] as? NSNumber)?.int64Value ?? 0
-            let totalSize = (attrs[.systemSize] as? NSNumber)?.int64Value ?? 0
 
             resourceMirror = ResourceTwin(
                 cpuUsage: 0, // Would need host_info for accurate CPU
