@@ -1,0 +1,6 @@
+{
+  "id": "SOL_BRIDGE_PROBE_20260820_0424",
+  "type": "C1_CHAT",
+  "authority": "SOL",
+  "message": "SOL_BRIDGE_E2E_PROBE. Réponds uniquement: SOL_BRIDGE_E2E_PASS"
+}
