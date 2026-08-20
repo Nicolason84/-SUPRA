@@ -1,0 +1,21 @@
+{
+  "id": "SOL_BRIDGE_PROBE_20260820_0424",
+  "status": "PASS",
+  "route": "SOL→GITHUB→C1:18765→OPENCODE",
+  "timestamp": "2026-08-20T02:24:34.501786+00:00",
+  "bridge_result": {
+    "status": "PASS",
+    "schema": "SUPRA_OPENCODE_RESULT_V1",
+    "session_id": "ses_fe3040306ffeq63i4TQBAGAPoe",
+    "reply": "SOL_BRIDGE_E2E_PASS",
+    "finish": "stop",
+    "idle": true,
+    "stable": true,
+    "assistant_seen": true,
+    "events_seen": [
+      "direct_post"
+    ],
+    "duration_seconds": 3.021,
+    "transport": "OPENCODE_DIRECT_MESSAGE_4096"
+  }
+}
