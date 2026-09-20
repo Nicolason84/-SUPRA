@@ -652,7 +652,14 @@ private actor SUPRAProcessObservatoryScanner {
                 return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
             }
 
-            guard url.pathExtension.lowercased() == "json" else { continue }
+            let lowerName = url.lastPathComponent.lowercased()
+            let accepted: Bool
+            if result {
+                accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".result.txt")
+            } else {
+                accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".json.gdoc")
+            }
+            guard accepted else { continue }
 
             do {
                 let values = try url.resourceValues(forKeys: keys)
@@ -930,20 +937,52 @@ private actor SUPRAProcessObservatoryScanner {
 
         if Swift.Task.isCancelled { return nil }
 
-        guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            cacheParsedResult(nil, for: file)
-            return nil
-        }
-        if Swift.Task.isCancelled { return nil }
-
-        var merged = root
-        if let bridge = root["bridge_result"] as? [String: Any],
-           let reply = bridge["reply"] as? String,
-           let replyData = reply.data(using: .utf8),
-           let nested = try? JSONSerialization.jsonObject(with: replyData) as? [String: Any] {
-            for (key, value) in nested {
-                merged[key] = value
+        let merged: [String: Any]
+        if file.url.lastPathComponent.lowercased().hasSuffix(".result.txt") {
+            guard let text = String(data: data, encoding: .utf8) else {
+                cacheParsedResult(nil, for: file)
+                return nil
             }
+
+            var fields: [String: Any] = [:]
+            for rawLine in text.split(whereSeparator: \.isNewline) {
+                let line = String(rawLine)
+                guard let separator = line.firstIndex(of: "=") else { continue }
+                let key = String(line[..<separator]).trimmingCharacters(in: .whitespacesAndNewlines)
+                let value = String(line[line.index(after: separator)...]).trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !key.isEmpty else { continue }
+                fields[key.lowercased()] = value
+            }
+
+            var normalized: [String: Any] = [:]
+            if let value = fields["status"] { normalized["status"] = value }
+            if let value = fields["action_nicolas"] { normalized["action_nicolas"] = value }
+            if let value = fields["f2_status_after"] { normalized["f2_status_after"] = value }
+            if let value = fields["lg01_classification"] { normalized["lg01_classification"] = value }
+            if let value = fields["proof_refs"] as? String {
+                normalized["proof_refs"] = value
+                    .split(separator: ",")
+                    .map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+            }
+            merged = normalized
+        } else {
+            guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                cacheParsedResult(nil, for: file)
+                return nil
+            }
+            if Swift.Task.isCancelled { return nil }
+
+            var normalized = root
+            if let bridge = root["bridge_result"] as? [String: Any],
+               let reply = bridge["reply"] as? String,
+               let replyData = reply.data(using: .utf8),
+               let nested = try? JSONSerialization.jsonObject(with: replyData) as? [String: Any] {
+                for (key, value) in nested {
+                    normalized[key] = value
+                }
+            }
+            merged = normalized
         }
 
         if Swift.Task.isCancelled { return nil }
@@ -1027,7 +1066,7 @@ private actor SUPRAProcessObservatoryScanner {
         let f2 = (parsed?.f2StatusAfter ?? "").uppercased()
 
         if status.contains("FROZEN") || f2.contains("FROZEN") { return .frozen }
-        if status.contains("BLOCKED") || status.contains("HUMAN_GATE") { return .blocked }
+        if status.contains("BLOCKED") || status.contains("HUMAN_GATE") || status.contains("REJECTED") { return .blocked }
         if status.contains("FAIL") { return .failed }
         return .materialized
     }
@@ -1071,6 +1110,8 @@ private actor SUPRAProcessObservatoryScanner {
     private func normalizedID(_ filename: String) -> String {
         filename
             .replacingOccurrences(of: ".result.json", with: "")
+            .replacingOccurrences(of: ".result.txt", with: "")
+            .replacingOccurrences(of: ".json.gdoc", with: "")
             .replacingOccurrences(of: ".json", with: "")
     }
 
