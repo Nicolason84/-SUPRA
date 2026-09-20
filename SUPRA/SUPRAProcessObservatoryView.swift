@@ -54,14 +54,58 @@ struct SUPRAProcessObservatoryView: View {
                     .tracking(1.5)
                     .foregroundStyle(.secondary)
                 Spacer()
-                HStack(spacing: 6) {
-                    Circle()
-                        .fill(store.bridgeAvailable ? Color.green : Color.orange)
-                        .frame(width: 8, height: 8)
-                    Text(store.sourceLabel)
-                        .font(.caption.weight(.semibold))
+                if store.bridgeAvailable {
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(Color.green)
+                            .frame(width: 8, height: 8)
+                        Text(store.sourceLabel)
+                            .font(.caption.weight(.semibold))
+                    }
+                } else {
+                    Button {
+                        store.selectBridgeRoot()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Circle()
+                                .fill(Color.orange)
+                                .frame(width: 8, height: 8)
+                            Text(store.sourceLabel)
+                                .font(.caption.weight(.semibold))
+                            Image(systemName: "folder.badge.gearshape")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .help("Select the existing REMOTE folder containing INBOX and OUTBOX")
                 }
             }
+
+            if !store.bridgeAvailable {
+                Button {
+                    store.selectBridgeRoot()
+                } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: "folder.badge.gearshape")
+                            .font(.title2)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text("Connect existing bridge")
+                                .font(.headline)
+                            Text("Read-only access · choose the REMOTE folder containing INBOX and OUTBOX")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Text("Select Bridge…")
+                            .font(.callout.weight(.semibold))
+                    }
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .accessibilityIdentifier("process-observatory-select-bridge")
+            }
+
             Text("Execution map")
                 .font(.system(size: 36, weight: .bold, design: .rounded))
             Text("Read-only observation of mission flow, evidence materialization, drift and bottlenecks.")
