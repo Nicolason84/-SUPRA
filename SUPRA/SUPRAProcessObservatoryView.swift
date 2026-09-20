@@ -945,7 +945,7 @@ private actor SUPRAProcessObservatoryScanner {
             }
 
             var fields: [String: Any] = [:]
-            for rawLine in text.split(whereSeparator: \.isNewline) {
+            for rawLine in text.split(whereSeparator: { $0.isNewline }) {
                 let line = String(rawLine)
                 guard let separator = line.firstIndex(of: "=") else { continue }
                 let key = String(line[..<separator]).trimmingCharacters(in: .whitespacesAndNewlines)
