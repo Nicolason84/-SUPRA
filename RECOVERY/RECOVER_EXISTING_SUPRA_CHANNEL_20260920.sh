@@ -71,7 +71,10 @@ if ! lsof -nP -iTCP:4096 -sTCP:LISTEN >/dev/null 2>&1; then
   [ -n "$OPENCODE" ] || die "OPENCODE_BINARY_NOT_FOUND" 17
   [ -d "$WORKSPACE" ] || die "WORKSPACE_NOT_FOUND:$WORKSPACE" 18
 
-  nohup "$OPENCODE" "$WORKSPACE" --agent "SUPRA-Router" >"$OC_LOG" 2>&1 </dev/null &
+  (
+    cd "$WORKSPACE"
+    nohup "$OPENCODE" serve --hostname 127.0.0.1 --port 4096 >"$OC_LOG" 2>&1 </dev/null &
+  )
 fi
 
 for _ in $(seq 1 30); do
