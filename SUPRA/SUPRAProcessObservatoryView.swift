@@ -362,7 +362,9 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 self.sourceLabel = root.path
                 self.processes = snapshot.processes
             } else {
-                self.clearBridgeState(label: "LOCAL BRIDGE UNAVAILABLE")
+                self.clearBridgeState(
+                    label: snapshot.unavailableReason ?? "LOCAL BRIDGE UNAVAILABLE"
+                )
             }
         }
     }
@@ -501,6 +503,8 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 private actor SUPRAProcessObservatoryScanner {
     private let fileManager = FileManager.default
     private let maxProcessIDs = 500
+    private let maxDirectoryEntries = 5_000
+    private let maxResultBytes = 4 * 1024 * 1024
     private var parsedCache: [String: SUPRAParsedCacheEntry] = [:]
 
     func scan(root: URL) -> SUPRAProcessSnapshot? {
@@ -511,62 +515,121 @@ private actor SUPRAProcessObservatoryScanner {
 
         guard isDirectory(inboxURL), isDirectory(outboxURL) else {
             parsedCache.removeAll(keepingCapacity: true)
-            return SUPRAProcessSnapshot(bridgeAvailable: false, processes: [])
+            return SUPRAProcessSnapshot(
+                bridgeAvailable: false,
+                processes: [],
+                unavailableReason: "BRIDGE DIRECTORIES UNAVAILABLE"
+            )
         }
 
-        let inbox = descriptors(in: inboxURL, result: false)
-        guard !Swift.Task.isCancelled else { return nil }
+        let inbox: [SUPRAObservedFile]
+        switch descriptors(in: inboxURL, result: false) {
+        case .success(let files):
+            inbox = files
+        case .failure(let reason):
+            parsedCache.removeAll(keepingCapacity: true)
+            return SUPRAProcessSnapshot(
+                bridgeAvailable: false,
+                processes: [],
+                unavailableReason: reason
+            )
+        case .cancelled:
+            return nil
+        }
 
-        let outbox = descriptors(in: outboxURL, result: true)
-        guard !Swift.Task.isCancelled else { return nil }
+        let outbox: [SUPRAObservedFile]
+        switch descriptors(in: outboxURL, result: true) {
+        case .success(let files):
+            outbox = files
+        case .failure(let reason):
+            parsedCache.removeAll(keepingCapacity: true)
+            return SUPRAProcessSnapshot(
+                bridgeAvailable: false,
+                processes: [],
+                unavailableReason: reason
+            )
+        case .cancelled:
+            return nil
+        }
 
-        guard let processes = buildProcesses(inbox: inbox, outbox: outbox) else {
+        guard !Swift.Task.isCancelled,
+              let processes = buildProcesses(inbox: inbox, outbox: outbox) else {
             return nil
         }
 
         return SUPRAProcessSnapshot(
             bridgeAvailable: true,
-            processes: processes
+            processes: processes,
+            unavailableReason: nil
         )
     }
 
-    private func descriptors(in directory: URL, result: Bool) -> [SUPRAObservedFile] {
+    private func descriptors(
+        in directory: URL,
+        result: Bool
+    ) -> SUPRADirectoryScanResult {
         let keys: Set<URLResourceKey> = [
             .contentModificationDateKey,
             .isRegularFileKey,
-            .fileSizeKey
+            .fileSizeKey,
+            .fileResourceIdentifierKey
         ]
 
-        guard let urls = try? fileManager.contentsOfDirectory(
+        var enumerationError: Error?
+        guard let enumerator = fileManager.enumerator(
             at: directory,
             includingPropertiesForKeys: Array(keys),
-            options: [.skipsHiddenFiles]
+            options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants],
+            errorHandler: { _, error in
+                enumerationError = error
+                return false
+            }
         ) else {
-            return []
+            return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
         }
 
         var files: [SUPRAObservedFile] = []
-        files.reserveCapacity(urls.count)
+        files.reserveCapacity(min(maxDirectoryEntries, 1_024))
+        var visitedEntries = 0
 
-        for url in urls {
-            if Swift.Task.isCancelled { break }
+        while let object = enumerator.nextObject() {
+            if Swift.Task.isCancelled { return .cancelled }
+            guard let url = object as? URL else { continue }
+
+            visitedEntries += 1
+            guard visitedEntries <= maxDirectoryEntries else {
+                return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
+            }
+
             guard url.pathExtension.lowercased() == "json" else { continue }
 
-            let values = try? url.resourceValues(forKeys: keys)
-            guard values?.isRegularFile == true else { continue }
+            do {
+                let values = try url.resourceValues(forKeys: keys)
+                guard values.isRegularFile == true else { continue }
 
-            files.append(
-                SUPRAObservedFile(
-                    id: normalizedID(url.lastPathComponent),
-                    url: url,
-                    modifiedAt: values?.contentModificationDate,
-                    fileSize: values?.fileSize,
-                    result: result
+                files.append(
+                    SUPRAObservedFile(
+                        id: normalizedID(url.lastPathComponent),
+                        url: url,
+                        modifiedAt: values.contentModificationDate,
+                        fileSize: values.fileSize,
+                        resourceIdentifier: values.fileResourceIdentifier.map {
+                            String(reflecting: $0)
+                        },
+                        result: result
+                    )
                 )
-            )
+            } catch {
+                return .failure("BRIDGE FILE METADATA READ FAILED")
+            }
         }
 
-        return files
+        if Swift.Task.isCancelled { return .cancelled }
+        if enumerationError != nil {
+            return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
+        }
+
+        return .success(files)
     }
 
     private func buildProcesses(
@@ -627,7 +690,7 @@ private actor SUPRAProcessObservatoryScanner {
                     drift: drift,
                     isBottleneck: false,
                     statusText: hasOutput && parsed == nil
-                        ? "Unreadable or malformed OUTBOX result"
+                        ? invalidResultStatus(output)
                         : parsed?.status,
                     actionNicolas: parsed?.actionNicolas,
                     f2StatusAfter: parsed?.f2StatusAfter,
@@ -656,6 +719,13 @@ private actor SUPRAProcessObservatoryScanner {
         }
 
         return processes
+    }
+
+    private func invalidResultStatus(_ output: SUPRAObservedFile?) -> String {
+        if let size = output?.fileSize, size > maxResultBytes {
+            return "OUTBOX result exceeds 4 MiB read limit"
+        }
+        return "Unreadable or malformed OUTBOX result"
     }
 
     private func processActivityDate(
@@ -706,15 +776,32 @@ private actor SUPRAProcessObservatoryScanner {
 
         let cacheKey = file.url.path
 
-        if let cached = parsedCache[cacheKey],
+        if let identifier = file.resourceIdentifier,
+           let cached = parsedCache[cacheKey],
+           cached.resourceIdentifier == identifier,
            cached.modifiedAt == file.modifiedAt,
            cached.fileSize == file.fileSize {
             return cached.parsed
         }
 
-        guard let data = try? Data(contentsOf: file.url) else {
+        if let fileSize = file.fileSize, fileSize > maxResultBytes {
             return nil
         }
+
+        let data: Data
+        do {
+            let handle = try FileHandle(forReadingFrom: file.url)
+            defer { try? handle.close() }
+
+            guard let bounded = try handle.read(upToCount: maxResultBytes + 1),
+                  bounded.count <= maxResultBytes else {
+                return nil
+            }
+            data = bounded
+        } catch {
+            return nil
+        }
+
         if Swift.Task.isCancelled { return nil }
 
         guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
@@ -742,10 +829,11 @@ private actor SUPRAProcessObservatoryScanner {
             proofRefs: merged["proof_refs"] as? [String] ?? []
         )
 
-        if !Swift.Task.isCancelled {
+        if !Swift.Task.isCancelled, let identifier = file.resourceIdentifier {
             parsedCache[cacheKey] = SUPRAParsedCacheEntry(
                 modifiedAt: file.modifiedAt,
                 fileSize: file.fileSize,
+                resourceIdentifier: identifier,
                 parsed: parsed
             )
         }
@@ -942,6 +1030,7 @@ private struct SUPRAObservedFile: Sendable {
     let url: URL
     let modifiedAt: Date?
     let fileSize: Int?
+    let resourceIdentifier: String?
     let result: Bool
 }
 
@@ -956,12 +1045,20 @@ private struct SUPRAParsedResult: Sendable {
 private struct SUPRAParsedCacheEntry: Sendable {
     let modifiedAt: Date?
     let fileSize: Int?
+    let resourceIdentifier: String
     let parsed: SUPRAParsedResult?
 }
 
 private struct SUPRAProcessSnapshot: Sendable {
     let bridgeAvailable: Bool
     let processes: [SUPRAObservedProcess]
+    let unavailableReason: String?
+}
+
+private enum SUPRADirectoryScanResult: Sendable {
+    case success([SUPRAObservedFile])
+    case failure(String)
+    case cancelled
 }
 
 #Preview {
