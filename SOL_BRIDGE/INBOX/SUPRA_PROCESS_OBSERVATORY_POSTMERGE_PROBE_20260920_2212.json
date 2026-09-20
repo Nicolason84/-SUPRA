@@ -1,0 +1,6 @@
+{
+  "id": "SUPRA_PROCESS_OBSERVATORY_POSTMERGE_PROBE_20260920_2212",
+  "type": "C1_CHAT",
+  "authority": "SOL",
+  "message": "AUTHORITY=NICOLAS\nMODE=READ_ONLY_PROBE\nNO_NEW_ENGINE=YES\nNO_NEW_BRIDGE=YES\nNO_NEW_RUNTIME=YES\nNO_BUILD=YES\nNO_INSTALL=YES\nNO_MUTATION=YES\n\nMISSION=PROVE_EXISTING_SUPRA_IMAC_CHANNEL_POSTMERGE\n\nCANONICAL_REPO=Nicolason84/-SUPRA\nCANONICAL_BRANCH=supra/human-gate-single-source-20260721_072447\nEXPECTED_MERGE_COMMIT=d091b19ff81d73772aac39c2531ceff545e5e63d\n\nDO ONLY:\n1) Prove this message reached the EXISTING C1/OpenCode channel.\n2) Resolve the EXISTING local -SUPRA checkout using known registry/resolver only; no global scan.\n3) Read local git HEAD/branch and remote configuration without fetching, pulling, resetting or modifying.\n4) Read whether the EXISTING local SOL_BRIDGE root and INBOX/OUTBOX directories exist.\n5) Make no changes.\n\nREPLY ONLY JSON:\n{\"status\":\"POSTMERGE_CHANNEL_PROVEN|FAIL_BOUNDED\",\"local_repo\":\"<path|NONE>\",\"local_head\":\"<sha|NONE>\",\"local_branch\":\"<branch|NONE>\",\"bridge_root\":\"<path|NONE>\",\"inbox_exists\":true,\"outbox_exists\":true,\"mutation_performed\":false,\"action_nicolas\":\"NONE|<single exact action>\"}"
+}
