@@ -506,10 +506,11 @@ private actor SUPRAProcessObservatoryScanner {
     private let maxDirectoryEntries = 5_000
     private let maxResultBytes = 4 * 1024 * 1024
     private let maxAggregateResultBytes = 32 * 1024 * 1024
-    private let maxRetainedTextCharacters = 4_096
+    private let maxRetainedTextBytes = 4_096
     private let maxRetainedProofRefs = 32
-    private let maxRetainedProofRefCharacters = 2_048
+    private let maxRetainedProofRefBytes = 2_048
     private var parsedCache: [String: SUPRAParsedCacheEntry] = [:]
+    private var scanCursor = 0
 
     func scan(root: URL) -> SUPRAProcessSnapshot? {
         guard !Swift.Task.isCancelled else { return nil }
@@ -576,7 +577,9 @@ private actor SUPRAProcessObservatoryScanner {
             .contentModificationDateKey,
             .isRegularFileKey,
             .fileSizeKey,
-            .fileResourceIdentifierKey
+            .fileResourceIdentifierKey,
+            .fileContentIdentifierKey,
+            .generationIdentifierKey
         ]
 
         var enumerationError: Error?
@@ -620,6 +623,8 @@ private actor SUPRAProcessObservatoryScanner {
                         resourceIdentifier: values.fileResourceIdentifier.map {
                             String(reflecting: $0)
                         },
+                        fileContentIdentifier: values.fileContentIdentifier,
+                        generationIdentifier: generationToken(values.generationIdentifier),
                         result: result
                     )
                 )
@@ -657,12 +662,23 @@ private actor SUPRAProcessObservatoryScanner {
         let activeOutputPaths = Set(selectedIDs.compactMap { outMap[$0]?.url.path })
         parsedCache = parsedCache.filter { activeOutputPaths.contains($0.key) }
 
+        let scanOrder: [String]
+        let scanStart: Int
+        if selectedIDs.isEmpty {
+            scanOrder = []
+            scanStart = 0
+        } else {
+            scanStart = scanCursor % selectedIDs.count
+            scanOrder = Array(selectedIDs[scanStart...]) + Array(selectedIDs[..<scanStart])
+        }
+
         var processes: [SUPRAObservedProcess] = []
         processes.reserveCapacity(selectedIDs.count)
         var remainingReadBytes = maxAggregateResultBytes
         var aggregateBudgetLimitedIDs = Set<String>()
+        var firstBudgetLimitedOffset: Int?
 
-        for id in selectedIDs {
+        for (offset, id) in scanOrder.enumerated() {
             guard !Swift.Task.isCancelled else { return nil }
 
             let input = inMap[id]
@@ -679,6 +695,11 @@ private actor SUPRAProcessObservatoryScanner {
             }
 
             guard !Swift.Task.isCancelled else { return nil }
+
+            if firstBudgetLimitedOffset == nil,
+               aggregateBudgetLimitedIDs.contains(id) {
+                firstBudgetLimitedOffset = offset
+            }
 
             let hasInbox = input != nil
             let hasOutput = output != nil
@@ -716,6 +737,14 @@ private actor SUPRAProcessObservatoryScanner {
                     proofRefs: parsed?.proofRefs ?? []
                 )
             )
+        }
+
+        if selectedIDs.isEmpty {
+            scanCursor = 0
+        } else if let firstBudgetLimitedOffset {
+            scanCursor = (scanStart + firstBudgetLimitedOffset) % selectedIDs.count
+        } else {
+            scanCursor = (scanStart + 1) % selectedIDs.count
         }
 
         if let oldestUnresolved = processes
@@ -804,10 +833,11 @@ private actor SUPRAProcessObservatoryScanner {
 
         let cacheKey = file.url.path
 
-        if let identifier = file.resourceIdentifier,
+        if let generationIdentifier = file.generationIdentifier,
            let cached = parsedCache[cacheKey],
-           cached.resourceIdentifier == identifier,
-           cached.modifiedAt == file.modifiedAt,
+           cached.generationIdentifier == generationIdentifier,
+           cached.resourceIdentifier == file.resourceIdentifier,
+           cached.fileContentIdentifier == file.fileContentIdentifier,
            cached.fileSize == file.fileSize {
             return cached.parsed
         }
@@ -837,6 +867,10 @@ private actor SUPRAProcessObservatoryScanner {
             guard let bounded = try handle.read(upToCount: perReadLimit + 1) else {
                 return nil
             }
+
+            let bytesActuallyRead = bounded.count
+            remainingReadBytes = max(0, remainingReadBytes - bytesActuallyRead)
+
             guard bounded.count <= perReadLimit else {
                 if perReadLimit < maxResultBytes {
                     aggregateBudgetLimitedIDs.insert(file.id)
@@ -849,8 +883,6 @@ private actor SUPRAProcessObservatoryScanner {
         } catch {
             return nil
         }
-
-        remainingReadBytes = max(0, remainingReadBytes - data.count)
 
         if Swift.Task.isCancelled { return nil }
 
@@ -888,29 +920,54 @@ private actor SUPRAProcessObservatoryScanner {
         _ parsed: SUPRAParsedResult?,
         for file: SUPRAObservedFile
     ) {
-        guard !Swift.Task.isCancelled, let identifier = file.resourceIdentifier else {
+        guard !Swift.Task.isCancelled,
+              let generationIdentifier = file.generationIdentifier else {
             return
         }
 
         parsedCache[file.url.path] = SUPRAParsedCacheEntry(
-            modifiedAt: file.modifiedAt,
             fileSize: file.fileSize,
-            resourceIdentifier: identifier,
+            resourceIdentifier: file.resourceIdentifier,
+            fileContentIdentifier: file.fileContentIdentifier,
+            generationIdentifier: generationIdentifier,
             parsed: parsed
         )
     }
 
     private func boundedString(_ value: Any?) -> String? {
-        guard let value else { return nil }
-        let text = value as? String ?? String(describing: value)
-        return String(text.prefix(maxRetainedTextCharacters))
+        guard let text = value as? String else { return nil }
+        return boundedUTF8(text, maxBytes: maxRetainedTextBytes)
     }
 
     private func boundedProofRefs(_ value: Any?) -> [String] {
         guard let refs = value as? [String] else { return [] }
         return refs.prefix(maxRetainedProofRefs).map {
-            String($0.prefix(maxRetainedProofRefCharacters))
+            boundedUTF8($0, maxBytes: maxRetainedProofRefBytes)
         }
+    }
+
+    private func boundedUTF8(_ text: String, maxBytes: Int) -> String {
+        guard maxBytes > 0 else { return "" }
+        if text.utf8.count <= maxBytes { return text }
+
+        var bytes = Array(text.utf8.prefix(maxBytes))
+        while !bytes.isEmpty {
+            if let bounded = String(bytes: bytes, encoding: .utf8) {
+                return bounded
+            }
+            bytes.removeLast()
+        }
+        return ""
+    }
+
+    private func generationToken(
+        _ value: (any NSCopying & NSSecureCoding & NSObjectProtocol)?
+    ) -> Data? {
+        guard let value else { return nil }
+        return try? NSKeyedArchiver.archivedData(
+            withRootObject: value,
+            requiringSecureCoding: true
+        )
     }
 
     private func stage(
@@ -1103,6 +1160,8 @@ private struct SUPRAObservedFile: Sendable {
     let modifiedAt: Date?
     let fileSize: Int?
     let resourceIdentifier: String?
+    let fileContentIdentifier: Int64?
+    let generationIdentifier: Data?
     let result: Bool
 }
 
@@ -1115,9 +1174,10 @@ private struct SUPRAParsedResult: Sendable {
 }
 
 private struct SUPRAParsedCacheEntry: Sendable {
-    let modifiedAt: Date?
     let fileSize: Int?
-    let resourceIdentifier: String
+    let resourceIdentifier: String?
+    let fileContentIdentifier: Int64?
+    let generationIdentifier: Data
     let parsed: SUPRAParsedResult?
 }
 
