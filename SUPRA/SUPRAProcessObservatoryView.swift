@@ -505,6 +505,10 @@ private actor SUPRAProcessObservatoryScanner {
     private let maxProcessIDs = 500
     private let maxDirectoryEntries = 5_000
     private let maxResultBytes = 4 * 1024 * 1024
+    private let maxAggregateResultBytes = 32 * 1024 * 1024
+    private let maxRetainedTextCharacters = 4_096
+    private let maxRetainedProofRefs = 32
+    private let maxRetainedProofRefCharacters = 2_048
     private var parsedCache: [String: SUPRAParsedCacheEntry] = [:]
 
     func scan(root: URL) -> SUPRAProcessSnapshot? {
@@ -655,13 +659,24 @@ private actor SUPRAProcessObservatoryScanner {
 
         var processes: [SUPRAObservedProcess] = []
         processes.reserveCapacity(selectedIDs.count)
+        var remainingReadBytes = maxAggregateResultBytes
+        var aggregateBudgetLimitedIDs = Set<String>()
 
         for id in selectedIDs {
             guard !Swift.Task.isCancelled else { return nil }
 
             let input = inMap[id]
             let output = outMap[id]
-            let parsed = output.flatMap(parseResult)
+            let parsed: SUPRAParsedResult?
+            if let output {
+                parsed = parseResult(
+                    output,
+                    remainingReadBytes: &remainingReadBytes,
+                    aggregateBudgetLimitedIDs: &aggregateBudgetLimitedIDs
+                )
+            } else {
+                parsed = nil
+            }
 
             guard !Swift.Task.isCancelled else { return nil }
 
@@ -690,7 +705,10 @@ private actor SUPRAProcessObservatoryScanner {
                     drift: drift,
                     isBottleneck: false,
                     statusText: hasOutput && parsed == nil
-                        ? invalidResultStatus(output)
+                        ? invalidResultStatus(
+                            output,
+                            aggregateBudgetLimited: aggregateBudgetLimitedIDs.contains(id)
+                        )
                         : parsed?.status,
                     actionNicolas: parsed?.actionNicolas,
                     f2StatusAfter: parsed?.f2StatusAfter,
@@ -721,7 +739,13 @@ private actor SUPRAProcessObservatoryScanner {
         return processes
     }
 
-    private func invalidResultStatus(_ output: SUPRAObservedFile?) -> String {
+    private func invalidResultStatus(
+        _ output: SUPRAObservedFile?,
+        aggregateBudgetLimited: Bool
+    ) -> String {
+        if aggregateBudgetLimited {
+            return "OUTBOX result deferred by 32 MiB scan budget"
+        }
         if let size = output?.fileSize, size > maxResultBytes {
             return "OUTBOX result exceeds 4 MiB read limit"
         }
@@ -771,7 +795,11 @@ private actor SUPRAProcessObservatoryScanner {
         return candidate.url.lastPathComponent < current.url.lastPathComponent
     }
 
-    private func parseResult(_ file: SUPRAObservedFile) -> SUPRAParsedResult? {
+    private func parseResult(
+        _ file: SUPRAObservedFile,
+        remainingReadBytes: inout Int,
+        aggregateBudgetLimitedIDs: inout Set<String>
+    ) -> SUPRAParsedResult? {
         if Swift.Task.isCancelled { return nil }
 
         let cacheKey = file.url.path
@@ -784,17 +812,37 @@ private actor SUPRAProcessObservatoryScanner {
             return cached.parsed
         }
 
-        if let fileSize = file.fileSize, fileSize > maxResultBytes {
+        if let fileSize = file.fileSize {
+            if fileSize > maxResultBytes {
+                cacheParsedResult(nil, for: file)
+                return nil
+            }
+            if fileSize > remainingReadBytes {
+                aggregateBudgetLimitedIDs.insert(file.id)
+                return nil
+            }
+        }
+
+        guard remainingReadBytes > 0 else {
+            aggregateBudgetLimitedIDs.insert(file.id)
             return nil
         }
 
+        let perReadLimit = min(maxResultBytes, remainingReadBytes)
         let data: Data
         do {
             let handle = try FileHandle(forReadingFrom: file.url)
             defer { try? handle.close() }
 
-            guard let bounded = try handle.read(upToCount: maxResultBytes + 1),
-                  bounded.count <= maxResultBytes else {
+            guard let bounded = try handle.read(upToCount: perReadLimit + 1) else {
+                return nil
+            }
+            guard bounded.count <= perReadLimit else {
+                if perReadLimit < maxResultBytes {
+                    aggregateBudgetLimitedIDs.insert(file.id)
+                } else {
+                    cacheParsedResult(nil, for: file)
+                }
                 return nil
             }
             data = bounded
@@ -802,9 +850,12 @@ private actor SUPRAProcessObservatoryScanner {
             return nil
         }
 
+        remainingReadBytes = max(0, remainingReadBytes - data.count)
+
         if Swift.Task.isCancelled { return nil }
 
         guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            cacheParsedResult(nil, for: file)
             return nil
         }
         if Swift.Task.isCancelled { return nil }
@@ -822,23 +873,44 @@ private actor SUPRAProcessObservatoryScanner {
         if Swift.Task.isCancelled { return nil }
 
         let parsed = SUPRAParsedResult(
-            status: string(merged["status"]),
-            actionNicolas: string(merged["action_nicolas"]),
-            f2StatusAfter: string(merged["f2_status_after"]),
-            lg01Classification: string(merged["lg01_classification"]),
-            proofRefs: merged["proof_refs"] as? [String] ?? []
+            status: boundedString(merged["status"]),
+            actionNicolas: boundedString(merged["action_nicolas"]),
+            f2StatusAfter: boundedString(merged["f2_status_after"]),
+            lg01Classification: boundedString(merged["lg01_classification"]),
+            proofRefs: boundedProofRefs(merged["proof_refs"])
         )
 
-        if !Swift.Task.isCancelled, let identifier = file.resourceIdentifier {
-            parsedCache[cacheKey] = SUPRAParsedCacheEntry(
-                modifiedAt: file.modifiedAt,
-                fileSize: file.fileSize,
-                resourceIdentifier: identifier,
-                parsed: parsed
-            )
+        cacheParsedResult(parsed, for: file)
+        return parsed
+    }
+
+    private func cacheParsedResult(
+        _ parsed: SUPRAParsedResult?,
+        for file: SUPRAObservedFile
+    ) {
+        guard !Swift.Task.isCancelled, let identifier = file.resourceIdentifier else {
+            return
         }
 
-        return parsed
+        parsedCache[file.url.path] = SUPRAParsedCacheEntry(
+            modifiedAt: file.modifiedAt,
+            fileSize: file.fileSize,
+            resourceIdentifier: identifier,
+            parsed: parsed
+        )
+    }
+
+    private func boundedString(_ value: Any?) -> String? {
+        guard let value else { return nil }
+        let text = value as? String ?? String(describing: value)
+        return String(text.prefix(maxRetainedTextCharacters))
+    }
+
+    private func boundedProofRefs(_ value: Any?) -> [String] {
+        guard let refs = value as? [String] else { return [] }
+        return refs.prefix(maxRetainedProofRefs).map {
+            String($0.prefix(maxRetainedProofRefCharacters))
+        }
     }
 
     private func stage(
