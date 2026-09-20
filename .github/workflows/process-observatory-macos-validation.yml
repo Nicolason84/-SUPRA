@@ -1,0 +1,65 @@
+name: Process Observatory macOS Validation
+
+on:
+  push:
+    branches:
+      - validation/process-observatory-macos26-20260920
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - name: Checkout validation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Toolchain proof
+        run: |
+          set -euxo pipefail
+          sw_vers
+          xcodebuild -version
+          xcrun --sdk macosx --show-sdk-version
+          git rev-parse HEAD
+          git rev-parse HEAD^
+
+      - name: Validate entitlement plist
+        run: |
+          set -euxo pipefail
+          plutil -lint SUPRA/SUPRA.entitlements
+          /usr/libexec/PlistBuddy -c 'Print :com.apple.security.app-sandbox' SUPRA/SUPRA.entitlements
+          /usr/libexec/PlistBuddy -c 'Print :com.apple.security.files.bookmarks.app-scope' SUPRA/SUPRA.entitlements
+          /usr/libexec/PlistBuddy -c 'Print :com.apple.security.files.user-selected.read-only' SUPRA/SUPRA.entitlements
+
+      - name: Project inventory
+        run: |
+          set -euxo pipefail
+          xcodebuild -list -project SUPRA.xcodeproj
+
+      - name: Build Debug
+        run: |
+          set -euxo pipefail
+          xcodebuild \
+            -project SUPRA.xcodeproj \
+            -scheme SUPRA \
+            -configuration Debug \
+            -sdk macosx \
+            -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData_Debug" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild \
+            -project SUPRA.xcodeproj \
+            -scheme SUPRA \
+            -configuration Release \
+            -sdk macosx \
+            -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData_Release" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
