@@ -317,9 +317,15 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
         lastRefresh = .now
 
+        if bookmarkedBridgeRoot == nil,
+           UserDefaults.standard.data(forKey: bookmarkKey) != nil {
+            restoreBridgeBookmark()
+        }
+
         guard let access = resolveBridgeAccess() else {
             scanGeneration &+= 1
-            clearBridgeState(label: "BRIDGE ACCESS REQUIRED")
+            let hasSavedBookmark = UserDefaults.standard.data(forKey: bookmarkKey) != nil
+            clearBridgeState(label: hasSavedBookmark ? "SAVED BRIDGE UNAVAILABLE" : "BRIDGE ACCESS REQUIRED")
             return
         }
 
@@ -411,8 +417,10 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         }
 
         guard let validated = validateBookmark(storedBookmark) else {
-            UserDefaults.standard.removeObject(forKey: bookmarkKey)
+            // Keep the persisted bookmark: an external volume or provider may be
+            // temporarily unavailable and can recover on a later live refresh.
             bookmarkedBridgeRoot = nil
+            sourceLabel = "SAVED BRIDGE UNAVAILABLE"
             return
         }
 
