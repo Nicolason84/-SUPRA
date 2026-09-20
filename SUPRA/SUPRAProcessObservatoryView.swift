@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import Combine
 import Foundation
 
@@ -36,6 +37,9 @@ struct SUPRAProcessObservatoryView: View {
                 .toggleStyle(.switch)
             Button("Refresh", systemImage: "arrow.clockwise") {
                 store.refresh()
+            }
+            Button("Select Bridge…", systemImage: "folder.badge.gearshape") {
+                store.selectBridgeRoot()
             }
         }
         .task { store.start() }
@@ -260,7 +264,16 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     @Published var isLive = true
 
     private var pollTask: Swift.Task<Void, Never>?
+    private var refreshTask: Swift.Task<Void, Never>?
+    private let scanner = SUPRAProcessObservatoryScanner()
+    private let bookmarkKey = "SUPRAProcessObservatory.bridgeRootBookmark.v1"
+    private var securityScopedBridgeRoot: URL?
+    private var securityScopeActive = false
     private let fileManager = FileManager.default
+
+    init() {
+        restoreBridgeBookmark()
+    }
 
     var inFlightCount: Int { processes.filter { $0.stage == .inFlight }.count }
     var materializedCount: Int { processes.filter(\.hasResult).count }
@@ -273,6 +286,9 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
     func start() {
         guard pollTask == nil else { return }
+        if securityScopedBridgeRoot == nil {
+            restoreBridgeBookmark()
+        }
         refresh()
         pollTask = Swift.Task { [weak self] in
             while !Swift.Task.isCancelled {
@@ -286,88 +302,269 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     func stop() {
         pollTask?.cancel()
         pollTask = nil
+        refreshTask?.cancel()
+        refreshTask = nil
+        releaseSecurityScope()
     }
 
     func refresh() {
+        guard refreshTask == nil else { return }
         lastRefresh = .now
+
         guard let root = resolveBridgeRoot() else {
-            bridgeAvailable = false
-            sourceLabel = "LOCAL BRIDGE NOT FOUND"
+            clearBridgeState(label: "BRIDGE ACCESS REQUIRED")
             return
         }
 
-        bridgeAvailable = true
         sourceLabel = root.path
-        let inbox = descriptors(in: root.appendingPathComponent("INBOX"), result: false)
-        let outbox = descriptors(in: root.appendingPathComponent("OUTBOX"), result: true)
-        processes = buildProcesses(inbox: inbox, outbox: outbox)
-    }
+        let scanner = self.scanner
+        refreshTask = Swift.Task { [weak self] in
+            let snapshot = await scanner.scan(root: root)
+            guard let self else { return }
 
-    private func resolveBridgeRoot() -> URL? {
-        let home = URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
-        let candidates = [
-            home.appendingPathComponent("SOL_BRIDGE", isDirectory: true),
-            home.appendingPathComponent("NOVA_OS/SOL_BRIDGE", isDirectory: true),
-            home.appendingPathComponent("NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1", isDirectory: true),
-            home.appendingPathComponent("NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1/SOL_BRIDGE", isDirectory: true),
-            home.appendingPathComponent("Applications/SUPRA.app/Contents/Resources/SUPRA_RUNTIME/SOL_BRIDGE", isDirectory: true)
-        ]
+            self.refreshTask = nil
+            guard !Swift.Task.isCancelled else { return }
 
-        return candidates.first { candidate in
-            fileManager.fileExists(atPath: candidate.appendingPathComponent("INBOX").path)
-                && fileManager.fileExists(atPath: candidate.appendingPathComponent("OUTBOX").path)
+            if snapshot.bridgeAvailable {
+                self.bridgeAvailable = true
+                self.sourceLabel = root.path
+                self.processes = snapshot.processes
+            } else {
+                self.clearBridgeState(label: "LOCAL BRIDGE UNAVAILABLE")
+            }
         }
     }
 
+    func selectBridgeRoot() {
+        let panel = NSOpenPanel()
+        panel.title = "Select existing SUPRA bridge"
+        panel.message = "Choose the existing bridge folder that contains INBOX and OUTBOX. SUPRA will retain read-only access."
+        panel.prompt = "Use Bridge"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = false
+
+        guard panel.runModal() == .OK, let selectedURL = panel.url else { return }
+
+        guard isBridgeRoot(selectedURL) else {
+            clearBridgeState(label: "SELECT FOLDER CONTAINING INBOX + OUTBOX")
+            return
+        }
+
+        do {
+            let bookmark = try selectedURL.bookmarkData(
+                options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+
+            releaseSecurityScope()
+            UserDefaults.standard.set(bookmark, forKey: bookmarkKey)
+
+            guard activateBookmark(bookmark, rewriteIfStale: true) else {
+                UserDefaults.standard.removeObject(forKey: bookmarkKey)
+                clearBridgeState(label: "BRIDGE BOOKMARK ACCESS FAILED")
+                return
+            }
+
+            refresh()
+        } catch {
+            UserDefaults.standard.removeObject(forKey: bookmarkKey)
+            clearBridgeState(label: "BRIDGE BOOKMARK CREATION FAILED")
+        }
+    }
+
+    private func restoreBridgeBookmark() {
+        guard securityScopedBridgeRoot == nil,
+              let bookmark = UserDefaults.standard.data(forKey: bookmarkKey) else {
+            return
+        }
+
+        guard activateBookmark(bookmark, rewriteIfStale: true) else {
+            UserDefaults.standard.removeObject(forKey: bookmarkKey)
+            clearBridgeState(label: "BRIDGE ACCESS REQUIRED")
+            return
+        }
+    }
+
+    private func activateBookmark(_ bookmark: Data, rewriteIfStale: Bool) -> Bool {
+        var isStale = false
+
+        guard let url = try? URL(
+            resolvingBookmarkData: bookmark,
+            options: [.withSecurityScope, .withoutUI],
+            relativeTo: nil,
+            bookmarkDataIsStale: &isStale
+        ) else {
+            return false
+        }
+
+        guard url.startAccessingSecurityScopedResource() else {
+            return false
+        }
+
+        guard isBridgeRoot(url) else {
+            url.stopAccessingSecurityScopedResource()
+            return false
+        }
+
+        securityScopedBridgeRoot = url
+        securityScopeActive = true
+
+        if isStale && rewriteIfStale,
+           let refreshed = try? url.bookmarkData(
+               options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+               includingResourceValuesForKeys: nil,
+               relativeTo: nil
+           ) {
+            UserDefaults.standard.set(refreshed, forKey: bookmarkKey)
+        }
+
+        return true
+    }
+
+    private func releaseSecurityScope() {
+        if securityScopeActive, let root = securityScopedBridgeRoot {
+            root.stopAccessingSecurityScopedResource()
+        }
+        securityScopeActive = false
+        securityScopedBridgeRoot = nil
+    }
+
+    private func resolveBridgeRoot() -> URL? {
+        if let selected = securityScopedBridgeRoot, isBridgeRoot(selected) {
+            return selected
+        }
+
+        guard let resources = Bundle.main.resourceURL else { return nil }
+        let packagedCandidates = [
+            resources.appendingPathComponent("SOL_BRIDGE", isDirectory: true),
+            resources.appendingPathComponent("SUPRA_RUNTIME/SOL_BRIDGE", isDirectory: true)
+        ]
+
+        return packagedCandidates.first(where: isBridgeRoot)
+    }
+
+    private func isBridgeRoot(_ candidate: URL) -> Bool {
+        fileManager.fileExists(atPath: candidate.appendingPathComponent("INBOX", isDirectory: true).path)
+            && fileManager.fileExists(atPath: candidate.appendingPathComponent("OUTBOX", isDirectory: true).path)
+    }
+
+    private func clearBridgeState(label: String) {
+        bridgeAvailable = false
+        sourceLabel = label
+        processes = []
+    }
+}
+
+private actor SUPRAProcessObservatoryScanner {
+    private let fileManager = FileManager.default
+    private let maxFilesPerSide = 500
+    private var parsedCache: [String: SUPRAParsedCacheEntry] = [:]
+
+    func scan(root: URL) -> SUPRAProcessSnapshot {
+        let inboxURL = root.appendingPathComponent("INBOX", isDirectory: true)
+        let outboxURL = root.appendingPathComponent("OUTBOX", isDirectory: true)
+
+        guard fileManager.fileExists(atPath: inboxURL.path),
+              fileManager.fileExists(atPath: outboxURL.path) else {
+            parsedCache.removeAll(keepingCapacity: true)
+            return SUPRAProcessSnapshot(bridgeAvailable: false, processes: [])
+        }
+
+        let inbox = descriptors(in: inboxURL, result: false)
+        let outbox = descriptors(in: outboxURL, result: true)
+        let activeOutputPaths = Set(outbox.map { $0.url.path })
+        parsedCache = parsedCache.filter { activeOutputPaths.contains($0.key) }
+
+        return SUPRAProcessSnapshot(
+            bridgeAvailable: true,
+            processes: buildProcesses(inbox: inbox, outbox: outbox)
+        )
+    }
+
     private func descriptors(in directory: URL, result: Bool) -> [SUPRAObservedFile] {
-        let keys: Set<URLResourceKey> = [.contentModificationDateKey, .isRegularFileKey]
+        let keys: Set<URLResourceKey> = [
+            .contentModificationDateKey,
+            .isRegularFileKey,
+            .fileSizeKey
+        ]
+
         guard let urls = try? fileManager.contentsOfDirectory(
             at: directory,
             includingPropertiesForKeys: Array(keys),
             options: [.skipsHiddenFiles]
-        ) else { return [] }
+        ) else {
+            return []
+        }
 
-        return urls.compactMap { url in
+        let files = urls.compactMap { url -> SUPRAObservedFile? in
             guard url.pathExtension.lowercased() == "json" else { return nil }
             let values = try? url.resourceValues(forKeys: keys)
             guard values?.isRegularFile != false else { return nil }
+
             return SUPRAObservedFile(
                 id: normalizedID(url.lastPathComponent),
                 url: url,
                 modifiedAt: values?.contentModificationDate,
+                fileSize: values?.fileSize,
                 result: result
             )
         }
+
+        let newestFirst = files.sorted {
+            let lhs = $0.modifiedAt ?? .distantPast
+            let rhs = $1.modifiedAt ?? .distantPast
+            if lhs != rhs { return lhs > rhs }
+            return $0.url.lastPathComponent < $1.url.lastPathComponent
+        }
+
+        return Array(newestFirst.prefix(maxFilesPerSide))
     }
 
-    private func buildProcesses(inbox: [SUPRAObservedFile], outbox: [SUPRAObservedFile]) -> [SUPRAObservedProcess] {
-        let inMap = Dictionary(uniqueKeysWithValues: inbox.map { ($0.id, $0) })
-        let outMap = Dictionary(uniqueKeysWithValues: outbox.map { ($0.id, $0) })
+    private func buildProcesses(
+        inbox: [SUPRAObservedFile],
+        outbox: [SUPRAObservedFile]
+    ) -> [SUPRAObservedProcess] {
+        let inMap = deterministicMap(inbox)
+        let outMap = deterministicMap(outbox)
         let ids = Set(inMap.keys).union(outMap.keys)
 
-        var result = ids.map { id -> SUPRAObservedProcess in
+        var processes = ids.map { id -> SUPRAObservedProcess in
             let input = inMap[id]
             let output = outMap[id]
             let parsed = output.flatMap(parseResult)
+            let hasInbox = input != nil
+            let hasOutput = output != nil
+            let hasValidResult = parsed != nil
             let started = inferredDate(from: id) ?? input?.modifiedAt ?? output?.modifiedAt ?? .now
             let age = max(0, Date().timeIntervalSince(started))
-            let hasInbox = input != nil
-            let hasResult = output != nil
-            let stage = stage(hasInbox: hasInbox, hasResult: hasResult, parsed: parsed)
-            let drift = drift(hasInbox: hasInbox, hasResult: hasResult, age: age)
-            let progress: Double = hasResult ? (parsed?.proofRefs.isEmpty == false ? 0.85 : 0.60) : (hasInbox ? 0.25 : 0)
+            let stage = stage(
+                hasInbox: hasInbox,
+                hasOutput: hasOutput,
+                parsed: parsed
+            )
+            let drift = drift(
+                hasInbox: hasInbox,
+                hasOutput: hasOutput,
+                hasValidResult: hasValidResult,
+                age: age
+            )
 
             return SUPRAObservedProcess(
                 id: id,
                 title: title(for: id),
-                hasResult: hasResult,
+                hasResult: hasValidResult,
                 stage: stage,
                 startedAt: started,
                 ageSeconds: age,
-                progress: stage == .frozen ? 1.0 : progress,
+                progress: progress(for: stage, parsed: parsed),
                 drift: drift,
                 isBottleneck: false,
-                statusText: parsed?.status,
+                statusText: hasOutput && parsed == nil
+                    ? "Unreadable or malformed OUTBOX result"
+                    : parsed?.status,
                 actionNicolas: parsed?.actionNicolas,
                 f2StatusAfter: parsed?.f2StatusAfter,
                 lg01Classification: parsed?.lg01Classification,
@@ -375,64 +572,156 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
             )
         }
 
-        if let oldest = result.filter({ !$0.hasResult }).max(by: { $0.ageSeconds < $1.ageSeconds })?.id {
-            result = result.map {
+        if let oldestUnresolved = processes
+            .filter({ $0.stage == .inFlight || $0.stage == .blocked })
+            .max(by: { $0.ageSeconds < $1.ageSeconds })?
+            .id {
+            processes = processes.map {
                 var item = $0
-                item.isBottleneck = item.id == oldest
+                item.isBottleneck = item.id == oldestUnresolved
                 return item
             }
         }
 
-        result.sort {
+        processes.sort {
             if $0.id == "F2_LG01_AUTHORITY_OR_ALIAS_GATE_20260920_1920" { return true }
             if $1.id == "F2_LG01_AUTHORITY_OR_ALIAS_GATE_20260920_1920" { return false }
             if $0.isBottleneck != $1.isBottleneck { return $0.isBottleneck }
             return $0.startedAt > $1.startedAt
         }
-        return result
+
+        return processes
+    }
+
+    private func deterministicMap(
+        _ files: [SUPRAObservedFile]
+    ) -> [String: SUPRAObservedFile] {
+        var map: [String: SUPRAObservedFile] = [:]
+
+        for file in files {
+            guard let current = map[file.id] else {
+                map[file.id] = file
+                continue
+            }
+
+            if shouldPrefer(file, over: current) {
+                map[file.id] = file
+            }
+        }
+
+        return map
+    }
+
+    private func shouldPrefer(
+        _ candidate: SUPRAObservedFile,
+        over current: SUPRAObservedFile
+    ) -> Bool {
+        let candidateDate = candidate.modifiedAt ?? .distantPast
+        let currentDate = current.modifiedAt ?? .distantPast
+
+        if candidateDate != currentDate {
+            return candidateDate > currentDate
+        }
+
+        return candidate.url.lastPathComponent < current.url.lastPathComponent
     }
 
     private func parseResult(_ file: SUPRAObservedFile) -> SUPRAParsedResult? {
-        guard let data = try? Data(contentsOf: file.url),
-              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            return nil
+        let cacheKey = file.url.path
+
+        if let cached = parsedCache[cacheKey],
+           cached.modifiedAt == file.modifiedAt,
+           cached.fileSize == file.fileSize {
+            return cached.parsed
         }
 
-        var merged = root
-        if let bridge = root["bridge_result"] as? [String: Any],
-           let reply = bridge["reply"] as? String,
-           let replyData = reply.data(using: .utf8),
-           let nested = try? JSONSerialization.jsonObject(with: replyData) as? [String: Any] {
-            for (key, value) in nested { merged[key] = value }
+        let parsed: SUPRAParsedResult?
+
+        if let data = try? Data(contentsOf: file.url),
+           let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            var merged = root
+
+            if let bridge = root["bridge_result"] as? [String: Any],
+               let reply = bridge["reply"] as? String,
+               let replyData = reply.data(using: .utf8),
+               let nested = try? JSONSerialization.jsonObject(with: replyData) as? [String: Any] {
+                for (key, value) in nested {
+                    merged[key] = value
+                }
+            }
+
+            parsed = SUPRAParsedResult(
+                status: string(merged["status"]),
+                actionNicolas: string(merged["action_nicolas"]),
+                f2StatusAfter: string(merged["f2_status_after"]),
+                lg01Classification: string(merged["lg01_classification"]),
+                proofRefs: merged["proof_refs"] as? [String] ?? []
+            )
+        } else {
+            parsed = nil
         }
 
-        return SUPRAParsedResult(
-            status: string(merged["status"]),
-            actionNicolas: string(merged["action_nicolas"]),
-            f2StatusAfter: string(merged["f2_status_after"]),
-            lg01Classification: string(merged["lg01_classification"]),
-            proofRefs: merged["proof_refs"] as? [String] ?? []
+        parsedCache[cacheKey] = SUPRAParsedCacheEntry(
+            modifiedAt: file.modifiedAt,
+            fileSize: file.fileSize,
+            parsed: parsed
         )
+
+        return parsed
     }
 
-    private func stage(hasInbox: Bool, hasResult: Bool, parsed: SUPRAParsedResult?) -> SUPRAProcessStage {
-        if hasResult && !hasInbox { return .anomaly }
-        guard hasResult else { return hasInbox ? .inFlight : .unknown }
+    private func stage(
+        hasInbox: Bool,
+        hasOutput: Bool,
+        parsed: SUPRAParsedResult?
+    ) -> SUPRAProcessStage {
+        if hasOutput && parsed == nil { return .anomaly }
+        if parsed != nil && !hasInbox { return .anomaly }
+        guard hasOutput else { return hasInbox ? .inFlight : .unknown }
+
         let status = (parsed?.status ?? "").uppercased()
         let f2 = (parsed?.f2StatusAfter ?? "").uppercased()
+
         if status.contains("FROZEN") || f2.contains("FROZEN") { return .frozen }
         if status.contains("BLOCKED") || status.contains("HUMAN_GATE") { return .blocked }
         if status.contains("FAIL") { return .failed }
         return .materialized
     }
 
-    private func drift(hasInbox: Bool, hasResult: Bool, age: TimeInterval) -> SUPRAProcessDrift {
-        if hasResult && !hasInbox { return .anomaly }
-        guard hasInbox && !hasResult else { return .none }
+    private func drift(
+        hasInbox: Bool,
+        hasOutput: Bool,
+        hasValidResult: Bool,
+        age: TimeInterval
+    ) -> SUPRAProcessDrift {
+        if hasOutput && !hasValidResult { return .anomaly }
+        if hasValidResult && !hasInbox { return .anomaly }
+        guard hasInbox && !hasOutput else { return .none }
+
         if age >= 3600 { return .critical }
         if age >= 900 { return .warning }
         if age >= 300 { return .watch }
         return .none
+    }
+
+    private func progress(
+        for stage: SUPRAProcessStage,
+        parsed: SUPRAParsedResult?
+    ) -> Double {
+        switch stage {
+        case .frozen:
+            return 1.0
+        case .materialized:
+            return parsed?.proofRefs.isEmpty == false ? 0.85 : 0.60
+        case .blocked, .failed:
+            return parsed?.proofRefs.isEmpty == false ? 0.70 : 0.50
+        case .anomaly:
+            return 0.10
+        case .inFlight:
+            return 0.25
+        case .unknown:
+            return 0
+        }
     }
 
     private func normalizedID(_ filename: String) -> String {
@@ -443,14 +732,22 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
     private func inferredDate(from text: String) -> Date? {
         let pattern = "(20\\d{6})[_-](\\d{4,6})"
+
         guard let regex = try? NSRegularExpression(pattern: pattern),
-              let match = regex.firstMatch(in: text, range: NSRange(text.startIndex..<text.endIndex, in: text)),
+              let match = regex.firstMatch(
+                  in: text,
+                  range: NSRange(text.startIndex..<text.endIndex, in: text)
+              ),
               let dateRange = Range(match.range(at: 1), in: text),
-              let timeRange = Range(match.range(at: 2), in: text) else { return nil }
+              let timeRange = Range(match.range(at: 2), in: text) else {
+            return nil
+        }
 
         let datePart = String(text[dateRange])
         var timePart = String(text[timeRange])
-        if timePart.count == 4 { timePart += "00" }
+        if timePart.count == 4 {
+            timePart += "00"
+        }
 
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -475,7 +772,7 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     }
 }
 
-struct SUPRAObservedProcess: Identifiable, Equatable {
+struct SUPRAObservedProcess: Identifiable, Equatable, Sendable {
     let id: String
     let title: String
     let hasResult: Bool
@@ -499,7 +796,7 @@ struct SUPRAObservedProcess: Identifiable, Equatable {
     }
 }
 
-enum SUPRAProcessStage: Equatable {
+enum SUPRAProcessStage: Equatable, Sendable {
     case inFlight, materialized, frozen, blocked, failed, anomaly, unknown
 
     var label: String {
@@ -527,7 +824,7 @@ enum SUPRAProcessStage: Equatable {
     }
 }
 
-enum SUPRAProcessDrift: Equatable {
+enum SUPRAProcessDrift: Equatable, Sendable {
     case none, watch, warning, critical, anomaly
 
     var label: String {
@@ -541,19 +838,31 @@ enum SUPRAProcessDrift: Equatable {
     }
 }
 
-private struct SUPRAObservedFile {
+private struct SUPRAObservedFile: Sendable {
     let id: String
     let url: URL
     let modifiedAt: Date?
+    let fileSize: Int?
     let result: Bool
 }
 
-private struct SUPRAParsedResult {
+private struct SUPRAParsedResult: Sendable {
     let status: String?
     let actionNicolas: String?
     let f2StatusAfter: String?
     let lg01Classification: String?
     let proofRefs: [String]
+}
+
+private struct SUPRAParsedCacheEntry: Sendable {
+    let modifiedAt: Date?
+    let fileSize: Int?
+    let parsed: SUPRAParsedResult?
+}
+
+private struct SUPRAProcessSnapshot: Sendable {
+    let bridgeAvailable: Bool
+    let processes: [SUPRAObservedProcess]
 }
 
 #Preview {
