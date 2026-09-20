@@ -60,7 +60,7 @@ open -n "$DEST"
 
 PID=""
 for _ in $(seq 1 30); do
-  PID="$(ps -axo pid=,command= | awk -v p="$DEST/Contents/MacOS/SUPRA" '$0 ~ p {print $1; exit}')"
+  PID="$(pgrep -f "$DEST/Contents/MacOS/SUPRA" 2>/dev/null | head -1 || true)"
   [ -n "$PID" ] && break
   sleep 0.5
 done
