@@ -136,6 +136,8 @@ struct SupraControlCenterView: View {
                     DecisionInboxView()
                 } else if destination == .missionCenter {
                     MissionCenterView()
+                } else if destination == .runtimeMonitor {
+                    SUPRAProcessObservatoryView()
                 } else if destination == .supraChat {
                     SUPRAChatView()
                 } else {
