@@ -372,6 +372,13 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         panel.canCreateDirectories = false
 
         guard panel.runModal() == .OK, let selectedURL = panel.url else { return }
+
+        guard selectedURL.startAccessingSecurityScopedResource() else {
+            sourceLabel = bookmarkedBridgeRoot?.path ?? "BRIDGE SELECTION ACCESS FAILED"
+            return
+        }
+        defer { selectedURL.stopAccessingSecurityScopedResource() }
+
         guard isBridgeRoot(selectedURL) else {
             sourceLabel = bookmarkedBridgeRoot?.path ?? "SELECT FOLDER CONTAINING INBOX + OUTBOX"
             return
