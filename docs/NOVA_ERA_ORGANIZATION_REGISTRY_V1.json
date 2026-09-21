@@ -1,0 +1,508 @@
+{
+  "schema": "NOVA_ERA_ORGANIZATION_REGISTRY_V1",
+  "status": "CANONICAL_OPERATING_MODEL",
+  "authority": "NICOLAS",
+  "generated_at": "2026-09-21",
+  "truth_rules": {
+    "legal_org_separate_from_operating_model": true,
+    "no_invented_staff": true,
+    "digital_workers_are_not_employees": true,
+    "digital_workers_cannot_self_grant_authority": true,
+    "human_accountability_required": true
+  },
+  "current_staffing": {
+    "status": "TO_RECONCILE_WITH_CURRENT_LEGAL_HR_EVIDENCE",
+    "founder_president": {
+      "name": "Nicolas",
+      "seat_status": "HUMAN_STAFFED_HISTORICALLY_EVIDENCED_RECONFIRM_CURRENT",
+      "evidence_class": "LEGACY_BUSINESS_PLAN_SOURCE"
+    },
+    "all_other_seats": "UNKNOWN_OR_VACANT_UNTIL_PROVEN"
+  },
+  "departments": [
+    {
+      "department_id": "D00",
+      "code": "EXECUTIVE_GOVERNANCE",
+      "name": "Executive & Governance",
+      "mission": "Set direction, allocate capital, govern authority and resolve conflicts",
+      "owns": [
+        "strategy",
+        "capital_allocation",
+        "governance",
+        "portfolio"
+      ],
+      "kpis": [
+        "cash_runway",
+        "revenue",
+        "gross_margin",
+        "critical_risks",
+        "decision_lead_time"
+      ],
+      "alonso_levels": [
+        "L6",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D01",
+      "code": "COMMERCIAL_REVENUE",
+      "name": "Commercial & Revenue",
+      "mission": "Turn verified customer problems into signed business and cash",
+      "owns": [
+        "prospecting",
+        "qualification",
+        "discovery",
+        "proposals",
+        "pipeline",
+        "negotiation_support",
+        "forecast"
+      ],
+      "kpis": [
+        "qualified_pipeline",
+        "win_rate",
+        "sales_cycle",
+        "booked_revenue",
+        "collected_revenue",
+        "deal_margin"
+      ],
+      "alonso_levels": [
+        "L5",
+        "L6"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D02",
+      "code": "MARKETING_BRAND",
+      "name": "Marketing, Brand & Communications",
+      "mission": "Create demand, trust and market legibility",
+      "owns": [
+        "positioning",
+        "brand",
+        "content",
+        "campaigns",
+        "media",
+        "sales_enablement"
+      ],
+      "kpis": [
+        "qualified_inbound",
+        "content_conversion",
+        "demo_requests",
+        "channel_CAC"
+      ],
+      "alonso_levels": [
+        "L5",
+        "L6"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D03",
+      "code": "PRODUCT_PORTFOLIO",
+      "name": "Product & Portfolio",
+      "mission": "Select what should be built, for whom, why and in what order",
+      "owns": [
+        "product_strategy",
+        "discovery",
+        "roadmap",
+        "requirements",
+        "pricing_architecture",
+        "lifecycle"
+      ],
+      "kpis": [
+        "validated_problems",
+        "time_to_test",
+        "activation",
+        "retention",
+        "product_revenue",
+        "product_margin"
+      ],
+      "alonso_levels": [
+        "L4",
+        "L5",
+        "L6"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D04",
+      "code": "RND_ID",
+      "name": "I+D / R&D / Innovation",
+      "mission": "Turn real limits and opportunities into proven knowledge, technology and IP candidates",
+      "owns": [
+        "research",
+        "experiments",
+        "prototypes",
+        "benchmarks",
+        "invention_records",
+        "feasibility"
+      ],
+      "kpis": [
+        "hypotheses_tested",
+        "reproducible_experiments",
+        "research_to_product_rate",
+        "validated_capability_gain"
+      ],
+      "alonso_levels": [
+        "L4",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D05",
+      "code": "ENGINEERING_PLATFORM",
+      "name": "Engineering, AI & Platform",
+      "mission": "Build and operate reliable software, AI, APIs, runtime and apps",
+      "owns": [
+        "software",
+        "mobile",
+        "ai",
+        "platform",
+        "runtime",
+        "CI_CD",
+        "observability",
+        "QA"
+      ],
+      "kpis": [
+        "build_pass_rate",
+        "release_frequency",
+        "lead_time",
+        "defect_rate",
+        "MTTR",
+        "runtime_availability"
+      ],
+      "alonso_levels": [
+        "L2",
+        "L3",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D06",
+      "code": "CANNONICO_DATA",
+      "name": "CAnnoNico, Data, Knowledge & Evidence",
+      "mission": "Maintain one provable organizational memory and truth layer",
+      "owns": [
+        "memory",
+        "atlas",
+        "registries",
+        "lineage",
+        "evidence",
+        "canonicality",
+        "library"
+      ],
+      "kpis": [
+        "canonical_coverage",
+        "provenance_coverage",
+        "contradictions",
+        "duplicate_rate",
+        "retrieval_accuracy",
+        "result_memory_return_rate"
+      ],
+      "alonso_levels": [
+        "L4"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D07",
+      "code": "INDUSTRIALIZATION_SUPPLY",
+      "name": "Hardware, Industrialization & Supply Chain",
+      "mission": "Make physical products reliable, producible and deliverable",
+      "owns": [
+        "hardware",
+        "embedded",
+        "BOM",
+        "suppliers",
+        "manufacturing",
+        "quality",
+        "certification",
+        "inventory"
+      ],
+      "kpis": [
+        "unit_cost",
+        "gross_margin",
+        "defect_rate",
+        "lead_time",
+        "yield",
+        "installation_time"
+      ],
+      "alonso_levels": [
+        "L1",
+        "L2",
+        "L5"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D08",
+      "code": "OPERATIONS_DELIVERY",
+      "name": "Operations, Delivery & PMO",
+      "mission": "Convert sold work into successful evidenced delivery",
+      "owns": [
+        "projects",
+        "deployment",
+        "installation",
+        "scheduling",
+        "capacity",
+        "delivery_evidence"
+      ],
+      "kpis": [
+        "on_time_delivery",
+        "cycle_time",
+        "rework",
+        "delivery_margin",
+        "acceptance_rate",
+        "blocker_age"
+      ],
+      "alonso_levels": [
+        "L5"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D09",
+      "code": "CUSTOMER_SUCCESS",
+      "name": "Customer Success, Support & Quality",
+      "mission": "Ensure customer value and feed reality back into the system",
+      "owns": [
+        "onboarding",
+        "adoption",
+        "support",
+        "customer_health",
+        "renewal_support",
+        "feedback"
+      ],
+      "kpis": [
+        "activation",
+        "time_to_value",
+        "support_resolution",
+        "renewal",
+        "churn",
+        "customer_outcomes"
+      ],
+      "alonso_levels": [
+        "L5",
+        "L6"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D10",
+      "code": "FINANCE_ADMIN",
+      "name": "Finance, Administration & Procurement",
+      "mission": "Protect cash and maintain financial truth",
+      "owns": [
+        "invoicing",
+        "collections",
+        "treasury",
+        "budgeting",
+        "reporting",
+        "purchasing",
+        "unit_economics"
+      ],
+      "kpis": [
+        "cash",
+        "DSO",
+        "overdue_receivables",
+        "gross_margin",
+        "burn",
+        "budget_variance",
+        "invoice_accuracy"
+      ],
+      "alonso_levels": [
+        "L5",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D11",
+      "code": "LEGAL_RISK",
+      "name": "Legal, Compliance, IP & Risk",
+      "mission": "Protect company, customers, data, contracts and IP",
+      "owns": [
+        "contracts",
+        "privacy",
+        "compliance",
+        "IP",
+        "licenses",
+        "risk",
+        "insurance",
+        "disputes"
+      ],
+      "kpis": [
+        "contract_cycle",
+        "critical_risks",
+        "compliance_findings",
+        "remediation_age"
+      ],
+      "alonso_levels": [
+        "L1",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D12",
+      "code": "PEOPLE_RH",
+      "name": "People / RH & Organization",
+      "mission": "Build the smallest capable human organization with explicit responsibilities",
+      "owns": [
+        "workforce_planning",
+        "roles",
+        "recruiting",
+        "onboarding",
+        "performance",
+        "compensation_framework",
+        "development",
+        "contractors",
+        "offboarding"
+      ],
+      "kpis": [
+        "critical_role_coverage",
+        "time_to_fill",
+        "time_to_productivity",
+        "capacity_bottlenecks"
+      ],
+      "alonso_levels": [
+        "L6",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    },
+    {
+      "department_id": "D13",
+      "code": "PARTNERSHIPS_INTL",
+      "name": "Partnerships, Ecosystem & International",
+      "mission": "Extend reach via partners, channels and international opportunities",
+      "owns": [
+        "partners",
+        "channels",
+        "integrators",
+        "alliances",
+        "international_BD",
+        "partner_enablement"
+      ],
+      "kpis": [
+        "partner_pipeline",
+        "partner_revenue",
+        "productive_partners",
+        "channel_margin"
+      ],
+      "alonso_levels": [
+        "L5",
+        "L7"
+      ],
+      "human_accountability_required": true,
+      "seat_status": "OPERATING_DOMAIN_DEFINED_STAFFING_TO_RECONCILE",
+      "digital_support_allowed": true,
+      "digital_workers_are_employees": false
+    }
+  ],
+  "cross_functional_offices": [
+    {
+      "office_id": "O01",
+      "name": "Security & Trust Office",
+      "owners": [
+        "D05",
+        "D06",
+        "D11"
+      ]
+    },
+    {
+      "office_id": "O02",
+      "name": "Quality Office",
+      "owners": [
+        "D03",
+        "D05",
+        "D07",
+        "D08",
+        "D09"
+      ]
+    },
+    {
+      "office_id": "O03",
+      "name": "Library / Patrimony Office",
+      "owners": [
+        "D06",
+        "D03",
+        "D02",
+        "D10"
+      ]
+    }
+  ],
+  "reserved_human_gates": [
+    "HIRING_FIRING",
+    "COMPENSATION_APPROVAL",
+    "LEGAL_SIGNATURE",
+    "BANKING_OR_PAYMENT",
+    "BORROWING_OR_EQUITY",
+    "PUBLIC_HIGH_IMPACT_COMMITMENT",
+    "SECURITY_BOUNDARY_CHANGE",
+    "CANONICAL_AUTHORITY_CHANGE",
+    "IRREVERSIBLE_DELETION",
+    "MATERIAL_CUSTOMER_EXCEPTION"
+  ],
+  "core_circulation_loops": [
+    "MARKET_TO_CASH_TO_LEARNING",
+    "REAL_LIMIT_TO_RND_TO_PRODUCT_TO_REALITY",
+    "BOTTLENECK_TO_WORKFORCE_TO_PERFORMANCE_TO_ORG_LEARNING"
+  ],
+  "source_history": [
+    {
+      "source": "Google Drive / BUSINESS PLAN OFFICIEL",
+      "classification": "HISTORICAL_ORGANIZATION_SOURCE",
+      "observed_points": [
+        "founder_focus_sales_prospecting_partnerships_development",
+        "first_technician_freelance_or_part_time",
+        "later_technician_or_apprentice",
+        "later_commercial_or_customer_role",
+        "partial_support_outsourcing_possible"
+      ],
+      "not_promoted_as_current_staffing": true
+    }
+  ]
+}
