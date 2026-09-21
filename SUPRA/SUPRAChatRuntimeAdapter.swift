@@ -165,6 +165,33 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
         return response
     }
 
+    private static func isHealthyPayload(_ data: Data) -> Bool {
+        if data.isEmpty { return true }
+
+        if let object = try? JSONSerialization.jsonObject(with: data),
+           let dictionary = object as? [String: Any] {
+            if let ok = dictionary["ok"] as? Bool, ok == false { return false }
+
+            let explicit = ["status", "health", "state"]
+                .compactMap { dictionary[$0] as? String }
+                .map { $0.uppercased() }
+
+            let unhealthy = ["FAIL", "FAILED", "ERROR", "UNAVAILABLE", "DOWN", "BLOCKED", "STOPPED"]
+            if explicit.contains(where: { value in unhealthy.contains(where: value.contains) }) {
+                return false
+            }
+            return true
+        }
+
+        let text = String(data: data, encoding: .utf8)?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .uppercased() ?? ""
+
+        if text.isEmpty { return true }
+        return !["FAIL", "ERROR", "UNAVAILABLE", "DOWN", "BLOCKED"]
+            .contains(where: text.contains)
+    }
+
     private static func makeHealthSession() -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = 4
