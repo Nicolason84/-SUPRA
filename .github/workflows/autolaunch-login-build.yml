@@ -1,0 +1,34 @@
+name: Validate SUPRA Autolaunch Login
+
+on:
+  push:
+    branches:
+      - supra/autolaunch-on-login-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell invariants
+        run: |
+          set -euxo pipefail
+          /bin/bash -n RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          grep -Fq 'STATUS=UP_TO_DATE_AND_RUNNING' RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          grep -Fq 'UP_TO_DATE_APP_AUTOLAUNCH_FAILED' RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+
+      - name: Resolve
+        run: |
+          set -euxo pipefail
+          xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies
+
+      - name: Release build
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
