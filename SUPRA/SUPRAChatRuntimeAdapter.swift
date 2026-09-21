@@ -67,8 +67,14 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
             let (data, response) = try await healthSession.data(for: request)
             try Task.checkCancellation()
 
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw SUPRAChatRuntimeError.invalidHealthResponse
+            }
+
+            // Historical C1 builds do not all expose the same /v1/health
+            // contract. Any local HTTP response below 500 proves the bridge
+            // process is alive; explicit unhealthy payloads are still rejected.
+            guard httpResponse.statusCode < 500 else {
                 throw SUPRAChatRuntimeError.invalidHealthResponse
             }
 
