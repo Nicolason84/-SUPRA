@@ -23,6 +23,7 @@ struct SUPRAProcessObservatoryView: View {
                 header
                 momentum
                 summary
+                flowFabric
                 radar
                 ledger
                 detail
@@ -244,6 +245,124 @@ struct SUPRAProcessObservatoryView: View {
         }
     }
 
+    private var flowFabric: some View {
+        section("Flow Fabric", systemImage: "point.3.connected.trianglepath.dotted") {
+            if store.flowEdges.isEmpty {
+                ContentUnavailableView(
+                    "No marked flow yet",
+                    systemImage: "point.3.connected.trianglepath.dotted",
+                    description: Text(
+                        "Flow markers will appear here as existing missions and runtimes propagate them."
+                    )
+                )
+            } else {
+                LazyVGrid(
+                    columns: [
+                        GridItem(
+                            .adaptive(
+                                minimum: 245,
+                                maximum: 360
+                            ),
+                            spacing: 12
+                        )
+                    ],
+                    spacing: 12
+                ) {
+                    ForEach(store.flowEdges.prefix(16)) { edge in
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Text(edge.edgeID)
+                                    .font(.headline.monospaced())
+                                    .lineLimit(1)
+
+                                Spacer()
+
+                                badge(
+                                    edge.state,
+                                    color: edge.tint
+                                )
+                            }
+
+                            HStack(spacing: 12) {
+                                flowMetric(
+                                    "Throughput",
+                                    String(format: "%.1f/min", edge.throughputPerMinute)
+                                )
+                                flowMetric(
+                                    "WIP",
+                                    "\(edge.inFlight)"
+                                )
+                                flowMetric(
+                                    "Blocked",
+                                    "\(edge.blocked)"
+                                )
+                            }
+
+                            HStack(spacing: 12) {
+                                flowMetric(
+                                    "Median service",
+                                    durationLabel(edge.medianServiceMs)
+                                )
+                                flowMetric(
+                                    "Median wait",
+                                    durationLabel(edge.medianWaitMs)
+                                )
+                                flowMetric(
+                                    "Oldest",
+                                    edge.oldestAgeLabel
+                                )
+                            }
+                        }
+                        .padding(14)
+                        .background(
+                            .regularMaterial,
+                            in: RoundedRectangle(cornerRadius: 15)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(edge.tint.opacity(0.25))
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private func flowMetric(
+        _ title: String,
+        _ value: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.caption.bold().monospacedDigit())
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func durationLabel(
+        _ milliseconds: Int?
+    ) -> String {
+        guard let milliseconds else { return "—" }
+
+        if milliseconds < 1_000 {
+            return "\(milliseconds) ms"
+        }
+
+        let seconds = Double(milliseconds) / 1_000
+
+        if seconds < 60 {
+            return String(format: "%.1f s", seconds)
+        }
+
+        return String(
+            format: "%.1f min",
+            seconds / 60
+        )
+    }
+
     private var radar: some View {
         section("Drift & Bottleneck Radar", systemImage: "scope") {
             HStack(alignment: .top, spacing: 14) {
@@ -428,6 +547,49 @@ struct SUPRAProcessObservatoryView: View {
     }
 }
 
+struct SUPRAFlowEdgeSnapshot: Identifiable, Equatable {
+    let edgeID: String
+    let state: String
+    let throughputPerMinute: Double
+    let inFlight: Int
+    let blocked: Int
+    let degraded: Int
+    let medianServiceMs: Int?
+    let medianWaitMs: Int?
+    let oldestAgeSeconds: TimeInterval
+
+    var id: String { edgeID }
+
+    var oldestAgeLabel: String {
+        if oldestAgeSeconds < 60 {
+            return "<1m"
+        }
+
+        if oldestAgeSeconds < 3_600 {
+            return "\(Int(oldestAgeSeconds / 60))m"
+        }
+
+        return "\(Int(oldestAgeSeconds / 3_600))h"
+    }
+
+    var tint: Color {
+        switch state {
+        case "FREE_FLOW", "COMPLETE":
+            return .green
+        case "PROGRESSING", "RECOVERING":
+            return .cyan
+        case "CONGESTED":
+            return .yellow
+        case "STALLED", "BLOCKED":
+            return .orange
+        case "DEGRADED":
+            return .red
+        default:
+            return .secondary
+        }
+    }
+}
+
 struct SUPRAPulseWindowDelta {
     let materialized: Int
     let closurePoints: Double
@@ -493,6 +655,122 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     var observableClosure: Double {
         guard !processes.isEmpty else { return 0 }
         return processes.map(\.progress).reduce(0, +) / Double(processes.count)
+    }
+
+    var flowEdges: [SUPRAFlowEdgeSnapshot] {
+        let marked = processes.filter {
+            $0.flowMarker?.edgeID != nil
+        }
+
+        let grouped = Dictionary(
+            grouping: marked
+        ) {
+            $0.flowMarker?.edgeID ?? "UNKNOWN"
+        }
+
+        let now = Date()
+        let formatter = ISO8601DateFormatter()
+
+        return grouped.map { edgeID, items in
+            let states = items.map(\.flowFluidity)
+
+            let blocked = states.filter {
+                $0 == "BLOCKED" || $0 == "BOTTLENECK"
+            }.count
+
+            let degraded = states.filter {
+                $0 == "DEGRADED"
+            }.count
+
+            let inFlight = items.filter {
+                $0.stage == .inFlight
+            }.count
+
+            let completedLastMinute = items.filter { item in
+                guard let finished = item.flowMarker?.finishedAt,
+                      let date = formatter.date(from: finished)
+                else {
+                    return false
+                }
+
+                return now.timeIntervalSince(date) <= 60
+            }.count
+
+            let service = items.compactMap {
+                $0.flowMarker?.serviceMs
+            }
+
+            let waits = items.compactMap {
+                $0.flowMarker?.waitMs
+            }
+
+            let state: String
+            if blocked > 0 {
+                state = "BLOCKED"
+            } else if degraded > 0 {
+                state = "DEGRADED"
+            } else if states.contains("STALLED") {
+                state = "STALLED"
+            } else if states.contains("CONGESTED") {
+                state = "CONGESTED"
+            } else if inFlight > 0 {
+                state = "PROGRESSING"
+            } else if !items.isEmpty {
+                state = "COMPLETE"
+            } else {
+                state = "STALE"
+            }
+
+            return SUPRAFlowEdgeSnapshot(
+                edgeID: edgeID,
+                state: state,
+                throughputPerMinute: Double(completedLastMinute),
+                inFlight: inFlight,
+                blocked: blocked,
+                degraded: degraded,
+                medianServiceMs: median(service),
+                medianWaitMs: median(waits),
+                oldestAgeSeconds: items.map(\.ageSeconds).max() ?? 0
+            )
+        }
+        .sorted { lhs, rhs in
+            let rank: [String: Int] = [
+                "BLOCKED": 0,
+                "DEGRADED": 1,
+                "STALLED": 2,
+                "CONGESTED": 3,
+                "PROGRESSING": 4,
+                "COMPLETE": 5,
+                "STALE": 6
+            ]
+
+            let lhsRank = rank[lhs.state] ?? 99
+            let rhsRank = rank[rhs.state] ?? 99
+
+            if lhsRank != rhsRank {
+                return lhsRank < rhsRank
+            }
+
+            return lhs.edgeID < rhs.edgeID
+        }
+    }
+
+    private func median(
+        _ values: [Int]
+    ) -> Int? {
+        guard !values.isEmpty else { return nil }
+
+        let sorted = values.sorted()
+        let middle = sorted.count / 2
+
+        if sorted.count.isMultiple(of: 2) {
+            return (
+                sorted[middle - 1]
+                + sorted[middle]
+            ) / 2
+        }
+
+        return sorted[middle]
     }
 
     var momentumLabel: String {
@@ -1381,6 +1659,8 @@ private actor SUPRAProcessObservatoryScanner {
             nodeID: boundedString(object["node_id"]),
             previousNodeID: boundedString(object["previous_node_id"]),
             edgeID: boundedString(object["edge_id"]),
+            startedAt: boundedString(object["started_at"]),
+            finishedAt: boundedString(object["finished_at"]),
             queueMs: boundedInt(object["queue_ms"]),
             serviceMs: boundedInt(object["service_ms"]),
             waitMs: boundedInt(object["wait_ms"]),
@@ -1643,6 +1923,8 @@ struct SUPRAObservedFlowMarker: Equatable, Sendable {
     let nodeID: String?
     let previousNodeID: String?
     let edgeID: String?
+    let startedAt: String?
+    let finishedAt: String?
     let queueMs: Int?
     let serviceMs: Int?
     let waitMs: Int?
