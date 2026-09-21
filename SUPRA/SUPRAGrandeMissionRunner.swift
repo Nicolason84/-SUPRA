@@ -31,6 +31,15 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let decision: String
     }
 
+    struct HumanGatePacketRecord: Codable, Sendable {
+        let schema: String
+        let missionID: String
+        let phaseID: String
+        let receiptFinishedAt: String
+        let createdAt: String
+        let packet: String
+    }
+
     @Published private(set) var isRunning = false
     @Published private(set) var lastError: String?
     @Published private(set) var activePhaseID: String?
@@ -114,6 +123,56 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let url = decisionsURL.appendingPathComponent("\(phaseID).decision.json")
         guard let data = try? Data(contentsOf: url) else { return nil }
         return try? JSONDecoder().decode(HumanDecisionRecord.self, from: data)
+    }
+
+    func humanGatePacket(
+        for phaseID: String,
+        receiptFinishedAt: String
+    ) -> String? {
+        let url = decisionsURL.appendingPathComponent("\(phaseID).packet.json")
+
+        guard let data = try? Data(contentsOf: url),
+              let record = try? JSONDecoder().decode(
+                  HumanGatePacketRecord.self,
+                  from: data
+              ),
+              record.receiptFinishedAt == receiptFinishedAt
+        else {
+            return nil
+        }
+
+        return record.packet
+    }
+
+    func saveHumanGatePacket(
+        phaseID: String,
+        receiptFinishedAt: String,
+        packet: String
+    ) throws {
+        try prepareDirectories()
+
+        let record = HumanGatePacketRecord(
+            schema: "SUPRA_GRANDE_MISSION_HUMAN_GATE_PACKET_V1",
+            missionID: missionID,
+            phaseID: phaseID,
+            receiptFinishedAt: receiptFinishedAt,
+            createdAt: iso.string(from: Date()),
+            packet: String(packet.prefix(24_000))
+        )
+
+        let data = try JSONEncoder().encode(record)
+
+        try data.write(
+            to: decisionsURL.appendingPathComponent("\(phaseID).packet.json"),
+            options: .atomic
+        )
+    }
+
+    func clearHumanGatePacket(
+        phaseID: String
+    ) {
+        let url = decisionsURL.appendingPathComponent("\(phaseID).packet.json")
+        try? fileManager.removeItem(at: url)
     }
 
     func submitHumanDecision(phaseID: String, decision: String) async throws {
