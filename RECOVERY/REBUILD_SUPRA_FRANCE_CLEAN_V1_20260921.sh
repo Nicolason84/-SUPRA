@@ -7,7 +7,7 @@ STAMP="$(date '+%Y%m%d_%H%M%S')"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/SUPRA_FRANCE_CLEAN.XXXXXX")"
 LOG="$HOME/Library/Logs/SUPRA_FRANCE_CLEAN_REBUILD_${STAMP}.log"
 DEST_DIR="$HOME/Applications"
-DEST="$DEST_DIR/SUPRA-FRANCE.app"
+DEST="$DEST_DIR/SUPRA-FRANCE-CLEAN.app"
 
 exec > >(tee "$LOG") 2>&1
 trap 'rm -rf "$TMP"' EXIT
@@ -27,8 +27,8 @@ sleep 1
 say "2/8 Nettoyage borné des anciennes apps"
 mkdir -p "$DEST_DIR"
 rm -rf "$HOME/Applications/SUPRA.app"
-rm -rf "$HOME/Applications/SUPRA-FRANCE.app"
-find "$HOME/Applications" -maxdepth 1 -type d \( -name 'SUPRA.app.rollback.*' -o -name 'SUPRA-FRANCE.app.rollback.*' \) -exec rm -rf {} + 2>/dev/null || true
+rm -rf "$HOME/Applications/SUPRA-FRANCE.app"\nrm -rf "$HOME/Applications/SUPRA-FRANCE-CLEAN.app"
+find "$HOME/Applications" -maxdepth 1 -type d \( -name 'SUPRA.app.rollback.*' -o -name 'SUPRA-FRANCE.app.rollback.*' -o -name 'SUPRA-FRANCE-CLEAN.app.rollback.*' \) -exec rm -rf {} + 2>/dev/null || true
 
 if [ -d "/Applications/SUPRA.app" ] || [ -d "/Applications/SUPRA-FRANCE.app" ]; then
   say "INFO: ancienne copie système détectée dans /Applications; ignorée, nouvelle app lancée par chemin exact."
