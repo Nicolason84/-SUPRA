@@ -1,0 +1,116 @@
+{
+  "schema": "NOVA_ERA_INPI_WATCHLIST_V1",
+  "authority": "NICOLAS",
+  "status": "READY_PENDING_INPI_AUTH",
+  "sources": [
+    "INPI_RNE",
+    "INPI_TRADEMARKS",
+    "INPI_PATENTS",
+    "INPI_DESIGNS_MODELS"
+  ],
+  "subjects": [
+    {
+      "id": "W001",
+      "canonical_name": "NOVA ERA",
+      "types": [
+        "company_identity",
+        "trademark"
+      ],
+      "exact": true,
+      "variants": [
+        "NOVAERA",
+        "NOVA-ERA"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "W002",
+      "canonical_name": "SUPRA",
+      "types": [
+        "trademark",
+        "product_name",
+        "patent_keyword"
+      ],
+      "exact": true,
+      "variants": [],
+      "priority": "P0",
+      "ambiguity_note": "High lexical ambiguity; candidate matches require contextual filtering."
+    },
+    {
+      "id": "W003",
+      "canonical_name": "ojO",
+      "types": [
+        "trademark",
+        "product_name"
+      ],
+      "exact": true,
+      "variants": [
+        "OJO"
+      ],
+      "priority": "P1",
+      "ambiguity_note": "Short term; candidate matches require contextual filtering."
+    },
+    {
+      "id": "W004",
+      "canonical_name": "ProofGraph",
+      "types": [
+        "trademark",
+        "product_name",
+        "patent_keyword"
+      ],
+      "exact": true,
+      "variants": [
+        "Proof Graph"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "W005",
+      "canonical_name": "USCRC-One",
+      "types": [
+        "trademark",
+        "product_name",
+        "patent_keyword",
+        "design_keyword"
+      ],
+      "exact": true,
+      "variants": [
+        "USCRC One",
+        "USCRC-ONE",
+        "USCRC"
+      ],
+      "priority": "P0"
+    },
+    {
+      "id": "W006",
+      "canonical_name": "Φ-Coin",
+      "types": [
+        "trademark",
+        "product_name"
+      ],
+      "exact": true,
+      "variants": [
+        "Phi Coin",
+        "PHI COIN",
+        "Φ Coin"
+      ],
+      "priority": "P0"
+    }
+  ],
+  "detection_rules": {
+    "candidate_only": true,
+    "no_automatic_legal_conflict_conclusion": true,
+    "exact_and_fuzzy_search": true,
+    "nice_class_analysis_required_for_trademarks": true,
+    "owner_applicant_inventor_context_required": true,
+    "evidence_pack_required": true
+  },
+  "result_flow": [
+    "INPI_OFFICIAL_SOURCE",
+    "CANDIDATE_MATCH",
+    "DISAMBIGUATION",
+    "EVIDENCE_PACK",
+    "LEGAL_REVIEW_IF_MATERIAL",
+    "CANNONICO"
+  ]
+}
