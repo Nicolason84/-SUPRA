@@ -20,6 +20,19 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let finishedAt: String
         let status: String
         let response: String
+        let flowMarker: SUPRAFlowMarker?
+
+        enum CodingKeys: String, CodingKey {
+            case schema
+            case missionID
+            case phaseID
+            case phaseTitle
+            case startedAt
+            case finishedAt
+            case status
+            case response
+            case flowMarker = "flow_marker"
+        }
     }
 
     struct HumanDecisionRecord: Codable, Sendable {
@@ -168,14 +181,22 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
                 activePhaseID = phase.id
                 let startedAt = iso.string(from: Date())
-
-                try writeRequest(
-                    phase: phase,
+                let marker = makeFlowMarker(
+                    for: phase,
                     startedAt: startedAt
                 )
 
+                try writeRequest(
+                    phase: phase,
+                    startedAt: startedAt,
+                    flowMarker: marker
+                )
+
                 let response = try await runtime.execute(
-                    prompt: promptForPhase(phase),
+                    prompt: promptForPhase(
+                        phase,
+                        flowMarker: marker
+                    ),
                     mode: .plan
                 )
 
@@ -195,6 +216,13 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                     ? "PASS"
                     : (explicitBlock ? "BLOCKED" : "UNPROVEN")
 
+                let finishedMarker = finishFlowMarker(
+                    marker,
+                    status: status,
+                    response: response,
+                    finishedAt: finishedAt
+                )
+
                 let receipt = PhaseReceipt(
                     schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
                     missionID: missionID,
@@ -203,14 +231,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                     startedAt: startedAt,
                     finishedAt: finishedAt,
                     status: status,
-                    response: response
+                    response: response,
+                    flowMarker: finishedMarker
                 )
 
                 try writeReceipt(receipt)
                 try writeState(
                     currentPhase: phase.id,
                     status: status,
-                    detail: response
+                    detail: response,
+                    flowMarker: finishedMarker
                 )
 
                 guard status == "PASS" else {
@@ -264,7 +294,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     private func writeRequest(
         phase: Phase,
-        startedAt: String
+        startedAt: String,
+        flowMarker: SUPRAFlowMarker
     ) throws {
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_PHASE_REQUEST_V1",
@@ -274,7 +305,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             "started_at": startedAt,
             "authority": "NICOLAS",
             "mode": "EXECUTE_NOT_REINVESTIGATE",
-            "objective": phase.objective
+            "objective": phase.objective,
+            "flow_marker": try flowMarker.asJSONObject()
         ]
 
         let data = try JSONSerialization.data(
@@ -304,7 +336,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     private func writeState(
         currentPhase: String,
         status: String,
-        detail: String
+        detail: String,
+        flowMarker: SUPRAFlowMarker? = nil
     ) throws {
         let states = phases.map { phase in
             [
@@ -316,7 +349,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             ]
         }
 
-        let object: [String: Any] = [
+        var object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_STATE_V1",
             "mission_id": missionID,
             "authority": "NICOLAS",
@@ -326,6 +359,10 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             "detail": String(detail.prefix(4_000)),
             "phases": states
         ]
+
+        if let flowMarker {
+            object["flow_marker"] = try flowMarker.asJSONObject()
+        }
 
         let data = try JSONSerialization.data(
             withJSONObject: object,
@@ -338,8 +375,263 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         )
     }
 
+    private func makeFlowMarker(
+        for phase: Phase,
+        startedAt: String
+    ) -> SUPRAFlowMarker {
+        let priorSamePhase = receipt(for: phase.id)
+        let priorSameMarker = priorSamePhase?.flowMarker
+        let priorPhaseMarker = previousPhaseReceipt(for: phase.id)?.flowMarker
+
+        let decisionIsNewer: Bool = {
+            guard let receipt = priorSamePhase,
+                  let decision = humanDecision(for: phase.id),
+                  let receiptDate = iso.date(from: receipt.finishedAt),
+                  let decisionDate = iso.date(from: decision.decidedAt)
+            else {
+                return false
+            }
+
+            return decisionDate > receiptDate
+        }()
+
+        let node = canonicalNode(for: phase.id)
+
+        let previousNode: String?
+        if decisionIsNewer {
+            previousNode = "CONTROL"
+        } else {
+            previousNode =
+                priorSameMarker?.nodeID
+                ?? priorPhaseMarker?.nodeID
+                ?? "MISSIONS"
+        }
+
+        let parentSpan =
+            priorSameMarker?.spanID
+            ?? priorPhaseMarker?.spanID
+
+        let retryCount =
+            priorSameMarker.map { $0.retryCount + 1 }
+            ?? 0
+
+        return SUPRAFlowMarker(
+            schema: "SUPRA_FLOW_MARKER_V1",
+            flowID: missionID,
+            traceID: "TRACE-\(missionID)",
+            spanID: "\(phase.id)-\(UUID().uuidString.lowercased())",
+            parentSpanID: parentSpan,
+            missionID: missionID,
+            phaseID: phase.id,
+            nodeID: node,
+            previousNodeID: previousNode,
+            edgeID: "\(previousNode ?? "MISSIONS")->\(node)",
+            sourceRef: "docs/GRANDE_MISSION_TOTAL_IMAC_CANNONICO_ALONSO_20260921.md",
+            authority: "NICOLAS",
+            humanGate: "NO",
+            createdAt: startedAt,
+            enteredAt: startedAt,
+            startedAt: startedAt,
+            finishedAt: nil,
+            queueMs: 0,
+            serviceMs: nil,
+            waitMs: humanWaitMilliseconds(for: phase.id),
+            status: "RUNNING",
+            outcome: nil,
+            retryCount: retryCount,
+            evidenceRefs: [],
+            memoryReturn: nil,
+            canonReturn: nil
+        )
+    }
+
+    private func finishFlowMarker(
+        _ marker: SUPRAFlowMarker,
+        status: String,
+        response: String,
+        finishedAt: String
+    ) -> SUPRAFlowMarker {
+        let evidence = fieldValue(
+            "EVIDENCE_REFS",
+            in: response
+        )
+        .map(splitReferences)
+        ?? []
+
+        let memoryReturn = fieldValue(
+            "MEMORY_RETURN",
+            in: response
+        )
+
+        let canonReturn = fieldValue(
+            "CANNONICO_RETURN",
+            in: response
+        )
+
+        let humanGate =
+            fieldValue("HUMAN_GATE_REQUIRED", in: response)
+            ?? (status == "BLOCKED" ? "YES" : "NO")
+
+        let serviceMs: Int? = {
+            guard let start = iso.date(from: marker.startedAt),
+                  let finish = iso.date(from: finishedAt)
+            else {
+                return nil
+            }
+
+            return max(
+                0,
+                Int(finish.timeIntervalSince(start) * 1_000)
+            )
+        }()
+
+        return SUPRAFlowMarker(
+            schema: marker.schema,
+            flowID: marker.flowID,
+            traceID: marker.traceID,
+            spanID: marker.spanID,
+            parentSpanID: marker.parentSpanID,
+            missionID: marker.missionID,
+            phaseID: marker.phaseID,
+            nodeID: marker.nodeID,
+            previousNodeID: marker.previousNodeID,
+            edgeID: marker.edgeID,
+            sourceRef: marker.sourceRef,
+            authority: marker.authority,
+            humanGate: humanGate,
+            createdAt: marker.createdAt,
+            enteredAt: marker.enteredAt,
+            startedAt: marker.startedAt,
+            finishedAt: finishedAt,
+            queueMs: marker.queueMs,
+            serviceMs: serviceMs,
+            waitMs: marker.waitMs,
+            status: status,
+            outcome: fieldValue(
+                "PHASE_VERDICT",
+                in: response
+            ) ?? status,
+            retryCount: marker.retryCount,
+            evidenceRefs: evidence,
+            memoryReturn: memoryReturn,
+            canonReturn: canonReturn
+        )
+    }
+
+    private func previousPhaseReceipt(
+        for phaseID: String
+    ) -> PhaseReceipt? {
+        guard let index = phases.firstIndex(where: {
+            $0.id == phaseID
+        }),
+        index > 0 else {
+            return nil
+        }
+
+        return receipt(
+            for: phases[index - 1].id
+        )
+    }
+
+    private func canonicalNode(
+        for phaseID: String
+    ) -> String {
+        switch phaseID {
+        case "01_RECOVER_TOTAL_REPERTORY",
+             "02_MEMORY_RECONCILIATION",
+             "03_CANNONICO_HARDWARE_SOFTWARE",
+             "07_DEDUP_FUSION":
+            return "CANNONICO"
+
+        case "04_RESPONSIBILITY_AUTHORITY":
+            return "CONTROL"
+
+        case "05_PYRAMIDE_ALONSO",
+             "10_CONTROLLED_AUTO_EVOLUTION":
+            return "SUPRA"
+
+        case "06_CIRCULATION_CIRCULARITY",
+             "08_OPERATIONALIZATION",
+             "09_AUTONOMOUS_LOOPS":
+            return "RUNTIME"
+
+        default:
+            return "MISSIONS"
+        }
+    }
+
+    private func humanWaitMilliseconds(
+        for phaseID: String
+    ) -> Int {
+        guard let receipt = receipt(for: phaseID),
+              let decision = humanDecision(for: phaseID),
+              let blockedAt = iso.date(from: receipt.finishedAt),
+              let decidedAt = iso.date(from: decision.decidedAt),
+              decidedAt > blockedAt
+        else {
+            return 0
+        }
+
+        return max(
+            0,
+            Int(decidedAt.timeIntervalSince(blockedAt) * 1_000)
+        )
+    }
+
+    private func fieldValue(
+        _ key: String,
+        in response: String
+    ) -> String? {
+        let prefix = key.uppercased() + "="
+
+        for rawLine in response.split(
+            whereSeparator: { $0.isNewline }
+        ) {
+            let line = String(rawLine)
+                .trimmingCharacters(
+                    in: .whitespacesAndNewlines
+                )
+
+            let upper = line.uppercased()
+
+            guard upper.hasPrefix(prefix) else {
+                continue
+            }
+
+            let index = line.index(
+                line.startIndex,
+                offsetBy: prefix.count
+            )
+
+            let value = String(line[index...])
+                .trimmingCharacters(
+                    in: .whitespacesAndNewlines
+                )
+
+            return value.isEmpty ? nil : value
+        }
+
+        return nil
+    }
+
+    private func splitReferences(
+        _ raw: String
+    ) -> [String] {
+        raw
+            .split(whereSeparator: {
+                $0 == "," || $0 == ";"
+            })
+            .map {
+                String($0).trimmingCharacters(
+                    in: .whitespacesAndNewlines
+                )
+            }
+            .filter { !$0.isEmpty }
+    }
+
     private func promptForPhase(
-        _ phase: Phase
+        _ phase: Phase,
+        flowMarker: SUPRAFlowMarker
     ) -> String {
         let decision = humanDecision(for: phase.id)?.decision
         let decisionBlock: String
@@ -365,6 +657,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         MISSION_ID=\(missionID)
         PHASE_ID=\(phase.id)
         PHASE_TITLE=\(phase.title)
+
+        FLOW_ID=\(flowMarker.flowID)
+        TRACE_ID=\(flowMarker.traceID)
+        SPAN_ID=\(flowMarker.spanID)
+        PARENT_SPAN_ID=\(flowMarker.parentSpanID ?? "NONE")
+        NODE_ID=\(flowMarker.nodeID)
+        PREVIOUS_NODE_ID=\(flowMarker.previousNodeID ?? "NONE")
+        EDGE_ID=\(flowMarker.edgeID)
+        FLOW_MARKER_IS_NOT_AN_ENGINE=YES
+
         MODE=EXECUTE_NOT_REINVESTIGATE
         EXECUTION_PROFILE=FAST_SAFE
         MEMORY_FIRST=YES
