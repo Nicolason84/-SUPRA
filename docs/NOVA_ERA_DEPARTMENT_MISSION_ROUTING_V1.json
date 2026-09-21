@@ -1,0 +1,323 @@
+{
+  "schema": "NOVA_ERA_DEPARTMENT_MISSION_ROUTING_V1",
+  "status": "CANONICAL_ROUTING_CONTRACT",
+  "authority": "NICOLAS",
+  "principles": [
+    "ONE_MISSION_ONE_LEAD_DEPARTMENT",
+    "MULTI_DEPARTMENT_CONTRIBUTORS_ALLOWED",
+    "ONE_CANONICAL_RESULT_PATH",
+    "HUMAN_GATE_WHEN_REQUIRED",
+    "RESULT_RETURNS_TO_MEMORY_AND_CANNONICO",
+    "NO_DEPARTMENT_PRIVATE_TRUTH"
+  ],
+  "routes": [
+    {
+      "mission_type": "MARKET_RESEARCH",
+      "lead": "D02",
+      "contributors": [
+        "D01",
+        "D03",
+        "D06"
+      ],
+      "human_gate": "NONE_UNLESS_PUBLICATION_OR_PAID_COMMITMENT",
+      "result_to": [
+        "D03",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "LEAD_GENERATION",
+      "lead": "D01",
+      "contributors": [
+        "D02",
+        "D06"
+      ],
+      "human_gate": "NONE_FOR_RESEARCH_AND_PREPARATION",
+      "result_to": [
+        "D01",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "SALES_DISCOVERY",
+      "lead": "D01",
+      "contributors": [
+        "D03",
+        "D08"
+      ],
+      "human_gate": "CUSTOMER_COMMITMENT",
+      "result_to": [
+        "D03",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PROPOSAL_PRICING",
+      "lead": "D01",
+      "contributors": [
+        "D03",
+        "D10",
+        "D11"
+      ],
+      "human_gate": "PRICE_EXCEPTION_OR_BINDING_OFFER",
+      "result_to": [
+        "D01",
+        "D10",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "CONTRACT",
+      "lead": "D11",
+      "contributors": [
+        "D01",
+        "D10",
+        "D08"
+      ],
+      "human_gate": "LEGAL_SIGNATURE",
+      "result_to": [
+        "D08",
+        "D10",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PRODUCT_DISCOVERY",
+      "lead": "D03",
+      "contributors": [
+        "D01",
+        "D04",
+        "D06",
+        "D09"
+      ],
+      "human_gate": "MAJOR_PRODUCT_COMMITMENT",
+      "result_to": [
+        "D04",
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "RND_EXPERIMENT",
+      "lead": "D04",
+      "contributors": [
+        "D03",
+        "D05",
+        "D06"
+      ],
+      "human_gate": "NONE_IF_REVERSIBLE_AND_BOUNDED",
+      "result_to": [
+        "D03",
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PRODUCT_BUILD",
+      "lead": "D05",
+      "contributors": [
+        "D03",
+        "D04",
+        "D06"
+      ],
+      "human_gate": "PRODUCTION_SECURITY_OR_HIGH_IMPACT_RELEASE",
+      "result_to": [
+        "D08",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "HARDWARE_PROTOTYPE",
+      "lead": "D07",
+      "contributors": [
+        "D03",
+        "D04",
+        "D05",
+        "D11"
+      ],
+      "human_gate": "SAFETY_OR_PURCHASE_COMMITMENT",
+      "result_to": [
+        "D03",
+        "D08",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "DEPLOYMENT_DELIVERY",
+      "lead": "D08",
+      "contributors": [
+        "D05",
+        "D07",
+        "D09",
+        "D10"
+      ],
+      "human_gate": "MATERIAL_CUSTOMER_EXCEPTION",
+      "result_to": [
+        "D09",
+        "D10",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "CUSTOMER_SUPPORT",
+      "lead": "D09",
+      "contributors": [
+        "D05",
+        "D08",
+        "D03"
+      ],
+      "human_gate": "LEGAL_OR_HIGH_IMPACT_CUSTOMER_COMMITMENT",
+      "result_to": [
+        "D03",
+        "D05",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "INVOICE_COLLECTION",
+      "lead": "D10",
+      "contributors": [
+        "D01",
+        "D08"
+      ],
+      "human_gate": "BANKING_PAYMENT_OR_WRITE_OFF",
+      "result_to": [
+        "D00",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PURCHASE_PROCUREMENT",
+      "lead": "D10",
+      "contributors": [
+        "D07",
+        "D05",
+        "D08"
+      ],
+      "human_gate": "MATERIAL_SPEND",
+      "result_to": [
+        "D07",
+        "D08",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "LEGAL_COMPLIANCE",
+      "lead": "D11",
+      "contributors": [
+        "D05",
+        "D06",
+        "D10"
+      ],
+      "human_gate": "LEGAL_FILING_OR_ADMISSION",
+      "result_to": [
+        "D00",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "HIRING_WORKFORCE",
+      "lead": "D12",
+      "contributors": [
+        "D00"
+      ],
+      "human_gate": "HIRING_COMPENSATION_CONTRACT",
+      "result_to": [
+        "D00",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PARTNERSHIP_CHANNEL",
+      "lead": "D13",
+      "contributors": [
+        "D01",
+        "D03",
+        "D11",
+        "D10"
+      ],
+      "human_gate": "PARTNER_CONTRACT_OR_EXCLUSIVITY",
+      "result_to": [
+        "D01",
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "STRATEGY_CAPITAL",
+      "lead": "D00",
+      "contributors": [
+        "D03",
+        "D10",
+        "D06"
+      ],
+      "human_gate": "FOUNDER_RESERVED",
+      "result_to": [
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "CANON_MEMORY",
+      "lead": "D06",
+      "contributors": [],
+      "human_gate": "CANONICAL_AUTHORITY_CHANGE",
+      "result_to": [
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "ORG_DESIGN",
+      "lead": "D12",
+      "contributors": [
+        "D00",
+        "D06"
+      ],
+      "human_gate": "ROLE_AUTHORITY_CHANGE",
+      "result_to": [
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "PUBLIC_COMMUNICATION",
+      "lead": "D02",
+      "contributors": [
+        "D01",
+        "D03",
+        "D11"
+      ],
+      "human_gate": "PUBLICATION",
+      "result_to": [
+        "D06"
+      ]
+    },
+    {
+      "mission_type": "SECURITY_TRUST",
+      "lead": "D05",
+      "contributors": [
+        "D06",
+        "D11"
+      ],
+      "human_gate": "SECURITY_BOUNDARY_CHANGE",
+      "result_to": [
+        "D00",
+        "D06"
+      ]
+    }
+  ],
+  "universal_result_contract": {
+    "required": [
+      "MISSION_ID",
+      "LEAD_DEPARTMENT",
+      "INPUTS",
+      "DECISIONS",
+      "ACTIONS",
+      "RESULT",
+      "EVIDENCE",
+      "RISKS",
+      "NEXT_ACTION",
+      "MEMORY_RETURN"
+    ],
+    "memory_return": true,
+    "cannonico_return": true,
+    "evidence_required": true
+  }
+}
