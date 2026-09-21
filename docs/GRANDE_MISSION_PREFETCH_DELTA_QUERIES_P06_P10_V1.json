@@ -1,0 +1,97 @@
+{
+  "schema": "GRANDE_MISSION_PREFETCH_DELTA_QUERIES_P06_P10_V1",
+  "rules": [
+    "MEMORY_FIRST",
+    "PREFETCH_FIRST",
+    "DELTA_ONLY",
+    "NO_GLOBAL_RESCAN",
+    "NO_NEW_ENGINE",
+    "NO_NEW_BRIDGE",
+    "NO_NEW_RUNTIME",
+    "PROOF_FIRST"
+  ],
+  "phases": {
+    "06_CIRCULATION_CIRCULARITY": {
+      "ask": [
+        "What current live nodes/edges differ from the prefetched candidate graph?",
+        "Which current flows remain unmarked or lack evidence lineage?",
+        "Which current flows do not return result to memory/canon?",
+        "Which edges are dead-end, duplicated, blocked or stale now?",
+        "What evidence is still missing for SYSTEM_CIRCULATION_GRAPH_V1 PASS?"
+      ],
+      "pass_when": [
+        "current live graph reconciled",
+        "dead ends explicit",
+        "human gates explicit",
+        "result-memory-canon return proven where required"
+      ]
+    },
+    "07_DEDUP_FUSION": {
+      "ask": [
+        "Which duplication candidates remain live after P06 reconciliation?",
+        "Has any candidate acquired newer authority/freshness/live-usage evidence?",
+        "Which candidates can be merged or retired reversibly now?",
+        "Which candidates must remain separate because responsibilities differ?",
+        "What evidence is still missing before any canonical owner decision?"
+      ],
+      "pass_when": [
+        "one owner per canonical responsibility",
+        "retirement reversible",
+        "history preserved",
+        "no blind deletion"
+      ]
+    },
+    "08_OPERATIONALIZATION": {
+      "ask": [
+        "For each verified capability, what changed in input/output/runtime/dependency paths since prefetch?",
+        "Which declared capabilities are still not executable?",
+        "Which runtime paths are live and observable now?",
+        "Which capabilities lack recovery/rollback or authority proof?",
+        "What minimum evidence remains before OPERATIONAL promotion?"
+      ],
+      "pass_when": [
+        "input real",
+        "output materialized",
+        "runtime path proven",
+        "dependencies explicit",
+        "recovery path available",
+        "authority bounded"
+      ]
+    },
+    "09_AUTONOMOUS_LOOPS": {
+      "ask": [
+        "Which prefetched safe loop candidates are already implemented by existing capabilities?",
+        "Which are currently observable and reversible?",
+        "Which loops have complete proof + memory-return contracts?",
+        "Which candidates cross money/legal/publication/authority/destructive gates and must stay human-gated?",
+        "Which existing loops can be activated without creating new engines?"
+      ],
+      "pass_when": [
+        "existing owner/capability",
+        "observable",
+        "reversible or safely stoppable",
+        "evidence returning",
+        "human gates preserved"
+      ]
+    },
+    "10_CONTROLLED_AUTO_EVOLUTION": {
+      "ask": [
+        "What observed limitations remain after P06-P09?",
+        "Which limitations already have an existing solution in patrimony?",
+        "Where is a true gap proven rather than assumed?",
+        "What candidate changes can be isolated, built, tested and compared without production mutation?",
+        "Which candidates require Nicolas before promotion?"
+      ],
+      "pass_when": [
+        "every proposed change tied to observed limitation",
+        "existing solution checked first",
+        "isolated test evidence exists",
+        "rollback available",
+        "promotion gate explicit",
+        "memory return complete"
+      ]
+    }
+  },
+  "handoff": "USE_PREFETCH_PACK_THEN_QUERY_ONLY_THE_LISTED_DELTAS",
+  "action_nicolas": "NONE"
+}
