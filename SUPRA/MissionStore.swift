@@ -32,6 +32,11 @@ final class MissionStore: ObservableObject {
     @Published private(set) var finalAuthority = "SUPRA"
     @Published private(set) var outputMode = "ISOLATED_RUNS"
     @Published private(set) var opportunityCount = 0
+    var veryShortCount: Int { missions.filter { $0.category == "Très court terme" }.count }
+    var shortCount: Int { missions.filter { $0.category == "Court terme" }.count }
+    var mediumCount: Int { missions.filter { $0.category == "Moyen terme" }.count }
+    var longCount: Int { missions.filter { $0.category == "Long terme" }.count }
+
     @Published var query = "" {
         didSet { applyPresentation() }
     }
