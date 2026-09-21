@@ -74,7 +74,32 @@ fi
 printf 'INSTALLED_SHA=%s\nOBSERVED_SHA=%s\n' "$INSTALLED_SHA" "$OBSERVED_SHA"
 
 if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
-  printf '\nSTATUS=UP_TO_DATE\n'
+  say "2/10 Canonical app is up to date — ensure it is running"
+  if [ ! -d "$TARGET" ]; then
+    fail "UP_TO_DATE_BUT_CANONICAL_APP_MISSING:$TARGET" 22
+  fi
+
+  PID="$(pgrep -x SUPRA | head -1 || true)"
+  if [ -z "$PID" ]; then
+    open -n "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 23
+    for _ in $(seq 1 30); do
+      PID="$(pgrep -x SUPRA | head -1 || true)"
+      [ -n "$PID" ] && break
+      sleep 0.5
+    done
+  fi
+
+  [ -n "$PID" ] || fail "UP_TO_DATE_APP_NOT_RUNNING_AFTER_AUTOLAUNCH" 24
+
+  CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
+  case "$CMD" in
+    *"$TARGET/Contents/MacOS/SUPRA"*) ;;
+    *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 25 ;;
+  esac
+
+  printf 'SUPRA_PID=%s\n' "$PID"
+  printf 'SUPRA_CMD=%s\n' "$CMD"
+  printf '\nSTATUS=UP_TO_DATE_AND_RUNNING\n'
   exit 0
 fi
 
