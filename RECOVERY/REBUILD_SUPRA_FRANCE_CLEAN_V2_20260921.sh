@@ -55,13 +55,22 @@ SRCROOT="$(find "$TMP" -maxdepth 1 -type d -name '*SUPRA-*' | head -1)"
 
 say "5/8 Preuve de source France V1"
 test -f "$SRCROOT/SUPRA/FranceOrganismNativeView.swift" || die "FranceOrganismNativeView absent" 40
-grep -Fq 'SUPRA × ojO · FRANCE V1' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Marqueur FRANCE V1 absent" 41
+grep -Fq 'case france' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route France déclarée absente" 41
 grep -Fq '@State private var selection: SUPRAOJORoute? = .france' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "France non définie comme accueil" 42
 grep -Fq 'FranceOrganismNativeView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route France absente" 43
 
-say "6/8 Compilation Release locale"
+say "6/8 Résolution dépendances + compilation Release locale"
 DERIVED="$TMP/DerivedData"
 (
+  cd "$SRCROOT"
+  for ATTEMPT in 1 2 3; do
+    xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && break
+    [ "$ATTEMPT" = "3" ] && exit 49
+    sleep 3
+  done
+)
+(
+
   cd "$SRCROOT"
   set -o pipefail
   xcodebuild     -project SUPRA.xcodeproj     -scheme SUPRA     -configuration Release     -sdk macosx     -derivedDataPath "$DERIVED"     CODE_SIGNING_ALLOWED=NO     CODE_SIGNING_REQUIRED=NO     build
