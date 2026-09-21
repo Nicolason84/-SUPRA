@@ -21,6 +21,7 @@ struct SUPRAProcessObservatoryView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 header
+                momentum
                 summary
                 radar
                 ledger
@@ -115,6 +116,120 @@ struct SUPRAProcessObservatoryView: View {
                 .font(.caption.monospacedDigit())
                 .foregroundStyle(.secondary)
         }
+    }
+
+    private var momentum: some View {
+        section("Momentum", systemImage: "speedometer") {
+            VStack(spacing: 12) {
+                HStack(spacing: 14) {
+                    HStack(spacing: 10) {
+                        Circle()
+                            .fill(store.momentumColor)
+                            .frame(width: 12, height: 12)
+                            .scaleEffect(store.isActivelyMoving ? 1.15 : 1.0)
+                            .animation(
+                                store.isActivelyMoving
+                                    ? .easeInOut(duration: 0.7).repeatForever(autoreverses: true)
+                                    : .default,
+                                value: store.isActivelyMoving
+                            )
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(store.momentumLabel)
+                                .font(.title2.bold())
+                                .foregroundStyle(store.momentumColor)
+                            Text(store.momentumDetail)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Spacer()
+
+                    momentumMetric(
+                        "Velocity",
+                        store.velocityLabel,
+                        systemImage: "gauge.with.dots.needle.67percent",
+                        tint: store.momentumColor
+                    )
+                    momentumMetric(
+                        "Acceleration",
+                        store.accelerationLabel,
+                        systemImage: "arrow.up.right",
+                        tint: store.accelerationTint
+                    )
+                    momentumMetric(
+                        "Last progress",
+                        store.lastProgressLabel,
+                        systemImage: "clock.arrow.circlepath",
+                        tint: store.lastProgressTint
+                    )
+                    momentumMetric(
+                        "Bottleneck age",
+                        store.bottleneckAgeLabel,
+                        systemImage: "exclamationmark.octagon.fill",
+                        tint: store.bottleneckCount > 0 ? .orange : .green
+                    )
+                }
+
+                HStack(spacing: 10) {
+                    deltaPill("30s", store.windowDelta(seconds: 30))
+                    deltaPill("2m", store.windowDelta(seconds: 120))
+                    deltaPill("10m", store.windowDelta(seconds: 600))
+
+                    Spacer()
+
+                    Label(
+                        store.driftTrendLabel,
+                        systemImage: store.driftTrendSystemImage
+                    )
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(store.driftTrendTint)
+                }
+            }
+            .padding(18)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18)
+                    .stroke(store.momentumColor.opacity(0.35))
+            )
+        }
+    }
+
+    private func momentumMetric(
+        _ title: String,
+        _ value: String,
+        systemImage: String,
+        tint: Color
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label(title, systemImage: systemImage)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.callout.bold().monospacedDigit())
+                .foregroundStyle(tint)
+        }
+        .padding(.horizontal, 11)
+        .padding(.vertical, 9)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func deltaPill(
+        _ window: String,
+        _ delta: SUPRAPulseWindowDelta
+    ) -> some View {
+        HStack(spacing: 6) {
+            Text(window)
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(.secondary)
+            Text(delta.label)
+                .font(.caption.bold().monospacedDigit())
+                .foregroundStyle(delta.tint)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(delta.tint.opacity(0.08), in: Capsule())
     }
 
     private var summary: some View {
@@ -299,6 +414,35 @@ struct SUPRAProcessObservatoryView: View {
     }
 }
 
+struct SUPRAPulseWindowDelta {
+    let materialized: Int
+    let closurePoints: Double
+    let drift: Int
+
+    var label: String {
+        let materializedPart = materialized == 0
+            ? "0 results"
+            : String(format: "%+d results", materialized)
+        let closurePart = String(format: "%+.1f pp", closurePoints)
+        return "\(materializedPart) · \(closurePart)"
+    }
+
+    var tint: Color {
+        if materialized > 0 || closurePoints > 0.15 || drift < 0 { return .green }
+        if drift > 0 || closurePoints < -0.15 { return .orange }
+        return .secondary
+    }
+}
+
+private struct SUPRAPulseSample {
+    let date: Date
+    let materialized: Int
+    let closure: Double
+    let drift: Int
+    let inFlight: Int
+    let bottlenecks: Int
+}
+
 @MainActor
 final class SUPRAProcessObservatoryStore: ObservableObject {
     @Published private(set) var processes: [SUPRAObservedProcess] = []
@@ -306,6 +450,15 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     @Published private(set) var bridgeAvailable = false
     @Published private(set) var sourceLabel = "INITIALIZING"
     @Published var isLive = true
+
+    private var pulseHistory: [SUPRAPulseSample] = []
+    private var lastProgressAt: Date?
+    private var previousVelocityPerMinute: Double = 0
+    private(set) var velocityPerMinute: Double = 0
+    private(set) var accelerationPerMinute: Double = 0
+    private(set) var latestMaterializedDelta: Int = 0
+    private(set) var latestClosureDelta: Double = 0
+    private(set) var latestDriftDelta: Int = 0
 
     private var pollTask: Swift.Task<Void, Never>?
     private var refreshTask: Swift.Task<Void, Never>?
@@ -326,6 +479,123 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     var observableClosure: Double {
         guard !processes.isEmpty else { return 0 }
         return processes.map(\.progress).reduce(0, +) / Double(processes.count)
+    }
+
+    var momentumLabel: String {
+        if !bridgeAvailable { return "OFFLINE" }
+        if bottleneckCount > 0 && stagnationSeconds >= 120 { return "BOTTLENECK" }
+        if latestDriftDelta > 0 && latestMaterializedDelta == 0 && latestClosureDelta <= 0 { return "DEGRADING" }
+        if velocityPerMinute > 0.01 && accelerationPerMinute > 0.10 { return "ACCELERATING" }
+        if latestMaterializedDelta > 0 || latestClosureDelta > 0.002 { return "PROGRESSING" }
+        if stagnationSeconds >= 120 { return "STALLED" }
+        return "STEADY"
+    }
+
+    var momentumColor: Color {
+        switch momentumLabel {
+        case "ACCELERATING": return .cyan
+        case "PROGRESSING": return .green
+        case "STEADY": return .secondary
+        case "STALLED": return .yellow
+        case "BOTTLENECK": return .orange
+        case "DEGRADING", "OFFLINE": return .red
+        default: return .secondary
+        }
+    }
+
+    var isActivelyMoving: Bool {
+        momentumLabel == "ACCELERATING" || momentumLabel == "PROGRESSING"
+    }
+
+    var momentumDetail: String {
+        switch momentumLabel {
+        case "ACCELERATING": return "Throughput is increasing."
+        case "PROGRESSING": return "New materialized evidence or closure detected."
+        case "STEADY": return "Live and stable; no significant delta in the latest pulse."
+        case "STALLED": return "No measurable progress for at least 2 minutes."
+        case "BOTTLENECK": return "An unresolved process is blocking forward motion."
+        case "DEGRADING": return "Drift is increasing without compensating progress."
+        case "OFFLINE": return "Bridge observation unavailable."
+        default: return ""
+        }
+    }
+
+    var velocityLabel: String {
+        String(format: "%.2f results/min", velocityPerMinute)
+    }
+
+    var accelerationLabel: String {
+        String(format: "%+.2f /min²", accelerationPerMinute)
+    }
+
+    var accelerationTint: Color {
+        if accelerationPerMinute > 0.10 { return .green }
+        if accelerationPerMinute < -0.10 { return .orange }
+        return .secondary
+    }
+
+    var stagnationSeconds: TimeInterval {
+        guard let lastProgressAt else {
+            return pulseHistory.first.map { Date().timeIntervalSince($0.date) } ?? 0
+        }
+        return max(0, Date().timeIntervalSince(lastProgressAt))
+    }
+
+    var lastProgressLabel: String {
+        guard let lastProgressAt else { return "not observed" }
+        let seconds = max(0, Int(Date().timeIntervalSince(lastProgressAt)))
+        if seconds < 60 { return "\(seconds)s ago" }
+        if seconds < 3600 { return "\(seconds / 60)m ago" }
+        return "\(seconds / 3600)h ago"
+    }
+
+    var lastProgressTint: Color {
+        if stagnationSeconds < 30 { return .green }
+        if stagnationSeconds < 120 { return .secondary }
+        if stagnationSeconds < 300 { return .yellow }
+        return .orange
+    }
+
+    var bottleneckAgeLabel: String {
+        guard let bottleneck = processes.first(where: \.isBottleneck) else {
+            return "none"
+        }
+        return bottleneck.ageLabel
+    }
+
+    var driftTrendLabel: String {
+        if latestDriftDelta < 0 { return "Drift decreasing \(latestDriftDelta)" }
+        if latestDriftDelta > 0 { return "Drift increasing +\(latestDriftDelta)" }
+        return "Drift stable"
+    }
+
+    var driftTrendSystemImage: String {
+        if latestDriftDelta < 0 { return "arrow.down.right" }
+        if latestDriftDelta > 0 { return "arrow.up.right" }
+        return "arrow.right"
+    }
+
+    var driftTrendTint: Color {
+        if latestDriftDelta < 0 { return .green }
+        if latestDriftDelta > 0 { return .orange }
+        return .secondary
+    }
+
+    func windowDelta(seconds: TimeInterval) -> SUPRAPulseWindowDelta {
+        guard let latest = pulseHistory.last else {
+            return SUPRAPulseWindowDelta(materialized: 0, closurePoints: 0, drift: 0)
+        }
+
+        let cutoff = latest.date.addingTimeInterval(-seconds)
+        let baseline = pulseHistory.last(where: { $0.date <= cutoff })
+            ?? pulseHistory.first
+            ?? latest
+
+        return SUPRAPulseWindowDelta(
+            materialized: latest.materialized - baseline.materialized,
+            closurePoints: (latest.closure - baseline.closure) * 100,
+            drift: latest.drift - baseline.drift
+        )
     }
 
     func start() {
@@ -421,15 +691,63 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 }
 
                 var seen = Set<String>()
-                self.processes = (grandeProcesses + snapshot.processes).filter {
+                let mergedProcesses = (grandeProcesses + snapshot.processes).filter {
                     seen.insert($0.id).inserted
                 }
+                self.applyProcesses(mergedProcesses)
             } else {
                 self.clearBridgeState(
                     label: snapshot.unavailableReason ?? "LOCAL BRIDGE UNAVAILABLE"
                 )
             }
         }
+    }
+
+    private func applyProcesses(_ newProcesses: [SUPRAObservedProcess]) {
+        let now = Date()
+        let materialized = newProcesses.filter(\.hasResult).count
+        let drift = newProcesses.filter { $0.drift != .none }.count
+        let inFlight = newProcesses.filter { $0.stage == .inFlight }.count
+        let bottlenecks = newProcesses.filter(\.isBottleneck).count
+        let closure: Double = newProcesses.isEmpty
+            ? 0
+            : newProcesses.map(\.progress).reduce(0, +) / Double(newProcesses.count)
+
+        let sample = SUPRAPulseSample(
+            date: now,
+            materialized: materialized,
+            closure: closure,
+            drift: drift,
+            inFlight: inFlight,
+            bottlenecks: bottlenecks
+        )
+
+        if let previous = pulseHistory.last {
+            let dt = max(now.timeIntervalSince(previous.date), 0.001)
+            let materializedDelta = materialized - previous.materialized
+            let closureDelta = closure - previous.closure
+            let driftDelta = drift - previous.drift
+
+            latestMaterializedDelta = materializedDelta
+            latestClosureDelta = closureDelta
+            latestDriftDelta = driftDelta
+
+            previousVelocityPerMinute = velocityPerMinute
+            velocityPerMinute = max(0, Double(materializedDelta) / dt * 60)
+            accelerationPerMinute = velocityPerMinute - previousVelocityPerMinute
+
+            if materializedDelta > 0 || closureDelta > 0.001 || driftDelta < 0 {
+                lastProgressAt = now
+            }
+        } else {
+            lastProgressAt = now
+        }
+
+        pulseHistory.append(sample)
+        let retentionCutoff = now.addingTimeInterval(-900)
+        pulseHistory.removeAll { $0.date < retentionCutoff }
+
+        processes = newProcesses
     }
 
     func selectBridgeRoot() {
