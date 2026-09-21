@@ -169,6 +169,6 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
     }
 
     private struct HealthResponse: Decodable {
-        let status: String
+        let status: String?
     }
 }
