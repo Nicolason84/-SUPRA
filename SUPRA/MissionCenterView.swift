@@ -51,7 +51,7 @@ struct MissionCenterView: View {
                         .font(.caption2.bold())
                         .tracking(1.2)
                         .foregroundStyle(.secondary)
-                    Text("\(store.missionSlots) branches concurrentes")
+                    Text("\(store.missionSlots) branches concurrentes · \(store.opportunityCount) opportunités")
                         .font(.headline)
                 }
                 Spacer()
@@ -66,6 +66,13 @@ struct MissionCenterView: View {
                 lane("A", "Cash maintenant", "0–2 sem.", "buyer / preuve / paiement")
                 lane("B", "Levier", "2–8 sem.", "offre high-ticket / réplication")
                 lane("C", "10M+ value-at-stake", "stratégique", "diagnostic / décision / preuve")
+            }
+
+            HStack(spacing: 8) {
+                horizonBadge("Très court", store.veryShortCount)
+                horizonBadge("Court", store.shortCount)
+                horizonBadge("Moyen", store.mediumCount)
+                horizonBadge("Long", store.longCount)
             }
 
             Text("Moyen 2–6 mois · Long 6–18 mois · Très long 2–5 ans")
@@ -113,6 +120,19 @@ struct MissionCenterView: View {
                     .lineLimit(1)
             }
         }
+    }
+
+    private func horizonBadge(_ title: String, _ count: Int) -> some View {
+        HStack(spacing: 4) {
+            Text(title)
+            Text("\(count)")
+                .monospacedDigit()
+                .fontWeight(.semibold)
+        }
+        .font(.caption2)
+        .padding(.horizontal, 7)
+        .padding(.vertical, 4)
+        .background(.thinMaterial, in: Capsule())
     }
 
     @ToolbarContentBuilder
