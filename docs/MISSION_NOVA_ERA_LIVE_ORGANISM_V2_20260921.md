@@ -1044,6 +1044,21 @@ THEORY
 
 # 26. PHASE 16 — CANNONICO AS TRUTH UNIVERSE
 
+CURRENT SCREEN EVIDENCE (2026-09-21):
+The live CAnnoNico surface still embeds a second internal application shell with Workspace / Decision Inbox / Chat SUPRA / System Integrity / Advanced, a Hydrogen journey navigator, and Gabriel worker/runtime controls.
+
+VERDICT:
+APP_INSIDE_APP_RISK=PROVEN
+
+The information is useful; the placement and product boundary are not.
+
+Redistribution law:
+- Decision Inbox → Control
+- Chat SUPRA → Chat
+- Gabriel / worker execution → Missions + Runtime
+- System health / execution telemetry → Runtime / SUPRA
+- CAnnoNico keeps only canonical truth responsibilities
+
 Progressively reduce historical "app inside the app" responsibilities.
 
 Do NOT rewrite ContentView in one shot.
