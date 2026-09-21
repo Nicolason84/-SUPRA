@@ -173,22 +173,31 @@ enum SUPRAChatLongMemory {
         return "Conversation locale"
     }
 
-    nonisolated static func retrieve(
+    @MainActor
+    static func retrieve(
         _ query: String,
         limit: Int = 8
     ) async -> SUPRAChatMemoryPacket {
-        await Task.detached(priority: .utility) {
-            retrieveSynchronously(query, limit: limit)
-        }.value
+        guard let data = await Task.detached(priority: .utility, operation: {
+            retrieveDataSynchronously(query, limit: limit)
+        }).value else {
+            return SUPRAChatMemoryPacket(source: "ERROR", hits: [])
+        }
+
+        do {
+            return try JSONDecoder().decode(SUPRAChatMemoryPacket.self, from: data)
+        } catch {
+            return SUPRAChatMemoryPacket(source: "ERROR", hits: [])
+        }
     }
 
-    nonisolated private static func retrieveSynchronously(
+    nonisolated private static func retrieveDataSynchronously(
         _ query: String,
         limit: Int
-    ) -> SUPRAChatMemoryPacket {
+    ) -> Data? {
         let clean = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard clean.count >= 3 else {
-            return SUPRAChatMemoryPacket(source: "NONE", hits: [])
+            return try? JSONSerialization.data(withJSONObject: ["source":"NONE","hits":[]])
         }
 
         let home = FileManager.default.homeDirectoryForCurrentUser
@@ -202,7 +211,7 @@ enum SUPRAChatLongMemory {
         guard FileManager.default.fileExists(atPath: db.path)
                 || FileManager.default.fileExists(atPath: index.path)
         else {
-            return SUPRAChatMemoryPacket(source: "UNAVAILABLE", hits: [])
+            return try? JSONSerialization.data(withJSONObject: ["source":"UNAVAILABLE","hits":[]])
         }
 
         let script = #"""
@@ -304,13 +313,12 @@ print(json.dumps({"source":source,"hits":hits},ensure_ascii=False))
             try process.run()
             process.waitUntilExit()
             guard process.terminationStatus == 0 else {
-                return SUPRAChatMemoryPacket(source: "ERROR", hits: [])
+                return try? JSONSerialization.data(withJSONObject: ["source":"ERROR","hits":[]])
             }
 
-            let data = output.fileHandleForReading.readDataToEndOfFile()
-            return try JSONDecoder().decode(SUPRAChatMemoryPacket.self, from: data)
+            return output.fileHandleForReading.readDataToEndOfFile()
         } catch {
-            return SUPRAChatMemoryPacket(source: "ERROR", hits: [])
+            return try? JSONSerialization.data(withJSONObject: ["source":"ERROR","hits":[]])
         }
     }
 }
