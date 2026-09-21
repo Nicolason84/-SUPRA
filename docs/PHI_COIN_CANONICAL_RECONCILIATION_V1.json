@@ -1,0 +1,76 @@
+{
+  "schema": "PHI_COIN_CANONICAL_RECONCILIATION_V1",
+  "authority": "NICOLAS",
+  "official_name": "Φ-Coin",
+  "status": "CANONICAL_RECONCILIATION_PENDING_CLASSIFICATION",
+  "live_mode": "INTERNAL_SANDBOX_ONLY",
+  "historical_branches": [
+    {
+      "id": "PHI_2025_COHERENT_KWH",
+      "concept": "coherent value unit backed conceptually by 1 coherent kWh",
+      "flow": [
+        "ENERGY_PRODUCTION",
+        "PHI_PROOFGRAPH",
+        "PHI_LEDGER",
+        "PHI_EXCHANGE",
+        "CNCPHI_AUDIT"
+      ],
+      "preserved": true,
+      "active_legal_definition": false
+    },
+    {
+      "id": "PHI_2026_INTERNAL_UTILITY",
+      "concept": "internal utility unit tied to validated coherent activity",
+      "issuance_sources": [
+        "PURCHASE",
+        "PRODUCTION",
+        "USE",
+        "CONTRIBUTION"
+      ],
+      "circulation": "CLOSED_NOVA_INITIAL",
+      "historical_convertibility_hypothesis": {
+        "max_eur_convertible_percent": 25,
+        "min_retained_percent": 75,
+        "active": false
+      },
+      "phi_score_thresholds": {
+        "valid_min": 0.7,
+        "adjust_min": 0.5,
+        "refuse_below": 0.5
+      },
+      "preserved": true
+    },
+    {
+      "id": "PHI_2026_INTERNAL_WALLET_EXPERIMENT",
+      "concept": "local wallet/coin engine linked to paid-order events",
+      "status": "EXPERIMENTAL_HISTORY",
+      "preserved": true,
+      "canonical_tokenomics": false
+    }
+  ],
+  "current_gates": {
+    "public_issuance": false,
+    "public_trading": false,
+    "external_speculation": false,
+    "guaranteed_eur_redemption": false,
+    "eur_convertibility": false,
+    "customer_money_substitute": false,
+    "legal_classification": "UNRESOLVED",
+    "accounting_classification": "UNRESOLVED",
+    "tax_classification": "UNRESOLVED"
+  },
+  "required_owners": [
+    "D10",
+    "D11",
+    "D06",
+    "D04"
+  ],
+  "ledger_rules": {
+    "append_only": true,
+    "idempotent_source_events": true,
+    "double_mint_forbidden": true,
+    "reversals_traceable": true,
+    "fiat_ledger_separate": true
+  },
+  "next_gate": "CLASSIFY_BEFORE_EXTERNALIZATION"
+}
