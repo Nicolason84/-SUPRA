@@ -22,6 +22,15 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let response: String
     }
 
+    struct HumanDecisionRecord: Codable, Sendable {
+        let schema: String
+        let missionID: String
+        let phaseID: String
+        let decidedAt: String
+        let authority: String
+        let decision: String
+    }
+
     @Published private(set) var isRunning = false
     @Published private(set) var lastError: String?
     @Published private(set) var activePhaseID: String?
@@ -55,11 +64,65 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     var inboxURL: URL { rootURL.appendingPathComponent("INBOX", isDirectory: true) }
     var outboxURL: URL { rootURL.appendingPathComponent("OUTBOX", isDirectory: true) }
+    var decisionsURL: URL { rootURL.appendingPathComponent("DECISIONS", isDirectory: true) }
     var stateURL: URL { rootURL.appendingPathComponent("STATE.json") }
 
     func startIfNeeded() {
-        guard !isRunning, !isTerminal else { return }
+        guard !isRunning, !isTerminal, !isAwaitingHumanDecision else { return }
         Task { await run() }
+    }
+
+    var isAwaitingHumanDecision: Bool {
+        blockedPhase != nil
+    }
+
+    var blockedPhase: Phase? {
+        phases.first { phase in
+            guard let receipt = receipt(for: phase.id) else { return false }
+            return receipt.status == "BLOCKED" || receipt.status == "UNPROVEN"
+        }
+    }
+
+    func receipt(for phaseID: String) -> PhaseReceipt? {
+        let url = outboxURL.appendingPathComponent("\(phaseID).result.json")
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(PhaseReceipt.self, from: data)
+    }
+
+    func humanDecision(for phaseID: String) -> HumanDecisionRecord? {
+        let url = decisionsURL.appendingPathComponent("\(phaseID).decision.json")
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(HumanDecisionRecord.self, from: data)
+    }
+
+    func submitHumanDecision(phaseID: String, decision: String) async throws {
+        let trimmed = decision.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw NSError(
+                domain: "SUPRA.GrandeMission",
+                code: 400,
+                userInfo: [NSLocalizedDescriptionKey: "Decision cannot be empty."]
+            )
+        }
+
+        try prepareDirectories()
+
+        let record = HumanDecisionRecord(
+            schema: "SUPRA_GRANDE_MISSION_HUMAN_DECISION_V1",
+            missionID: missionID,
+            phaseID: phaseID,
+            decidedAt: ISO8601DateFormatter().string(from: Date()),
+            authority: "NICOLAS",
+            decision: String(trimmed.prefix(8_000))
+        )
+
+        let data = try JSONEncoder().encode(record)
+        try data.write(
+            to: decisionsURL.appendingPathComponent("\(phaseID).decision.json"),
+            options: .atomic
+        )
+
+        await run()
     }
 
     func run() async {
@@ -144,6 +207,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     private func prepareDirectories() throws {
         try fileManager.createDirectory(at: inboxURL, withIntermediateDirectories: true)
         try fileManager.createDirectory(at: outboxURL, withIntermediateDirectories: true)
+        try fileManager.createDirectory(at: decisionsURL, withIntermediateDirectories: true)
     }
 
     private func writeRequest(phase: Phase, startedAt: String) throws {
@@ -189,7 +253,27 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     }
 
     private func promptForPhase(_ phase: Phase) -> String {
-        """
+        let decision = humanDecision(for: phase.id)?.decision
+        let decisionBlock: String
+
+        if let decision {
+            decisionBlock = """
+            HUMAN_DECISION_PRESENT=YES
+            HUMAN_DECISION_AUTHORITY=NICOLAS
+            HUMAN_DECISION:
+            \(decision)
+
+            Apply this decision only to the current blocked phase.
+            If it resolves the gate, continue the phase.
+            If it is insufficient or ambiguous, remain BLOCKED and return one precise remaining decision question with explicit options.
+            """
+        } else {
+            decisionBlock = """
+            HUMAN_DECISION_PRESENT=NO
+            """
+        }
+
+        return """
         GRANDE_MISSION_PHASE
         AUTHORITY=NICOLAS
         MISSION_ID=\(missionID)
@@ -208,10 +292,14 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         OBJECTIVE:
         \(phase.objective)
 
+        \(decisionBlock)
+
         Use existing local owners, registries, evidence and capabilities first.
         Execute all machine-solvable read-only/reversible work available to the existing runtime.
         Do not claim execution or freshness without evidence.
-        If an irreversible or human-only gate is encountered, stop and report it.
+
+        If a human-only gate is encountered, do not merely say BLOCKED.
+        Return the exact reason, decision question, explicit options and consequences so the UI can let Nicolas answer inline.
 
         RETURN EXACTLY:
         PHASE_VERDICT=PASS|BLOCKED|UNPROVEN
@@ -222,7 +310,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         CANNONICO_RETURN=
         BLOCKERS=
         HUMAN_GATE_REQUIRED=YES|NO
+        DECISION_QUESTION=
+        OPTION_A=
+        OPTION_B=
+        OPTION_C=
+        SAFE_DEFAULT=
+        CONSEQUENCE_A=
+        CONSEQUENCE_B=
+        CONSEQUENCE_C=
         NEXT_PHASE_READY=YES|NO
         """
-    }
+    }}
+
 }
