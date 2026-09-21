@@ -1,5 +1,11 @@
 import SwiftUI
 
+private struct GrandeMissionDecisionOption: Identifiable {
+    let key: String
+    let value: String
+    var id: String { key }
+}
+
 struct GrandeMissionHumanGateView: View {
     @ObservedObject private var runner = SUPRAGrandeMissionRunner.shared
 
@@ -53,7 +59,7 @@ struct GrandeMissionHumanGateView: View {
                             Text("Choose")
                                 .font(.headline)
 
-                            ForEach(options, id: \.key) { option in
+                            ForEach(options) { option in
                                 Button {
                                     decisionDraft = "\(option.key) — \(option.value)"
                                 } label: {
@@ -224,14 +230,18 @@ struct GrandeMissionHumanGateView: View {
         }
     }
 
-    private var options: [(key: String, value: String)] {
+    private var options: [GrandeMissionDecisionOption] {
         ["OPTION_A", "OPTION_B", "OPTION_C"].compactMap { key in
             guard let value = fields[key],
                   !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             else {
                 return nil
             }
-            return (key, value)
+
+            return GrandeMissionDecisionOption(
+                key: key,
+                value: value
+            )
         }
     }
 
