@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-SOURCE_COMMIT="c6e2a8986b5a6228bcc690e13b6828a1ffaa084e"
+SOURCE_COMMIT="75f29865941a6d4d224c20040ae129db4b01ceee"
 REPO_TARBALL="https://codeload.github.com/Nicolason84/-SUPRA/tar.gz/${SOURCE_COMMIT}"
 STAMP="$(date '+%Y%m%d_%H%M%S')"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/SUPRA_FRANCE_CLEAN.XXXXXX")"
