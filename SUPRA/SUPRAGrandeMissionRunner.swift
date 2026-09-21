@@ -366,9 +366,32 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         PHASE_ID=\(phase.id)
         PHASE_TITLE=\(phase.title)
         MODE=EXECUTE_NOT_REINVESTIGATE
+        EXECUTION_PROFILE=FAST_SAFE
         MEMORY_FIRST=YES
         PATRIMONY_FIRST=YES
         PROOF_FIRST=YES
+
+        MAX_PARALLEL_WORKERS=3
+        USE_EXISTING_GABRIEL_CONDUCTOR=YES
+        BATCH_EVIDENCE_READS=YES
+        PREFETCH_NEXT_SAFE_PHASE=YES
+        NO_WAIT_FOR_UI=YES
+        NO_RESCAN_IF_FRESH_EVIDENCE_EXISTS=YES
+        CACHE_AND_REUSE_PROVEN_EVIDENCE=YES
+        MERGE_DUPLICATE_READS=YES
+        FAIL_FAST_ON_REAL_BLOCKER=YES
+
+        AUTO_EXECUTE_READ_ONLY=YES
+        AUTO_EXECUTE_REVERSIBLE_LOCAL=YES
+        AUTO_EXECUTE_ISOLATED_BRANCH_CHANGES=YES
+        AUTO_EXECUTE_BUILD_TEST_COMPARE=YES
+        AUTO_EXECUTE_NONDESTRUCTIVE_REGISTRY_UPDATE=YES
+        AUTO_EXECUTE_EXISTING_SERVICE_RESTART=YES
+        AUTO_EXECUTE_EVIDENCE_INDEXING=YES
+        AUTO_EXECUTE_MEMORY_RETURN=YES
+
+        HUMAN_GATE_ONLY_FOR=MONEY_MOVEMENT|LEGAL_ADMIN_SUBMISSION|PUBLIC_EXTERNAL_SEND|SIGNATURE_BINDING_COMMITMENT|DESTRUCTIVE_DELETE_OR_PURGE|SECURITY_PERMISSION_CHANGE|AUTHORITY_CHANGE|PRODUCTION_MUTATION_WITHOUT_ROLLBACK
+
         NO_NEW_ENGINE=YES
         NO_NEW_BRIDGE=YES
         NO_NEW_RUNTIME=YES
@@ -382,6 +405,11 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
         Use existing local owners, registries, evidence and capabilities first.
         Execute all machine-solvable read-only/reversible work available to the existing runtime.
+        Parallelize independent read-only/reversible work up to three workers.
+        Batch evidence reads and reuse fresh proven evidence instead of rescanning.
+        Prefetch read-only evidence for the next phase while the current phase executes.
+        Do not stop for reversible local implementation, build/test/compare, evidence indexing, internal non-destructive registry work, or restart of an existing service when rollback is available.
+        Preserve the Single Writer Rule for canonical writes.
         Do not claim execution or freshness without evidence.
 
         If a human-only gate is encountered, do not merely say BLOCKED.
