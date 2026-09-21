@@ -26,26 +26,29 @@ enum SUPRAChatRuntimeError: LocalizedError {
 @MainActor
 final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
     private let runtimeStore: SUPRAExecutiveStore
-    private let healthURL: URL
+    private let healthURLs: [URL]
     private let healthSession: URLSession
 
-    private static let defaultHealthURL = URL(string: "http://127.0.0.1:18765/v1/health")!
+    private static let defaultHealthURLs: [URL] = [
+        URL(string: "http://127.0.0.1:18765/health")!,
+        URL(string: "http://127.0.0.1:18765/v1/health")!
+    ]
 
     init() {
         runtimeStore = SUPRAExecutiveStore()
-        healthURL = Self.defaultHealthURL
+        healthURLs = Self.defaultHealthURLs
         healthSession = Self.makeHealthSession()
     }
 
     init(runtimeStore: SUPRAExecutiveStore) {
         self.runtimeStore = runtimeStore
-        healthURL = Self.defaultHealthURL
+        healthURLs = Self.defaultHealthURLs
         healthSession = Self.makeHealthSession()
     }
 
     init(runtimeStore: SUPRAExecutiveStore, healthURL: URL) {
         self.runtimeStore = runtimeStore
-        self.healthURL = healthURL
+        healthURLs = [healthURL]
         healthSession = Self.makeHealthSession()
     }
 
@@ -60,31 +63,48 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
     }
 
     private func performHealthCheck() async throws {
-        var request = URLRequest(url: healthURL)
-        request.timeoutInterval = 4
+        var failures: [String] = []
 
-        do {
-            let (data, response) = try await healthSession.data(for: request)
-            try Task.checkCancellation()
-
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
-                throw SUPRAChatRuntimeError.invalidHealthResponse
+        for healthURL in healthURLs {
+            do {
+                try await performHealthCheck(at: healthURL)
+                return
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                failures.append("\(healthURL.path): \(error.localizedDescription)")
             }
-
-            let health = try JSONDecoder().decode(HealthResponse.self, from: data)
-            guard health.status.uppercased() == "PASS" else {
-                throw SUPRAChatRuntimeError.invalidHealthResponse
-            }
-        } catch is CancellationError {
-            throw CancellationError()
-        } catch let error as SUPRAChatRuntimeError {
-            throw error
-        } catch {
-            throw SUPRAChatRuntimeError.bridgeUnavailable(
-                "Bridge indisponible. Vérifiez qu’il écoute sur 127.0.0.1:18765."
-            )
         }
+
+        throw SUPRAChatRuntimeError.bridgeUnavailable(
+            "Bridge local indisponible sur 127.0.0.1:18765. Health probes: "
+            + failures.joined(separator: " | ")
+        )
+    }
+
+    private func performHealthCheck(at healthURL: URL) async throws {
+        var request = URLRequest(url: healthURL)
+        request.timeoutInterval = 2.5
+
+        let (data, response) = try await healthSession.data(for: request)
+        try Task.checkCancellation()
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw SUPRAChatRuntimeError.invalidHealthResponse
+        }
+
+        if let health = try? JSONDecoder().decode(HealthResponse.self, from: data),
+           health.status.uppercased() == "PASS" {
+            return
+        }
+
+        if let raw = String(data: data, encoding: .utf8),
+           raw.uppercased().contains("PASS") {
+            return
+        }
+
+        throw SUPRAChatRuntimeError.invalidHealthResponse
     }
 
     private func restartExistingBridge() async throws {
@@ -126,7 +146,7 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
             )
         }
 
-        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        try? await Task.sleep(nanoseconds: 1_200_000_000)
     }
 
     func execute(prompt: String, mode: ChatMode) async throws -> String {
@@ -154,8 +174,8 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
 
     private static func makeHealthSession() -> URLSession {
         let configuration = URLSessionConfiguration.ephemeral
-        configuration.timeoutIntervalForRequest = 4
-        configuration.timeoutIntervalForResource = 4
+        configuration.timeoutIntervalForRequest = 3
+        configuration.timeoutIntervalForResource = 3
         return URLSession(configuration: configuration)
     }
 
