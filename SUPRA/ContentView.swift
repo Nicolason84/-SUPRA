@@ -3773,7 +3773,7 @@ private final class SUPRALiveBoardsModel: ObservableObject {
     @Published var snapshot = SUPRALiveSnapshot()
     @Published var lastError: String?
 
-    private var timer: Timer?
+    private var refreshTask: Task<Void, Never>?
     private let home = FileManager.default.homeDirectoryForCurrentUser
 
     private var architectureURL: URL {
@@ -3791,16 +3791,18 @@ private final class SUPRALiveBoardsModel: ObservableObject {
     func start() {
         stop()
         reload()
-        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                self?.reload()
+        refreshTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                guard let self, !Task.isCancelled else { return }
+                self.reload()
             }
         }
     }
 
     func stop() {
-        timer?.invalidate()
-        timer = nil
+        refreshTask?.cancel()
+        refreshTask = nil
     }
 
     func reload() {
