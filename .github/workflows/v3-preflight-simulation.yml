@@ -97,6 +97,7 @@ jobs:
         if: always()
         run: |
           set -u
+          mkdir -p "$RUNNER_TEMP/V3_PREFLIGHT"
           LOG="$RUNNER_TEMP/V3_PREFLIGHT/xcodebuild-release.log"
           OUT="$RUNNER_TEMP/V3_PREFLIGHT/compiler-signals.txt"
           if [ -f "$LOG" ]; then
