@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-SOURCE_COMMIT="ce3faaf923580c1514ddeb63b879a12b148dc0d1"
+SOURCE_COMMIT="77482000a2f6e0b8be01a1efdc21fa20fe1af471"
 REPO_TARBALL="https://codeload.github.com/Nicolason84/-SUPRA/tar.gz/${SOURCE_COMMIT}"
 STAMP="$(date '+%Y%m%d_%H%M%S')"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/SUPRA_PANDORA_PREFLIGHT.XXXXXX")"
@@ -37,6 +37,7 @@ SRCROOT="$(find "$TMP" -maxdepth 1 -type d -name '*SUPRA-*' | head -1)"
 
 say "4/10 Invariants pré-vol"
 grep -Fq 'SUPRAGabrielConductorRuntime.load()' "$SRCROOT/SUPRA/MissionStore.swift" || die "Mission Center non relié à Gabriel" 40
+grep -Fq 'capability_opportunities' "$SRCROOT/SUPRA/MissionStore.swift" || die "Mission Center non relié aux opportunités" 44
 grep -Fq 'DECISION_BOARD_AUTHORITY_FINAL.json' "$SRCROOT/SUPRA/DecisionStore.swift" || die "Decision Inbox non relié aux boards" 41
 grep -Fq 'Liveness contract' "$SRCROOT/SUPRA/SUPRAChatRuntimeAdapter.swift" || die "Health Chat ancien contrat" 42
 grep -Fq 'OJOWorkspaceView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "ojO fusion absent" 43
@@ -126,14 +127,48 @@ printf 'APP=PASS\n'
 printf 'CHAT_BRIDGE=%s\n' "$CHAT"
 printf 'GABRIEL=%s\n' "$GABRIEL_STATE"
 printf 'DECISION_BOARDS=%s/3\n' "$BOARDS"
-printf 'MISSION_PROVIDER=GABRIEL\n'
+OPPORTUNITY_FILE="$HOME/NOVA_OS/SUPRA_STREAM_RECONCILIATION_V1/CURRENT/04_PRODUCTS_SEMANTIC_V4.json"
+OPPORTUNITIES=0
+if [ -s "$OPPORTUNITY_FILE" ]; then
+  OPPORTUNITIES="$(
+    OPPORTUNITY_FILE="$OPPORTUNITY_FILE" /usr/bin/python3 - <<'PY'
+import json, os
+p=os.environ["OPPORTUNITY_FILE"]
+try:
+    x=json.load(open(p,encoding="utf-8"))
+    print(len(x.get("capability_opportunities") or []))
+except Exception:
+    print(0)
+PY
+  )"
+fi
+
+ACTION_ALLOWLIST="$HOME/NOVA_OS/SUPRA_ACTION_CENTER_V1/ALLOWLIST.json"
+ACTIONS="ABSENT"
+if [ -s "$ACTION_ALLOWLIST" ] && /usr/bin/python3 -m json.tool "$ACTION_ALLOWLIST" >/dev/null 2>&1; then
+  ACTIONS="READY"
+fi
+
+OPENCODE="NO"
+if lsof -nP -iTCP:4096 -sTCP:LISTEN >/dev/null 2>&1; then
+  OPENCODE="YES"
+fi
+
+printf 'OPPORTUNITIES=%s/20\n' "$OPPORTUNITIES"
+printf 'ACTION_CENTER=%s\n' "$ACTIONS"
+printf 'OPENCODE_4096=%s\n' "$OPENCODE"
+printf 'MISSION_PROVIDER=OPPORTUNITY_ENGINE+GABRIEL\n'
 printf 'DECISION_PROVIDER=LOCAL_BOARDS\n'
 printf 'SOURCE_COMMIT=%s\n' "$SOURCE_COMMIT"
 printf 'ROLLBACK=%s\n' "$RETIRED"
 printf 'LOG=%s\n' "$LOG"
 
-if [ "$CHAT" = "YES" ] && [ "$GABRIEL_STATE" = "READY" ] && [ "$BOARDS" -ge 1 ]; then
-  say "STATUS=GO_CONTROLLED"
+if [ "$CHAT" = "YES" ] && [ "$OPPORTUNITIES" = "20" ] && [ "$BOARDS" -ge 1 ] && [ "$ACTIONS" = "READY" ]; then
+  if [ "$GABRIEL_STATE" = "READY" ] && [ "$OPENCODE" = "YES" ]; then
+    say "STATUS=GO_PARALLEL_3_CONTROLLED"
+  else
+    say "STATUS=GO_SINGLE_BRANCH_CONTROLLED"
+  fi
 else
   say "STATUS=NO_GO_BOUNDED"
 fi
