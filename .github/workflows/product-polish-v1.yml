@@ -1,0 +1,51 @@
+name: Validate Product Polish V1
+
+on:
+  push:
+    branches:
+      - polish-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Product invariants
+        run: |
+          set -euxo pipefail
+          grep -Fq 'private var storedRoute = SUPRAOJORoute.chat.rawValue' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'case .chat:' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'SUPRAChatView()' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq '.preferredColorScheme(.dark)' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'com.novaera.sol-github-bridge' SUPRA/SUPRAChatRuntimeAdapter.swift
+          grep -Fq 'FranceOrganismNativeView()' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'OJOOrganismNativeView()' SUPRA/SUPRAOJOHomeView.swift
+          echo PRODUCT_INVARIANTS_PASS
+
+      - name: Resolve packages
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Verify product source
+        run: |
+          set -euxo pipefail
+          test -d "$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          grep -Fq 'France, organisme distribué.' SUPRA/FranceOrganismNativeView.swift
+          grep -Fq 'Parler à SUPRA · ojO' SUPRA/SUPRAChatView.swift
+          echo PRODUCT_POLISH_PASS
