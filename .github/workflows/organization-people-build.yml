@@ -1,0 +1,38 @@
+name: Validate Organization People Universe
+
+on:
+  push:
+    branches:
+      - supra/organization-people-universe-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          set -euxo pipefail
+          sw_vers
+          xcodebuild -version
+          xcrun --sdk macosx --show-sdk-version
+
+      - name: Resolve
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
