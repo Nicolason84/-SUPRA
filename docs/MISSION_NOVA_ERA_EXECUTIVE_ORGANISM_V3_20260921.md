@@ -258,6 +258,30 @@ Owns:
 
 ---
 
+# 1B. FAST SAFE EXECUTION PROFILE
+
+The system must maximize machine-solvable throughput without weakening human authority.
+
+Canonical policy:
+docs/SUPRA_FAST_SAFE_EXECUTION_PROFILE_V1.md
+
+Default execution profile:
+FAST_SAFE
+
+Rules:
+- up to 3 parallel workers for independent read-only/reversible work
+- batch evidence reads
+- reuse fresh proven evidence
+- prefetch the next safe phase
+- no waiting for UI before machine-solvable continuation
+- reversible local code/build/test work proceeds automatically
+- Single Writer Rule remains authoritative
+- human gates remain mandatory for money, legal/admin submission, public send, signature/binding commitment, destructive operations, security/permission changes, authority changes, and non-rollbackable production mutation
+
+Speed must come from parallelism, batching, reuse and fewer unnecessary gates — never from weaker proof.
+
+---
+
 # 2. DUPLICATION REMOVAL MATRIX
 
 Current duplicate → canonical owner:
