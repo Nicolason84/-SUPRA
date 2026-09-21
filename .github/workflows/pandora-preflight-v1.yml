@@ -1,0 +1,47 @@
+name: Validate Pandora Preflight V1
+
+on:
+  push:
+    branches:
+      - pandora-preflight-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preflight invariants
+        run: |
+          set -euxo pipefail
+          grep -Fq 'SUPRAGabrielConductorRuntime.load()' SUPRA/MissionStore.swift
+          grep -Fq 'DECISION_BOARD.json' SUPRA/DecisionStore.swift
+          grep -Fq 'DECISION_BOARD_AUTHORITY_FINAL.json' SUPRA/DecisionStore.swift
+          grep -Fq 'STORAGE_DECISION_BOARD_AFTER_DERIVED_DATA.json' SUPRA/DecisionStore.swift
+          grep -Fq 'Liveness contract' SUPRA/SUPRAChatRuntimeAdapter.swift
+          grep -Fq 'OJOWorkspaceView()' SUPRA/SUPRAOJOHomeView.swift
+          echo PANDORA_PREFLIGHT_INVARIANTS_PASS
+
+      - name: Resolve packages
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Product proof
+        run: |
+          test -d "$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          echo PANDORA_PREFLIGHT_RELEASE_PASS
