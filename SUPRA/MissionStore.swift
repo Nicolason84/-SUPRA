@@ -32,10 +32,6 @@ final class MissionStore: ObservableObject {
     @Published private(set) var finalAuthority = "SUPRA"
     @Published private(set) var outputMode = "ISOLATED_RUNS"
     @Published private(set) var opportunityCount = 0
-    var veryShortCount: Int { missions.filter { $0.category == "Très court terme" }.count }
-    var shortCount: Int { missions.filter { $0.category == "Court terme" }.count }
-    var mediumCount: Int { missions.filter { $0.category == "Moyen terme" }.count }
-    var longCount: Int { missions.filter { $0.category == "Long terme" }.count }
 
     @Published var query = "" {
         didSet { applyPresentation() }
@@ -128,7 +124,7 @@ final class MissionStore: ObservableObject {
         }
 
         return feed.capabilityOpportunities.map { candidate in
-            let horizon = derivedHorizon(for: candidate.declaredRank)
+            let rankBucket = rankBucketLabel(for: candidate.declaredRank)
             let progress = normalizedProgress(candidate.maturityScoreDeclared)
 
             return Mission(
@@ -136,14 +132,14 @@ final class MissionStore: ObservableObject {
                 title: candidate.name,
                 status: .planned,
                 priority: priority(for: candidate.declaredRank),
-                category: horizon,
+                category: "Opportunity · \(rankBucket)",
                 owner: "SUPRA Opportunity Engine",
                 dueDate: nil,
                 progress: progress,
                 summary:
                     "\(candidate.declaredAction) · rang déclaré \(candidate.declaredRank) · " +
                     "\(candidate.matchedReconciledProjectCount) projets liés · " +
-                    "horizon dérivé: \(horizon)" +
+                    "horizon: À QUALIFIER par preuves · bucket: \(rankBucket)" +
                     (candidate.notALaunchedProduct ? " · produit non lancé" : ""),
                 objectives: [
                     Mission.Objective(
@@ -231,12 +227,12 @@ final class MissionStore: ObservableObject {
         )
     }
 
-    private func derivedHorizon(for rank: Int) -> String {
+    private func rankBucketLabel(for rank: Int) -> String {
         switch rank {
-        case ...5: return "Très court terme"
-        case 6...10: return "Court terme"
-        case 11...15: return "Moyen terme"
-        default: return "Long terme"
+        case ...5: return "rank 1–5"
+        case 6...10: return "rank 6–10"
+        case 11...15: return "rank 11–15"
+        default: return "rank 16–20"
         }
     }
 
