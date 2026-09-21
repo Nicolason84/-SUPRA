@@ -49,7 +49,7 @@ jobs:
       - name: Ad-hoc sign and verify
         run: |
           set -euxo pipefail
-          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA-FRANCE.app"
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
           test -d "$APP"
 
           /usr/bin/codesign \
