@@ -37,22 +37,18 @@ final class MissionStore: ObservableObject {
     }
 
     func load() {
-        guard missions.isEmpty else {
-            applyPresentation()
-            return
-        }
         isLoading = true
         errorMessage = nil
 
-        // Local data boundary. A real provider can replace this assignment
-        // without changing MissionCenterView or its child views.
-        missions = []
+        let runner = SUPRAGrandeMissionRunner.shared
+        missions = [makeGrandeMission(from: runner)]
+        runner.startIfNeeded()
+
         isLoading = false
         applyPresentation()
     }
 
     func refresh() {
-        missions = []
         load()
     }
 
@@ -66,6 +62,113 @@ final class MissionStore: ObservableObject {
 
     func sort(_ sort: Sort) {
         activeSort = sort
+    }
+
+
+    private func makeGrandeMission(from runner: SUPRAGrandeMissionRunner) -> Mission {
+        let phaseStatuses = runner.phases.map { phase in
+            (phase, runner.receiptStatus(for: phase.id) ?? (runner.activePhaseID == phase.id ? "RUNNING" : "PENDING"))
+        }
+
+        let completed = phaseStatuses.filter { $0.1 == "PASS" }.count
+        let blocked = phaseStatuses.first { ["BLOCKED", "UNPROVEN", "ERROR"].contains($0.1) }
+
+        let status: Mission.Status
+        if completed == runner.phases.count {
+            status = .completed
+        } else if blocked != nil || runner.lastError != nil {
+            status = .blocked
+        } else {
+            status = .active
+        }
+
+        let progress = Double(completed) / Double(max(runner.phases.count, 1))
+
+        let objectives = runner.phases.map { phase in
+            Mission.Objective(
+                id: stableUUID("objective-" + phase.id),
+                title: phase.title,
+                isCompleted: runner.receiptStatus(for: phase.id) == "PASS"
+            )
+        }
+
+        let tasks = phaseStatuses.map { phase, phaseStatus in
+            let taskStatus: Mission.Task.Status = switch phaseStatus {
+            case "PASS": .completed
+            case "RUNNING": .inProgress
+            case "BLOCKED", "UNPROVEN", "ERROR": .blocked
+            default: .pending
+            }
+            return Mission.Task(
+                id: stableUUID("task-" + phase.id),
+                title: phase.title,
+                status: taskStatus
+            )
+        }
+
+        let current: String
+        if completed == runner.phases.count {
+            current = "TOTAL_SYSTEM_READY candidate — all ten phases returned explicit PASS receipts."
+        } else if let blocked {
+            current = "Stopped fail-closed at \(blocked.0.id): \(blocked.1). \(runner.lastError ?? "")"
+        } else if let active = runner.activePhaseID,
+                  let phase = runner.phases.first(where: { $0.id == active }) {
+            current = "Executing \(phase.id) · \(phase.title)"
+        } else {
+            current = "Authorized and waiting for next runtime cycle."
+        }
+
+        return Mission(
+            id: stableUUID(runner.missionID),
+            title: "Grande Mission · Total iMac / CAnnoNico / Alonso",
+            status: status,
+            priority: .critical,
+            category: "System Consolidation",
+            owner: "SUPRA · Authority Nicolas",
+            dueDate: nil,
+            progress: progress,
+            summary: "Memory-first, patrimony-first consolidation using the existing SUPRA Chat runtime. Every phase requires an explicit PASS receipt; missing proof stops the chain.",
+            objectives: objectives,
+            tasks: tasks,
+            dependencies: [
+                Mission.Dependency(
+                    id: stableUUID("dep-runtime"),
+                    title: "Existing SUPRA Chat runtime",
+                    status: "REQUIRED · no replacement"
+                ),
+                Mission.Dependency(
+                    id: stableUUID("dep-canon"),
+                    title: "Existing CAnnoNico / registries / evidence",
+                    status: "RECOVER + REUSE FIRST"
+                )
+            ],
+            timeline: [
+                Mission.TimelineEntry(
+                    id: stableUUID("timeline-authorized"),
+                    date: Date(),
+                    title: "Mission authorized",
+                    detail: "Mission 0 readiness passed; execution routed through existing runtime."
+                )
+            ],
+            currentStatus: current
+        )
+    }
+
+    private func stableUUID(_ seed: String) -> UUID {
+        var bytes = Array(seed.utf8)
+        if bytes.isEmpty { bytes = [0] }
+        var hash = [UInt8](repeating: 0, count: 16)
+        for (index, byte) in bytes.enumerated() {
+            hash[index % 16] = hash[index % 16] &+ byte &+ UInt8(truncatingIfNeeded: index)
+        }
+        hash[6] = (hash[6] & 0x0F) | 0x40
+        hash[8] = (hash[8] & 0x3F) | 0x80
+        return UUID(uuid: (
+            hash[0], hash[1], hash[2], hash[3],
+            hash[4], hash[5], hash[6], hash[7],
+            hash[8], hash[9], hash[10], hash[11],
+            hash[12], hash[13], hash[14], hash[15]
+        ))
     }
 
     private func applyPresentation() {
