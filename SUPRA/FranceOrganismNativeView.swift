@@ -525,8 +525,8 @@ struct FranceOrganismNativeView: View {
             let bend = CGFloat(sin(time * 0.22 + Double(abs(region.code.hashValue % 7))) * 14)
             vessel.addCurve(
                 to: point,
-                control1: CGPoint(x: center.x + dx * 0.35 - dy.signum() * bend, y: center.y + dy * 0.35),
-                control2: CGPoint(x: center.x + dx * 0.72, y: center.y + dy * 0.72 + dx.signum() * bend)
+                control1: CGPoint(x: center.x + dx * 0.35 - (dy >= 0 ? bend : -bend), y: center.y + dy * 0.35),
+                control2: CGPoint(x: center.x + dx * 0.72, y: center.y + dy * 0.72 + (dx >= 0 ? bend : -bend))
             )
             context.stroke(
                 vessel,
