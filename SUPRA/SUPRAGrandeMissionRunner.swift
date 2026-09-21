@@ -52,6 +52,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     private let runtime: SUPRAChatRuntimeAdapter
     private let fileManager = FileManager.default
+    private let iso = ISO8601DateFormatter()
 
     private init() {
         runtime = SUPRAChatRuntimeAdapter()
@@ -72,10 +73,6 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         Task { await run() }
     }
 
-    var isAwaitingHumanDecision: Bool {
-        blockedPhase != nil
-    }
-
     var blockedPhase: Phase? {
         phases.first { phase in
             guard let receipt = receipt(for: phase.id) else { return false }
@@ -83,10 +80,34 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         }
     }
 
+    var isAwaitingHumanDecision: Bool {
+        guard let phase = blockedPhase,
+              let receipt = receipt(for: phase.id)
+        else { return false }
+
+        guard let decision = humanDecision(for: phase.id) else {
+            return true
+        }
+
+        guard let receiptDate = iso.date(from: receipt.finishedAt),
+              let decisionDate = iso.date(from: decision.decidedAt)
+        else {
+            return true
+        }
+
+        // If the latest decision is newer than the blocked receipt, it has not
+        // yet been consumed and the runner may resume automatically.
+        return decisionDate <= receiptDate
+    }
+
     func receipt(for phaseID: String) -> PhaseReceipt? {
         let url = outboxURL.appendingPathComponent("\(phaseID).result.json")
         guard let data = try? Data(contentsOf: url) else { return nil }
         return try? JSONDecoder().decode(PhaseReceipt.self, from: data)
+    }
+
+    func receiptStatus(for phaseID: String) -> String? {
+        receipt(for: phaseID)?.status
     }
 
     func humanDecision(for phaseID: String) -> HumanDecisionRecord? {
@@ -111,7 +132,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             schema: "SUPRA_GRANDE_MISSION_HUMAN_DECISION_V1",
             missionID: missionID,
             phaseID: phaseID,
-            decidedAt: ISO8601DateFormatter().string(from: Date()),
+            decidedAt: iso.string(from: Date()),
             authority: "NICOLAS",
             decision: String(trimmed.prefix(8_000))
         )
@@ -127,8 +148,10 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     func run() async {
         guard !isRunning else { return }
+
         isRunning = true
         lastError = nil
+
         defer {
             activePhaseID = nil
             isRunning = false
@@ -139,23 +162,38 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             try await runtime.checkHealth()
 
             for phase in phases {
-                if receiptStatus(for: phase.id) == "PASS" { continue }
+                if receiptStatus(for: phase.id) == "PASS" {
+                    continue
+                }
 
                 activePhaseID = phase.id
-                let startedAt = ISO8601DateFormatter().string(from: Date())
-                try writeRequest(phase: phase, startedAt: startedAt)
+                let startedAt = iso.string(from: Date())
 
-                let prompt = promptForPhase(phase)
-                let response = try await runtime.execute(prompt: prompt, mode: .plan)
-                let finishedAt = ISO8601DateFormatter().string(from: Date())
+                try writeRequest(
+                    phase: phase,
+                    startedAt: startedAt
+                )
 
-                let explicitPass = response.uppercased().contains("PHASE_VERDICT=PASS")
-                    || response.uppercased().contains("PHASE_VERDICT: PASS")
+                let response = try await runtime.execute(
+                    prompt: promptForPhase(phase),
+                    mode: .plan
+                )
 
-                let explicitBlock = response.uppercased().contains("PHASE_VERDICT=BLOCKED")
-                    || response.uppercased().contains("HUMAN_GATE_REQUIRED=YES")
+                let finishedAt = iso.string(from: Date())
 
-                let status = explicitPass ? "PASS" : (explicitBlock ? "BLOCKED" : "UNPROVEN")
+                let upper = response.uppercased()
+                let explicitPass =
+                    upper.contains("PHASE_VERDICT=PASS")
+                    || upper.contains("PHASE_VERDICT: PASS")
+
+                let explicitBlock =
+                    upper.contains("PHASE_VERDICT=BLOCKED")
+                    || upper.contains("HUMAN_GATE_REQUIRED=YES")
+
+                let status =
+                    explicitPass
+                    ? "PASS"
+                    : (explicitBlock ? "BLOCKED" : "UNPROVEN")
 
                 let receipt = PhaseReceipt(
                     schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
@@ -167,8 +205,13 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                     status: status,
                     response: response
                 )
+
                 try writeReceipt(receipt)
-                try writeState(currentPhase: phase.id, status: status, detail: response)
+                try writeState(
+                    currentPhase: phase.id,
+                    status: status,
+                    detail: response
+                )
 
                 guard status == "PASS" else {
                     lastError = "Phase \(phase.id) stopped with \(status)."
@@ -176,7 +219,11 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 }
             }
 
-            try writeState(currentPhase: "COMPLETE", status: "PASS", detail: "All ten phases returned explicit PASS receipts.")
+            try writeState(
+                currentPhase: "COMPLETE",
+                status: "PASS",
+                detail: "All ten phases returned explicit PASS receipts."
+            )
         } catch {
             lastError = error.localizedDescription
             try? writeState(
@@ -189,28 +236,36 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     var isTerminal: Bool {
         guard let data = try? Data(contentsOf: stateURL),
-              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let object = try? JSONSerialization.jsonObject(with: data)
+                as? [String: Any],
               let phase = object["current_phase"] as? String,
               let status = object["status"] as? String
-        else { return false }
+        else {
+            return false
+        }
+
         return phase == "COMPLETE" && status == "PASS"
     }
 
-    func receiptStatus(for phaseID: String) -> String? {
-        let url = outboxURL.appendingPathComponent("\(phaseID).result.json")
-        guard let data = try? Data(contentsOf: url),
-              let receipt = try? JSONDecoder().decode(PhaseReceipt.self, from: data)
-        else { return nil }
-        return receipt.status
-    }
-
     private func prepareDirectories() throws {
-        try fileManager.createDirectory(at: inboxURL, withIntermediateDirectories: true)
-        try fileManager.createDirectory(at: outboxURL, withIntermediateDirectories: true)
-        try fileManager.createDirectory(at: decisionsURL, withIntermediateDirectories: true)
+        try fileManager.createDirectory(
+            at: inboxURL,
+            withIntermediateDirectories: true
+        )
+        try fileManager.createDirectory(
+            at: outboxURL,
+            withIntermediateDirectories: true
+        )
+        try fileManager.createDirectory(
+            at: decisionsURL,
+            withIntermediateDirectories: true
+        )
     }
 
-    private func writeRequest(phase: Phase, startedAt: String) throws {
+    private func writeRequest(
+        phase: Phase,
+        startedAt: String
+    ) throws {
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_PHASE_REQUEST_V1",
             "mission_id": missionID,
@@ -221,38 +276,71 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             "mode": "EXECUTE_NOT_REINVESTIGATE",
             "objective": phase.objective
         ]
-        let data = try JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted, .sortedKeys])
-        try data.write(to: inboxURL.appendingPathComponent("\(phase.id).json"), options: .atomic)
+
+        let data = try JSONSerialization.data(
+            withJSONObject: object,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+
+        try data.write(
+            to: inboxURL.appendingPathComponent("\(phase.id).json"),
+            options: .atomic
+        )
     }
 
-    private func writeReceipt(_ receipt: PhaseReceipt) throws {
+    private func writeReceipt(
+        _ receipt: PhaseReceipt
+    ) throws {
         let data = try JSONEncoder().encode(receipt)
-        try data.write(to: outboxURL.appendingPathComponent("\(receipt.phaseID).result.json"), options: .atomic)
+
+        try data.write(
+            to: outboxURL.appendingPathComponent(
+                "\(receipt.phaseID).result.json"
+            ),
+            options: .atomic
+        )
     }
 
-    private func writeState(currentPhase: String, status: String, detail: String) throws {
+    private func writeState(
+        currentPhase: String,
+        status: String,
+        detail: String
+    ) throws {
         let states = phases.map { phase in
             [
                 "phase_id": phase.id,
                 "title": phase.title,
-                "status": receiptStatus(for: phase.id) ?? (phase.id == currentPhase ? status : "PENDING")
+                "status":
+                    receiptStatus(for: phase.id)
+                    ?? (phase.id == currentPhase ? status : "PENDING")
             ]
         }
+
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_STATE_V1",
             "mission_id": missionID,
             "authority": "NICOLAS",
             "current_phase": currentPhase,
             "status": status,
-            "updated_at": ISO8601DateFormatter().string(from: Date()),
-            "detail": String(detail.prefix(4000)),
+            "updated_at": iso.string(from: Date()),
+            "detail": String(detail.prefix(4_000)),
             "phases": states
         ]
-        let data = try JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted, .sortedKeys])
-        try data.write(to: stateURL, options: .atomic)
+
+        let data = try JSONSerialization.data(
+            withJSONObject: object,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+
+        try data.write(
+            to: stateURL,
+            options: .atomic
+        )
     }
 
-    private func promptForPhase(_ phase: Phase) -> String {
+    private func promptForPhase(
+        _ phase: Phase
+    ) -> String {
         let decision = humanDecision(for: phase.id)?.decision
         let decisionBlock: String
 
@@ -268,9 +356,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             If it is insufficient or ambiguous, remain BLOCKED and return one precise remaining decision question with explicit options.
             """
         } else {
-            decisionBlock = """
-            HUMAN_DECISION_PRESENT=NO
-            """
+            decisionBlock = "HUMAN_DECISION_PRESENT=NO"
         }
 
         return """
@@ -299,7 +385,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         Do not claim execution or freshness without evidence.
 
         If a human-only gate is encountered, do not merely say BLOCKED.
-        Return the exact reason, decision question, explicit options and consequences so the UI can let Nicolas answer inline.
+        Return the exact reason, one precise decision question, explicit options and consequences so Nicolas can answer inline.
 
         RETURN EXACTLY:
         PHASE_VERDICT=PASS|BLOCKED|UNPROVEN
@@ -320,6 +406,5 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         CONSEQUENCE_C=
         NEXT_PHASE_READY=YES|NO
         """
-    }}
-
+    }
 }
