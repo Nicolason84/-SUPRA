@@ -402,4 +402,8 @@ lines += [f"- **{r.id}** [{r.category}] {r.detail}" for r in passes]
 
 print(json.dumps(report["counts"],sort_keys=True))
 print(verdict)
+for r in blockers:
+    print(f"BLOCKER {r.id} [{r.category}] {r.detail}")
+for r in known:
+    print(f"KNOWN_GAP {r.id} [{r.category}] {r.detail}")
 sys.exit(1 if blockers else 0)
