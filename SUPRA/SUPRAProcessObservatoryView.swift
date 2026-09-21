@@ -799,7 +799,12 @@ private actor SUPRAProcessObservatoryScanner {
         }
 
         if let oldestUnresolved = processes
-            .filter({ $0.stage == .inFlight || $0.stage == .blocked })
+            .filter({
+                switch $0.stage {
+                case .inFlight, .blocked: true
+                default: false
+                }
+            })
             .max(by: { $0.ageSeconds < $1.ageSeconds })?
             .id {
             processes = processes.map {
