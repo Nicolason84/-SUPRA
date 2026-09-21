@@ -1,0 +1,133 @@
+name: V3 Preflight Simulation
+
+on:
+  push:
+    branches:
+      - supra/v3-preflight-simulation-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: macos-26
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          set -euxo pipefail
+          sw_vers
+          xcodebuild -version
+          swift --version
+          python3 --version
+
+      - name: Preflight harness syntax
+        run: |
+          set -euxo pipefail
+          python3 -m py_compile RECOVERY/V3_PREFLIGHT_SIMULATION.py
+
+      - name: Static + synthetic V3 simulations
+        run: |
+          set -euxo pipefail
+          mkdir -p "$RUNNER_TEMP/V3_PREFLIGHT"
+          python3 RECOVERY/V3_PREFLIGHT_SIMULATION.py "$RUNNER_TEMP/V3_PREFLIGHT"
+
+      - name: Resolve dependencies
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild               -project SUPRA.xcodeproj               -scheme SUPRA               -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Release build
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_V3_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee "$RUNNER_TEMP/V3_PREFLIGHT/xcodebuild-release.log"
+
+      - name: Bundle integrity
+        run: |
+          set -euxo pipefail
+          APP="$RUNNER_TEMP/SUPRA_V3_DerivedData/Build/Products/Release/SUPRA.app"
+          test -d "$APP"
+          test -x "$APP/Contents/MacOS/SUPRA"
+          test -f "$APP/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP/Contents/Info.plist"
+          du -sh "$APP"
+
+      - name: Ad-hoc signing simulation
+        run: |
+          set -euxo pipefail
+          SRC="$RUNNER_TEMP/SUPRA_V3_DerivedData/Build/Products/Release/SUPRA.app"
+          CANDIDATE="$RUNNER_TEMP/V3_PREFLIGHT/SUPRA-V3-CANDIDATE.app"
+          /usr/bin/ditto "$SRC" "$CANDIDATE"
+          /usr/bin/codesign             --force             --deep             --sign -             --entitlements SUPRA/SUPRA.entitlements             "$CANDIDATE"
+          /usr/bin/codesign --verify --deep --strict --verbose=2 "$CANDIDATE"
+          /usr/bin/codesign -d --entitlements :- "$CANDIDATE"             > "$RUNNER_TEMP/V3_PREFLIGHT/candidate-entitlements.plist" 2>&1 || true
+
+      - name: Cold-start survival smoke
+        continue-on-error: true
+        run: |
+          set -u
+          APP="$RUNNER_TEMP/V3_PREFLIGHT/SUPRA-V3-CANDIDATE.app"
+          LOG="$RUNNER_TEMP/V3_PREFLIGHT/cold-start.log"
+          /usr/bin/open -n "$APP" >"$LOG" 2>&1
+          OPEN_RC=$?
+          sleep 6
+          PIDS="$(pgrep -f "$APP/Contents/MacOS/SUPRA" || true)"
+          {
+            echo "OPEN_RC=$OPEN_RC"
+            echo "PIDS=$PIDS"
+          } >> "$LOG"
+          if [ -n "$PIDS" ]; then
+            echo "COLD_START_SURVIVED=YES" >> "$LOG"
+            for pid in $PIDS; do kill "$pid" || true; done
+            exit 0
+          fi
+          echo "COLD_START_SURVIVED=UNPROVEN" >> "$LOG"
+          exit 1
+
+      - name: Scan warnings and Swift errors
+        if: always()
+        run: |
+          set -u
+          LOG="$RUNNER_TEMP/V3_PREFLIGHT/xcodebuild-release.log"
+          OUT="$RUNNER_TEMP/V3_PREFLIGHT/compiler-signals.txt"
+          if [ -f "$LOG" ]; then
+            grep -E 'warning:|error:' "$LOG" > "$OUT" || true
+          else
+            echo "release log unavailable" > "$OUT"
+          fi
+          cat "$OUT"
+
+      - name: Create preflight meta receipt
+        if: always()
+        run: |
+          set -u
+          OUT="$RUNNER_TEMP/V3_PREFLIGHT"
+          mkdir -p "$OUT"
+          cat > "$OUT/PREFLIGHT_META.json" <<EOF
+          {
+            "schema": "SUPRA_V3_PREFLIGHT_META_V1",
+            "head_sha": "${GITHUB_SHA}",
+            "workflow_run_id": "${GITHUB_RUN_ID}",
+            "runner_os": "${RUNNER_OS}",
+            "candidate_deployed": false,
+            "external_side_effects_permitted": false
+          }
+          EOF
+
+      - name: Upload V3 preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SUPRA-V3-preflight-${{ github.sha }}
+          path: ${{ runner.temp }}/V3_PREFLIGHT
+          if-no-files-found: error
+          retention-days: 14
