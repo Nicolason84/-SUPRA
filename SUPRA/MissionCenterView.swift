@@ -44,14 +44,14 @@ struct MissionCenterView: View {
     }
 
     private var flightDeck: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("PANDORA · GABRIEL")
+                    Text("PANDORA · MISSION FLIGHT DECK")
                         .font(.caption2.bold())
                         .tracking(1.2)
                         .foregroundStyle(.secondary)
-                    Text("\(store.missionSlots) branches concurrentes · \(store.opportunityCount) opportunités")
+                    Text("FIRST_REAL_COLLECTED → MAX_ECONOMIC")
                         .font(.headline)
                 }
                 Spacer()
@@ -62,32 +62,57 @@ struct MissionCenterView: View {
                     .background(.thinMaterial, in: Capsule())
             }
 
-            VStack(alignment: .leading, spacing: 6) {
-                lane("A", "Cash maintenant", "0–2 sem.", "buyer / preuve / paiement")
-                lane("B", "Levier", "2–8 sem.", "offre high-ticket / réplication")
-                lane("C", "10M+ value-at-stake", "stratégique", "diagnostic / décision / preuve")
-            }
-
-            HStack(spacing: 8) {
-                horizonBadge("Très court", store.veryShortCount)
-                horizonBadge("Court", store.shortCount)
-                horizonBadge("Moyen", store.mediumCount)
-                horizonBadge("Long", store.longCount)
-            }
-
-            Text("Moyen 2–6 mois · Long 6–18 mois · Très long 2–5 ans")
-                .font(.caption2)
+            Text("3 branches concurrentes · \(store.opportunityCount) opportunités réelles à scorer · autorité finale \(store.finalAuthority)")
+                .font(.caption)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 6) {
+            VStack(alignment: .leading, spacing: 7) {
+                lane(
+                    "A",
+                    "CASH_NOW",
+                    "H0 · 0–72 h",
+                    "premier encaissement réel · acheteur · preuve · paiement"
+                )
+                lane(
+                    "B",
+                    "SCALE_ENGINE",
+                    "H1 3–30 j · H2 1–12 mois",
+                    "valeur capturable · marge · répétabilité · levier"
+                )
+                lane(
+                    "C",
+                    "STRATEGIC_ASSETS",
+                    "H3 · 1–10 ans",
+                    "problèmes 10M+ value-at-stake · diagnostic · accès · capture"
+                )
+            }
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text("SCORING ÉCONOMIQUE")
+                    .font(.caption2.bold())
+                    .tracking(1.0)
+                    .foregroundStyle(.secondary)
+                Text("value-at-stake × douleur × urgence × solvabilité × accès × avantage SUPRA × exécutabilité × valeur capturable ÷ temps / risque / capital")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            HStack(spacing: 10) {
+                Label("\(store.missionSlots) slots", systemImage: "square.grid.3x1.folder.badge.plus")
                 Label("\(store.workerProcesses) workers", systemImage: "cpu")
-                Text("·")
-                Text(store.outputMode)
-                Text("·")
-                Text("autorité \(store.finalAuthority)")
+                Label(store.outputMode, systemImage: "tray.2")
+                Spacer()
+                Text("CAPITAL AVANT 1ER CASH: 0 €")
+                    .font(.caption2.bold())
+                    .foregroundStyle(.orange)
             }
             .font(.caption2)
             .foregroundStyle(.secondary)
+
+            Text("Les horizons ne sont pas déduits du rang. Une opportunité reçoit H0/H1/H2/H3 seulement après preuve de délai, accès, capturabilité et risque.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
         .padding(14)
         .background(.ultraThinMaterial)
@@ -99,40 +124,27 @@ struct MissionCenterView: View {
         _ horizon: String,
         _ rule: String
     ) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 9) {
             Text(letter)
                 .font(.caption.bold())
-                .frame(width: 22, height: 22)
+                .frame(width: 24, height: 24)
                 .background(Color.cyan.opacity(0.16), in: Circle())
 
-            VStack(alignment: .leading, spacing: 1) {
+            VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text(title)
                         .font(.caption.bold())
                     Spacer()
                     Text(horizon)
-                        .font(.caption2)
+                        .font(.caption2.weight(.semibold))
                         .foregroundStyle(.secondary)
                 }
                 Text(rule)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                    .lineLimit(2)
             }
         }
-    }
-
-    private func horizonBadge(_ title: String, _ count: Int) -> some View {
-        HStack(spacing: 4) {
-            Text(title)
-            Text("\(count)")
-                .monospacedDigit()
-                .fontWeight(.semibold)
-        }
-        .font(.caption2)
-        .padding(.horizontal, 7)
-        .padding(.vertical, 4)
-        .background(.thinMaterial, in: Capsule())
     }
 
     @ToolbarContentBuilder
