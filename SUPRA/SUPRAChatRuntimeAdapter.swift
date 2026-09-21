@@ -72,10 +72,14 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
                 throw SUPRAChatRuntimeError.invalidHealthResponse
             }
 
-            if let health = try? JSONDecoder().decode(HealthResponse.self, from: data) {
+            if let health = try? JSONDecoder().decode(HealthResponse.self, from: data),
+               let status = health.status?.uppercased() {
                 let accepted = ["PASS", "OK", "READY", "CONNECTED", "HEALTHY"]
-                if accepted.contains(health.status.uppercased()) {
+                if accepted.contains(status) {
                     return
+                }
+                if ["FAIL", "ERROR", "DOWN", "UNAVAILABLE"].contains(status) {
+                    throw SUPRAChatRuntimeError.invalidHealthResponse
                 }
             }
 
