@@ -109,7 +109,7 @@
       "surface": "INPI",
       "owns": [
         "rne",
-        "accounts",
+        "annual_accounts",
         "acts",
         "trademarks",
         "patents",
