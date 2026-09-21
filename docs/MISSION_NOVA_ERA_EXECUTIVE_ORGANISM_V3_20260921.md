@@ -309,6 +309,36 @@ its information and capability are moved to the canonical owner and the old surf
 
 ---
 
+# 2B. FLOW DISTRIBUTION / FLUIDITY
+
+No orchestration engine is added.
+
+Existing engines, capabilities, workers and connectors are distributed onto canonical nodes and edges.
+
+Instrumentation contract:
+docs/SUPRA_FLOW_MARKER_V1.md
+docs/SUPRA_FLOW_MARKER_V1.json
+
+Each flow carries a lightweight marker with trace/span/node/edge/timing/evidence lineage.
+
+The marker allows:
+- throughput measurement
+- queue latency
+- service latency
+- wait time
+- bottleneck age
+- retries
+- backpressure
+- fork/join lineage
+- human-gate pause/resume
+- result→memory→canon completeness
+
+Visual motion in the NOVA ERA organism is derived from this marker data.
+
+FLOW_MARKER_IS_NOT_AN_ENGINE=YES
+
+---
+
 # 3. UNIVERSAL EXPERIENCE CONTRACT
 
 Every significant object and card follows:
