@@ -336,6 +336,42 @@ A static catalog must never masquerade as live account state.
 
 ---
 
+# 4B. HUMAN GATE UX CONTRACT
+
+A state may never display only BLOCKED.
+
+Every human-only gate must surface, inline and in the same workflow:
+
+WHY_BLOCKED
+DECISION_QUESTION
+OPTION_A
+OPTION_B
+OPTION_C
+SAFE_DEFAULT when one exists
+CONSEQUENCE_A
+CONSEQUENCE_B
+CONSEQUENCE_C
+EVIDENCE_REFS
+ANSWER_HERE
+SUBMIT_DECISION_AND_RESUME
+
+The blocked mission/process must remain paused as:
+AWAITING_NICOLAS
+
+It must not retry in a loop.
+
+After Nicolas answers:
+DECISION_RECEIPT
+→ SAME_PHASE_RESUME
+→ PASS or a new precise HUMAN_GATE packet
+
+Wherever possible the answer must be entered at the exact place where the blocker is shown.
+No user should have to guess whether to answer in Chat, Control, Terminal or another universe.
+
+BLOCKED_WITHOUT_DECISION_PACKET=PRODUCT_DEFECT
+
+---
+
 # 5. MOMENTUM CONTRACT
 
 Object / universe / company states:
