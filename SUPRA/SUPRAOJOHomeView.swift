@@ -5,7 +5,6 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
     case chat
     case france
     case ojo
-    case supra
     case control
 
     var id: String { rawValue }
@@ -15,7 +14,6 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
         case .chat: return "Chat"
         case .france: return "France"
         case .ojo: return "ojO"
-        case .supra: return "SUPRA"
         case .control: return "Système"
         }
     }
@@ -24,9 +22,8 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
         switch self {
         case .chat: return "Parler · demander · décider"
         case .france: return "Organisme territorial vivant"
-        case .ojo: return "Introspection & apprentissage"
-        case .supra: return "Décisions & connaissance"
-        case .control: return "Runtime · preuves · diagnostics"
+        case .ojo: return "Vivant · décisions · missions · preuves"
+        case .control: return "Runtime · diagnostics · technique"
         }
     }
 
@@ -34,8 +31,7 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
         switch self {
         case .chat: return "bubble.left.and.bubble.right.fill"
         case .france: return "map.fill"
-        case .ojo: return "waveform.path.ecg.rectangle"
-        case .supra: return "sparkles.rectangle.stack"
+        case .ojo: return "circle.hexagongrid.fill"
         case .control: return "gauge.with.dots.needle.50percent"
         }
     }
@@ -45,8 +41,7 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
         case .chat: return "1"
         case .france: return "2"
         case .ojo: return "3"
-        case .supra: return "4"
-        case .control: return "5"
+        case .control: return "4"
         }
     }
 }
@@ -108,10 +103,6 @@ struct SUPRAOJOHomeView: View {
                 routeRow(.ojo)
             }
 
-            Section("Décider") {
-                routeRow(.supra)
-            }
-
             Section("Technique") {
                 routeRow(.control)
             }
@@ -161,9 +152,7 @@ struct SUPRAOJOHomeView: View {
         case .france:
             FranceOrganismNativeView()
         case .ojo:
-            OJOOrganismNativeView()
-        case .supra:
-            ContentView()
+            OJOWorkspaceView()
         case .control:
             SupraControlCenterView()
         }
