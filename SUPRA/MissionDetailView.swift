@@ -7,6 +7,11 @@ struct MissionDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 header
+
+                if mission.status == .blocked {
+                    GrandeMissionHumanGateView()
+                }
+
                 detailSection("Summary", systemImage: "text.alignleft") {
                     Text(mission.summary).textSelection(.enabled)
                 }
