@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum ChatMode: String, CaseIterable, Identifiable {
+enum ChatMode: String, CaseIterable, Identifiable, Codable, Sendable {
     case ask = "ASK"
     case plan = "PLAN"
 
@@ -14,8 +14,8 @@ enum ChatMode: String, CaseIterable, Identifiable {
     }
 }
 
-struct ChatMessage: Identifiable, Equatable {
-    enum Role {
+struct ChatMessage: Identifiable, Equatable, Codable, Sendable {
+    enum Role: String, Codable, Sendable {
         case user
         case runtime
     }
@@ -24,17 +24,20 @@ struct ChatMessage: Identifiable, Equatable {
     let role: Role
     let mode: ChatMode
     let content: String
+    let createdAt: Date
 
     init(
         id: UUID = UUID(),
         role: Role,
         mode: ChatMode,
-        content: String
+        content: String,
+        createdAt: Date = Date()
     ) {
         self.id = id
         self.role = role
         self.mode = mode
         self.content = content
+        self.createdAt = createdAt
     }
 }
 
@@ -100,7 +103,7 @@ enum SUPRAChatRuntimeHealthState: Equatable {
 struct SUPRAChatView: View {
     @State private var mode: ChatMode = .ask
     @State private var prompt = ""
-    @State private var messages: [ChatMessage] = []
+    @StateObject private var memory = SUPRAChatMemoryStore()
     @State private var executionState: SUPRAChatExecutionState = .idle
     @State private var runtimeHealth: SUPRAChatRuntimeHealthState = .checking
     @State private var healthTask: Task<Void, Never>?
@@ -136,6 +139,7 @@ struct SUPRAChatView: View {
         )
         .navigationTitle("Chat")
         .onAppear {
+            memory.refreshLongMemorySource()
             checkRuntimeHealth()
             composerFocused = true
         }
@@ -171,10 +175,27 @@ struct SUPRAChatView: View {
             .pickerStyle(.segmented)
             .frame(width: 190)
 
+            memoryPill
             statusPill
         }
         .padding(.horizontal, 28)
         .padding(.vertical, 18)
+    }
+
+    private var memoryPill: some View {
+        HStack(spacing: 7) {
+            Image(systemName: memory.longMemorySource == "Conversation locale"
+                ? "externaldrive"
+                : "brain.head.profile")
+                .foregroundStyle(memory.longMemorySource == "Conversation locale" ? .secondary : .cyan)
+
+            Text("Mémoire · \(memory.messages.count)")
+                .font(.caption.weight(.medium))
+        }
+        .padding(.horizontal, 11)
+        .padding(.vertical, 7)
+        .background(.thinMaterial, in: Capsule())
+        .help("Conversation persistante · " + memory.longMemorySource)
     }
 
     private var statusPill: some View {
@@ -206,10 +227,10 @@ struct SUPRAChatView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 16) {
-                    if messages.isEmpty {
+                    if memory.messages.isEmpty {
                         emptyConversation
                     } else {
-                        ForEach(messages) { message in
+                        ForEach(memory.messages) { message in
                             messageRow(message)
                                 .id(message.id)
                         }
@@ -224,7 +245,7 @@ struct SUPRAChatView: View {
                 .frame(maxWidth: 940)
                 .frame(maxWidth: .infinity)
             }
-            .onChange(of: messages.count) { _, _ in
+            .onChange(of: memory.messages.count) { _, _ in
                 withAnimation(.easeOut(duration: 0.2)) {
                     proxy.scrollTo("CHAT_BOTTOM", anchor: .bottom)
                 }
@@ -373,9 +394,9 @@ struct SUPRAChatView: View {
                 Text("·")
                 Text(executionState.title)
                 Spacer()
-                if !messages.isEmpty {
-                    Button("Effacer") {
-                        messages.removeAll()
+                if !memory.messages.isEmpty {
+                    Button("Effacer le fil") {
+                        memory.clearConversation()
                         executionState = .idle
                     }
                     .buttonStyle(.plain)
@@ -403,7 +424,9 @@ struct SUPRAChatView: View {
         let submittedPrompt = trimmedPrompt
         let submittedMode = mode
 
-        messages.append(
+        let conversationContext = memory.contextTail()
+
+        memory.append(
             ChatMessage(
                 role: .user,
                 mode: submittedMode,
@@ -415,12 +438,19 @@ struct SUPRAChatView: View {
 
         executionTask = Task {
             do {
+                let longMemory = await SUPRAChatLongMemory.retrieve(submittedPrompt)
+                let enrichedPrompt = buildMemoryAwarePrompt(
+                    userPrompt: submittedPrompt,
+                    conversationContext: conversationContext,
+                    longMemory: longMemory
+                )
+
                 let response = try await runtime.execute(
-                    prompt: submittedPrompt,
+                    prompt: enrichedPrompt,
                     mode: submittedMode
                 )
                 try Task.checkCancellation()
-                messages.append(
+                memory.append(
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
@@ -432,7 +462,7 @@ struct SUPRAChatView: View {
                 return
             } catch {
                 let detail = error.localizedDescription
-                messages.append(
+                memory.append(
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
@@ -445,6 +475,35 @@ struct SUPRAChatView: View {
 
             composerFocused = true
         }
+    }
+
+    private func buildMemoryAwarePrompt(
+        userPrompt: String,
+        conversationContext: String,
+        longMemory: SUPRAChatMemoryPacket
+    ) -> String {
+        let shortContext = conversationContext.isEmpty
+            ? "NO_PRIOR_TURNS"
+            : conversationContext
+
+        return """
+        SUPRA_CHAT_MEMORY_CONTEXT_V1
+
+        RULES:
+        - Use the current conversation first.
+        - Use long memory as read-only context.
+        - Historical memory is not current machine truth unless supported by current evidence.
+        - Preserve contradictions instead of silently resolving them.
+        - Do not ask Nicolas to repeat information already present in the supplied memory packet.
+
+        [CURRENT_CONVERSATION]
+        \(shortContext)
+
+        \(longMemory.contextText)
+
+        [CURRENT_USER_REQUEST]
+        \(userPrompt)
+        """
     }
 
     private func checkRuntimeHealth() {
