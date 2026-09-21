@@ -50,6 +50,16 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
     }
 
     func checkHealth() async throws {
+        do {
+            try await performHealthCheck()
+            return
+        } catch {
+            try? await restartExistingBridge()
+            try await performHealthCheck()
+        }
+    }
+
+    private func performHealthCheck() async throws {
         var request = URLRequest(url: healthURL)
         request.timeoutInterval = 4
 
@@ -75,6 +85,48 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
                 "Bridge indisponible. Vérifiez qu’il écoute sur 127.0.0.1:18765."
             )
         }
+    }
+
+    private func restartExistingBridge() async throws {
+        let fileManager = FileManager.default
+        let plist = fileManager.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/LaunchAgents/com.novaera.sol-github-bridge.plist")
+
+        guard fileManager.fileExists(atPath: plist.path) else {
+            throw SUPRAChatRuntimeError.bridgeUnavailable(
+                "Bridge local existant introuvable."
+            )
+        }
+
+        let uid = getuid()
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/bin/launchctl")
+        process.arguments = [
+            "kickstart",
+            "-k",
+            "gui/\(uid)/com.novaera.sol-github-bridge"
+        ]
+
+        let output = Pipe()
+        process.standardOutput = output
+        process.standardError = output
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            throw SUPRAChatRuntimeError.bridgeUnavailable(
+                "Impossible de relancer le bridge local existant."
+            )
+        }
+
+        guard process.terminationStatus == 0 else {
+            throw SUPRAChatRuntimeError.bridgeUnavailable(
+                "Le bridge local n’a pas pu être relancé."
+            )
+        }
+
+        try? await Task.sleep(nanoseconds: 1_500_000_000)
     }
 
     func execute(prompt: String, mode: ChatMode) async throws -> String {
