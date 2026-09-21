@@ -1,0 +1,83 @@
+name: Validate OVNI Self Update Shell
+
+on:
+  push:
+    branches:
+      - supra/ovni-self-update-shell-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          set -euxo pipefail
+          sw_vers
+          xcodebuild -version
+          xcrun --sdk macosx --show-sdk-version
+
+      - name: Canonical invariants
+        run: |
+          set -euxo pipefail
+          test -f SUPRA/SUPRAOJOHomeView.swift
+          test -f SUPRA/SUPRAChatRuntimeAdapter.swift
+          test -f SUPRA/OrganizationPeopleView.swift
+          test -f RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          test -f RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
+          grep -Fq 'enum SUPRAUniverse' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'glassEffect' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'OrganizationPeopleView()' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'defaultHealthURLs' SUPRA/SUPRAChatRuntimeAdapter.swift
+          /bin/bash -n RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          /bin/bash -n RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
+
+      - name: Resolve
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Release build
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Create build receipt
+        run: |
+          set -euxo pipefail
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          test -d "$APP"
+          EXEC="$APP/Contents/MacOS/SUPRA"
+          test -x "$EXEC"
+          EXEC_SHA="$(shasum -a 256 "$EXEC" | awk '{print $1}')"
+          cat > "$RUNNER_TEMP/SUPRA_BUILD_RECEIPT.json" <<EOF
+          {
+            "schema": "SUPRA_OVNI_BUILD_RECEIPT_V1",
+            "commit": "$GITHUB_SHA",
+            "run_id": "$GITHUB_RUN_ID",
+            "workflow": "$GITHUB_WORKFLOW",
+            "configuration": "Release",
+            "sdk": "macosx",
+            "executable_sha256": "$EXEC_SHA"
+          }
+          EOF
+          ditto -c -k --keepParent "$APP" "$RUNNER_TEMP/SUPRA.app.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SUPRA-ovni-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/SUPRA.app.zip
+            ${{ runner.temp }}/SUPRA_BUILD_RECEIPT.json
+          retention-days: 14
