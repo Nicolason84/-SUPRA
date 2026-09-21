@@ -277,10 +277,17 @@ if [ -f "$SRC/RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh" ]; then
   chmod 700 "$UPDATER_DST"
 fi
 
-find "$ROLLBACK_ROOT" -maxdepth 1 -type d -name 'SUPRA_*.app' -print0 2>/dev/null |
-  xargs -0 ls -1dt 2>/dev/null |
-  tail -n +6 |
-  while IFS= read -r OLD; do rm -rf "$OLD"; done
+"$PY" - "$ROLLBACK_ROOT" <<'PY'
+import pathlib,shutil,sys
+root=pathlib.Path(sys.argv[1])
+items=sorted(
+    root.glob("SUPRA_*.app"),
+    key=lambda p: p.stat().st_mtime,
+    reverse=True
+)
+for old in items[5:]:
+    shutil.rmtree(old)
+PY
 
 say "10/10 Persist receipt"
 "$PY" - "$STATE" "$REMOTE_SHA" "$EXEC_SHA" "$CI_PROOF" "$BRIDGE_HEALTH" "$TARGET" "$BACKUP" <<'PY'
