@@ -1,0 +1,49 @@
+name: Build SUPRA x ojO Native
+
+on:
+  push:
+    branches:
+      - supra/ojo-native-home-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Xcode environment
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Resolve packages
+        run: |
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -resolvePackageDependencies
+
+      - name: Build Release
+        run: |
+          set -o pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee "$RUNNER_TEMP/supra-build.log"
+
+      - name: Package app
+        run: |
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          test -d "$APP"
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "$RUNNER_TEMP/SUPRA-OJO-Native-macOS.zip"
+          shasum -a 256 "$RUNNER_TEMP/SUPRA-OJO-Native-macOS.zip" > "$RUNNER_TEMP/SHA256.txt"
+
+      - name: Upload app
+        uses: actions/upload-artifact@v4
+        with:
+          name: SUPRA-OJO-Native-macOS
+          path: |
+            ${{ runner.temp }}/SUPRA-OJO-Native-macOS.zip
+            ${{ runner.temp }}/SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
