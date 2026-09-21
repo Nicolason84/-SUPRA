@@ -5,7 +5,11 @@ struct INPIOfficialConnectorConfiguration {
     let authorizationHeaderValue: String?
 
     static func fromRuntime() -> INPIOfficialConnectorConfiguration? {
-        guard let raw = ProcessInfo.processInfo.environment["SUPRA_INPI_API_BASE_URL"],
+        let rawBase =
+            ProcessInfo.processInfo.environment["SUPRA_INPI_API_BASE_URL"]
+            ?? UserDefaults.standard.string(forKey: "SUPRA_INPI_API_BASE_URL")
+
+        guard let raw = rawBase,
               let base = URL(string: raw) else {
             return nil
         }
