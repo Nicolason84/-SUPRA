@@ -6,6 +6,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
     case chat
     case cannonico
     case missions
+    case organization
     case runtime
     case ojo
     case supra
@@ -19,6 +20,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return "Chat"
         case .cannonico: return "CAnnoNico"
         case .missions: return "Missions"
+        case .organization: return "Organization"
         case .runtime: return "Runtime"
         case .ojo: return "ojO"
         case .supra: return "SUPRA"
@@ -32,6 +34,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return "Conversation directe"
         case .cannonico: return "Mémoire · canon · provenance"
         case .missions: return "Missions parallèles"
+        case .organization: return "People · départements · autorité"
         case .runtime: return "Processus · bridge · santé"
         case .ojo: return "Interface privée Nicolas"
         case .supra: return "Executive Operating System"
@@ -45,6 +48,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return "bubble.left.and.bubble.right.fill"
         case .cannonico: return "point.3.connected.trianglepath.dotted"
         case .missions: return "scope"
+        case .organization: return "person.3.fill"
         case .runtime: return "waveform.path.ecg.rectangle"
         case .ojo: return "eye.fill"
         case .supra: return "sparkles.rectangle.stack.fill"
@@ -58,6 +62,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return .teal
         case .cannonico: return .indigo
         case .missions: return .orange
+        case .organization: return .green
         case .runtime: return .mint
         case .ojo: return .purple
         case .supra: return .cyan
@@ -71,6 +76,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return "L6 · HUMAN GATE"
         case .cannonico: return "L4 · MEMORY / KNOWLEDGE"
         case .missions: return "L5 · MISSIONS E2E"
+        case .organization: return "L6–L7 · PEOPLE / GOVERNANCE"
         case .runtime: return "L3 · RUNTIME"
         case .ojo: return "L6 · EXPERIENCE"
         case .supra: return "L7 · EXECUTIVE / AUTONOMY"
@@ -84,6 +90,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .chat: return "Human → Intent → Runtime"
         case .cannonico: return "Memory → Provenance → Canon"
         case .missions: return "Decision → Mission → Result"
+        case .organization: return "Need → Role → Capacity → Result"
         case .runtime: return "Runtime → Result → Evidence"
         case .ojo: return "Context → Human Gate → Decision"
         case .supra: return "Canon → Action → Learning"
@@ -141,6 +148,8 @@ struct SUPRAOJOHomeView: View {
                     ContentView()
                 case .missions:
                     MissionCenterView()
+                case .organization:
+                    OrganizationPeopleView()
                 case .runtime:
                     SUPRAProcessObservatoryView()
                 case .ojo:
