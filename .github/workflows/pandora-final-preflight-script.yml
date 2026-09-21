@@ -1,0 +1,24 @@
+name: Validate Pandora Final Preflight Script
+
+on:
+  push:
+    branches:
+      - pandora-chat-fix-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-26
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax
+        run: |
+          set -euxo pipefail
+          /bin/bash -n RECOVERY/REPAIR_PANDORA_CHAT_AND_FINAL_PREFLIGHT_V1_20260921.sh
+          grep -Fq 'CHAT_FUNCTIONAL' RECOVERY/REPAIR_PANDORA_CHAT_AND_FINAL_PREFLIGHT_V1_20260921.sh
+          grep -Fq 'STATUS=GO_PARALLEL_3_CONTROLLED' RECOVERY/REPAIR_PANDORA_CHAT_AND_FINAL_PREFLIGHT_V1_20260921.sh
+          echo PANDORA_FINAL_PREFLIGHT_SCRIPT_PASS
