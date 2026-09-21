@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-SOURCE_COMMIT="75f29865941a6d4d224c20040ae129db4b01ceee"
+SOURCE_COMMIT="5086e2c91fdaf718d242c8bf97f5de5749b717e8"
 REPO_TARBALL="https://codeload.github.com/Nicolason84/-SUPRA/tar.gz/${SOURCE_COMMIT}"
 STAMP="$(date '+%Y%m%d_%H%M%S')"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/SUPRA_FRANCE_CLEAN.XXXXXX")"
@@ -58,6 +58,9 @@ test -f "$SRCROOT/SUPRA/FranceOrganismNativeView.swift" || die "FranceOrganismNa
 grep -Fq 'case france' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route France déclarée absente" 41
 grep -Fq '@State private var selection: SUPRAOJORoute? = .france' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "France non définie comme accueil" 42
 grep -Fq 'FranceOrganismNativeView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route France absente" 43
+grep -Fq 'case chat' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route Chat absente" 44
+grep -Fq 'SUPRAChatView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Vue Chat absente" 45
+grep -Fq 'com.novaera.sol-github-bridge' "$SRCROOT/SUPRA/SUPRAChatRuntimeAdapter.swift" || die "Auto-reconnexion bridge absente" 46
 
 say "6/8 Résolution dépendances + compilation Release locale"
 DERIVED="$TMP/DerivedData"
