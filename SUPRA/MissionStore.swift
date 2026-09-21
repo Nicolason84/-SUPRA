@@ -26,6 +26,11 @@ final class MissionStore: ObservableObject {
     @Published private(set) var visibleMissions: [Mission] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
+    @Published private(set) var conductorStatus = "NOT RUN"
+    @Published private(set) var missionSlots = 3
+    @Published private(set) var workerProcesses = 0
+    @Published private(set) var finalAuthority = "SUPRA"
+    @Published private(set) var outputMode = "ISOLATED_RUNS"
     @Published var query = "" {
         didSet { applyPresentation() }
     }
@@ -45,12 +50,26 @@ final class MissionStore: ObservableObject {
         errorMessage = nil
 
         let snapshot = SUPRAGabrielConductorRuntime.load()
+        conductorStatus = snapshot.status
+        missionSlots = snapshot.missionSlots
+        workerProcesses = snapshot.workerProcesses
+        finalAuthority = snapshot.finalAuthority ?? "SUPRA"
+        outputMode = snapshot.outputMode
+
+        guard snapshot.status.uppercased() != "NOT RUN" else {
+            missions = []
+            errorMessage = "Gabriel est disponible mais aucune exécution réelle n’est matérialisée."
+            isLoading = false
+            applyPresentation()
+            return
+        }
+
         missions = snapshot.workers.map { worker in
             mission(from: worker, conductor: snapshot.visibleConductor ?? "GABRIEL")
         }
 
         if missions.isEmpty {
-            errorMessage = "Aucune branche Gabriel disponible."
+            errorMessage = "Aucune branche réelle matérialisée dans le snapshot Gabriel."
         }
 
         isLoading = false
