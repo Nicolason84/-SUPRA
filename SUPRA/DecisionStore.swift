@@ -286,14 +286,21 @@ final class DecisionStore: ObservableObject {
     private func stableUUID(_ value: String) -> UUID {
         let digest = SHA256.hash(data: Data(value.utf8))
         let hex = digest.map { String(format: "%02x", $0) }.joined()
-        let id = [
-            String(hex.prefix(8)),
-            String(hex.dropFirst(8).prefix(4)),
-            String(hex.dropFirst(12).prefix(4)),
-            String(hex.dropFirst(16).prefix(4)),
-            String(hex.dropFirst(20).prefix(12))
-        ].joined(separator: "-")
-        return UUID(uuidString: id) ?? UUID()
+        let raw = String(hex.prefix(32))
+        guard raw.count == 32 else { return UUID() }
+
+        let i8 = raw.index(raw.startIndex, offsetBy: 8)
+        let i12 = raw.index(raw.startIndex, offsetBy: 12)
+        let i16 = raw.index(raw.startIndex, offsetBy: 16)
+        let i20 = raw.index(raw.startIndex, offsetBy: 20)
+
+        let a = String(raw[..<i8])
+        let b = String(raw[i8..<i12])
+        let c = String(raw[i12..<i16])
+        let d = String(raw[i16..<i20])
+        let e = String(raw[i20...])
+        let uuidString = a + "-" + b + "-" + c + "-" + d + "-" + e
+        return UUID(uuidString: uuidString) ?? UUID()
     }
 
     private func applyPresentation() {
