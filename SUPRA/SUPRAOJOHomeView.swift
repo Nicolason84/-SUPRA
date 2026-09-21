@@ -457,7 +457,7 @@ struct SUPRAOJOHomeView: View {
                 case .runtime:
                     SUPRAProcessObservatoryView()
                 case .ojo:
-                    OJOOrganismNativeView()
+                    OJOPrivateControlView()
                 case .supra:
                     SupraControlCenterView()
                 case .control:
