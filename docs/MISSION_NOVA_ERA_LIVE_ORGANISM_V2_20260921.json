@@ -2,7 +2,7 @@
   "schema": "MISSION_NOVA_ERA_LIVE_ORGANISM_V2",
   "date": "2026-09-21",
   "authority": "NICOLAS",
-  "status": "NEXT_GRANDE_MISSION_CANONICAL",
+  "status": "SUPERSEDED",
   "supersedes": "docs/MISSION_SUPRA_LIVE_COMPANY_V1_20260921.md",
   "source_document": "docs/MISSION_NOVA_ERA_LIVE_ORGANISM_V2_20260921.md",
   "execution_gate": {
@@ -428,5 +428,7 @@
     "READY_WITH_BOUNDED_BLOCKERS",
     "NOT_READY"
   ],
-  "action_nicolas": "NONE_UNTIL_CURRENT_GRANDE_MISSION_TERMINAL_GATE"
+  "action_nicolas": "NONE_UNTIL_CURRENT_GRANDE_MISSION_TERMINAL_GATE",
+  "superseded_by": "docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.json",
+  "historical_record": true
 }
