@@ -3,6 +3,7 @@ import AppKit
 
 enum SUPRAOJORoute: String, CaseIterable, Identifiable {
     case france
+    case chat
     case ojo
     case supra
     case control
@@ -12,6 +13,7 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .france: return "France"
+        case .chat: return "Chat"
         case .ojo: return "ojO"
         case .supra: return "SUPRA"
         case .control: return "Control Center"
@@ -21,6 +23,7 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
     var subtitle: String {
         switch self {
         case .france: return "Organisme territorial"
+        case .chat: return "Parler à SUPRA · ojO"
         case .ojo: return "Interface privée"
         case .supra: return "Executive OS"
         case .control: return "Runtime & evidence"
@@ -30,6 +33,7 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
     var symbol: String {
         switch self {
         case .france: return "map.fill"
+        case .chat: return "bubble.left.and.bubble.right.fill"
         case .ojo: return "waveform.path.ecg.rectangle"
         case .supra: return "sparkles.rectangle.stack"
         case .control: return "gauge.with.dots.needle.50percent"
@@ -65,6 +69,8 @@ struct SUPRAOJOHomeView: View {
                 switch selection ?? .france {
                 case .france:
                     FranceOrganismNativeView()
+                case .chat:
+                    SUPRAChatView()
                 case .ojo:
                     OJOOrganismNativeView()
                 case .supra:
