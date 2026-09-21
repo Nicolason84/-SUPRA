@@ -39,7 +39,18 @@ struct MissionCenterView: View {
         .task {
             store.load()
             while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                let runner = SUPRAGrandeMissionRunner.shared
+
+                let delay: UInt64
+                if runner.isRunning {
+                    delay = 1_000_000_000
+                } else if runner.isAwaitingHumanDecision {
+                    delay = 8_000_000_000
+                } else {
+                    delay = 3_000_000_000
+                }
+
+                try? await Task.sleep(nanoseconds: delay)
                 store.refresh()
             }
         }
