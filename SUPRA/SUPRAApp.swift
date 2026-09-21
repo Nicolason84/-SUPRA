@@ -11,7 +11,8 @@ import SwiftUI
 struct SUPRAApp: App {
     var body: some Scene {
         WindowGroup {
-            SupraControlCenterView()
+            SUPRAOJOHomeView()
         }
+        .defaultSize(width: 1440, height: 900)
     }
 }
