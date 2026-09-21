@@ -31,6 +31,7 @@ jobs:
           python3 -m py_compile RECOVERY/V3_PREFLIGHT_SIMULATION.py
 
       - name: Static + synthetic V3 simulations
+        continue-on-error: true
         run: |
           set -euxo pipefail
           mkdir -p "$RUNNER_TEMP/V3_PREFLIGHT"
@@ -47,32 +48,61 @@ jobs:
 
       - name: Release build
         run: |
-          set -euxo pipefail
-          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_V3_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee "$RUNNER_TEMP/V3_PREFLIGHT/xcodebuild-release.log"
+          set -u
+          mkdir -p "$RUNNER_TEMP/V3_PREFLIGHT"
+          set +e
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_V3_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build 2>&1 | tee "$RUNNER_TEMP/V3_PREFLIGHT/xcodebuild-release.log"
+          RC=${PIPESTATUS[0]}
+          set -e
+          echo "$RC" > "$RUNNER_TEMP/V3_PREFLIGHT/release-build.rc"
+          if [ "$RC" -eq 0 ]; then
+            echo "RELEASE_BUILD=PASS"
+          else
+            echo "RELEASE_BUILD=FAIL"
+          fi
+          exit 0
 
       - name: Bundle integrity
         run: |
-          set -euxo pipefail
+          set -u
           APP="$RUNNER_TEMP/SUPRA_V3_DerivedData/Build/Products/Release/SUPRA.app"
-          test -d "$APP"
-          test -x "$APP/Contents/MacOS/SUPRA"
-          test -f "$APP/Contents/Info.plist"
-          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist"
-          /usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP/Contents/Info.plist"
-          du -sh "$APP"
+          OUT="$RUNNER_TEMP/V3_PREFLIGHT/bundle-integrity.txt"
+          RC=0
+          {
+            test -d "$APP" || RC=1
+            test -x "$APP/Contents/MacOS/SUPRA" || RC=1
+            test -f "$APP/Contents/Info.plist" || RC=1
+            if [ "$RC" -eq 0 ]; then
+              /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist"
+              /usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP/Contents/Info.plist"
+              du -sh "$APP"
+            fi
+            echo "BUNDLE_INTEGRITY_RC=$RC"
+          } | tee "$OUT"
+          echo "$RC" > "$RUNNER_TEMP/V3_PREFLIGHT/bundle-integrity.rc"
+          exit 0
 
       - name: Ad-hoc signing simulation
         run: |
-          set -euxo pipefail
+          set -u
           SRC="$RUNNER_TEMP/SUPRA_V3_DerivedData/Build/Products/Release/SUPRA.app"
           CANDIDATE="$RUNNER_TEMP/V3_PREFLIGHT/SUPRA-V3-CANDIDATE.app"
-          /usr/bin/ditto "$SRC" "$CANDIDATE"
-          /usr/bin/codesign             --force             --deep             --sign -             --entitlements SUPRA/SUPRA.entitlements             "$CANDIDATE"
-          /usr/bin/codesign --verify --deep --strict --verbose=2 "$CANDIDATE"
-          /usr/bin/codesign -d --entitlements :- "$CANDIDATE"             > "$RUNNER_TEMP/V3_PREFLIGHT/candidate-entitlements.plist" 2>&1 || true
+          LOG="$RUNNER_TEMP/V3_PREFLIGHT/signing-simulation.log"
+          RC=0
+          if [ ! -d "$SRC" ]; then
+            echo "SOURCE_APP_MISSING" | tee "$LOG"
+            RC=1
+          else
+            /usr/bin/ditto "$SRC" "$CANDIDATE" >>"$LOG" 2>&1 || RC=1
+            /usr/bin/codesign               --force               --deep               --sign -               --entitlements SUPRA/SUPRA.entitlements               "$CANDIDATE" >>"$LOG" 2>&1 || RC=1
+            /usr/bin/codesign --verify --deep --strict --verbose=2 "$CANDIDATE" >>"$LOG" 2>&1 || RC=1
+            /usr/bin/codesign -d --entitlements :- "$CANDIDATE"               > "$RUNNER_TEMP/V3_PREFLIGHT/candidate-entitlements.plist" 2>&1 || true
+          fi
+          echo "$RC" > "$RUNNER_TEMP/V3_PREFLIGHT/signing-simulation.rc"
+          cat "$LOG"
+          exit 0
 
       - name: Cold-start survival smoke
-        continue-on-error: true
         run: |
           set -u
           APP="$RUNNER_TEMP/V3_PREFLIGHT/SUPRA-V3-CANDIDATE.app"
@@ -87,11 +117,13 @@ jobs:
           } >> "$LOG"
           if [ -n "$PIDS" ]; then
             echo "COLD_START_SURVIVED=YES" >> "$LOG"
+            echo "0" > "$RUNNER_TEMP/V3_PREFLIGHT/cold-start.rc"
             for pid in $PIDS; do kill "$pid" || true; done
-            exit 0
+          else
+            echo "COLD_START_SURVIVED=UNPROVEN" >> "$LOG"
+            echo "1" > "$RUNNER_TEMP/V3_PREFLIGHT/cold-start.rc"
           fi
-          echo "COLD_START_SURVIVED=UNPROVEN" >> "$LOG"
-          exit 1
+          exit 0
 
       - name: Scan warnings and Swift errors
         if: always()
@@ -123,6 +155,40 @@ jobs:
             "external_side_effects_permitted": false
           }
           EOF
+
+      - name: Final preflight gate
+        if: always()
+        run: |
+          set -u
+          OUT="$RUNNER_TEMP/V3_PREFLIGHT"
+          python3 - "$OUT" <<'PY'
+          import json, pathlib, sys
+          out=pathlib.Path(sys.argv[1])
+          report=json.loads((out/"V3_PREFLIGHT_REPORT.json").read_text()) if (out/"V3_PREFLIGHT_REPORT.json").exists() else {"counts":{"blocker":999}}
+          static_blockers=int(report.get("counts",{}).get("blocker",999))
+          def rc(name, default=1):
+              p=out/name
+              try: return int(p.read_text().strip())
+              except Exception: return default
+          build=rc("release-build.rc")
+          bundle=rc("bundle-integrity.rc")
+          sign=rc("signing-simulation.rc")
+          cold=rc("cold-start.rc")
+          final={
+            "schema":"SUPRA_V3_PREFLIGHT_FINAL_GATE_V1",
+            "static_blockers":static_blockers,
+            "release_build_rc":build,
+            "bundle_integrity_rc":bundle,
+            "signing_simulation_rc":sign,
+            "cold_start_rc":cold,
+            "cold_start_is_blocking":False,
+          }
+          hard_fail = static_blockers>0 or build!=0 or bundle!=0 or sign!=0
+          final["verdict"]="BLOCKED" if hard_fail else ("PASS_WITH_COLD_START_UNPROVEN" if cold!=0 else "PASS")
+          (out/"FINAL_GATE.json").write_text(json.dumps(final,indent=2)+"\n")
+          print(json.dumps(final,indent=2))
+          sys.exit(1 if hard_fail else 0)
+          PY
 
       - name: Upload V3 preflight evidence
         if: always()
