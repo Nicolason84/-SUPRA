@@ -1,0 +1,47 @@
+name: Validate Chat Memory V1
+
+on:
+  push:
+    branches:
+      - chat-memory-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Memory invariants
+        run: |
+          set -euxo pipefail
+          grep -Fq 'SUPRA_CHAT_ARCHIVE_V1' SUPRA/SUPRAChatMemory.swift
+          grep -Fq 'CANNONICO_FTS5' SUPRA/SUPRAChatMemory.swift
+          grep -Fq 'SUPRA_MEMORY_INDEX' SUPRA/SUPRAChatMemory.swift
+          grep -Fq 'memory.contextTail()' SUPRA/SUPRAChatView.swift
+          grep -Fq 'SUPRA_CHAT_MEMORY_CONTEXT_V1' SUPRA/SUPRAChatView.swift
+          grep -Fq 'memory.append' SUPRA/SUPRAChatView.swift
+          echo MEMORY_INVARIANTS_PASS
+
+      - name: Resolve packages
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Verify app
+        run: |
+          test -d "$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          echo CHAT_MEMORY_V1_PASS
