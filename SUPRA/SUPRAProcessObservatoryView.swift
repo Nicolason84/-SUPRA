@@ -395,6 +395,13 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
             let snapshot = await scanner.scan(root: root)
 
+            let grandeRoot = FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent(
+                    "NOVA_OS/SUPRA_GRANDE_MISSION_V1",
+                    isDirectory: true
+                )
+            let grandeSnapshot = await scanner.scan(root: grandeRoot)
+
             guard let self else { return }
             guard generation == self.scanGeneration else { return }
 
@@ -403,8 +410,20 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
             if snapshot.bridgeAvailable {
                 self.bridgeAvailable = true
-                self.sourceLabel = root.path
-                self.processes = snapshot.processes
+
+                let grandeProcesses: [SUPRAObservedProcess]
+                if grandeSnapshot?.bridgeAvailable == true {
+                    grandeProcesses = grandeSnapshot?.processes ?? []
+                    self.sourceLabel = root.path + " + GRANDE_MISSION"
+                } else {
+                    grandeProcesses = []
+                    self.sourceLabel = root.path
+                }
+
+                var seen = Set<String>()
+                self.processes = (grandeProcesses + snapshot.processes).filter {
+                    seen.insert($0.id).inserted
+                }
             } else {
                 self.clearBridgeState(
                     label: snapshot.unavailableReason ?? "LOCAL BRIDGE UNAVAILABLE"
