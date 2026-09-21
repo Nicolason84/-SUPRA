@@ -1,0 +1,27 @@
+name: Validate Updater Safety Patch
+
+on:
+  push:
+    branches:
+      - supra/autoupdate-prune-safety-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell syntax
+        run: |
+          set -euxo pipefail
+          /bin/bash -n RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          /bin/bash -n RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
+      - name: Build
+        run: |
+          set -euxo pipefail
+          xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies
+          xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -configuration Release -sdk macosx -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
