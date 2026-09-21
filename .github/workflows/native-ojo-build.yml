@@ -71,7 +71,7 @@ jobs:
       - name: Build installation package
         run: |
           set -euxo pipefail
-          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA-FRANCE.app"
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
           STAGE="$RUNNER_TEMP/SUPRA-OJO"
           mkdir -p "$STAGE"
 
