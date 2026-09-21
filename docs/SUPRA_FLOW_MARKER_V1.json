@@ -1,0 +1,51 @@
+{
+  "schema": "SUPRA_FLOW_MARKER_V1",
+  "purpose": "TRACE_EXISTING_CAPABILITIES_ACROSS_CANONICAL_NODES_AND_EDGES",
+  "creates_engine": false,
+  "creates_runtime": false,
+  "creates_bridge": false,
+  "marker_fields": [
+    "flow_id",
+    "trace_id",
+    "span_id",
+    "parent_span_id",
+    "mission_id",
+    "phase_id",
+    "node_id",
+    "previous_node_id",
+    "edge_id",
+    "source_ref",
+    "authority",
+    "human_gate",
+    "created_at",
+    "entered_at",
+    "started_at",
+    "finished_at",
+    "queue_ms",
+    "service_ms",
+    "wait_ms",
+    "status",
+    "outcome",
+    "retry_count",
+    "evidence_refs",
+    "memory_return",
+    "canon_return"
+  ],
+  "fluidity_states": [
+    "FREE_FLOW",
+    "PROGRESSING",
+    "CONGESTED",
+    "STALLED",
+    "BLOCKED",
+    "DEGRADED",
+    "RECOVERING",
+    "COMPLETE"
+  ],
+  "rules": {
+    "fork": "same flow_id/trace_id; new child span_id; preserve parent_span_id",
+    "join": "aggregate children; never claim completion before required children resolve",
+    "human_gate": "BLOCKED/AWAITING_NICOLAS; resume same trace with new span",
+    "canonical_write": "SINGLE_WRITER_RULE",
+    "secret_policy": "NO_SECRET_IN_MARKER"
+  }
+}
