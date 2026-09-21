@@ -5,19 +5,19 @@ import CryptoKit
 @MainActor
 final class DecisionStore: ObservableObject {
     enum Filter: String, CaseIterable, Identifiable {
-        case all = "Toutes"
-        case humanGateRequired = "Human Gate"
-        case pending = "En attente"
-        case inReview = "En revue"
+        case all = "All"
+        case humanGateRequired = "Human Gate Required"
+        case pending = "Pending"
+        case inReview = "In Review"
 
         var id: Self { self }
     }
 
     enum Sort: String, CaseIterable, Identifiable {
-        case newest = "Plus récentes"
-        case oldest = "Plus anciennes"
-        case priority = "Priorité"
-        case confidence = "Confiance"
+        case newest = "Newest"
+        case oldest = "Oldest"
+        case priority = "Priority"
+        case confidence = "Confidence"
 
         var id: Self { self }
     }
@@ -32,39 +32,29 @@ final class DecisionStore: ObservableObject {
     @Published var activeFilter: Filter = .all {
         didSet { applyPresentation() }
     }
-    @Published var activeSort: Sort = .priority {
+    @Published var activeSort: Sort = .newest {
         didSet { applyPresentation() }
     }
 
-    private let fileManager = FileManager.default
-    private var home: URL { fileManager.homeDirectoryForCurrentUser }
-
     func load() {
+        guard decisions.isEmpty else {
+            applyPresentation()
+            return
+        }
+
         isLoading = true
         errorMessage = nil
 
-        let sources = boardSources()
-        var loaded: [Decision] = []
+        let result = loadDecisionBoards()
+        decisions = result.decisions
+        errorMessage = result.errors.isEmpty ? nil : result.errors.joined(separator: " · ")
 
-        for source in sources {
-            guard fileManager.fileExists(atPath: source.url.path) else { continue }
-            do {
-                let object = try readObject(source.url)
-                loaded.append(makeDecision(source: source, object: object))
-            } catch {
-                continue
-            }
-        }
-
-        decisions = loaded
         isLoading = false
-        if loaded.isEmpty {
-            errorMessage = "Aucun Decision Board réel n’est disponible localement."
-        }
         applyPresentation()
     }
 
     func refresh() {
+        decisions = []
         load()
     }
 
@@ -80,227 +70,208 @@ final class DecisionStore: ObservableObject {
         activeSort = sort
     }
 
-    private struct BoardSource {
-        let key: String
-        let title: String
-        let category: String
-        let url: URL
-    }
-
-    private func boardSources() -> [BoardSource] {
-        [
-            BoardSource(
-                key: "architecture",
+    private func loadDecisionBoards() -> (decisions: [Decision], errors: [String]) {
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        let sources: [DecisionBoardSource] = [
+            DecisionBoardSource(
+                id: "architecture",
                 title: "Architecture",
                 category: "Architecture",
                 url: home.appendingPathComponent(
                     "NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/DECISION_BOARD.json"
                 )
             ),
-            BoardSource(
-                key: "authority",
-                title: "Autorité & Human Gate",
+            DecisionBoardSource(
+                id: "authority",
+                title: "Authority Gate",
                 category: "Authority",
                 url: home.appendingPathComponent(
                     "NOVA_OS/SUPRA_RESOLVE_AUTHORITY_FIELD_LINEAGE_AND_CLOSE_SINGLE_HUMAN_GATE_V1/CURRENT/DECISION_BOARD_AUTHORITY_FINAL.json"
                 )
             ),
-            BoardSource(
-                key: "storage",
-                title: "Stockage & revue",
+            DecisionBoardSource(
+                id: "storage",
+                title: "Storage",
                 category: "Storage",
                 url: home.appendingPathComponent(
                     "NOVA_OS/SUPRA_EXECUTE_APPROVED_DERIVED_DATA_BATCH_AND_BUILD_REVIEW_BOARD_FOR_26_70_GB_V1/CURRENT/STORAGE_DECISION_BOARD_AFTER_DERIVED_DATA.json"
                 )
             )
         ]
+
+        var output: [Decision] = []
+        var errors: [String] = []
+
+        for source in sources {
+            do {
+                output.append(try decodeBoard(source))
+            } catch {
+                errors.append("\(source.title): \(error.localizedDescription)")
+            }
+        }
+
+        return (output, errors)
     }
 
-    private func makeDecision(
-        source: BoardSource,
-        object: [String: Any]
-    ) -> Decision {
-        let rawStatus = text(object["status"], fallback: "UNKNOWN")
-        let verdict = text(object["verdict"], fallback: "")
-        let nextAction = text(object["next_action"], fallback: "")
-        let gateObject = object["single_human_gate"] as? [String: Any]
-        let gateStatus = text(gateObject?["status"], fallback: "")
-        let gateAction =
-            text(gateObject?["action_nicolas"], fallback: "").isEmpty
-            ? text(gateObject?["next_action"], fallback: "")
-            : text(gateObject?["action_nicolas"], fallback: "")
-
-        let summary: String
-        if !verdict.isEmpty {
-            summary = verdict
-        } else if !nextAction.isEmpty {
-            summary = nextAction
-        } else {
-            summary = "Board réel disponible · status: \(rawStatus)"
+    private func decodeBoard(_ source: DecisionBoardSource) throws -> Decision {
+        let data = try Data(contentsOf: source.url, options: [.mappedIfSafe])
+        guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw NSError(
+                domain: "SUPRA.DecisionStore",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "JSON invalide"]
+            )
         }
 
-        let date = fileModificationDate(source.url) ?? Date()
-        let humanGate = humanGateStatus(
-            boardStatus: rawStatus,
-            gateStatus: gateStatus
+        let statusText = text(object["status"], fallback: "UNKNOWN")
+        let verdict = text(
+            object["verdict"],
+            fallback: text(object["next_action"], fallback: "Aucun verdict")
+        )
+        let nextAction = text(object["next_action"], fallback: verdict)
+        let date = modificationDate(source.url)
+
+        let gateStatus: String? = {
+            guard let gate = object["single_human_gate"] as? [String: Any] else { return nil }
+            return text(gate["status"], fallback: "UNKNOWN")
+        }()
+
+        let humanGate = humanGateStatus(gateStatus)
+        let decisionStatus = decisionStatus(statusText, gateStatus: gateStatus)
+        let priority = decisionPriority(
+            sourceID: source.id,
+            status: statusText,
+            gateStatus: gateStatus,
+            object: object
         )
 
-        var actions: [Decision.NextAction] = []
-        if !gateAction.isEmpty && gateAction.uppercased() != "NONE" {
-            actions.append(
-                Decision.NextAction(
-                    id: stableUUID(source.key + ":gate"),
-                    title: gateAction,
-                    owner: "Nicolas",
-                    dueDate: nil
-                )
-            )
-        }
-        if !nextAction.isEmpty && nextAction.uppercased() != "NONE",
-           nextAction != gateAction {
-            actions.append(
-                Decision.NextAction(
-                    id: stableUUID(source.key + ":next"),
-                    title: nextAction,
-                    owner: "SUPRA",
-                    dueDate: nil
-                )
-            )
-        }
-
-        let evidence = [
+        var evidence: [Decision.Evidence] = [
             Decision.Evidence(
-                id: stableUUID(source.key + ":evidence"),
-                title: "Decision Board local",
-                detail: "status=\(rawStatus)" + (gateStatus.isEmpty ? "" : " · gate=\(gateStatus)"),
+                id: stableUUID("evidence:\(source.id):board"),
+                title: "\(source.title) board",
+                detail: verdict,
                 source: source.url.path
             )
         ]
 
+        if let recovered = object["derived_data_recovered_human"] {
+            evidence.append(
+                Decision.Evidence(
+                    id: stableUUID("evidence:\(source.id):recovered"),
+                    title: "Recovered",
+                    detail: String(describing: recovered),
+                    source: source.url.path
+                )
+            )
+        }
+
+        if let review = object["remaining_review_total_human"] {
+            evidence.append(
+                Decision.Evidence(
+                    id: stableUUID("evidence:\(source.id):review"),
+                    title: "Remaining review",
+                    detail: String(describing: review),
+                    source: source.url.path
+                )
+            )
+        }
+
+        let nextActions: [Decision.NextAction] = nextAction.isEmpty
+            ? []
+            : [
+                Decision.NextAction(
+                    id: stableUUID("next:\(source.id):\(nextAction)"),
+                    title: nextAction,
+                    owner: humanGate == .required ? "NICOLAS" : "SUPRA",
+                    dueDate: nil
+                )
+            ]
+
         return Decision(
-            id: stableUUID(source.url.path),
+            id: stableUUID("decision:\(source.id)"),
             title: source.title,
-            status: decisionStatus(rawStatus),
-            priority: decisionPriority(rawStatus, humanGate: humanGate),
+            status: decisionStatus,
+            priority: priority,
             category: source.category,
             date: date,
             humanGate: humanGate,
             confidence: nil,
-            summary: summary,
+            summary: "\(statusText) · \(verdict)",
             evidence: evidence,
-            nextActions: actions,
-            history: [
-                Decision.HistoryEntry(
-                    id: stableUUID(source.key + ":history"),
-                    date: date,
-                    title: "Board observé",
-                    detail: rawStatus
-                )
-            ]
+            nextActions: nextActions,
+            history: []
         )
     }
 
-    private func decisionStatus(_ raw: String) -> Decision.Status {
-        let value = raw.uppercased()
+    private func decisionStatus(
+        _ status: String,
+        gateStatus: String?
+    ) -> Decision.Status {
+        let value = (status + " " + (gateStatus ?? "")).uppercased()
+
         if value.contains("REJECT") || value.contains("FAIL") {
             return .rejected
         }
-        if value.contains("APPROVED")
-            || value.contains("PASS")
-            || value.contains("CLOSED")
-            || value.contains("FROZEN")
-            || value.contains("READY")
-            || value.contains("SUCCESS") {
+        if value.contains("BLOCK") || value.contains("HUMAN_GATE") || value.contains("REVIEW") {
+            return .inReview
+        }
+        if value.contains("PASS") || value.contains("FROZEN") || value.contains("CLOSED") || value.contains("APPROVED") {
             return .approved
         }
-        if value.contains("REVIEW")
-            || value.contains("WAIT")
-            || value.contains("PROVISIONAL")
-            || value.contains("HUMAN_GATE") {
-            return .inReview
+        if value.contains("DEFER") || value.contains("WAIT") {
+            return .deferred
         }
         return .pending
     }
 
+    private func humanGateStatus(_ gate: String?) -> Decision.HumanGate {
+        guard let gate else { return .notRequired }
+        let value = gate.uppercased()
+        if value.contains("CLOSED") || value.contains("PASS") || value.contains("NONE") || value.contains("COMPLETE") {
+            return .completed
+        }
+        return .required
+    }
+
     private func decisionPriority(
-        _ raw: String,
-        humanGate: Decision.HumanGate
+        sourceID: String,
+        status: String,
+        gateStatus: String?,
+        object: [String: Any]
     ) -> Decision.Priority {
-        let value = raw.uppercased()
-        if value.contains("FAIL") || value.contains("BLOCK") || humanGate == .required {
+        let combined = (status + " " + (gateStatus ?? "")).uppercased()
+        if combined.contains("BLOCK") || combined.contains("FAIL") || combined.contains("HUMAN_GATE") {
             return .critical
         }
-        if value.contains("WAIT") || value.contains("REVIEW") || value.contains("WARNING") {
+        if sourceID == "storage",
+           let items = object["remaining_review_items"] as? Int,
+           items > 0 {
             return .high
-        }
-        if value.contains("PASS") || value.contains("CLOSED") || value.contains("FROZEN") {
-            return .low
         }
         return .medium
     }
 
-    private func humanGateStatus(
-        boardStatus: String,
-        gateStatus: String
-    ) -> Decision.HumanGate {
-        let board = boardStatus.uppercased()
-        let gate = gateStatus.uppercased()
-
-        if board.contains("HUMAN_GATE") {
-            return .required
-        }
-
-        if !gate.isEmpty {
-            if ["NONE", "CLOSED", "PASS", "COMPLETED", "NOT_REQUIRED"].contains(gate) {
-                return .completed
-            }
-            return .required
-        }
-
-        return .notRequired
-    }
-
-    private func readObject(_ url: URL) throws -> [String: Any] {
-        let data = try Data(contentsOf: url, options: [.mappedIfSafe])
-        guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw NSError(
-                domain: "DecisionStore",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid JSON: \(url.path)"]
-            )
-        }
-        return object
-    }
-
-    private func fileModificationDate(_ url: URL) -> Date? {
-        (try? url.resourceValues(forKeys: [.contentModificationDateKey]))?
-            .contentModificationDate
+    private func modificationDate(_ url: URL) -> Date {
+        (try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate)
+            ?? .distantPast
     }
 
     private func text(_ value: Any?, fallback: String) -> String {
         guard let value else { return fallback }
-        if let string = value as? String { return string }
         return String(describing: value)
     }
 
     private func stableUUID(_ value: String) -> UUID {
         let digest = SHA256.hash(data: Data(value.utf8))
-        let hex = digest.map { String(format: "%02x", $0) }.joined()
-        let raw = String(hex.prefix(32))
-        guard raw.count == 32 else { return UUID() }
-
-        let i8 = raw.index(raw.startIndex, offsetBy: 8)
-        let i12 = raw.index(raw.startIndex, offsetBy: 12)
-        let i16 = raw.index(raw.startIndex, offsetBy: 16)
-        let i20 = raw.index(raw.startIndex, offsetBy: 20)
-
-        let a = String(raw[..<i8])
-        let b = String(raw[i8..<i12])
-        let c = String(raw[i12..<i16])
-        let d = String(raw[i16..<i20])
-        let e = String(raw[i20...])
-        let uuidString = a + "-" + b + "-" + c + "-" + d + "-" + e
-        return UUID(uuidString: uuidString) ?? UUID()
+        var bytes = Array(digest.prefix(16))
+        bytes[6] = (bytes[6] & 0x0F) | 0x40
+        bytes[8] = (bytes[8] & 0x3F) | 0x80
+        return UUID(uuid: (
+            bytes[0], bytes[1], bytes[2], bytes[3],
+            bytes[4], bytes[5], bytes[6], bytes[7],
+            bytes[8], bytes[9], bytes[10], bytes[11],
+            bytes[12], bytes[13], bytes[14], bytes[15]
+        ))
     }
 
     private func applyPresentation() {
@@ -339,4 +310,11 @@ final class DecisionStore: ObservableObject {
         case .low: 3
         }
     }
+}
+
+private struct DecisionBoardSource {
+    let id: String
+    let title: String
+    let category: String
+    let url: URL
 }
