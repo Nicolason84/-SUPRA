@@ -1,0 +1,199 @@
+{
+  "schema": "NOVA_ERA_EXTERNAL_CONNECTOR_REGISTRY_V1",
+  "authority": "NICOLAS",
+  "status": "CANONICAL_CONNECTION_PLAN",
+  "connectors": [
+    {
+      "id": "CONN_GMAIL",
+      "provider": "Gmail",
+      "class": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "status": "CONNECTED_CAPABILITY_AVAILABLE",
+      "read": true,
+      "write": true,
+      "human_gate": "SEND_BY_DEFAULT"
+    },
+    {
+      "id": "CONN_GCAL",
+      "provider": "Google Calendar",
+      "class": [
+        "C1",
+        "C2"
+      ],
+      "status": "CONNECTED_CAPABILITY_AVAILABLE",
+      "read": true,
+      "write": true,
+      "human_gate": "EXTERNAL_INVITE_WHEN_MATERIAL"
+    },
+    {
+      "id": "CONN_GCONTACTS",
+      "provider": "Google Contacts",
+      "class": [
+        "C1"
+      ],
+      "status": "CONNECTED_CAPABILITY_AVAILABLE",
+      "read": true,
+      "write": false,
+      "human_gate": "NONE"
+    },
+    {
+      "id": "CONN_GDRIVE",
+      "provider": "Google Drive",
+      "class": [
+        "C1",
+        "C2"
+      ],
+      "status": "CONNECTED_CAPABILITY_AVAILABLE",
+      "read": true,
+      "write": true,
+      "human_gate": "DELETE_SHARE_SENSITIVE"
+    },
+    {
+      "id": "CONN_GITHUB",
+      "provider": "GitHub",
+      "class": [
+        "C1",
+        "C2"
+      ],
+      "status": "CONNECTED_CAPABILITY_AVAILABLE",
+      "read": true,
+      "write": true,
+      "human_gate": "MERGE_DEPLOY_HIGH_IMPACT"
+    },
+    {
+      "id": "CONN_SMS_PHONE",
+      "provider": "OFFICIAL_PHONE_SMS_PROVIDER",
+      "class": [
+        "C1",
+        "C3"
+      ],
+      "status": "CONNECTABLE_PLUGIN_OPTION",
+      "read": true,
+      "write": true,
+      "human_gate": "SEND_BY_POLICY"
+    },
+    {
+      "id": "CONN_WHATSAPP",
+      "provider": "WHATSAPP_BUSINESS_PLATFORM",
+      "class": [
+        "C1",
+        "C3"
+      ],
+      "status": "CUSTOM_OFFICIAL_API_REQUIRED",
+      "read": true,
+      "write": true,
+      "human_gate": "SENSITIVE_OR_BINDING_SEND"
+    },
+    {
+      "id": "CONN_BANK",
+      "provider": "BANK_OR_PSD2_OPEN_BANKING",
+      "class": [
+        "C1",
+        "C4",
+        "C5"
+      ],
+      "status": "PROVIDER_SELECTION_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "ALL_MONEY_MOVEMENT"
+    },
+    {
+      "id": "CONN_PAYMENTS",
+      "provider": "PAYMENT_PROCESSOR",
+      "class": [
+        "C1",
+        "C2",
+        "C5"
+      ],
+      "status": "CONNECTABLE_PROVIDER_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "REFUND_CHARGE_PAYOUT"
+    },
+    {
+      "id": "CONN_ACCOUNTING",
+      "provider": "ACCOUNTING_SYSTEM",
+      "class": [
+        "C1",
+        "C2"
+      ],
+      "status": "PROVIDER_SELECTION_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "STATUTORY_POSTING_POLICY"
+    },
+    {
+      "id": "CONN_DGFIP",
+      "provider": "DGFIP_IMPOTS",
+      "class": [
+        "C1",
+        "C6"
+      ],
+      "status": "OFFICIAL_INTERFACE_DISCOVERY_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "SUBMIT_PAY"
+    },
+    {
+      "id": "CONN_URSSAF",
+      "provider": "URSSAF",
+      "class": [
+        "C1",
+        "C6"
+      ],
+      "status": "OFFICIAL_INTERFACE_DISCOVERY_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "SUBMIT_PAY"
+    },
+    {
+      "id": "CONN_INPI",
+      "provider": "INPI",
+      "class": [
+        "C1",
+        "C6"
+      ],
+      "status": "OFFICIAL_INTERFACE_DISCOVERY_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "LEGAL_FILING"
+    },
+    {
+      "id": "CONN_FRANCE_TRAVAIL",
+      "provider": "FRANCE_TRAVAIL",
+      "class": [
+        "C1",
+        "C6"
+      ],
+      "status": "OFFICIAL_INTERFACE_DISCOVERY_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "DECLARATION_SUBMISSION"
+    },
+    {
+      "id": "CONN_PUBLIC_BODIES",
+      "provider": "OTHER_PUBLIC_ORGANISMS",
+      "class": [
+        "C1",
+        "C6"
+      ],
+      "status": "DISCOVERY_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "SUBMIT_BINDING"
+    }
+  ],
+  "hard_rules": [
+    "NO_SECRET_IN_MEMORY",
+    "READ_WRITE_SEPARATION",
+    "MONEY_MOVEMENT_HUMAN_GATE",
+    "LEGAL_ADMIN_SUBMISSION_HUMAN_GATE",
+    "OFFICIAL_API_FIRST",
+    "NO_UNOFFICIAL_WHATSAPP_CANON",
+    "NO_UNOFFICIAL_BANKING_CANON",
+    "ALL_EVENTS_RETURN_TO_CANNONICO"
+  ]
+}
