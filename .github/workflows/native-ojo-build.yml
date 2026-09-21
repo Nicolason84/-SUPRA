@@ -12,38 +12,143 @@ permissions:
 jobs:
   build:
     runs-on: macos-26
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Xcode environment
         run: |
+          set -euxo pipefail
+          sw_vers
           xcodebuild -version
           swift --version
+          xcrun --sdk macosx --show-sdk-version
 
       - name: Resolve packages
         run: |
-          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -resolvePackageDependencies
+          set -euxo pipefail
+          xcodebuild \
+            -project SUPRA.xcodeproj \
+            -scheme SUPRA \
+            -resolvePackageDependencies
 
       - name: Build Release
         run: |
-          set -o pipefail
-          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build | tee "$RUNNER_TEMP/supra-build.log"
+          set -euxo pipefail
+          xcodebuild \
+            -project SUPRA.xcodeproj \
+            -scheme SUPRA \
+            -configuration Release \
+            -sdk macosx \
+            -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build | tee "$RUNNER_TEMP/supra-build.log"
 
-      - name: Package app
+      - name: Ad-hoc sign and verify
         run: |
+          set -euxo pipefail
           APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
           test -d "$APP"
-          ditto -c -k --sequesterRsrc --keepParent "$APP" "$RUNNER_TEMP/SUPRA-OJO-Native-macOS.zip"
-          shasum -a 256 "$RUNNER_TEMP/SUPRA-OJO-Native-macOS.zip" > "$RUNNER_TEMP/SHA256.txt"
+
+          /usr/bin/codesign \
+            --force \
+            --deep \
+            --sign - \
+            --timestamp=none \
+            "$APP"
+
+          /usr/bin/codesign \
+            --verify \
+            --deep \
+            --strict \
+            --verbose=4 \
+            "$APP"
+
+          /usr/bin/codesign -dv --verbose=4 "$APP" 2>&1 | tee "$RUNNER_TEMP/CODESIGN.txt"
+
+      - name: Build installation package
+        run: |
+          set -euxo pipefail
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          STAGE="$RUNNER_TEMP/SUPRA-OJO"
+          mkdir -p "$STAGE"
+
+          ditto "$APP" "$STAGE/SUPRA.app"
+
+          cat > "$STAGE/INSTALL_SUPRA.command" <<'SH'
+          #!/bin/zsh
+          set -euo pipefail
+
+          HERE="$(cd "$(dirname "$0")" && pwd)"
+          SRC="$HERE/SUPRA.app"
+          DEST_DIR="$HOME/Applications"
+          DEST="$DEST_DIR/SUPRA.app"
+
+          mkdir -p "$DEST_DIR"
+          rm -rf "$DEST"
+          /usr/bin/ditto "$SRC" "$DEST"
+
+          /usr/bin/xattr -dr com.apple.quarantine "$DEST" 2>/dev/null || true
+
+          /usr/bin/codesign --verify --deep --strict --verbose=2 "$DEST"
+          /usr/bin/open "$DEST"
+          SH
+          chmod +x "$STAGE/INSTALL_SUPRA.command"
+
+          cat > "$STAGE/README.txt" <<'TXT'
+          SUPRA × ojO — native macOS build
+
+          Recommended:
+          1. Double-click INSTALL_SUPRA.command.
+          2. The installer copies SUPRA.app to ~/Applications.
+          3. It removes quarantine only from that SUPRA.app bundle.
+          4. It verifies the code signature, then opens the app.
+
+          Manual alternative:
+          - Drag SUPRA.app to Applications.
+          - If macOS blocks first launch, Control-click SUPRA.app > Open.
+          - If macOS still reports "damaged", run:
+              xattr -dr com.apple.quarantine ~/Applications/SUPRA.app
+            then open SUPRA.app again.
+
+          This build is ad-hoc signed for personal/local use.
+          It is not Apple Developer ID notarized.
+          TXT
+
+          ditto -c -k --sequesterRsrc --keepParent "$STAGE" "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip"
+
+          hdiutil create \
+            -volname "SUPRA × ojO" \
+            -srcfolder "$STAGE" \
+            -ov \
+            -format UDZO \
+            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.dmg"
+
+          shasum -a 256 \
+            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip" \
+            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.dmg" \
+            > "$RUNNER_TEMP/SHA256.txt"
+
+      - name: Verify packaged copy
+        run: |
+          set -euxo pipefail
+          TMP="$RUNNER_TEMP/verify"
+          mkdir -p "$TMP"
+          ditto -x -k "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip" "$TMP"
+          APP="$(find "$TMP" -name SUPRA.app -type d -maxdepth 3 | head -1)"
+          test -n "$APP"
+          /usr/bin/codesign --verify --deep --strict --verbose=4 "$APP"
 
       - name: Upload app
         uses: actions/upload-artifact@v4
         with:
-          name: SUPRA-OJO-Native-macOS
+          name: SUPRA-OJO-Native-macOS-SIGNED
           path: |
-            ${{ runner.temp }}/SUPRA-OJO-Native-macOS.zip
+            ${{ runner.temp }}/SUPRA-OJO-Native-macOS-SIGNED.zip
+            ${{ runner.temp }}/SUPRA-OJO-Native-macOS-SIGNED.dmg
             ${{ runner.temp }}/SHA256.txt
+            ${{ runner.temp }}/CODESIGN.txt
           if-no-files-found: error
           retention-days: 30
