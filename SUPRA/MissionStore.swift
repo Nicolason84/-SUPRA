@@ -5,19 +5,19 @@ import CryptoKit
 @MainActor
 final class MissionStore: ObservableObject {
     enum Filter: String, CaseIterable, Identifiable {
-        case all = "Toutes"
-        case planned = "Planifiées"
-        case active = "Actives"
-        case blocked = "Bloquées"
-        case completed = "Terminées"
+        case all = "All"
+        case planned = "Planned"
+        case active = "Active"
+        case blocked = "Blocked"
+        case completed = "Completed"
 
         var id: Self { self }
     }
 
     enum Sort: String, CaseIterable, Identifiable {
-        case dueDate = "Échéance"
-        case priority = "Priorité"
-        case progress = "Progression"
+        case dueDate = "Due Date"
+        case priority = "Priority"
+        case progress = "Progress"
         case title = "Mission"
 
         var id: Self { self }
@@ -38,24 +38,23 @@ final class MissionStore: ObservableObject {
     }
 
     func load() {
-        isLoading = true
-        errorMessage = nil
-
-        let snapshot = SUPRAGabrielConductorRuntime.load()
-        guard snapshot.status.uppercased() != "NOT RUN" else {
-            missions = []
-            isLoading = false
-            errorMessage = "Gabriel n’a pas encore matérialisé de mission active."
+        guard missions.isEmpty else {
             applyPresentation()
             return
         }
 
-        missions = snapshot.workers.map { mission(from: $0, snapshot: snapshot) }
+        isLoading = true
+        errorMessage = nil
+
+        let result = loadRealMissions()
+        missions = result.missions
+        errorMessage = result.errors.isEmpty ? nil : result.errors.joined(separator: " · ")
         isLoading = false
         applyPresentation()
     }
 
     func refresh() {
+        missions = []
         load()
     }
 
@@ -71,125 +70,164 @@ final class MissionStore: ObservableObject {
         activeSort = sort
     }
 
-    private func mission(
-        from worker: SUPRAGabrielWorkerSnapshot,
-        snapshot: SUPRAGabrielConductorSnapshot
-    ) -> Mission {
-        let status = missionStatus(worker.status)
-        let priority = missionPriority(status)
-        let progress = missionProgress(status)
-        let completed = status == .completed
+    private func loadRealMissions() -> (missions: [Mission], errors: [String]) {
+        var loaded: [Mission] = []
+        var errors: [String] = []
 
-        let objective = Mission.Objective(
-            id: stableUUID(worker.id + ":objective"),
-            title: worker.mission,
-            isCompleted: completed
-        )
+        do {
+            loaded.append(contentsOf: try loadOpportunityMissions())
+        } catch {
+            errors.append("Opportunités: \(error.localizedDescription)")
+        }
 
-        let task = Mission.Task(
-            id: stableUUID(worker.id + ":task"),
-            title: worker.analysis ?? "Exécuter la branche isolée et matérialiser une preuve.",
-            status: taskStatus(status)
-        )
+        let gabriel = SUPRAGabrielConductorRuntime.load()
+        if gabriel.status.uppercased() != "NOT RUN" || gabriel.run != nil {
+            loaded.append(contentsOf: gabrielMissions(gabriel))
+        } else if loaded.isEmpty {
+            errors.append("Gabriel: aucun run matérialisé")
+        }
 
-        let dependency = Mission.Dependency(
-            id: stableUUID(worker.id + ":source"),
-            title: worker.source,
-            status: "READ_ONLY"
-        )
+        return (loaded, errors)
+    }
 
-        let generatedAt = parseISO8601(snapshot.generatedAt) ?? Date()
-        let timeline = [
-            Mission.TimelineEntry(
-                id: stableUUID(worker.id + ":timeline"),
-                date: generatedAt,
-                title: "Snapshot Gabriel",
-                detail: "Conductor: \(snapshot.visibleConductor ?? "GABRIEL") · final authority: \(snapshot.finalAuthority ?? "SUPRA")"
+    private func loadOpportunityMissions() throws -> [Mission] {
+        let url = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent(
+                "NOVA_OS/SUPRA_STREAM_RECONCILIATION_V1/CURRENT/04_PRODUCTS_SEMANTIC_V4.json"
             )
-        ]
 
-        return Mission(
-            id: stableUUID(worker.id),
-            title: worker.title,
-            status: status,
-            priority: priority,
-            category: "Branche concurrente",
-            owner: snapshot.visibleConductor ?? "GABRIEL",
-            dueDate: nil,
-            progress: progress,
-            summary: worker.analysis ?? worker.mission,
-            objectives: [objective],
-            tasks: [task],
-            dependencies: [dependency],
-            timeline: timeline,
-            currentStatus: worker.status
-        )
+        let data = try Data(contentsOf: url, options: [.mappedIfSafe])
+        let feed = try JSONDecoder().decode(OpportunityFeed.self, from: data)
+
+        guard feed.capabilityOpportunities.count == 20 else {
+            throw NSError(
+                domain: "SUPRA.MissionStore",
+                code: 20,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Flux opportunités refusé: \(feed.capabilityOpportunities.count), attendu: 20."
+                ]
+            )
+        }
+
+        return feed.capabilityOpportunities.map { candidate in
+            let horizon = derivedHorizon(for: candidate.declaredRank)
+            let progress = normalizedProgress(candidate.maturityScoreDeclared)
+
+            return Mission(
+                id: stableUUID("opportunity:\(candidate.candidateID)"),
+                title: candidate.name,
+                status: .planned,
+                priority: priority(for: candidate.declaredRank),
+                category: horizon,
+                owner: "SUPRA Opportunity Engine",
+                dueDate: nil,
+                progress: progress,
+                summary:
+                    "\(candidate.declaredAction) · rang déclaré \(candidate.declaredRank) · " +
+                    "\(candidate.matchedReconciledProjectCount) projets liés · " +
+                    "horizon dérivé du rang: \(horizon)" +
+                    (candidate.notALaunchedProduct ? " · produit non lancé" : ""),
+                objectives: [
+                    Mission.Objective(
+                        id: stableUUID("objective:\(candidate.candidateID):action"),
+                        title: candidate.declaredAction,
+                        isCompleted: false
+                    )
+                ],
+                tasks: [],
+                dependencies: [],
+                timeline: [],
+                currentStatus: candidate.status
+            )
+        }
+    }
+
+    private func gabrielMissions(_ snapshot: SUPRAGabrielConductorSnapshot) -> [Mission] {
+        snapshot.workers.map { worker in
+            let status = missionStatus(worker.status)
+            return Mission(
+                id: stableUUID("gabriel:\(worker.id)"),
+                title: worker.title,
+                status: status,
+                priority: status == .blocked ? .high : .medium,
+                category: "Branche concurrente",
+                owner: snapshot.visibleConductor ?? "GABRIEL",
+                dueDate: nil,
+                progress: missionProgress(worker.status),
+                summary: worker.analysis ?? worker.mission,
+                objectives: [
+                    Mission.Objective(
+                        id: stableUUID("gabriel-objective:\(worker.id)"),
+                        title: worker.mission,
+                        isCompleted: status == .completed
+                    )
+                ],
+                tasks: [],
+                dependencies: [],
+                timeline: [],
+                currentStatus: worker.status
+            )
+        }
+    }
+
+    private func derivedHorizon(for rank: Int) -> String {
+        switch rank {
+        case ...5: return "Très court terme"
+        case 6...10: return "Court terme"
+        case 11...15: return "Moyen terme"
+        default: return "Long terme"
+        }
+    }
+
+    private func priority(for rank: Int) -> Mission.Priority {
+        switch rank {
+        case ...5: return .critical
+        case 6...10: return .high
+        case 11...15: return .medium
+        default: return .low
+        }
+    }
+
+    private func normalizedProgress(_ raw: Double) -> Double {
+        let value = raw > 1 ? raw / 100 : raw
+        return min(max(value, 0), 1)
     }
 
     private func missionStatus(_ raw: String) -> Mission.Status {
         let value = raw.uppercased()
-        if value.contains("PASS") || value.contains("SUCCESS") || value.contains("COMPLETE") || value.contains("DONE") {
+        if value.contains("PASS") || value.contains("SUCCESS") || value.contains("COMPLETE") {
             return .completed
         }
         if value.contains("BLOCK") || value.contains("FAIL") || value.contains("ERROR") {
             return .blocked
         }
-        if value.contains("RUN") || value.contains("ACTIVE") || value.contains("IN_PROGRESS") || value.contains("EXECUT") {
+        if value.contains("RUN") || value.contains("ACTIVE") || value.contains("WORK") {
             return .active
         }
         return .planned
     }
 
-    private func missionPriority(_ status: Mission.Status) -> Mission.Priority {
-        switch status {
-        case .blocked: return .critical
-        case .active: return .high
-        case .planned: return .medium
-        case .completed: return .low
-        }
-    }
-
-    private func missionProgress(_ status: Mission.Status) -> Double {
-        switch status {
-        case .planned: return 0
-        case .active: return 0.5
-        case .blocked: return 0.25
+    private func missionProgress(_ raw: String) -> Double {
+        switch missionStatus(raw) {
         case .completed: return 1
+        case .active: return 0.5
+        case .blocked: return 0.35
+        case .planned: return 0
         }
-    }
-
-    private func taskStatus(_ status: Mission.Status) -> Mission.Task.Status {
-        switch status {
-        case .planned: return .pending
-        case .active: return .inProgress
-        case .blocked: return .blocked
-        case .completed: return .completed
-        }
-    }
-
-    private func parseISO8601(_ value: String?) -> Date? {
-        guard let value else { return nil }
-        return ISO8601DateFormatter().date(from: value)
     }
 
     private func stableUUID(_ value: String) -> UUID {
         let digest = SHA256.hash(data: Data(value.utf8))
-        let hex = digest.map { String(format: "%02x", $0) }.joined()
-        let raw = String(hex.prefix(32))
-        guard raw.count == 32 else { return UUID() }
-
-        let i8 = raw.index(raw.startIndex, offsetBy: 8)
-        let i12 = raw.index(raw.startIndex, offsetBy: 12)
-        let i16 = raw.index(raw.startIndex, offsetBy: 16)
-        let i20 = raw.index(raw.startIndex, offsetBy: 20)
-
-        let a = String(raw[..<i8])
-        let b = String(raw[i8..<i12])
-        let c = String(raw[i12..<i16])
-        let d = String(raw[i16..<i20])
-        let e = String(raw[i20...])
-        let uuidString = a + "-" + b + "-" + c + "-" + d + "-" + e
-        return UUID(uuidString: uuidString) ?? UUID()
+        var bytes = Array(digest.prefix(16))
+        bytes[6] = (bytes[6] & 0x0F) | 0x40
+        bytes[8] = (bytes[8] & 0x3F) | 0x80
+        return UUID(uuid: (
+            bytes[0], bytes[1], bytes[2], bytes[3],
+            bytes[4], bytes[5], bytes[6], bytes[7],
+            bytes[8], bytes[9], bytes[10], bytes[11],
+            bytes[12], bytes[13], bytes[14], bytes[15]
+        ))
     }
 
     private func applyPresentation() {
@@ -231,5 +269,34 @@ final class MissionStore: ObservableObject {
         case .medium: 2
         case .low: 3
         }
+    }
+}
+
+private struct OpportunityFeed: Decodable {
+    let capabilityOpportunities: [OpportunityCandidate]
+
+    enum CodingKeys: String, CodingKey {
+        case capabilityOpportunities = "capability_opportunities"
+    }
+}
+
+private struct OpportunityCandidate: Decodable {
+    let candidateID: String
+    let name: String
+    let status: String
+    let declaredAction: String
+    let declaredRank: Int
+    let matchedReconciledProjectCount: Int
+    let maturityScoreDeclared: Double
+    let notALaunchedProduct: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case candidateID = "candidate_id"
+        case name, status
+        case declaredAction = "declared_action"
+        case declaredRank = "declared_rank"
+        case matchedReconciledProjectCount = "matched_reconciled_project_count"
+        case maturityScoreDeclared = "maturity_score_declared"
+        case notALaunchedProduct = "not_a_launched_product"
     }
 }
