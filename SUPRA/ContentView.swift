@@ -3111,10 +3111,24 @@ final class SUPRAExecutiveStore: ObservableObject {
             let missionEvidence =
                 SUPRAMissionEvidenceLoader.loadRequiredEvidence()
 
-            let requiredMissionEvidence = Set([
-                "GRAPH_SCHEMA_PROBE",
-                "STATUS"
-            ])
+            // SUPRA_MISSION_EVIDENCE_POLICY_V2_BEGIN
+            //
+            // Historical mission evidence remains reusable, but it must not
+            // become a global prerequisite for every chat turn. A caller that
+            // truly depends on one of these artifacts must opt in explicitly.
+            // This keeps generic ASK/PLAN/readiness traffic usable while
+            // preserving fail-closed behaviour for evidence-bound missions.
+            let normalizedPrompt = text.uppercased()
+
+            var requiredMissionEvidence = Set<String>()
+
+            if normalizedPrompt.contains("REQUIRE_GRAPH_SCHEMA_PROBE=TRUE") {
+                requiredMissionEvidence.insert("GRAPH_SCHEMA_PROBE")
+            }
+
+            if normalizedPrompt.contains("REQUIRE_STATUS_EVIDENCE=TRUE") {
+                requiredMissionEvidence.insert("STATUS")
+            }
 
             let loadedMissionEvidence = Set(
                 missionEvidence.map(\.evidenceId)
@@ -3133,10 +3147,12 @@ final class SUPRAExecutiveStore: ObservableObject {
                     code: 1,
                     userInfo: [
                         NSLocalizedDescriptionKey:
-                            "Mission evidence missing: \(missingEvidence)"
+                            "Mission evidence explicitly required but missing: \(missingEvidence)"
                     ]
                 )
             }
+
+            // SUPRA_MISSION_EVIDENCE_POLICY_V2_END
 
             SUPRAMissionEvidenceLoader
                 .removePlaceholderMissionEvidence(
