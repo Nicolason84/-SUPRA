@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct OrganizationDepartment: Identifiable {
+struct OrganizationDepartment: Identifiable {
     let id: String
     let code: String
     let name: String
@@ -11,6 +11,8 @@ private struct OrganizationDepartment: Identifiable {
 }
 
 struct OrganizationPeopleView: View {
+    @State private var selectedDepartment: OrganizationDepartment?
+
     private let departments: [OrganizationDepartment] = [
         .init(id: "D00", code: "EXEC", name: "Executive & Governance", mission: "Strategy, capital, authority and arbitration.", kpi: "Cash · Revenue · Risk", alonso: "L6–L7", accent: .purple),
         .init(id: "D01", code: "REV", name: "Commercial & Revenue", mission: "Verified problems → signed business → cash.", kpi: "Pipeline · Win rate · Cash", alonso: "L5–L6", accent: .green),
@@ -58,6 +60,9 @@ struct OrganizationPeopleView: View {
             )
         )
         .navigationTitle("Organization / People")
+        .sheet(item: $selectedDepartment) { department in
+            OrganizationDepartmentDossierView(department: department)
+        }
     }
 
     private var hero: some View {
@@ -185,44 +190,59 @@ struct OrganizationPeopleView: View {
     }
 
     private func departmentCard(_ department: OrganizationDepartment) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text(department.code)
-                    .font(.caption2.weight(.heavy))
-                    .tracking(1.2)
-                    .foregroundStyle(department.accent)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 5)
-                    .background(department.accent.opacity(0.12), in: Capsule())
+        Button {
+            selectedDepartment = department
+        } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text(department.code)
+                        .font(.caption2.weight(.heavy))
+                        .tracking(1.2)
+                        .foregroundStyle(department.accent)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 5)
+                        .background(department.accent.opacity(0.12), in: Capsule())
 
-                Spacer()
+                    Spacer()
 
-                Text(department.alonso)
-                    .font(.caption2.weight(.semibold))
+                    Text(department.alonso)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                }
+
+                Text(department.name)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+
+                Text(department.mission)
+                    .font(.callout)
                     .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Divider()
+
+                HStack {
+                    Label(department.kpi, systemImage: "chart.line.uptrend.xyaxis")
+                        .font(.caption)
+                        .foregroundStyle(department.accent)
+
+                    Spacer()
+
+                    Label("Open dossier", systemImage: "arrow.up.right.circle.fill")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(department.accent)
+                }
             }
-
-            Text(department.name)
-                .font(.headline)
-
-            Text(department.mission)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Divider()
-
-            Label(department.kpi, systemImage: "chart.line.uptrend.xyaxis")
-                .font(.caption)
-                .foregroundStyle(department.accent)
+            .padding(17)
+            .frame(maxWidth: .infinity, minHeight: 165, alignment: .topLeading)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(department.accent.opacity(0.16))
+            )
         }
-        .padding(17)
-        .frame(maxWidth: .infinity, minHeight: 165, alignment: .topLeading)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(department.accent.opacity(0.16))
-        )
+        .buttonStyle(.plain)
+        .help("Open live operating dossier for \(department.name)")
     }
 
     private func section<Content: View>(
