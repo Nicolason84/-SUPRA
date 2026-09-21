@@ -136,6 +136,9 @@ struct SUPRAChatView: View {
         )
         .navigationTitle("Chat")
         .onAppear {
+            if messages.isEmpty {
+                messages = SUPRAChatMemoryStore.load()
+            }
             checkRuntimeHealth()
             composerFocused = true
         }
@@ -171,10 +174,24 @@ struct SUPRAChatView: View {
             .pickerStyle(.segmented)
             .frame(width: 190)
 
+            memoryPill
             statusPill
         }
         .padding(.horizontal, 28)
         .padding(.vertical, 18)
+    }
+
+    private var memoryPill: some View {
+        HStack(spacing: 7) {
+            Image(systemName: "brain.head.profile")
+                .foregroundStyle(.cyan)
+            Text(SUPRAChatMemoryStore.status(messages: messages))
+                .font(.caption.weight(.medium))
+        }
+        .padding(.horizontal, 11)
+        .padding(.vertical, 7)
+        .background(.thinMaterial, in: Capsule())
+        .help("Mémoire persistante locale + références mémoire SUPRA existantes")
     }
 
     private var statusPill: some View {
@@ -376,6 +393,7 @@ struct SUPRAChatView: View {
                 if !messages.isEmpty {
                     Button("Effacer") {
                         messages.removeAll()
+                        SUPRAChatMemoryStore.clear()
                         executionState = .idle
                     }
                     .buttonStyle(.plain)
@@ -410,13 +428,24 @@ struct SUPRAChatView: View {
                 content: submittedPrompt
             )
         )
+        SUPRAChatMemoryStore.save(messages)
         prompt = ""
         executionState = .running
 
         executionTask = Task {
             do {
+                let memoryContext = SUPRAChatMemoryStore.contextEnvelope(
+                    messages: messages
+                )
+                let runtimePrompt = """
+                \(memoryContext)
+
+                CURRENT_USER_MESSAGE:
+                \(submittedPrompt)
+                """
+
                 let response = try await runtime.execute(
-                    prompt: submittedPrompt,
+                    prompt: runtimePrompt,
                     mode: submittedMode
                 )
                 try Task.checkCancellation()
@@ -427,6 +456,7 @@ struct SUPRAChatView: View {
                         content: response
                     )
                 )
+                SUPRAChatMemoryStore.save(messages)
                 executionState = .success
             } catch is CancellationError {
                 return
@@ -439,6 +469,7 @@ struct SUPRAChatView: View {
                         content: "Erreur runtime : \(detail)"
                     )
                 )
+                SUPRAChatMemoryStore.save(messages)
                 executionState = .error(detail)
                 checkRuntimeHealth()
             }
