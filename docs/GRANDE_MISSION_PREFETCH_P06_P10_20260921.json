@@ -1,0 +1,75 @@
+{
+  "schema": "GRANDE_MISSION_PREFETCH_P06_P10_V1",
+  "base_sha": "93018de2cfc379d3a819d1d89170b3457f9accde",
+  "status": "PREFETCH_ONLY",
+  "production_mutation": false,
+  "new_engine": false,
+  "new_bridge": false,
+  "new_runtime": false,
+  "phases": [
+    {
+      "id": "06_CIRCULATION_CIRCULARITY",
+      "prefetched": [
+        "canonical_nodes",
+        "candidate_edges",
+        "flow_marker_contract",
+        "likely_blockers",
+        "acceptance"
+      ],
+      "outputs": [
+        "SYSTEM_CIRCULATION_GRAPH_V1",
+        "CIRCULARITY_GAPS_V1"
+      ]
+    },
+    {
+      "id": "07_DEDUP_FUSION",
+      "prefetched": [
+        "duplication_candidates",
+        "comparison_dimensions",
+        "retirement_rules",
+        "acceptance"
+      ],
+      "outputs": [
+        "FUSION_CANDIDATES_V1",
+        "RETIREMENT_PLAN_V1"
+      ]
+    },
+    {
+      "id": "08_OPERATIONALIZATION",
+      "prefetched": [
+        "capability_contract",
+        "runtime_anchors",
+        "operational_acceptance"
+      ],
+      "outputs": [
+        "OPERATIONAL_CAPABILITY_REGISTRY_V1",
+        "MISSION_ROUTING_V1"
+      ]
+    },
+    {
+      "id": "09_AUTONOMOUS_LOOPS",
+      "prefetched": [
+        "safe_loop_classes",
+        "forbidden_side_effects",
+        "loop_contract"
+      ],
+      "outputs": [
+        "AUTONOMY_ACTIVATION_REGISTRY_V1"
+      ]
+    },
+    {
+      "id": "10_CONTROLLED_AUTO_EVOLUTION",
+      "prefetched": [
+        "qualification_loop",
+        "promotion_law",
+        "existing_preflight_assets"
+      ],
+      "outputs": [
+        "AUTO_EVOLUTION_POLICY_V1",
+        "LEARNING_LOOP_REGISTRY_V1"
+      ]
+    }
+  ],
+  "handoff_rule": "CONSUME_PREFETCH_THEN_QUERY_DELTA_ONLY",
+  "action_nicolas": "NONE"
+}
