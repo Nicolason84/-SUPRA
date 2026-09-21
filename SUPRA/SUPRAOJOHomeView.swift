@@ -7,6 +7,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
     case cannonico
     case missions
     case organization
+    case connections
+    case inpi
+    case publicPresence
     case runtime
     case ojo
     case supra
@@ -21,6 +24,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "CAnnoNico"
         case .missions: return "Missions"
         case .organization: return "Organization"
+        case .connections: return "Connections"
+        case .inpi: return "INPI"
+        case .publicPresence: return "Public Presence"
         case .runtime: return "Runtime"
         case .ojo: return "ojO"
         case .supra: return "SUPRA"
@@ -35,6 +41,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "Mémoire · canon · provenance"
         case .missions: return "Missions parallèles"
         case .organization: return "People · départements · autorité"
+        case .connections: return "Comms · banques · APIs · organismes"
+        case .inpi: return "RNE · comptes · actes · propriété industrielle"
+        case .publicPresence: return "LinkedIn · X · Instagram · YouTube"
         case .runtime: return "Processus · bridge · santé"
         case .ojo: return "Interface privée Nicolas"
         case .supra: return "Executive Operating System"
@@ -49,6 +58,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "point.3.connected.trianglepath.dotted"
         case .missions: return "scope"
         case .organization: return "person.3.fill"
+        case .connections: return "point.3.filled.connected.trianglepath.dotted"
+        case .inpi: return "building.columns.fill"
+        case .publicPresence: return "dot.radiowaves.left.and.right"
         case .runtime: return "waveform.path.ecg.rectangle"
         case .ojo: return "eye.fill"
         case .supra: return "sparkles.rectangle.stack.fill"
@@ -63,6 +75,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return .indigo
         case .missions: return .orange
         case .organization: return .green
+        case .connections: return .cyan
+        case .inpi: return .indigo
+        case .publicPresence: return .pink
         case .runtime: return .teal
         case .ojo: return .purple
         case .supra: return .blue
@@ -77,6 +92,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "L4 · MEMORY / KNOWLEDGE"
         case .missions: return "L5 · MISSIONS E2E"
         case .organization: return "L6–L7 · PEOPLE / GOVERNANCE"
+        case .connections: return "L3–L6 · EXTERNAL CONNECTIVITY"
+        case .inpi: return "L4–L6 · LEGAL / EVIDENCE"
+        case .publicPresence: return "L5–L6 · MARKET / EXPERIENCE"
         case .runtime: return "L3 · RUNTIME"
         case .ojo: return "L6 · EXPERIENCE"
         case .supra: return "L7 · EXECUTIVE / AUTONOMY"
@@ -91,6 +109,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "Memory → Provenance → Canon"
         case .missions: return "Decision → Mission → Result"
         case .organization: return "Need → Role → Capacity → Result"
+        case .connections: return "External → Normalize → Evidence → Mission"
+        case .inpi: return "Official Data → Evidence → Decision"
+        case .publicPresence: return "Evidence → Publish → Engagement → Lead"
         case .runtime: return "Runtime → Result → Evidence"
         case .ojo: return "Context → Human Gate → Decision"
         case .supra: return "Canon → Action → Learning"
@@ -105,6 +126,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "Canonical memory, lineage, contradictions and knowledge integrity."
         case .missions: return "Parallel bounded execution with evidence-return contracts."
         case .organization: return "Departments, people, digital workforce and decision rights."
+        case .connections: return "One governed fabric for communications, finance, APIs, administrations and partner systems."
+        case .inpi: return "Official corporate and industrial-property intelligence: RNE, accounts, acts, marks, patents and designs."
+        case .publicPresence: return "One public brand truth across LinkedIn, X, Instagram, YouTube and Google Business Profile."
         case .runtime: return "Processes, bridge, workers, services and operational health."
         case .ojo: return "Private Nicolas ↔ SUPRA context, judgment and human authority."
         case .supra: return "Executive synthesis, autonomy gates and system-wide orchestration."
@@ -119,6 +143,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .cannonico: return "Canonical authority changes"
         case .missions: return "Irreversible or high-impact actions"
         case .organization: return "Hiring / contracts / authority"
+        case .connections: return "Money movement / legal submit / sensitive send"
+        case .inpi: return "Filings / fees / legal changes"
+        case .publicPresence: return "Public publish / sensitive reply"
         case .runtime: return "Security boundary / destructive change"
         case .ojo: return "Nicolas"
         case .supra: return "Founder-reserved decisions"
@@ -418,6 +445,12 @@ struct SUPRAOJOHomeView: View {
                     MissionCenterView()
                 case .organization:
                     OrganizationPeopleView()
+                case .connections:
+                    ExternalConnectionsView()
+                case .inpi:
+                    INPIUniverseView()
+                case .publicPresence:
+                    PublicPresenceView()
                 case .runtime:
                     SUPRAProcessObservatoryView()
                 case .ojo:
