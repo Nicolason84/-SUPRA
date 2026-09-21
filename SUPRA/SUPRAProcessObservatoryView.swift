@@ -327,6 +327,20 @@ struct SUPRAProcessObservatoryView: View {
                     detailRow("Progress", "\(Int(selected.progress * 100))% observable")
                     detailRow("Status", selected.statusText ?? "No material result yet")
                     detailRow("Action Nicolas", selected.actionNicolas ?? "NONE / not observed")
+
+                    if let flow = selected.flowMarker {
+                        detailRow("Flow", flow.flowID ?? "—")
+                        detailRow("Trace", flow.traceID ?? "—")
+                        detailRow("Node", flow.nodeID ?? "—")
+                        detailRow("Edge", flow.edgeID ?? "—")
+                        detailRow("Fluidity", selected.flowFluidity)
+                        detailRow("Service", flow.serviceLabel)
+                        detailRow("Wait", flow.waitLabel)
+                        detailRow("Retry", String(flow.retryCount ?? 0))
+                        detailRow("Memory return", flow.memoryReturn ?? "—")
+                        detailRow("Canon return", flow.canonReturn ?? "—")
+                    }
+
                     if let f2Status = selected.f2StatusAfter {
                         detailRow("F2 after", f2Status)
                     }
@@ -1122,7 +1136,8 @@ private actor SUPRAProcessObservatoryScanner {
                     actionNicolas: parsed?.actionNicolas,
                     f2StatusAfter: parsed?.f2StatusAfter,
                     lg01Classification: parsed?.lg01Classification,
-                    proofRefs: parsed?.proofRefs ?? []
+                    proofRefs: parsed?.proofRefs ?? [],
+                    flowMarker: parsed?.flowMarker
                 )
             )
         }
@@ -1324,16 +1339,75 @@ private actor SUPRAProcessObservatoryScanner {
 
         if Swift.Task.isCancelled { return nil }
 
+        let flowMarker = observedFlowMarker(
+            from: merged["flow_marker"]
+        )
+
+        let proofRefs = Array(
+            Set(
+                boundedProofRefs(merged["proof_refs"])
+                + boundedProofRefs(
+                    (merged["flow_marker"] as? [String: Any])?["evidence_refs"]
+                )
+            )
+        )
+        .sorted()
+
         let parsed = SUPRAParsedResult(
             status: boundedString(merged["status"]),
             actionNicolas: boundedString(merged["action_nicolas"]),
             f2StatusAfter: boundedString(merged["f2_status_after"]),
             lg01Classification: boundedString(merged["lg01_classification"]),
-            proofRefs: boundedProofRefs(merged["proof_refs"])
+            proofRefs: proofRefs,
+            flowMarker: flowMarker
         )
 
         cacheParsedResult(parsed, for: file)
         return parsed
+    }
+
+    private func observedFlowMarker(
+        from value: Any?
+    ) -> SUPRAObservedFlowMarker? {
+        guard let object = value as? [String: Any] else {
+            return nil
+        }
+
+        return SUPRAObservedFlowMarker(
+            flowID: boundedString(object["flow_id"]),
+            traceID: boundedString(object["trace_id"]),
+            spanID: boundedString(object["span_id"]),
+            parentSpanID: boundedString(object["parent_span_id"]),
+            nodeID: boundedString(object["node_id"]),
+            previousNodeID: boundedString(object["previous_node_id"]),
+            edgeID: boundedString(object["edge_id"]),
+            queueMs: boundedInt(object["queue_ms"]),
+            serviceMs: boundedInt(object["service_ms"]),
+            waitMs: boundedInt(object["wait_ms"]),
+            status: boundedString(object["status"]),
+            outcome: boundedString(object["outcome"]),
+            retryCount: boundedInt(object["retry_count"]),
+            memoryReturn: boundedString(object["memory_return"]),
+            canonReturn: boundedString(object["canon_return"])
+        )
+    }
+
+    private func boundedInt(
+        _ value: Any?
+    ) -> Int? {
+        if let value = value as? Int {
+            return value
+        }
+
+        if let number = value as? NSNumber {
+            return number.intValue
+        }
+
+        if let text = value as? String {
+            return Int(text)
+        }
+
+        return nil
     }
 
     private func cacheParsedResult(
@@ -1525,12 +1599,84 @@ struct SUPRAObservedProcess: Identifiable, Equatable, Sendable {
     let f2StatusAfter: String?
     let lg01Classification: String?
     let proofRefs: [String]
+    let flowMarker: SUPRAObservedFlowMarker?
+
+    var flowFluidity: String {
+        if isBottleneck { return "BOTTLENECK" }
+
+        switch stage {
+        case .blocked:
+            return "BLOCKED"
+        case .failed, .anomaly:
+            return "DEGRADED"
+        case .inFlight:
+            switch drift {
+            case .critical, .warning:
+                return "STALLED"
+            case .watch:
+                return "CONGESTED"
+            case .none:
+                return "PROGRESSING"
+            case .anomaly:
+                return "DEGRADED"
+            }
+        case .materialized, .frozen:
+            return "COMPLETE"
+        case .unknown:
+            return "STALE"
+        }
+    }
 
     var ageLabel: String {
         if ageSeconds < 60 { return "<1m" }
         if ageSeconds < 3600 { return "\(Int(ageSeconds / 60))m" }
         if ageSeconds < 86_400 { return "\(Int(ageSeconds / 3600))h" }
         return "\(Int(ageSeconds / 86_400))d"
+    }
+}
+
+struct SUPRAObservedFlowMarker: Equatable, Sendable {
+    let flowID: String?
+    let traceID: String?
+    let spanID: String?
+    let parentSpanID: String?
+    let nodeID: String?
+    let previousNodeID: String?
+    let edgeID: String?
+    let queueMs: Int?
+    let serviceMs: Int?
+    let waitMs: Int?
+    let status: String?
+    let outcome: String?
+    let retryCount: Int?
+    let memoryReturn: String?
+    let canonReturn: String?
+
+    var serviceLabel: String {
+        durationLabel(serviceMs)
+    }
+
+    var waitLabel: String {
+        durationLabel(waitMs)
+    }
+
+    private func durationLabel(
+        _ milliseconds: Int?
+    ) -> String {
+        guard let milliseconds else { return "—" }
+
+        if milliseconds < 1_000 {
+            return "\(milliseconds) ms"
+        }
+
+        let seconds = Double(milliseconds) / 1_000
+
+        if seconds < 60 {
+            return String(format: "%.1f s", seconds)
+        }
+
+        let minutes = seconds / 60
+        return String(format: "%.1f min", minutes)
     }
 }
 
@@ -1593,6 +1739,7 @@ private struct SUPRAParsedResult: Sendable {
     let f2StatusAfter: String?
     let lg01Classification: String?
     let proofRefs: [String]
+    let flowMarker: SUPRAObservedFlowMarker?
 }
 
 private struct SUPRAParsedCacheEntry: Sendable {
