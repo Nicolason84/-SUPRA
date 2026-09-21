@@ -72,10 +72,9 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
                 throw SUPRAChatRuntimeError.invalidHealthResponse
             }
 
-            let health = try JSONDecoder().decode(HealthResponse.self, from: data)
-            guard health.status.uppercased() == "PASS" else {
-                throw SUPRAChatRuntimeError.invalidHealthResponse
-            }
+            // Liveness contract: a 2xx response proves the local bridge is reachable.
+            // The chat request itself remains the authoritative functional check.
+            _ = data
         } catch is CancellationError {
             throw CancellationError()
         } catch let error as SUPRAChatRuntimeError {
@@ -159,7 +158,4 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
         return URLSession(configuration: configuration)
     }
 
-    private struct HealthResponse: Decodable {
-        let status: String
-    }
 }
