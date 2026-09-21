@@ -1,0 +1,432 @@
+{
+  "schema": "MISSION_NOVA_ERA_LIVE_ORGANISM_V2",
+  "date": "2026-09-21",
+  "authority": "NICOLAS",
+  "status": "NEXT_GRANDE_MISSION_CANONICAL",
+  "supersedes": "docs/MISSION_SUPRA_LIVE_COMPANY_V1_20260921.md",
+  "source_document": "docs/MISSION_NOVA_ERA_LIVE_ORGANISM_V2_20260921.md",
+  "execution_gate": {
+    "dependency": "GRANDE_MISSION_TOTAL_IMAC_CANNONICO_ALONSO",
+    "allowed_terminal_verdicts": [
+      "TOTAL_SYSTEM_READY",
+      "TOTAL_SYSTEM_READY_WITH_BOUNDED_BLOCKERS"
+    ],
+    "on_not_ready": "BOUNDED_REMEDIATION_ONLY"
+  },
+  "identities": {
+    "france": "EXTERNAL_LIVING_WORLD_ORGANISM",
+    "nova_era": "LIVING_COMPANY_AND_ECOSYSTEM_ORGANISM",
+    "ojo": "NICOLAS_PRIVATE_CONTROL_LENS",
+    "supra": "INTELLIGENCE_ORCHESTRATION_EXECUTION_SYNTHESIS",
+    "cannonico": "MEMORY_TRUTH_PROVENANCE_LINEAGE"
+  },
+  "invariants": [
+    "MEMORY_FIRST",
+    "PATRIMONY_FIRST",
+    "PROOF_FIRST",
+    "CONTINUITY_FIRST",
+    "CIRCULARITY_FIRST",
+    "NO_REBUILD_FROM_ZERO",
+    "NO_NEW_GENERIC_ENGINE",
+    "NO_NEW_BRIDGE",
+    "NO_NEW_RUNTIME",
+    "NO_DUPLICATE_CANON",
+    "NO_FAKE_LIVE",
+    "NO_FAKE_CONNECTED",
+    "NO_FAKE_PROGRESS",
+    "NO_FAKE_MOMENTUM",
+    "NO_FAKE_HEADCOUNT",
+    "NO_SILENT_PUBLICATION",
+    "NO_SILENT_PAYMENT",
+    "NO_SILENT_SIGNATURE",
+    "NO_SILENT_LEGAL_SUBMISSION",
+    "NO_SILENT_BANK_ACTION"
+  ],
+  "experience_contract": [
+    "CLICK",
+    "DRILL_DOWN",
+    "CURRENT_STATE",
+    "MOMENTUM",
+    "EVIDENCE",
+    "OWNER_AUTHORITY",
+    "BOTTLENECK_RISK",
+    "NEXT_MACHINE_ACTION",
+    "NEXT_HUMAN_ACTION",
+    "EXECUTE_OR_PREPARE",
+    "RESULT",
+    "MEMORY_RETURN",
+    "CANON_RETURN"
+  ],
+  "momentum_states": [
+    "ACCELERATING",
+    "PROGRESSING",
+    "STEADY",
+    "STALLED",
+    "BOTTLENECK",
+    "DEGRADING",
+    "OFFLINE",
+    "STALE"
+  ],
+  "truth_states": [
+    "LIVE_PROVEN",
+    "LIVE_PARTIAL",
+    "CACHE_VALID",
+    "STALE",
+    "HISTORICAL",
+    "DECLARED",
+    "UNPROVEN",
+    "BLOCKED",
+    "OFFLINE"
+  ],
+  "phases": [
+    {
+      "id": "P01",
+      "name": "Truth Surface Inventory",
+      "depends_on": [
+        "CURRENT_GRANDE_MISSION_GATE"
+      ],
+      "outputs": [
+        "APP_VISIBLE_TRUTH_REGISTRY_V2"
+      ],
+      "acceptance": "ZERO_AMBIGUOUS_LIVE_LOOKING_STATUS"
+    },
+    {
+      "id": "P02",
+      "name": "App Runtime Sandbox Boundary",
+      "depends_on": [
+        "P01"
+      ],
+      "outputs": [
+        "APP_RUNTIME_IO_CONTRACT_V2",
+        "SANDBOX_BOUNDARY_PROOF_V2"
+      ],
+      "acceptance": "NO_CORE_MISSION_DEPENDS_ON_UNDOCUMENTED_SANDBOX_EXCEPTION"
+    },
+    {
+      "id": "P03",
+      "name": "Live State Semantics",
+      "depends_on": [
+        "P01",
+        "P02"
+      ],
+      "outputs": [
+        "LIVE_STATE_SEMANTICS_V2"
+      ],
+      "acceptance": "STATIC_DECLARED_LIVE_STATES_SEPARATED"
+    },
+    {
+      "id": "P04",
+      "name": "Organization Operating Console",
+      "depends_on": [
+        "P03"
+      ],
+      "outputs": [
+        "ORGANIZATION_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "ALL_DEPARTMENTS_NAVIGABLE_ACTIONABLE_EVIDENCE_BACKED"
+    },
+    {
+      "id": "P05",
+      "name": "General Live Mission Provider",
+      "depends_on": [
+        "P03"
+      ],
+      "outputs": [
+        "MISSION_PROVIDER_V2"
+      ],
+      "acceptance": "MISSION_LIFECYCLE_END_TO_END_OBSERVABLE"
+    },
+    {
+      "id": "P06",
+      "name": "Decision Provider",
+      "depends_on": [
+        "P05"
+      ],
+      "outputs": [
+        "DECISION_PROVIDER_V2"
+      ],
+      "acceptance": "DECISION_INBOX_HAS_REAL_PROVIDER"
+    },
+    {
+      "id": "P07",
+      "name": "Connections Nervous System",
+      "depends_on": [
+        "P03"
+      ],
+      "outputs": [
+        "CONNECTION_LIVE_REGISTRY_V2"
+      ],
+      "acceptance": "CONNECTED_MEANS_ACCOUNT_PROVEN"
+    },
+    {
+      "id": "P08",
+      "name": "INPI Live P0",
+      "depends_on": [
+        "P07"
+      ],
+      "outputs": [
+        "INPI_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "AUTH_DATA_FRESHNESS_EXPLICIT"
+    },
+    {
+      "id": "P09",
+      "name": "Public Presence Live",
+      "depends_on": [
+        "P07"
+      ],
+      "outputs": [
+        "PUBLIC_PRESENCE_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "CONTENT_TO_LEAD_CIRCULATION_OBSERVABLE"
+    },
+    {
+      "id": "P10",
+      "name": "Finance Accounting Tax Procurement",
+      "depends_on": [
+        "P03",
+        "P07"
+      ],
+      "outputs": [
+        "FINANCE_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "BANK_CASH_REVENUE_ACCOUNTING_TAX_DISTINCT"
+    },
+    {
+      "id": "P11",
+      "name": "DGFiP URSSAF Administration",
+      "depends_on": [
+        "P10"
+      ],
+      "outputs": [
+        "ADMIN_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "SUBMISSION_PAYMENT_HUMAN_GATED"
+    },
+    {
+      "id": "P12",
+      "name": "Phi Coin Internal Sandbox",
+      "depends_on": [
+        "P10"
+      ],
+      "outputs": [
+        "PHI_COIN_INTERNAL_REGISTRY_V1"
+      ],
+      "acceptance": "INTERNAL_SANDBOX_ONLY"
+    },
+    {
+      "id": "P13",
+      "name": "Associate Experiences",
+      "depends_on": [
+        "P04",
+        "P10"
+      ],
+      "outputs": [
+        "ASSOCIATE_AUTHORITY_REGISTRY_V2"
+      ],
+      "acceptance": "SHARES_NOT_EQUAL_AUTHORITY"
+    },
+    {
+      "id": "P14",
+      "name": "Cards Purchase Investment Governance",
+      "depends_on": [
+        "P10",
+        "P13"
+      ],
+      "outputs": [
+        "CARD_PURCHASE_INVESTMENT_POLICY_RUNTIME_V1"
+      ],
+      "acceptance": "MONEY_MOVEMENT_HUMAN_GATED"
+    },
+    {
+      "id": "P15",
+      "name": "Library Patrimony Live",
+      "depends_on": [
+        "P03"
+      ],
+      "outputs": [
+        "PATRIMONY_LIVE_REGISTRY_V1"
+      ],
+      "acceptance": "THEORY_TO_ACCEPTANCE_LINEAGE_TRACEABLE"
+    },
+    {
+      "id": "P16",
+      "name": "CAnnoNico Progressive Extraction",
+      "depends_on": [
+        "P15"
+      ],
+      "outputs": [
+        "CANNONICO_PRODUCT_SURFACES_V2"
+      ],
+      "acceptance": "NO_BIG_BANG_REWRITE"
+    },
+    {
+      "id": "P17",
+      "name": "Global Command Deck",
+      "depends_on": [
+        "P05",
+        "P06",
+        "P07",
+        "P16"
+      ],
+      "outputs": [
+        "GLOBAL_COMMAND_DECK_V1"
+      ],
+      "acceptance": "SEARCH_JUMP_INSPECT_ACT"
+    },
+    {
+      "id": "P18",
+      "name": "Evidence Drilldown",
+      "depends_on": [
+        "P03"
+      ],
+      "outputs": [
+        "EVIDENCE_DRILLDOWN_REGISTRY_V2"
+      ],
+      "acceptance": "ALL_MATERIAL_METRICS_HAVE_PROOF_PATH"
+    },
+    {
+      "id": "P19",
+      "name": "Alerts Exceptions",
+      "depends_on": [
+        "P05",
+        "P06",
+        "P07",
+        "P18"
+      ],
+      "outputs": [
+        "EXCEPTION_REGISTRY_V1"
+      ],
+      "acceptance": "MEANINGFUL_EXCEPTIONS_ONLY"
+    },
+    {
+      "id": "P20",
+      "name": "Freshness SLA",
+      "depends_on": [
+        "P03",
+        "P07"
+      ],
+      "outputs": [
+        "FRESHNESS_SLA_REGISTRY_V2"
+      ],
+      "acceptance": "STALE_NEVER_LOOKS_LIVE"
+    },
+    {
+      "id": "P21",
+      "name": "Performance Reliability Accessibility",
+      "depends_on": [
+        "P01"
+      ],
+      "outputs": [
+        "APP_RELIABILITY_PROOF_V1"
+      ],
+      "acceptance": "NON_BLOCKING_CANCELLABLE_RESILIENT_ACCESSIBLE"
+    },
+    {
+      "id": "P22",
+      "name": "Security Authority Proof",
+      "depends_on": [
+        "P02",
+        "P07",
+        "P10",
+        "P13"
+      ],
+      "outputs": [
+        "SECURITY_AUTHORITY_PROOF_V2",
+        "HUMAN_GATE_REGISTRY_V2"
+      ],
+      "acceptance": "ALL_HIGH_IMPACT_BOUNDARIES_PROVEN"
+    },
+    {
+      "id": "P23",
+      "name": "Total Circularity Proof",
+      "depends_on": [
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P15",
+        "P16",
+        "P22"
+      ],
+      "outputs": [
+        "CIRCULARITY_PROOF_V2"
+      ],
+      "acceptance": "NO_ORPHAN_RESULT_NO_DEAD_END_NO_SILENT_SIDE_EFFECT"
+    },
+    {
+      "id": "P24",
+      "name": "NOVA ERA Living Organism",
+      "depends_on": [
+        "P03",
+        "P04",
+        "P05",
+        "P07",
+        "P10",
+        "P18",
+        "P20"
+      ],
+      "outputs": [
+        "NOVA_ERA_ECOSYSTEM_GRAPH_V1",
+        "GLOBAL_MOMENTUM_MODEL_V2",
+        "UNIVERSE_MOMENTUM_REGISTRY_V2"
+      ],
+      "acceptance": "ORGANISM_MOTION_EQUALS_REAL_STATE"
+    },
+    {
+      "id": "P25",
+      "name": "ojO Private Lens",
+      "depends_on": [
+        "P24",
+        "P06"
+      ],
+      "outputs": [
+        "OJO_PRIVATE_CONTROL_V2"
+      ],
+      "acceptance": "NEEDS_NICOLAS_AND_MACHINE_CAN_CONTINUE_VISIBLE"
+    },
+    {
+      "id": "P26",
+      "name": "SUPRA Executive Synthesis",
+      "depends_on": [
+        "P24",
+        "P25"
+      ],
+      "outputs": [
+        "SUPRA_EXECUTIVE_CURRENT_STATE_V2"
+      ],
+      "acceptance": "SIX_EXECUTIVE_QUESTIONS_UNDER_5_SECONDS"
+    },
+    {
+      "id": "P27",
+      "name": "Freeze",
+      "depends_on": [
+        "P23",
+        "P24",
+        "P25",
+        "P26"
+      ],
+      "outputs": [
+        "NOVA_ERA_LIVE_ORGANISM_RECEIPT_V2"
+      ],
+      "acceptance": "MISSION_NOVA_ERA_LIVE_ORGANISM_V2_PASS"
+    }
+  ],
+  "six_question_test": [
+    "WHAT_IS_HAPPENING_NOW",
+    "ADVANCING_OR_STAGNATING",
+    "PRIMARY_BOTTLENECK",
+    "WHAT_CHANGED",
+    "WHAT_REQUIRES_NICOLAS",
+    "WHAT_CAN_MACHINE_DO_NEXT"
+  ],
+  "final_verdicts": [
+    "MISSION_NOVA_ERA_LIVE_ORGANISM_V2_PASS",
+    "READY_WITH_BOUNDED_BLOCKERS",
+    "NOT_READY"
+  ],
+  "action_nicolas": "NONE_UNTIL_CURRENT_GRANDE_MISSION_TERMINAL_GATE"
+}
