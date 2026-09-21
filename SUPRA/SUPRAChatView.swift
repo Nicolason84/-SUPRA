@@ -5,6 +5,13 @@ enum ChatMode: String, CaseIterable, Identifiable {
     case plan = "PLAN"
 
     var id: Self { self }
+
+    var label: String {
+        switch self {
+        case .ask: return "Demander"
+        case .plan: return "Planifier"
+        }
+    }
 }
 
 struct ChatMessage: Identifiable, Equatable {
@@ -39,10 +46,10 @@ enum SUPRAChatExecutionState: Equatable {
 
     var title: String {
         switch self {
-        case .idle: "Idle"
-        case .running: "Running"
-        case .success: "Success"
-        case .error: "Error"
+        case .idle: "Prêt"
+        case .running: "Réflexion…"
+        case .success: "Terminé"
+        case .error: "Erreur"
         }
     }
 
@@ -63,9 +70,9 @@ enum SUPRAChatRuntimeHealthState: Equatable {
 
     var title: String {
         switch self {
-        case .checking: "Runtime · Checking"
-        case .connected: "Runtime · Connected"
-        case .unavailable: "Runtime · Unavailable"
+        case .checking: "Connexion…"
+        case .connected: "Local connecté"
+        case .unavailable: "Local indisponible"
         }
     }
 
@@ -98,6 +105,7 @@ struct SUPRAChatView: View {
     @State private var runtimeHealth: SUPRAChatRuntimeHealthState = .checking
     @State private var healthTask: Task<Void, Never>?
     @State private var executionTask: Task<Void, Never>?
+    @FocusState private var composerFocused: Bool
 
     private let runtime: any SUPRAChatRuntimeProtocol
 
@@ -112,15 +120,25 @@ struct SUPRAChatView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            runtimeHealthMessage
             Divider()
             conversation
-            Divider()
             composer
         }
-        .background(Color(nsColor: .windowBackgroundColor))
-        .navigationTitle("SUPRA Chat")
-        .onAppear(perform: checkRuntimeHealth)
+        .background(
+            LinearGradient(
+                colors: [
+                    Color(nsColor: .windowBackgroundColor),
+                    Color.black.opacity(0.14)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+        .navigationTitle("Chat")
+        .onAppear {
+            checkRuntimeHealth()
+            composerFocused = true
+        }
         .onDisappear {
             healthTask?.cancel()
             executionTask?.cancel()
@@ -128,161 +146,251 @@ struct SUPRAChatView: View {
     }
 
     private var header: some View {
-        HStack(spacing: 18) {
+        HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("SUPRA CHAT")
-                    .font(.caption.weight(.bold))
-                    .tracking(1.5)
+                Text("CONVERSATION")
+                    .font(.caption2.weight(.bold))
+                    .tracking(1.6)
                     .foregroundStyle(.secondary)
-                Text("Command workspace")
-                    .font(.title2.bold())
+
+                Text("Parler à SUPRA · ojO")
+                    .font(.system(size: 27, weight: .semibold, design: .rounded))
+
+                Text("Une conversation, le contexte du système et les capacités locales.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
             }
 
             Spacer()
 
-            Picker("Chat mode", selection: $mode) {
+            Picker("Mode", selection: $mode) {
                 ForEach(ChatMode.allCases) { chatMode in
-                    Text(chatMode.rawValue).tag(chatMode)
+                    Text(chatMode.label).tag(chatMode)
                 }
             }
             .pickerStyle(.segmented)
-            .frame(width: 220)
+            .frame(width: 190)
 
-            Label(runtimeHealth.title, systemImage: runtimeHealth.systemImage)
-                .font(.caption.weight(.medium))
-                .foregroundStyle(runtimeHealth.color)
-                .padding(.horizontal, 11)
-                .padding(.vertical, 7)
-                .background(.quaternary, in: Capsule())
-
-            Label(executionState.title, systemImage: executionState.systemImage)
-                .font(.caption)
-                .foregroundStyle(statusColor)
+            statusPill
         }
         .padding(.horizontal, 28)
-        .padding(.vertical, 20)
+        .padding(.vertical, 18)
     }
 
-    @ViewBuilder
-    private var runtimeHealthMessage: some View {
-        if case .unavailable(let message) = runtimeHealth {
-            HStack(spacing: 12) {
-                Label(message, systemImage: "bolt.horizontal.circle")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+    private var statusPill: some View {
+        HStack(spacing: 7) {
+            Circle()
+                .fill(runtimeHealth.color)
+                .frame(width: 7, height: 7)
+            Text(runtimeHealth.title)
+                .font(.caption.weight(.medium))
+        }
+        .padding(.horizontal, 11)
+        .padding(.vertical, 7)
+        .background(.thinMaterial, in: Capsule())
+        .help(runtimeHealthHelp)
+    }
 
-                Spacer(minLength: 8)
-
-                Button("Retry", action: checkRuntimeHealth)
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-            }
-            .padding(.horizontal, 28)
-            .padding(.bottom, 14)
+    private var runtimeHealthHelp: String {
+        switch runtimeHealth {
+        case .checking:
+            return "Vérification du runtime local."
+        case .connected:
+            return "Le runtime local répond."
+        case .unavailable(let detail):
+            return detail
         }
     }
 
     private var conversation: some View {
-        ScrollView {
-            LazyVStack(spacing: 14) {
-                if messages.isEmpty {
-                    ContentUnavailableView {
-                        Label("Start a conversation", systemImage: "bubble.left.and.bubble.right")
-                    } description: {
-                        Text("Choose ASK or PLAN, then enter a prompt for SUPRA.")
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    if messages.isEmpty {
+                        emptyConversation
+                    } else {
+                        ForEach(messages) { message in
+                            messageRow(message)
+                                .id(message.id)
+                        }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 330)
-                } else {
-                    ForEach(messages) { message in
-                        messageRow(message)
-                    }
+
+                    Color.clear
+                        .frame(height: 1)
+                        .id("CHAT_BOTTOM")
+                }
+                .padding(.horizontal, 28)
+                .padding(.vertical, 24)
+                .frame(maxWidth: 940)
+                .frame(maxWidth: .infinity)
+            }
+            .onChange(of: messages.count) { _, _ in
+                withAnimation(.easeOut(duration: 0.2)) {
+                    proxy.scrollTo("CHAT_BOTTOM", anchor: .bottom)
                 }
             }
-            .padding(28)
-            .frame(maxWidth: 900)
-            .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var emptyConversation: some View {
+        VStack(spacing: 18) {
+            Spacer(minLength: 70)
+
+            Image(systemName: "bubble.left.and.bubble.right.fill")
+                .font(.system(size: 38))
+                .foregroundStyle(.cyan)
+
+            VStack(spacing: 6) {
+                Text("Commence ici.")
+                    .font(.title2.weight(.semibold))
+                Text("Demande un état, une explication, un diagnostic ou un plan.")
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            HStack(spacing: 8) {
+                starter("État de la France")
+                starter("Que dois-je regarder ?")
+                starter("Explique ce qui change")
+            }
+
+            if case .unavailable(let detail) = runtimeHealth {
+                HStack(spacing: 10) {
+                    Image(systemName: "bolt.horizontal.circle")
+                        .foregroundStyle(.orange)
+                    Text(detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Button("Réessayer", action: checkRuntimeHealth)
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                }
+                .padding(12)
+                .background(.orange.opacity(0.07), in: RoundedRectangle(cornerRadius: 12))
+            }
+
+            Spacer(minLength: 70)
+        }
+        .frame(maxWidth: .infinity, minHeight: 420)
+    }
+
+    private func starter(_ text: String) -> some View {
+        Button {
+            prompt = text
+            composerFocused = true
+        } label: {
+            Text(text)
+                .font(.caption.weight(.medium))
+                .padding(.horizontal, 11)
+                .padding(.vertical, 7)
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.small)
     }
 
     private func messageRow(_ message: ChatMessage) -> some View {
         HStack(alignment: .top, spacing: 12) {
             if message.role == .user {
-                Spacer(minLength: 80)
+                Spacer(minLength: 90)
             }
 
-            Image(systemName: message.role == .user ? "person.crop.circle.fill" : "bolt.horizontal.circle.fill")
-                .font(.title2)
-                .foregroundStyle(message.role == .user ? Color.accentColor : .secondary)
-
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: message.role == .user ? .trailing : .leading, spacing: 6) {
                 Text(
                     message.role == .user
-                        ? "YOU · \(message.mode.rawValue)"
-                        : "SUPRA RUNTIME · \(message.mode.rawValue)"
+                        ? "VOUS · \(message.mode.label.uppercased())"
+                        : "SUPRA · ojO"
                 )
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(.secondary)
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(.secondary)
+
                 Text(message.content)
                     .textSelection(.enabled)
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 12)
+                    .background(
+                        message.role == .user
+                            ? Color.cyan.opacity(0.12)
+                            : Color.white.opacity(0.055),
+                        in: RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    )
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .stroke(.white.opacity(0.06), lineWidth: 1)
+                    }
             }
-            .padding(14)
-            .background(
-                message.role == .user ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.10),
-                in: RoundedRectangle(cornerRadius: 14)
-            )
 
             if message.role == .runtime {
-                Spacer(minLength: 80)
+                Spacer(minLength: 90)
             }
         }
         .frame(maxWidth: .infinity)
     }
 
     private var composer: some View {
-        HStack(alignment: .bottom, spacing: 12) {
-            TextField("Ask SUPRA…", text: $prompt, axis: .vertical)
-                .textFieldStyle(.plain)
-                .lineLimit(1...5)
-                .padding(13)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(.quaternary))
-                .onSubmit(execute)
-
-            Button(action: execute) {
-                Label("Execute", systemImage: "paperplane.fill")
-                    .font(.headline)
-                    .padding(.horizontal, 8)
-                    .frame(minHeight: 44)
+        VStack(spacing: 0) {
+            if executionState == .running {
+                ProgressView()
+                    .progressViewStyle(.linear)
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(
-                trimmedPrompt.isEmpty
-                || executionState == .running
-                || !runtimeHealth.isConnected
-            )
-            .keyboardShortcut(.return, modifiers: [.command])
-            .overlay {
-                if executionState == .running {
-                    ProgressView()
-                        .controlSize(.small)
+
+            HStack(alignment: .bottom, spacing: 10) {
+                TextField("Écris à SUPRA / ojO…", text: $prompt, axis: .vertical)
+                    .textFieldStyle(.plain)
+                    .lineLimit(1...6)
+                    .focused($composerFocused)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(
+                                composerFocused ? Color.cyan.opacity(0.45) : Color.white.opacity(0.08),
+                                lineWidth: 1
+                            )
+                    }
+                    .onSubmit(execute)
+
+                Button(action: execute) {
+                    Image(systemName: "arrow.up")
+                        .font(.headline.weight(.bold))
+                        .frame(width: 34, height: 34)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(
+                    trimmedPrompt.isEmpty
+                    || executionState == .running
+                    || !runtimeHealth.isConnected
+                )
+                .keyboardShortcut(.return, modifiers: [.command])
+                .help("Envoyer · ⌘↩")
+            }
+            .padding(.horizontal, 22)
+            .padding(.vertical, 14)
+
+            HStack(spacing: 10) {
+                Label(mode.label, systemImage: mode == .ask ? "questionmark.bubble" : "list.bullet.rectangle")
+                Text("·")
+                Text(executionState.title)
+                Spacer()
+                if !messages.isEmpty {
+                    Button("Effacer") {
+                        messages.removeAll()
+                        executionState = .idle
+                    }
+                    .buttonStyle(.plain)
                 }
             }
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 24)
+            .padding(.bottom, 10)
         }
-        .padding(20)
-        .background(.bar)
+        .background(.ultraThinMaterial)
     }
 
     private var trimmedPrompt: String {
         prompt.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    private var statusColor: Color {
-        switch executionState {
-        case .success: .green
-        case .error: .red
-        default: .secondary
-        }
     }
 
     private func execute() {
@@ -334,6 +442,8 @@ struct SUPRAChatView: View {
                 executionState = .error(detail)
                 checkRuntimeHealth()
             }
+
+            composerFocused = true
         }
     }
 
@@ -349,9 +459,7 @@ struct SUPRAChatView: View {
             } catch is CancellationError {
                 return
             } catch {
-                runtimeHealth = .unavailable(
-                    "\(error.localizedDescription) Lancez le bridge, puis choisissez Retry."
-                )
+                runtimeHealth = .unavailable(error.localizedDescription)
             }
         }
     }
@@ -361,5 +469,6 @@ struct SUPRAChatView: View {
     NavigationStack {
         SUPRAChatView()
     }
-    .frame(width: 980, height: 680)
+    .frame(width: 1040, height: 760)
+    .preferredColorScheme(.dark)
 }
