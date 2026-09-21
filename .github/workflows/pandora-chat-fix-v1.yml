@@ -1,0 +1,46 @@
+name: Validate Pandora Chat Fix
+
+on:
+  push:
+    branches:
+      - pandora-chat-fix-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Invariants
+        run: |
+          set -euxo pipefail
+          grep -Fq 'Historical C1 builds did not always expose /v1/health' SUPRA/SUPRAChatRuntimeAdapter.swift
+          grep -Fq 'SUPRAGabrielConductorRuntime.load()' SUPRA/MissionStore.swift
+          grep -Fq 'capability_opportunities' SUPRA/MissionStore.swift
+          grep -Fq 'DECISION_BOARD_AUTHORITY_FINAL.json' SUPRA/DecisionStore.swift
+          grep -Fq 'OJOWorkspaceView()' SUPRA/SUPRAOJOHomeView.swift
+          echo PANDORA_CHAT_FIX_INVARIANTS_PASS
+
+      - name: Resolve
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Verify
+        run: |
+          test -d "$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          echo PANDORA_CHAT_FIX_BUILD_PASS
