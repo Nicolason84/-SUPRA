@@ -1,0 +1,187 @@
+{
+  "schema": "NOVA_ERA_EXTERNAL_CONNECTION_LIVE_STATE_V1",
+  "observed_at": "2026-09-21T07:12:00Z",
+  "authority": "NICOLAS",
+  "truth_policy": "CONNECTED means a live account/profile was actually observed; installed/available/code-ready are not equivalent.",
+  "connected": [
+    {
+      "id": "GMAIL",
+      "status": "CONNECTED",
+      "account": "nicolas.alonsof84@gmail.com",
+      "evidence": "native connector profile read PASS"
+    },
+    {
+      "id": "GOOGLE_CALENDAR",
+      "status": "CONNECTED",
+      "account": "nicolas.alonsof84@gmail.com",
+      "evidence": "native connector profile read PASS"
+    },
+    {
+      "id": "GOOGLE_CONTACTS",
+      "status": "CONNECTED",
+      "account": "nicolas.alonsof84@gmail.com",
+      "evidence": "native connector profile read PASS"
+    },
+    {
+      "id": "GOOGLE_DRIVE",
+      "status": "CONNECTED",
+      "account": "nicolas.alonsof84@gmail.com",
+      "evidence": "native connector profile read PASS; SUPRA private mailbox live"
+    },
+    {
+      "id": "GITHUB",
+      "status": "CONNECTED",
+      "account": "Nicolason84",
+      "evidence": "repo reads/writes/CI actions succeeded"
+    },
+    {
+      "id": "WINDSOR_AI",
+      "status": "CONNECTED",
+      "evidence": "installed plugin + connector API responsive"
+    },
+    {
+      "id": "LINKEDIN_ORGANIC",
+      "status": "CONNECTED",
+      "account": "Nova Era – Digital Continuity",
+      "account_id": "111980231",
+      "evidence": "Windsor connector account_count=1",
+      "write_actions": [
+        "create_post",
+        "create_image_post"
+      ]
+    },
+    {
+      "id": "CANVA",
+      "status": "INSTALLED",
+      "evidence": "plugin installed; account-level live read not checked in this audit"
+    }
+  ],
+  "not_connected": [
+    {
+      "id": "X",
+      "status": "NOT_CONNECTED",
+      "route": "X official API custom connector / Windsor x_organic",
+      "windsor_accounts": 0,
+      "custom_connector": "CODE_READY_AUTH_REQUIRED"
+    },
+    {
+      "id": "INSTAGRAM_META",
+      "status": "NOT_CONNECTED",
+      "route": "Meta/Instagram Business API or Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "FACEBOOK_ORGANIC",
+      "status": "NOT_CONNECTED",
+      "route": "Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "THREADS",
+      "status": "NOT_CONNECTED",
+      "route": "Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "YOUTUBE",
+      "status": "NOT_CONNECTED",
+      "route": "YouTube Data API / Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "GOOGLE_BUSINESS_PROFILE",
+      "status": "NOT_CONNECTED",
+      "route": "Google Business Profile API / Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "WHATSAPP_BUSINESS",
+      "status": "NOT_CONNECTED",
+      "route": "WhatsApp Business Platform official API",
+      "note": "no live account observed"
+    },
+    {
+      "id": "QONTO",
+      "status": "NOT_CONNECTED",
+      "route": "Qonto API / Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "PLAID_OPEN_BANKING",
+      "status": "NOT_CONNECTED",
+      "route": "regulated open-banking provider",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "STRIPE",
+      "status": "NOT_CONNECTED",
+      "route": "Stripe API / Windsor",
+      "windsor_accounts": 0
+    },
+    {
+      "id": "HUBSPOT",
+      "status": "NOT_CONNECTED",
+      "route": "HubSpot plugin / Windsor",
+      "windsor_accounts": 0,
+      "plugin_installed": false
+    },
+    {
+      "id": "CLOSE_CRM",
+      "status": "NOT_CONNECTED",
+      "route": "Close plugin / Windsor",
+      "windsor_accounts": 0,
+      "plugin_installed": false
+    },
+    {
+      "id": "DOCUSIGN",
+      "status": "NOT_CONNECTED",
+      "route": "Docusign plugin/API",
+      "plugin_installed": false
+    },
+    {
+      "id": "RINGCENTRAL_SMS_PHONE",
+      "status": "NOT_CONNECTED",
+      "route": "RingCentral Phone plugin",
+      "plugin_installed": false
+    },
+    {
+      "id": "TWILIO",
+      "status": "NOT_CONNECTED",
+      "route": "Windsor/provider API",
+      "windsor_accounts": 0
+    }
+  ],
+  "official_custom_connectors": [
+    {
+      "id": "INPI",
+      "status": "CODE_READY_AUTH_REQUIRED",
+      "implementation": "SUPRA/INPIOfficialConnector.swift",
+      "live_auth_proven": false,
+      "plugin_available": false
+    },
+    {
+      "id": "DGFiP",
+      "status": "OFFICIAL_ACCESS_NOT_PROVEN",
+      "live_auth_proven": false,
+      "gate": "habilitation/API/portal depending service"
+    },
+    {
+      "id": "URSSAF",
+      "status": "PRIVATE_ACCOUNT_NOT_CONNECTED",
+      "public_simulation_api": "AVAILABLE_BY_DESIGN",
+      "live_private_auth_proven": false
+    }
+  ],
+  "next_priority": [
+    "INPI official Data INPI access",
+    "Qonto/Open Banking read-only",
+    "Instagram/Meta business",
+    "X official API",
+    "WhatsApp Business",
+    "Stripe",
+    "YouTube + Google Business Profile",
+    "CRM",
+    "Docusign",
+    "SMS/Phone"
+  ]
+}
