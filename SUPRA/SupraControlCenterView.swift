@@ -55,13 +55,13 @@ struct SupraControlCenterView: View {
 
     private var dashboardHeader: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("EXECUTIVE CONTROL CENTER")
+            Text("SYSTÈME · OBSERVABILITÉ")
                 .font(.caption.weight(.bold))
                 .tracking(1.6)
                 .foregroundStyle(.secondary)
-            Text("Executive Dashboard")
+            Text("État technique")
                 .font(.system(size: 38, weight: .bold, design: .rounded))
-            Text("A live, read-only view of SUPRA operational readiness.")
+            Text("Runtime, preuves et composants réellement disponibles.")
                 .font(.title3)
                 .foregroundStyle(.secondary)
         }
@@ -140,8 +140,6 @@ struct SupraControlCenterView: View {
                     SUPRAProcessObservatoryView()
                 } else if destination == .supraChat {
                     SUPRAChatView()
-                } else {
-                    ExecutivePlaceholderView(destination: destination)
                 }
             }
         }
@@ -253,8 +251,6 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
     case decisionInbox
     case missionCenter
     case runtimeMonitor
-    case evidenceExplorer
-    case capabilityBrowser
     case supraChat
 
     var id: Self { self }
@@ -264,8 +260,6 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .decisionInbox: "Decision Inbox"
         case .missionCenter: "Mission Center"
         case .runtimeMonitor: "Runtime Monitor"
-        case .evidenceExplorer: "Evidence Explorer"
-        case .capabilityBrowser: "Capability Browser"
         case .supraChat: "SUPRA Chat"
         }
     }
@@ -275,23 +269,8 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .decisionInbox: "tray.full.fill"
         case .missionCenter: "scope"
         case .runtimeMonitor: "waveform.path.ecg"
-        case .evidenceExplorer: "doc.text.magnifyingglass"
-        case .capabilityBrowser: "square.grid.2x2.fill"
         case .supraChat: "bubble.left.and.bubble.right.fill"
         }
-    }
-}
-
-private struct ExecutivePlaceholderView: View {
-    let destination: ExecutiveDestination
-
-    var body: some View {
-        ContentUnavailableView(
-            destination.title,
-            systemImage: destination.systemImage,
-            description: Text("This workspace is ready for its future product view.")
-        )
-        .navigationTitle(destination.title)
     }
 }
 
