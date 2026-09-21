@@ -1,0 +1,211 @@
+{
+  "schema": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+  "rule": "ONE_RESPONSIBILITY_ONE_CANONICAL_SURFACE",
+  "surfaces": [
+    {
+      "surface": "France",
+      "owns": [
+        "external_world",
+        "territory",
+        "institutions",
+        "real_world_signals"
+      ]
+    },
+    {
+      "surface": "NOVA_ERA",
+      "owns": [
+        "living_company_organism",
+        "ecosystem_graph",
+        "global_momentum",
+        "company_state"
+      ]
+    },
+    {
+      "surface": "ojO",
+      "owns": [
+        "nicolas_private_control",
+        "needs_nicolas",
+        "machine_can_continue",
+        "private_context"
+      ]
+    },
+    {
+      "surface": "SUPRA",
+      "type": "transversal_capability",
+      "owns": [
+        "intelligence",
+        "orchestration",
+        "bounded_execution",
+        "synthesis"
+      ],
+      "standalone_dashboard": false
+    },
+    {
+      "surface": "CAnnoNico",
+      "owns": [
+        "memory",
+        "evidence",
+        "provenance",
+        "lineage",
+        "conflicts",
+        "freezes",
+        "search"
+      ]
+    },
+    {
+      "surface": "Missions",
+      "owns": [
+        "mission_lifecycle",
+        "phase_state",
+        "progress",
+        "blockers",
+        "resume_retry"
+      ]
+    },
+    {
+      "surface": "Runtime",
+      "owns": [
+        "bridge",
+        "processes",
+        "workers",
+        "execution_health",
+        "drift",
+        "throughput",
+        "momentum"
+      ]
+    },
+    {
+      "surface": "Control",
+      "owns": [
+        "decisions",
+        "approvals",
+        "authority_gates",
+        "exceptions"
+      ]
+    },
+    {
+      "surface": "Organization",
+      "owns": [
+        "departments",
+        "people",
+        "roles",
+        "capacity",
+        "workload",
+        "hiring_gates"
+      ]
+    },
+    {
+      "surface": "Connections",
+      "owns": [
+        "accounts",
+        "auth",
+        "scope",
+        "freshness",
+        "credential_health",
+        "connector_events"
+      ]
+    },
+    {
+      "surface": "INPI",
+      "owns": [
+        "rne",
+        "accounts",
+        "acts",
+        "trademarks",
+        "patents",
+        "designs",
+        "watchlists",
+        "filings"
+      ]
+    },
+    {
+      "surface": "Public Presence",
+      "owns": [
+        "social_channels",
+        "content_pipeline",
+        "engagement",
+        "leads",
+        "reputation"
+      ]
+    },
+    {
+      "surface": "Chat",
+      "owns": [
+        "ask",
+        "plan",
+        "direct_runtime_conversation"
+      ]
+    },
+    {
+      "surface": "Library_Patrimony",
+      "owns": [
+        "digital_capital",
+        "product_lineage",
+        "commercial_lineage",
+        "documents",
+        "history"
+      ]
+    },
+    {
+      "surface": "Finance",
+      "owns": [
+        "bank",
+        "cash",
+        "receivables",
+        "payables",
+        "accounting",
+        "tax",
+        "procurement",
+        "cards",
+        "investments",
+        "phi_internal"
+      ]
+    }
+  ],
+  "retire_or_fuse": [
+    {
+      "current": "SUPRA Quick Action Decision Inbox",
+      "into": "Control"
+    },
+    {
+      "current": "SUPRA Quick Action Mission Center",
+      "into": "Missions"
+    },
+    {
+      "current": "SUPRA Quick Action Runtime Monitor",
+      "into": "Runtime"
+    },
+    {
+      "current": "SUPRA Quick Action SUPRA Chat",
+      "into": "Chat"
+    },
+    {
+      "current": "SUPRA Quick Action Evidence Explorer",
+      "into": "CAnnoNico"
+    },
+    {
+      "current": "SUPRA Quick Action Capability Browser",
+      "into": "CAnnoNico/Library_Patrimony"
+    },
+    {
+      "current": "CAnnoNico internal Decision Inbox",
+      "into": "Control"
+    },
+    {
+      "current": "CAnnoNico internal Chat SUPRA",
+      "into": "Chat"
+    },
+    {
+      "current": "CAnnoNico Gabriel/workers",
+      "into": "Missions/Runtime"
+    },
+    {
+      "current": "CAnnoNico System Integrity",
+      "into": "Runtime"
+    },
+    {
+      "current": "SUPRA standalone Executive Dashboard",
+      "into": "NOVA_ERA living organism + ojO private lens"
+    }
+  ]
+}
