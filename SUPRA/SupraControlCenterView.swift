@@ -42,7 +42,6 @@ struct SupraControlCenterView: View {
             VStack(alignment: .leading, spacing: 28) {
                 dashboardHeader
                 executiveSummary(snapshot)
-                quickActions
                 runtimeHealth(snapshot)
                 recentActivity(snapshot)
             }
