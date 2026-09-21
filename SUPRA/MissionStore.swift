@@ -1,22 +1,23 @@
 import Foundation
 import Combine
+import CryptoKit
 
 @MainActor
 final class MissionStore: ObservableObject {
     enum Filter: String, CaseIterable, Identifiable {
-        case all = "All"
-        case planned = "Planned"
-        case active = "Active"
-        case blocked = "Blocked"
-        case completed = "Completed"
+        case all = "Toutes"
+        case planned = "Planifiées"
+        case active = "Actives"
+        case blocked = "Bloquées"
+        case completed = "Terminées"
 
         var id: Self { self }
     }
 
     enum Sort: String, CaseIterable, Identifiable {
-        case dueDate = "Due Date"
-        case priority = "Priority"
-        case progress = "Progress"
+        case dueDate = "Échéance"
+        case priority = "Priorité"
+        case progress = "Progression"
         case title = "Mission"
 
         var id: Self { self }
@@ -32,27 +33,29 @@ final class MissionStore: ObservableObject {
     @Published var activeFilter: Filter = .all {
         didSet { applyPresentation() }
     }
-    @Published var activeSort: Sort = .dueDate {
+    @Published var activeSort: Sort = .priority {
         didSet { applyPresentation() }
     }
 
     func load() {
-        guard missions.isEmpty else {
-            applyPresentation()
-            return
-        }
         isLoading = true
         errorMessage = nil
 
-        // Local data boundary. A real provider can replace this assignment
-        // without changing MissionCenterView or its child views.
-        missions = []
+        let snapshot = SUPRAGabrielConductorRuntime.load()
+        guard snapshot.status.uppercased() != "NOT RUN" else {
+            missions = []
+            isLoading = false
+            errorMessage = "Gabriel n’a pas encore matérialisé de mission active."
+            applyPresentation()
+            return
+        }
+
+        missions = snapshot.workers.map { mission(from: $0, snapshot: snapshot) }
         isLoading = false
         applyPresentation()
     }
 
     func refresh() {
-        missions = []
         load()
     }
 
@@ -66,6 +69,120 @@ final class MissionStore: ObservableObject {
 
     func sort(_ sort: Sort) {
         activeSort = sort
+    }
+
+    private func mission(
+        from worker: SUPRAGabrielWorkerSnapshot,
+        snapshot: SUPRAGabrielConductorSnapshot
+    ) -> Mission {
+        let status = missionStatus(worker.status)
+        let priority = missionPriority(status)
+        let progress = missionProgress(status)
+        let completed = status == .completed
+
+        let objective = Mission.Objective(
+            id: stableUUID(worker.id + ":objective"),
+            title: worker.mission,
+            isCompleted: completed
+        )
+
+        let task = Mission.Task(
+            id: stableUUID(worker.id + ":task"),
+            title: worker.analysis ?? "Exécuter la branche isolée et matérialiser une preuve.",
+            status: taskStatus(status)
+        )
+
+        let dependency = Mission.Dependency(
+            id: stableUUID(worker.id + ":source"),
+            title: worker.source,
+            status: "READ_ONLY"
+        )
+
+        let generatedAt = parseISO8601(snapshot.generatedAt) ?? Date()
+        let timeline = [
+            Mission.TimelineEntry(
+                id: stableUUID(worker.id + ":timeline"),
+                date: generatedAt,
+                title: "Snapshot Gabriel",
+                detail: "Conductor: \(snapshot.visibleConductor ?? "GABRIEL") · final authority: \(snapshot.finalAuthority ?? "SUPRA")"
+            )
+        ]
+
+        return Mission(
+            id: stableUUID(worker.id),
+            title: worker.title,
+            status: status,
+            priority: priority,
+            category: "Branche concurrente",
+            owner: snapshot.visibleConductor ?? "GABRIEL",
+            dueDate: nil,
+            progress: progress,
+            summary: worker.analysis ?? worker.mission,
+            objectives: [objective],
+            tasks: [task],
+            dependencies: [dependency],
+            timeline: timeline,
+            currentStatus: worker.status
+        )
+    }
+
+    private func missionStatus(_ raw: String) -> Mission.Status {
+        let value = raw.uppercased()
+        if value.contains("PASS") || value.contains("SUCCESS") || value.contains("COMPLETE") || value.contains("DONE") {
+            return .completed
+        }
+        if value.contains("BLOCK") || value.contains("FAIL") || value.contains("ERROR") {
+            return .blocked
+        }
+        if value.contains("RUN") || value.contains("ACTIVE") || value.contains("IN_PROGRESS") || value.contains("EXECUT") {
+            return .active
+        }
+        return .planned
+    }
+
+    private func missionPriority(_ status: Mission.Status) -> Mission.Priority {
+        switch status {
+        case .blocked: return .critical
+        case .active: return .high
+        case .planned: return .medium
+        case .completed: return .low
+        }
+    }
+
+    private func missionProgress(_ status: Mission.Status) -> Double {
+        switch status {
+        case .planned: return 0
+        case .active: return 0.5
+        case .blocked: return 0.25
+        case .completed: return 1
+        }
+    }
+
+    private func taskStatus(_ status: Mission.Status) -> Mission.Task.Status {
+        switch status {
+        case .planned: return .pending
+        case .active: return .inProgress
+        case .blocked: return .blocked
+        case .completed: return .completed
+        }
+    }
+
+    private func parseISO8601(_ value: String?) -> Date? {
+        guard let value else { return nil }
+        return ISO8601DateFormatter().date(from: value)
+    }
+
+    private func stableUUID(_ value: String) -> UUID {
+        let digest = SHA256.hash(data: Data(value.utf8))
+        let hex = digest.map { String(format: "%02x", $0) }.joined()
+        let id = [
+            String(hex.prefix(8)),
+            String(hex.dropFirst(8).prefix(4)),
+            String(hex.dropFirst(12).prefix(4)),
+            String(hex.dropFirst(16).prefix(4)),
+            String(hex.dropFirst(20).prefix(12))
+        ].joined(separator: "-")
+        return UUID(uuidString: id) ?? UUID()
     }
 
     private func applyPresentation() {
