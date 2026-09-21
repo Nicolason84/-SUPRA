@@ -1,0 +1,85 @@
+{
+  "schema": "NOVA_ERA_ASSOCIATE_ACCESS_REGISTRY_V1",
+  "authority": "NICOLAS",
+  "status": "PROVISIONAL_PENDING_LEGAL_SHAREHOLDER_EVIDENCE",
+  "declared_ownership": [
+    {
+      "associate_id": "ASSOC_HELENE",
+      "display_name": "Hélène",
+      "declared_percent": 10,
+      "evidence_status": "FOUNDER_DECLARATION_ONLY",
+      "canonical_percent": null,
+      "app_profile": "ASSOC_HELENE_V1",
+      "card_eligible": true,
+      "card_state": "PROPOSED_PENDING_KYC_BANK_SETUP_AND_LIMIT_APPROVAL",
+      "banking_authority": "NOT_DERIVED_FROM_SHAREHOLDING",
+      "signature_authority": "NOT_DERIVED_FROM_SHAREHOLDING"
+    },
+    {
+      "associate_id": "ASSOC_JAIME",
+      "display_name": "Jaime",
+      "declared_percent": 10,
+      "evidence_status": "FOUNDER_DECLARATION_ONLY",
+      "canonical_percent": null,
+      "app_profile": "ASSOC_JAIME_V1",
+      "card_eligible": true,
+      "card_state": "PROPOSED_PENDING_KYC_BANK_SETUP_AND_LIMIT_APPROVAL",
+      "banking_authority": "NOT_DERIVED_FROM_SHAREHOLDING",
+      "signature_authority": "NOT_DERIVED_FROM_SHAREHOLDING"
+    }
+  ],
+  "app_profiles": [
+    {
+      "profile_id": "ASSOC_HELENE_V1",
+      "target_app": "NOVA Associate — Hélène",
+      "operational_role": "TO_DEFINE",
+      "core_modules": [
+        "COMPANY_PULSE",
+        "SHAREHOLDER",
+        "DECISIONS",
+        "MY_MISSIONS",
+        "COMMUNICATIONS",
+        "EXPENSES_CARD",
+        "PURCHASES",
+        "INVESTMENTS",
+        "LIBRARY",
+        "ACCESS_SECURITY"
+      ],
+      "additional_modules": "ROLE_DRIVEN"
+    },
+    {
+      "profile_id": "ASSOC_JAIME_V1",
+      "target_app": "NOVA Associate — Jaime",
+      "operational_role": "TO_DEFINE",
+      "core_modules": [
+        "COMPANY_PULSE",
+        "SHAREHOLDER",
+        "DECISIONS",
+        "MY_MISSIONS",
+        "COMMUNICATIONS",
+        "EXPENSES_CARD",
+        "PURCHASES",
+        "INVESTMENTS",
+        "LIBRARY",
+        "ACCESS_SECURITY"
+      ],
+      "additional_modules": "ROLE_DRIVEN"
+    }
+  ],
+  "legal_evidence_required": [
+    "STATUTES_OR_UPDATED_STATUTES",
+    "SHAREHOLDER_OR_SECURITIES_REGISTER",
+    "CAP_TABLE",
+    "SHAREHOLDERS_AGREEMENT_IF_ANY",
+    "RELEVANT_CORPORATE_RESOLUTIONS"
+  ],
+  "rules": [
+    "ONE_CANON",
+    "SHARE_PERCENT_DOES_NOT_GRANT_BANK_RIGHTS",
+    "SHARE_PERCENT_DOES_NOT_GRANT_SIGNATURE_RIGHTS",
+    "CARD_LIMITS_SEPARATE",
+    "PURCHASE_APPROVAL_SEPARATE",
+    "INVESTMENT_APPROVAL_SEPARATE",
+    "ALL_ACTIONS_AUDITED"
+  ]
+}
