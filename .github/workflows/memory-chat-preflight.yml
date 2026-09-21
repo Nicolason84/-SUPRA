@@ -1,0 +1,50 @@
+name: Validate Memory + Chat Preflight
+
+on:
+  push:
+    branches:
+      - preflight-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Memory and chat invariants
+        run: |
+          set -euxo pipefail
+          grep -Fq 'SUPRAChatMemoryStore.load()' SUPRA/SUPRAChatView.swift
+          grep -Fq 'SUPRAChatMemoryStore.save(messages)' SUPRA/SUPRAChatView.swift
+          grep -Fq 'MEMORY_FIRST=YES' SUPRA/SUPRAChatMemoryStore.swift
+          grep -Fq 'SUPRA_CONNECTION_LAYER_V1/CURRENT/CURRENT_CONTEXT_BUNDLE.json' SUPRA/SUPRAChatMemoryStore.swift
+          grep -Fq 'SUPRA_TERMINAL_MEMORY_BRIDGE_V1/CURRENT/CURRENT_CONTEXT.md' SUPRA/SUPRAChatMemoryStore.swift
+          grep -Fq 'NOVA_OS/PUCHERO' SUPRA/SUPRAChatMemoryStore.swift
+          grep -Fq 'httpResponse.statusCode < 500' SUPRA/SUPRAChatRuntimeAdapter.swift
+          grep -Fq 'DecisionBoardSource' SUPRA/DecisionStore.swift
+          grep -Fq 'OpportunityFeed' SUPRA/MissionStore.swift
+          echo MEMORY_CHAT_INVARIANTS_PASS
+
+      - name: Resolve packages
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Build Release
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
+
+      - name: Verify app
+        run: |
+          test -d "$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          echo MEMORY_CHAT_PREFLIGHT_PASS
