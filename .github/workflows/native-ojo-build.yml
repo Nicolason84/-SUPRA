@@ -49,7 +49,7 @@ jobs:
       - name: Ad-hoc sign and verify
         run: |
           set -euxo pipefail
-          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA-FRANCE.app"
           test -d "$APP"
 
           /usr/bin/codesign \
@@ -71,29 +71,31 @@ jobs:
       - name: Build installation package
         run: |
           set -euxo pipefail
-          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA.app"
+          APP="$RUNNER_TEMP/SUPRA_DerivedData/Build/Products/Release/SUPRA-FRANCE.app"
           STAGE="$RUNNER_TEMP/SUPRA-OJO"
           mkdir -p "$STAGE"
 
-          ditto "$APP" "$STAGE/SUPRA.app"
+          ditto "$APP" "$STAGE/SUPRA-FRANCE.app"
 
           cat > "$STAGE/INSTALL_SUPRA.command" <<'SH'
           #!/bin/zsh
           set -euo pipefail
 
           HERE="$(cd "$(dirname "$0")" && pwd)"
-          SRC="$HERE/SUPRA.app"
+          SRC="$HERE/SUPRA-FRANCE.app"
           DEST_DIR="$HOME/Applications"
-          DEST="$DEST_DIR/SUPRA.app"
+          DEST="$DEST_DIR/SUPRA-FRANCE.app"
 
           mkdir -p "$DEST_DIR"
+          /usr/bin/pkill -x SUPRA 2>/dev/null || true
+          sleep 1
           rm -rf "$DEST"
           /usr/bin/ditto "$SRC" "$DEST"
 
           /usr/bin/xattr -dr com.apple.quarantine "$DEST" 2>/dev/null || true
 
           /usr/bin/codesign --verify --deep --strict --verbose=2 "$DEST"
-          /usr/bin/open "$DEST"
+          /usr/bin/open -n "$DEST"
           SH
           chmod +x "$STAGE/INSTALL_SUPRA.command"
 
@@ -102,33 +104,33 @@ jobs:
 
           Recommended:
           1. Double-click INSTALL_SUPRA.command.
-          2. The installer copies SUPRA.app to ~/Applications.
-          3. It removes quarantine only from that SUPRA.app bundle.
+          2. The installer copies SUPRA-FRANCE.app to ~/Applications.
+          3. It removes quarantine only from that SUPRA-FRANCE.app bundle.
           4. It verifies the code signature, then opens the app.
 
           Manual alternative:
-          - Drag SUPRA.app to Applications.
-          - If macOS blocks first launch, Control-click SUPRA.app > Open.
+          - Drag SUPRA-FRANCE.app to Applications.
+          - If macOS blocks first launch, Control-click SUPRA-FRANCE.app > Open.
           - If macOS still reports "damaged", run:
-              xattr -dr com.apple.quarantine ~/Applications/SUPRA.app
-            then open SUPRA.app again.
+              xattr -dr com.apple.quarantine ~/Applications/SUPRA-FRANCE.app
+            then open SUPRA-FRANCE.app again.
 
           This build is ad-hoc signed for personal/local use.
           It is not Apple Developer ID notarized.
           TXT
 
-          ditto -c -k --sequesterRsrc --keepParent "$STAGE" "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip"
+          ditto -c -k --sequesterRsrc --keepParent "$STAGE" "$RUNNER_TEMP/SUPRA-OJO-FRANCE-V1-SIGNED.zip"
 
           hdiutil create \
             -volname "SUPRA × ojO" \
             -srcfolder "$STAGE" \
             -ov \
             -format UDZO \
-            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.dmg"
+            "$RUNNER_TEMP/SUPRA-OJO-FRANCE-V1-SIGNED.dmg"
 
           shasum -a 256 \
-            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip" \
-            "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.dmg" \
+            "$RUNNER_TEMP/SUPRA-OJO-FRANCE-V1-SIGNED.zip" \
+            "$RUNNER_TEMP/SUPRA-OJO-FRANCE-V1-SIGNED.dmg" \
             > "$RUNNER_TEMP/SHA256.txt"
 
       - name: Verify packaged copy
@@ -136,18 +138,18 @@ jobs:
           set -euxo pipefail
           TMP="$RUNNER_TEMP/verify"
           mkdir -p "$TMP"
-          ditto -x -k "$RUNNER_TEMP/SUPRA-OJO-Native-macOS-SIGNED.zip" "$TMP"
-          APP="$(find "$TMP" -name SUPRA.app -type d -maxdepth 3 | head -1)"
+          ditto -x -k "$RUNNER_TEMP/SUPRA-OJO-FRANCE-V1-SIGNED.zip" "$TMP"
+          APP="$(find "$TMP" -name SUPRA-FRANCE.app -type d -maxdepth 3 | head -1)"
           test -n "$APP"
           /usr/bin/codesign --verify --deep --strict --verbose=4 "$APP"
 
       - name: Upload app
         uses: actions/upload-artifact@v4
         with:
-          name: SUPRA-OJO-Native-macOS-SIGNED
+          name: SUPRA-OJO-FRANCE-V1-SIGNED
           path: |
-            ${{ runner.temp }}/SUPRA-OJO-Native-macOS-SIGNED.zip
-            ${{ runner.temp }}/SUPRA-OJO-Native-macOS-SIGNED.dmg
+            ${{ runner.temp }}/SUPRA-OJO-FRANCE-V1-SIGNED.zip
+            ${{ runner.temp }}/SUPRA-OJO-FRANCE-V1-SIGNED.dmg
             ${{ runner.temp }}/SHA256.txt
             ${{ runner.temp }}/CODESIGN.txt
           if-no-files-found: error
