@@ -58,7 +58,7 @@ struct SUPRAOJOHomeView: View {
                 .tag(route)
                 .padding(.vertical, 4)
             }
-            .navigationTitle("SUPRA × ojO")
+            .navigationTitle("SUPRA × ojO · FRANCE V1")
             .navigationSplitViewColumnWidth(min: 210, ideal: 245, max: 290)
         } detail: {
             Group {
