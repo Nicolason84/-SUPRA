@@ -292,7 +292,7 @@ struct OJOOrganismNativeView: View {
 
         return inspectorCard("APPRENTISSAGE", symbol: "brain.head.profile") {
             HStack {
-                Text(learning?.stage ?? "—")
+                Text(learningStageLabel(learning?.stage))
                     .font(.headline)
                 Spacer()
                 Text("\(learning?.samples ?? 0) états")
@@ -303,15 +303,15 @@ struct OJOOrganismNativeView: View {
 
             statusRow(
                 "Observabilité",
-                readiness?.mathematicalObservability ?? "UNPROVEN"
+                readinessLabel(readiness?.mathematicalObservability)
             )
             statusRow(
                 "Contrôlabilité",
-                readiness?.controllability ?? "UNPROVEN"
+                readinessLabel(readiness?.controllability)
             )
             statusRow(
                 "Boucle fermée",
-                readiness?.closedLoopControl ?? "NOT_READY"
+                readinessLabel(readiness?.closedLoopControl)
             )
         }
     }
@@ -631,6 +631,27 @@ struct OJOOrganismNativeView: View {
         case "health": return "SANTÉ"
         case "geopolitics": return "GÉOPOLITIQUE"
         default: return arm.uppercased()
+        }
+    }
+
+    private func learningStageLabel(_ stage: String?) -> String {
+        switch stage {
+        case "BOOTSTRAP": return "Démarrage"
+        case "CALIBRATION": return "Calibration"
+        case "EARLY_LEARNING": return "Apprentissage initial"
+        case "LEARNING": return "Apprentissage"
+        case "PATTERN_LIBRARY": return "Bibliothèque de patterns"
+        default: return stage ?? "—"
+        }
+    }
+
+    private func readinessLabel(_ value: String?) -> String {
+        switch value {
+        case "UNPROVEN": return "À démontrer"
+        case "NOT_READY": return "Pas prête"
+        case "READY": return "Prête"
+        case "PROVEN": return "Démontrée"
+        default: return value ?? "—"
         }
     }
 
