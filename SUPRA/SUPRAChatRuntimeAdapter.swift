@@ -67,14 +67,23 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
             let (data, response) = try await healthSession.data(for: request)
             try Task.checkCancellation()
 
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 throw SUPRAChatRuntimeError.invalidHealthResponse
             }
 
-            // Liveness contract: a 2xx response proves the local bridge is reachable.
-            // The chat request itself remains the authoritative functional check.
-            _ = data
+            if (200...299).contains(httpResponse.statusCode) {
+                _ = data
+                return
+            }
+
+            // Historical C1 builds did not always expose /v1/health.
+            // 404/405 still prove the local HTTP bridge itself is reachable;
+            // the first real /v1/chat request remains the functional proof.
+            if httpResponse.statusCode == 404 || httpResponse.statusCode == 405 {
+                return
+            }
+
+            throw SUPRAChatRuntimeError.invalidHealthResponse
         } catch is CancellationError {
             throw CancellationError()
         } catch let error as SUPRAChatRuntimeError {
