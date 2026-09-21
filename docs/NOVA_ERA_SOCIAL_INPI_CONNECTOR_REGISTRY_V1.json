@@ -1,0 +1,86 @@
+{
+  "schema": "NOVA_ERA_SOCIAL_INPI_CONNECTOR_REGISTRY_V1",
+  "authority": "NICOLAS",
+  "priority": {
+    "INPI": "P0",
+    "LINKEDIN": "P1",
+    "INSTAGRAM_META": "P1",
+    "X": "P1",
+    "CANVA": "P2",
+    "SOCIAL_AGGREGATOR": "P2"
+  },
+  "connectors": [
+    {
+      "id": "CONN_INPI_RNE",
+      "provider": "INPI Data / RNE",
+      "status": "OFFICIAL_API_SFTP_ACCESS_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "FILINGS_AND_COMPANY_CHANGES"
+    },
+    {
+      "id": "CONN_INPI_PI",
+      "provider": "INPI Industrial Property APIs",
+      "status": "OFFICIAL_API_ACCESS_REQUIRED",
+      "read": true,
+      "write": false,
+      "human_gate": "IP_FILINGS"
+    },
+    {
+      "id": "CONN_LINKEDIN",
+      "provider": "LinkedIn Official API",
+      "status": "AUTH_AND_API_ACCESS_REQUIRED",
+      "read": true,
+      "write": true,
+      "human_gate": "PUBLISH_BY_DEFAULT"
+    },
+    {
+      "id": "CONN_X",
+      "provider": "X Official API",
+      "status": "CUSTOM_OFFICIAL_API_REQUIRED",
+      "read": true,
+      "write": true,
+      "human_gate": "PUBLISH_BY_DEFAULT"
+    },
+    {
+      "id": "CONN_INSTAGRAM",
+      "provider": "Instagram / Meta Business API",
+      "status": "AUTH_AND_BUSINESS_ACCOUNT_REQUIRED",
+      "read": true,
+      "write": true,
+      "human_gate": "PUBLISH_BY_DEFAULT"
+    },
+    {
+      "id": "CONN_WINDSOR",
+      "provider": "Windsor.ai",
+      "status": "OPTIONAL_AGGREGATOR",
+      "read": true,
+      "write": "SUPPORTED_SOURCES_ONLY",
+      "human_gate": "WRITE_CONFIRMATION"
+    },
+    {
+      "id": "CONN_CANVA",
+      "provider": "Canva",
+      "status": "OPTIONAL_CREATIVE_TOOL",
+      "read": true,
+      "write": true,
+      "human_gate": "PUBLICATION_SEPARATE"
+    },
+    {
+      "id": "CONN_RINGCENTRAL",
+      "provider": "RingCentral Phone",
+      "status": "OPTIONAL_SMS_PHONE",
+      "read": true,
+      "write": true,
+      "human_gate": "SMS_SEND_BY_POLICY"
+    }
+  ],
+  "invariants": [
+    "OFFICIAL_API_FIRST_FOR_INPI",
+    "INPI_P0",
+    "PUBLIC_WRITE_HUMAN_GATED",
+    "ALL_PUBLIC_CLAIMS_EVIDENCE_BACKED",
+    "ONE_BRAND_TRUTH",
+    "SOCIAL_RESULTS_RETURN_TO_CANNONICO"
+  ]
+}
