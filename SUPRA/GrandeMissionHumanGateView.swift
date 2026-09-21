@@ -47,14 +47,19 @@ struct GrandeMissionHumanGateView: View {
                         .background(Color.orange.opacity(0.10), in: Capsule())
                 }
 
-                if isLoading {
-                    ProgressView("Preparing the decision packet…")
-                        .controlSize(.large)
-                        .padding(.vertical, 18)
-                } else {
-                    blockerSummary(receipt: receipt)
+                blockerSummary(receipt: receipt)
 
-                    if !options.isEmpty {
+                if isLoading {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .controlSize(.small)
+                        Text("Resolving missing decision details…")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                if !options.isEmpty {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Choose")
                                 .font(.headline)
@@ -156,12 +161,11 @@ struct GrandeMissionHumanGateView: View {
                             .foregroundStyle(.green)
                     }
 
-                    if let errorMessage {
-                        Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
-                            .font(.caption)
-                            .foregroundStyle(.red)
-                            .textSelection(.enabled)
-                    }
+                if let errorMessage {
+                    Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .textSelection(.enabled)
                 }
             }
             .padding(18)
@@ -262,14 +266,41 @@ struct GrandeMissionHumanGateView: View {
             return
         }
 
+        errorMessage = nil
+
+        // 1. Fastest path: the blocked receipt may already contain a complete
+        // decision packet. Parse it locally; no runtime call required.
+        let receiptFields = parse(receipt.response)
+
         if !force,
-           !fields.isEmpty,
-           fields["DECISION_QUESTION"] != nil {
+           hasUsableDecisionPacket(receiptFields) {
+            packet = receipt.response
+            fields = receiptFields
             return
         }
 
+        // 2. Reuse the last packet for this exact blocked receipt.
+        if !force,
+           let cached = runner.humanGatePacket(
+               for: phase.id,
+               receiptFinishedAt: receipt.finishedAt
+           ) {
+            let cachedFields = parse(cached)
+
+            if hasUsableDecisionPacket(cachedFields) {
+                packet = cached
+                fields = cachedFields
+                return
+            }
+        }
+
+        // 3. Never blank the UI while enriching missing options.
+        // Keep all blocker/evidence fields we already have on screen.
+        if fields.isEmpty {
+            fields = receiptFields
+        }
+
         isLoading = true
-        errorMessage = nil
 
         do {
             try await runtime.checkHealth()
@@ -287,10 +318,10 @@ struct GrandeMissionHumanGateView: View {
             \(receipt.response)
 
             Convert this blocker into one concrete human decision packet.
-            Use current evidence only.
+            Reuse the supplied evidence; do not re-investigate the mission.
             Do not invent missing facts.
-            If evidence is insufficient, one option must be to preserve the ambiguity and collect more evidence.
-            Keep the options materially distinct and explain the consequence of each.
+            If evidence is insufficient, one option must preserve the ambiguity and collect only the missing evidence.
+            Keep options materially distinct and concise.
 
             RETURN EXACTLY:
             WHY_BLOCKED=
@@ -305,16 +336,47 @@ struct GrandeMissionHumanGateView: View {
             EVIDENCE_REFS=
             """
 
-            packet = try await runtime.execute(
+            let resolved = try await runtime.execute(
                 prompt: prompt,
                 mode: .ask
             )
-            fields = parse(packet)
+
+            let resolvedFields = parse(resolved)
+
+            packet = resolved
+
+            // Merge instead of replacing so existing evidence never disappears.
+            fields.merge(resolvedFields) { _, new in new }
+
+            if hasUsableDecisionPacket(resolvedFields) {
+                try? runner.saveHumanGatePacket(
+                    phaseID: phase.id,
+                    receiptFinishedAt: receipt.finishedAt,
+                    packet: resolved
+                )
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
 
         isLoading = false
+    }
+
+    private func hasUsableDecisionPacket(
+        _ candidate: [String: String]
+    ) -> Bool {
+        let question = candidate["DECISION_QUESTION"]?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let optionCount = ["OPTION_A", "OPTION_B", "OPTION_C"]
+            .compactMap { candidate[$0] }
+            .map {
+                $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            .filter { !$0.isEmpty }
+            .count
+
+        return !(question ?? "").isEmpty && optionCount >= 2
     }
 
     @MainActor
@@ -336,6 +398,7 @@ struct GrandeMissionHumanGateView: View {
 
             if runner.receiptStatus(for: phaseID) == "PASS" {
                 submissionMessage = "Decision accepted. Mission resumed and this phase passed."
+                runner.clearHumanGatePacket(phaseID: phaseID)
                 decisionDraft = ""
                 fields = [:]
                 packet = ""
