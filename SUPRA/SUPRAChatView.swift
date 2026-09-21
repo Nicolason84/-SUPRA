@@ -187,7 +187,7 @@ struct SUPRAChatView: View {
             Image(systemName: memory.longMemorySource == "Conversation locale"
                 ? "externaldrive"
                 : "brain.head.profile")
-                .foregroundStyle(memory.longMemorySource == "Conversation locale" ? .secondary : .cyan)
+                .foregroundStyle(memory.longMemorySource == "Conversation locale" ? Color.secondary : Color.cyan)
 
             Text("Mémoire · \(memory.messages.count)")
                 .font(.caption.weight(.medium))
