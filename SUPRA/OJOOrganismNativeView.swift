@@ -188,8 +188,8 @@ struct OJOOrganismNativeView: View {
                     )
                 }
                 .contentShape(Rectangle())
-                .onTapGesture { location in
-                    selectClosestArm(at: location)
+                .onTapGesture {
+                    selectNextArm()
                 }
                 .overlay(alignment: .bottomLeading) {
                     armLegend
@@ -479,7 +479,7 @@ struct OJOOrganismNativeView: View {
                 layer.stroke(
                     path,
                     with: .color(color(for: arm, activation: activation).opacity(0.78)),
-                    lineWidth: 2.5 + activation * 9
+                    lineWidth: 2.5 + CGFloat(activation * 9)
                 )
             }
 
@@ -512,7 +512,7 @@ struct OJOOrganismNativeView: View {
 
         // Membrane layers.
         for layerIndex in stride(from: 4, through: 1, by: -1) {
-            let ratio = 1 + Double(layerIndex) * 0.11
+            let ratio = CGFloat(1 + Double(layerIndex) * 0.11)
             let radius = bodyRadius * ratio
             context.drawLayer { layer in
                 layer.addFilter(.shadow(color: .cyan.opacity(0.18), radius: 18))
@@ -576,20 +576,19 @@ struct OJOOrganismNativeView: View {
         })
     }
 
-    private func selectClosestArm(at point: CGPoint) {
-        // Native stage selection is intentionally conservative:
-        // cycle through organs instead of inventing geometry outside Canvas.
+    private func selectNextArm() {
         let current = selectedArm.flatMap { armOrder.firstIndex(of: $0) } ?? -1
         selectedArm = armOrder[(current + 1) % armOrder.count]
     }
 
     private func cubicPoint(
-        _ t: Double,
+        _ progress: Double,
         _ p0: CGPoint,
         _ p1: CGPoint,
         _ p2: CGPoint,
         _ p3: CGPoint
     ) -> CGPoint {
+        let t = CGFloat(progress)
         let u = 1 - t
         let x =
             u * u * u * p0.x
