@@ -205,6 +205,9 @@ struct SUPRAOJOHomeView: View {
         }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
+        .task {
+            SUPRAGrandeMissionRunner.shared.startIfNeeded()
+        }
     }
 
     private var technicalBackplate: some View {
