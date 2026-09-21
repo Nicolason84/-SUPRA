@@ -306,7 +306,7 @@ for token in ["NO_SILENT_PAYMENT=YES","NO_SILENT_SIGNATURE=YES","NO_SILENT_LEGAL
 secret_patterns = [
     re.compile(r"sk-[A-Za-z0-9_-]{20,}"),
     re.compile(r"Bearer\s+[A-Za-z0-9._-]{30,}"),
-    re.compile(r"pairing_token\s*[:=]\s*["'][^"']{20,}["']", re.I),
+    re.compile(r"""pairing_token\s*[:=]\s*["'][^"']{20,}["']""", re.I),
 ]
 suspects=[]
 for path in (ROOT/"SUPRA").rglob("*"):
