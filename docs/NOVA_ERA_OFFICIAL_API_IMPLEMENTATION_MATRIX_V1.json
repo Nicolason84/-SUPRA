@@ -1,0 +1,191 @@
+{
+  "schema": "NOVA_ERA_OFFICIAL_API_IMPLEMENTATION_MATRIX_V1",
+  "authority": "NICOLAS",
+  "generated_at": "2026-09-21",
+  "rules": [
+    "OFFICIAL_API_FIRST",
+    "NO_SECRETS_IN_REPO",
+    "READ_FIRST",
+    "WRITE_SEPARATE_PERMISSION",
+    "MONEY_LEGAL_PUBLICATION_HUMAN_GATED",
+    "EVERY_EXTERNAL_RESULT_RETURNS_TO_CANNONICO"
+  ],
+  "services": [
+    {
+      "id": "INPI_RNE",
+      "priority": "P0",
+      "official_source": "https://data.inpi.fr/content/editorial/Acces_API_Entreprises",
+      "auth": "Data INPI account + selected datasets + technical credentials",
+      "capabilities": [
+        "RNE",
+        "annual_accounts",
+        "corporate_acts",
+        "creations_modifications_cessations"
+      ],
+      "update_cadence": "daily",
+      "implementation": "SUPRA/INPIOfficialConnector.swift",
+      "state": "CONNECTOR_CODE_READY_AUTH_REQUIRED"
+    },
+    {
+      "id": "INPI_PI",
+      "priority": "P0",
+      "official_source": "https://data.inpi.fr/content/editorial/apis_pi",
+      "auth": "Data INPI account + PI API technical credentials",
+      "capabilities": [
+        "trademarks",
+        "patents",
+        "designs_models",
+        "media",
+        "notices"
+      ],
+      "update_cadence": "marks_and_patents_weekly; designs_weekly_or_biweekly",
+      "implementation": "SUPRA/INPIOfficialConnector.swift",
+      "state": "CONNECTOR_CODE_READY_AUTH_REQUIRED"
+    },
+    {
+      "id": "X_API_V2",
+      "priority": "P1",
+      "official_source": "https://docs.x.com/x-api",
+      "auth": "approved developer app + OAuth/user access for private/write; bearer token for supported reads",
+      "capabilities": [
+        "user_lookup",
+        "recent_search",
+        "mentions",
+        "posts",
+        "media"
+      ],
+      "implementation": "SUPRA/XOfficialConnector.swift",
+      "write_state": "DISABLED_BY_DEFAULT",
+      "state": "READ_CONNECTOR_CODE_READY_AUTH_REQUIRED"
+    },
+    {
+      "id": "YOUTUBE_DATA_API",
+      "priority": "P1",
+      "official_source": "https://developers.google.com/youtube/v3/docs",
+      "auth": "Google Cloud project + API enablement + API key or OAuth 2.0; OAuth for private/write",
+      "capabilities": [
+        "channels",
+        "videos",
+        "playlists",
+        "comments",
+        "publishing"
+      ],
+      "state": "OFFICIAL_CONNECTOR_NEXT"
+    },
+    {
+      "id": "GOOGLE_BUSINESS_PROFILE",
+      "priority": "P1",
+      "official_source": "https://developers.google.com/my-business",
+      "auth": "approved Google Cloud project + OAuth 2.0 + business profile authority",
+      "capabilities": [
+        "accounts",
+        "locations",
+        "reviews",
+        "posts",
+        "media",
+        "performance",
+        "notifications"
+      ],
+      "state": "ACCESS_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "WHATSAPP_BUSINESS",
+      "priority": "P1",
+      "official_source": "https://developers.facebook.com/docs/whatsapp",
+      "auth": "Meta business/app + WhatsApp Business Platform credentials",
+      "capabilities": [
+        "messages",
+        "templates",
+        "media",
+        "webhooks",
+        "delivery_read_events"
+      ],
+      "state": "OFFICIAL_CONNECTOR_NEXT"
+    },
+    {
+      "id": "STRIPE",
+      "priority": "P1",
+      "official_source": "https://docs.stripe.com/api",
+      "auth": "Stripe restricted/secret key + webhook signing secret",
+      "capabilities": [
+        "payments",
+        "customers",
+        "invoices",
+        "subscriptions",
+        "refunds",
+        "payouts",
+        "webhooks"
+      ],
+      "execution_gate": "money movement human-gated",
+      "state": "AGGREGATOR_AVAILABLE_OFFICIAL_DIRECT_NEXT"
+    },
+    {
+      "id": "DOCUSIGN",
+      "priority": "P1",
+      "official_source": "https://developers.docusign.com/docs/esign-rest-api/",
+      "auth": "Docusign OAuth / installed connector",
+      "capabilities": [
+        "envelopes",
+        "documents",
+        "recipients",
+        "templates",
+        "status",
+        "webhooks"
+      ],
+      "execution_gate": "send_sign_binding human-gated",
+      "state": "PLUGIN_AVAILABLE"
+    },
+    {
+      "id": "CRM_HUBSPOT",
+      "priority": "P1",
+      "official_source": "provider connector",
+      "auth": "HubSpot OAuth via plugin",
+      "capabilities": [
+        "contacts",
+        "companies",
+        "deals",
+        "tickets",
+        "engagements",
+        "tasks"
+      ],
+      "state": "PLUGIN_AVAILABLE"
+    },
+    {
+      "id": "DGFiP",
+      "priority": "P0",
+      "official_source": "https://www.impots.gouv.fr/comment-acceder-aux-api-de-la-dgfip",
+      "auth": "DataPass habilitation; sandbox and/or production subscription depending on API",
+      "capabilities": [
+        "eligible_DGFiP_APIs"
+      ],
+      "execution_gate": "tax/legal submission human-gated",
+      "state": "HABILITATION_REQUIRED"
+    },
+    {
+      "id": "URSSAF_MON_ENTREPRISE",
+      "priority": "P0",
+      "official_source": "https://mon-entreprise.urssaf.fr/d%C3%A9veloppeur/api",
+      "auth": "none for open simulation REST API",
+      "capabilities": [
+        "social_contribution_simulation",
+        "rule_evaluation"
+      ],
+      "execution_gate": "no private declarations via simulation API",
+      "state": "PUBLIC_READ_CALC_AVAILABLE"
+    },
+    {
+      "id": "OPEN_BANKING",
+      "priority": "P1",
+      "official_source": "provider_to_select",
+      "auth": "bank API or regulated PSD2 provider consent",
+      "capabilities": [
+        "accounts",
+        "balances",
+        "transactions",
+        "statements"
+      ],
+      "execution_gate": "all payment initiation human-gated",
+      "state": "PROVIDER_SELECTION_REQUIRED"
+    }
+  ]
+}
