@@ -25,6 +25,8 @@ jobs:
           test -f SUPRA/ExternalConnectionsView.swift
           test -f SUPRA/INPIUniverseView.swift
           test -f SUPRA/PublicPresenceView.swift
+          test -f RECOVERY/CONFIGURE_OFFICIAL_CONNECTOR_SECRETS_V1.sh
+          /bin/bash -n RECOVERY/CONFIGURE_OFFICIAL_CONNECTOR_SECRETS_V1.sh
           grep -Fq 'case connections' SUPRA/SUPRAOJOHomeView.swift
           grep -Fq 'case inpi' SUPRA/SUPRAOJOHomeView.swift
           grep -Fq 'case publicPresence' SUPRA/SUPRAOJOHomeView.swift
