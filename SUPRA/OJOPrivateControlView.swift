@@ -1,0 +1,481 @@
+import SwiftUI
+
+enum OJOPrivateTab: String, CaseIterable, Identifiable {
+    case now = "Now"
+    case needsYou = "Needs Nicolas"
+    case autonomous = "Machine can continue"
+    case missions = "Missions"
+    case decisions = "Decisions"
+    case connections = "Connections"
+    case context = "Private context"
+    case signals = "Signals"
+
+    var id: Self { self }
+
+    var symbol: String {
+        switch self {
+        case .now: "scope"
+        case .needsYou: "person.crop.circle.badge.exclamationmark"
+        case .autonomous: "bolt.circle.fill"
+        case .missions: "target"
+        case .decisions: "gauge.with.dots.needle.50percent"
+        case .connections: "point.3.connected.trianglepath.dotted"
+        case .context: "brain.head.profile"
+        case .signals: "waveform.path.ecg"
+        }
+    }
+}
+
+struct OJOPrivateControlView: View {
+    @State private var tab: OJOPrivateTab = .now
+    @State private var isBusy = false
+    @State private var runtimeState = "CHECKING"
+    @State private var output = ""
+    @State private var lastError: String?
+    @State private var lastQuery: Date?
+    @State private var lastMaterialChange = "Not queried"
+    @State private var topBottleneck = "Not queried"
+    @State private var nextMachineAction = "Not queried"
+    @State private var nextHumanAction = "Not queried"
+
+    private let runtime = SUPRAChatRuntimeAdapter()
+
+    var body: some View {
+        HStack(spacing: 0) {
+            privateRail
+                .frame(width: 250)
+
+            Divider()
+
+            ScrollView {
+                VStack(alignment: .leading, spacing: 22) {
+                    hero
+                    bodyContent
+                }
+                .padding(28)
+                .frame(maxWidth: 1160, alignment: .leading)
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .background(
+            LinearGradient(
+                colors: [
+                    Color.purple.opacity(0.10),
+                    Color(nsColor: .windowBackgroundColor),
+                    Color(nsColor: .windowBackgroundColor)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .task {
+            await bootstrap()
+        }
+    }
+
+    private var privateRail: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("ojO")
+                    .font(.title2.bold())
+                    .foregroundStyle(.purple)
+                Text("PRIVATE CONTROL")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(1.4)
+                    .foregroundStyle(.secondary)
+            }
+
+            Divider()
+
+            ForEach(OJOPrivateTab.allCases) { item in
+                Button {
+                    tab = item
+                    if item != .signals {
+                        Task { await queryForTab(item) }
+                    }
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: item.symbol)
+                            .frame(width: 20)
+                        Text(item.rawValue)
+                        Spacer()
+                    }
+                    .font(.callout.weight(tab == item ? .bold : .semibold))
+                    .foregroundStyle(tab == item ? .purple : .secondary)
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 9)
+                    .background(
+                        tab == item ? Color.purple.opacity(0.10) : Color.clear,
+                        in: RoundedRectangle(cornerRadius: 11)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+
+            Spacer()
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("RUNTIME")
+                    .font(.caption2.weight(.heavy))
+                    .foregroundStyle(.secondary)
+                HStack(spacing: 7) {
+                    Circle()
+                        .fill(runtimeTint)
+                        .frame(width: 7, height: 7)
+                    Text(runtimeState)
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(runtimeTint)
+                }
+                if let lastQuery {
+                    Text(lastQuery.formatted(date: .omitted, time: .standard))
+                        .font(.caption2.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(18)
+        .background(.ultraThinMaterial)
+    }
+
+    private var hero: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 7) {
+                    Text("NICOLAS ↔ SUPRA")
+                        .font(.caption.weight(.heavy))
+                        .tracking(1.6)
+                        .foregroundStyle(.purple)
+
+                    Text("Private command surface.")
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+
+                    Text("What needs you, what can continue alone, what changed, and where to go next.")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Button {
+                    Task { await query(kind: "PRIVATE_EXECUTIVE_NOW", mode: .ask) }
+                } label: {
+                    Label(isBusy ? "Refreshing…" : "Refresh now", systemImage: "arrow.clockwise")
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(isBusy)
+            }
+
+            HStack(spacing: 10) {
+                executiveChip(
+                    "Last material change",
+                    lastMaterialChange,
+                    "clock.arrow.circlepath",
+                    .blue
+                )
+                executiveChip(
+                    "Top bottleneck",
+                    topBottleneck,
+                    "exclamationmark.octagon.fill",
+                    .orange
+                )
+                executiveChip(
+                    "Machine next",
+                    nextMachineAction,
+                    "bolt.fill",
+                    .green
+                )
+                executiveChip(
+                    "Nicolas next",
+                    nextHumanAction,
+                    "person.crop.circle.fill",
+                    .purple
+                )
+            }
+        }
+        .padding(22)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22)
+                .stroke(Color.purple.opacity(0.18))
+        )
+    }
+
+    @ViewBuilder
+    private var bodyContent: some View {
+        if tab == .signals {
+            VStack(alignment: .leading, spacing: 12) {
+                Label("System signals", systemImage: "waveform.path.ecg")
+                    .font(.title2.bold())
+                Text("Secondary physiological visualization. Useful for pattern sensing, not as the primary control surface.")
+                    .foregroundStyle(.secondary)
+                OJOOrganismNativeView()
+                    .frame(minHeight: 680)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 16) {
+                actionStrip
+
+                if isBusy {
+                    ProgressView("SUPRA is resolving the current private state…")
+                        .controlSize(.large)
+                        .padding(.vertical, 34)
+                } else if let lastError {
+                    ContentUnavailableView(
+                        "Private runtime unavailable",
+                        systemImage: "exclamationmark.triangle.fill",
+                        description: Text(lastError)
+                    )
+                } else if output.isEmpty {
+                    ContentUnavailableView(
+                        "No current result",
+                        systemImage: tab.symbol,
+                        description: Text("Run the current private query.")
+                    )
+                } else {
+                    currentResult
+                }
+            }
+        }
+    }
+
+    private var actionStrip: some View {
+        LazyVGrid(
+            columns: [GridItem(.adaptive(minimum: 230), spacing: 12)],
+            spacing: 12
+        ) {
+            actionButton(
+                "What needs me?",
+                "Only true human gates.",
+                "person.crop.circle.badge.exclamationmark",
+                "NEEDS_NICOLAS",
+                .ask
+            )
+            actionButton(
+                "Continue alone",
+                "Machine-solvable next moves.",
+                "bolt.circle.fill",
+                "MACHINE_CAN_CONTINUE",
+                .plan
+            )
+            actionButton(
+                "Top bottleneck",
+                "Highest-impact blocker now.",
+                "exclamationmark.octagon.fill",
+                "TOP_BOTTLENECK",
+                .ask
+            )
+            actionButton(
+                "What changed?",
+                "Material delta since prior state.",
+                "arrow.triangle.2.circlepath",
+                "WHAT_CHANGED",
+                .ask
+            )
+            actionButton(
+                "Prepare decision",
+                "Evidence-backed human decision packet.",
+                "gauge.with.dots.needle.50percent",
+                "PREPARE_TOP_DECISION",
+                .plan
+            )
+            actionButton(
+                "Next 3 moves",
+                "Ordered machine/human actions.",
+                "list.number",
+                "NEXT_THREE_MOVES",
+                .plan
+            )
+        }
+    }
+
+    private var currentResult: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Label(tab.rawValue.uppercased(), systemImage: tab.symbol)
+                    .font(.caption.weight(.heavy))
+                    .foregroundStyle(.purple)
+
+                Spacer()
+
+                if let lastQuery {
+                    Text(lastQuery.formatted(date: .abbreviated, time: .standard))
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Text(output)
+                .font(.callout.monospaced())
+                .textSelection(.enabled)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(20)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.purple.opacity(0.18))
+        )
+    }
+
+    private func executiveChip(
+        _ title: String,
+        _ value: String,
+        _ symbol: String,
+        _ tint: Color
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Label(title, systemImage: symbol)
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(tint)
+            Text(value)
+                .font(.caption.weight(.semibold))
+                .lineLimit(2)
+        }
+        .padding(11)
+        .frame(maxWidth: .infinity, minHeight: 72, alignment: .topLeading)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func actionButton(
+        _ title: String,
+        _ subtitle: String,
+        _ symbol: String,
+        _ kind: String,
+        _ mode: ChatMode
+    ) -> some View {
+        Button {
+            Task { await query(kind: kind, mode: mode) }
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: symbol)
+                    .font(.title2)
+                    .foregroundStyle(.purple)
+                Text(title)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                Text(subtitle)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+        .disabled(isBusy)
+    }
+
+    private var runtimeTint: Color {
+        switch runtimeState {
+        case "CONNECTED", "PASS": .green
+        case "RUNNING", "CHECKING": .orange
+        case "ERROR": .red
+        default: .secondary
+        }
+    }
+
+    @MainActor
+    private func bootstrap() async {
+        do {
+            try await runtime.checkHealth()
+            runtimeState = "CONNECTED"
+            await query(kind: "PRIVATE_EXECUTIVE_NOW", mode: .ask)
+        } catch {
+            runtimeState = "ERROR"
+            lastError = error.localizedDescription
+        }
+    }
+
+    @MainActor
+    private func queryForTab(_ selected: OJOPrivateTab) async {
+        let kind: String = switch selected {
+        case .now: "PRIVATE_EXECUTIVE_NOW"
+        case .needsYou: "NEEDS_NICOLAS"
+        case .autonomous: "MACHINE_CAN_CONTINUE"
+        case .missions: "PRIVATE_ACTIVE_MISSIONS"
+        case .decisions: "PRIVATE_DECISIONS"
+        case .connections: "PRIVATE_CONNECTION_STATE"
+        case .context: "PRIVATE_CONTEXT_STATE"
+        case .signals: "SIGNALS"
+        }
+
+        let mode: ChatMode = selected == .autonomous ? .plan : .ask
+        await query(kind: kind, mode: mode)
+    }
+
+    @MainActor
+    private func query(kind: String, mode: ChatMode) async {
+        guard !isBusy else { return }
+
+        isBusy = true
+        runtimeState = "RUNNING"
+        lastError = nil
+
+        do {
+            try await runtime.checkHealth()
+            runtimeState = "CONNECTED"
+
+            let prompt = """
+            OJO_PRIVATE_CONTROL
+            AUTHORITY=NICOLAS
+            QUERY=\(kind)
+            READ_ONLY=YES
+            MEMORY_FIRST=YES
+            PROOF_FIRST=YES
+            NO_NEW_ENGINE=YES
+            NO_NEW_BRIDGE=YES
+            NO_NEW_RUNTIME=YES
+            NO_DESTRUCTIVE_ACTION=YES
+            HUMAN_GATE_FOR_IRREVERSIBLE=YES
+
+            This is the private Nicolas ↔ SUPRA control surface.
+            Use only current evidence and existing registries.
+            Distinguish LIVE / STALE / HISTORICAL / UNPROVEN.
+            Do not invent tasks, people, money, decisions or connection states.
+
+            Return:
+            CURRENT_STATE=
+            MOMENTUM=
+            LAST_MATERIAL_CHANGE=
+            CURRENT_MISSION=
+            TOP_BOTTLENECK=
+            NEEDS_NICOLAS=
+            MACHINE_CAN_CONTINUE=
+            DECISIONS_WAITING=
+            CONNECTIONS_AT_RISK=
+            STALE_EVIDENCE=
+            NEXT_MACHINE_ACTION=
+            NEXT_HUMAN_ACTION=
+            EVIDENCE_REFS=
+            """
+            output = try await runtime.execute(prompt: prompt, mode: mode)
+            runtimeState = "PASS"
+            lastQuery = .now
+            parseExecutiveFields(output)
+        } catch {
+            runtimeState = "ERROR"
+            lastError = error.localizedDescription
+        }
+
+        isBusy = false
+    }
+
+    private func parseExecutiveFields(_ text: String) {
+        let fields = text.split(whereSeparator: { $0.isNewline }).reduce(into: [String: String]()) { result, raw in
+            let line = String(raw)
+            guard let index = line.firstIndex(of: "=") else { return }
+            let key = String(line[..<index]).trimmingCharacters(in: .whitespacesAndNewlines)
+            let value = String(line[line.index(after: index)...]).trimmingCharacters(in: .whitespacesAndNewlines)
+            if !key.isEmpty, !value.isEmpty {
+                result[key] = value
+            }
+        }
+
+        lastMaterialChange = fields["LAST_MATERIAL_CHANGE"] ?? lastMaterialChange
+        topBottleneck = fields["TOP_BOTTLENECK"] ?? topBottleneck
+        nextMachineAction = fields["NEXT_MACHINE_ACTION"] ?? nextMachineAction
+        nextHumanAction = fields["NEXT_HUMAN_ACTION"] ?? nextHumanAction
+    }
+}
