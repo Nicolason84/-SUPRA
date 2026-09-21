@@ -1,0 +1,779 @@
+{
+  "schema": "NOVA_ERA_ROLE_CATALOG_V1",
+  "status": "CANONICAL_ROLE_ARCHITECTURE",
+  "authority": "NICOLAS",
+  "rules": {
+    "no_invented_staff": true,
+    "seat_status_must_be_evidenced": true,
+    "digital_support_not_employee": true,
+    "hire_against_proven_bottleneck": true,
+    "founder_reserved_authority_not_delegable_to_digital": true
+  },
+  "priorities": {
+    "P0": "CURRENT_CRITICAL_HUMAN_AUTHORITY",
+    "P1": "FIRST_WAVE_WHEN_TRIGGER_PROVEN",
+    "P2": "SECOND_WAVE_OR_CONTRACTOR_DIGITAL_FIRST",
+    "P3": "SCALE_STAGE"
+  },
+  "hiring_evidence_contract": [
+    "problem",
+    "evidence",
+    "automation_attempted",
+    "process_simplification_attempted",
+    "external_option_considered",
+    "role_needed",
+    "expected_capacity_gain",
+    "fully_loaded_cost",
+    "revenue_or_risk_impact",
+    "90_day_outcomes",
+    "continue_or_stop_gate"
+  ],
+  "roles": [
+    {
+      "role_id": "R000",
+      "department_id": "D00",
+      "title": "President / Founder",
+      "seat_status": "HUMAN_STAFFED_HISTORICALLY_EVIDENCED_RECONFIRM_CURRENT",
+      "priority": "P0",
+      "delegable_to_digital": false,
+      "accountabilities": [
+        "strategy",
+        "capital_allocation",
+        "legal_commitments",
+        "authority"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": false
+    },
+    {
+      "role_id": "R001",
+      "department_id": "D00",
+      "title": "Chief of Staff / Executive PMO",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "execution_cadence",
+        "portfolio_followup",
+        "decision_preparation"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R010",
+      "department_id": "D01",
+      "title": "Head of Sales / Revenue",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "sales_strategy",
+        "pipeline",
+        "forecast",
+        "commercial_process"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R011",
+      "department_id": "D01",
+      "title": "Account Executive",
+      "seat_status": "FUTURE_HIRE",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "discovery",
+        "proposal",
+        "negotiation_support",
+        "close_preparation"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R012",
+      "department_id": "D01",
+      "title": "SDR / Business Developer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "prospecting",
+        "qualification",
+        "followup"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R013",
+      "department_id": "D01",
+      "title": "Tender / Bid Manager",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "tenders",
+        "bid_coordination",
+        "submission_preparation"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R020",
+      "department_id": "D02",
+      "title": "Head of Marketing / Growth",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "positioning",
+        "demand",
+        "brand",
+        "channel_strategy"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R021",
+      "department_id": "D02",
+      "title": "Brand & Content Lead",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "content",
+        "brand",
+        "sales_enablement"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R022",
+      "department_id": "D02",
+      "title": "Growth Marketer",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "campaigns",
+        "experiments",
+        "channel_measurement"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R030",
+      "department_id": "D03",
+      "title": "Head of Product",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "product_strategy",
+        "roadmap",
+        "portfolio"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R031",
+      "department_id": "D03",
+      "title": "Product Manager",
+      "seat_status": "FUTURE_HIRE",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "discovery",
+        "requirements",
+        "experiments",
+        "lifecycle"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R032",
+      "department_id": "D03",
+      "title": "Product / UX Designer",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "UX",
+        "prototyping",
+        "research"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R040",
+      "department_id": "D04",
+      "title": "Head of R&D / I+D",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "research_program",
+        "experiment_quality",
+        "research_transfer"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R041",
+      "department_id": "D04",
+      "title": "Research Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "experiments",
+        "prototypes",
+        "benchmarks"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R042",
+      "department_id": "D04",
+      "title": "Applied AI Researcher",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "AI_research",
+        "evaluation",
+        "capability_gain"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R050",
+      "department_id": "D05",
+      "title": "CTO / Technical Lead",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "architecture",
+        "engineering_quality",
+        "technical_risk"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R051",
+      "department_id": "D05",
+      "title": "Software Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "software_delivery",
+        "testing",
+        "maintenance"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R052",
+      "department_id": "D05",
+      "title": "Mobile Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "iOS",
+        "Android",
+        "mobile_release"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R053",
+      "department_id": "D05",
+      "title": "AI / ML Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "model_integration",
+        "evaluation",
+        "inference_runtime"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R054",
+      "department_id": "D05",
+      "title": "Platform / DevOps Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "CI_CD",
+        "runtime",
+        "observability",
+        "reliability"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R055",
+      "department_id": "D05",
+      "title": "QA Automation Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "test_automation",
+        "regression",
+        "release_evidence"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R060",
+      "department_id": "D06",
+      "title": "Knowledge Architect",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "canon",
+        "ontology",
+        "lineage"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R061",
+      "department_id": "D06",
+      "title": "Data Engineer",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "pipelines",
+        "quality",
+        "data_products"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R062",
+      "department_id": "D06",
+      "title": "Evidence / Provenance Steward",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "evidence",
+        "provenance",
+        "contradictions"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R070",
+      "department_id": "D07",
+      "title": "Hardware / Embedded Lead",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "hardware",
+        "embedded",
+        "BOM"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R071",
+      "department_id": "D07",
+      "title": "Industrialization Engineer",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "manufacturing",
+        "yield",
+        "certification_readiness"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R072",
+      "department_id": "D07",
+      "title": "Supply Chain / Procurement Specialist",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "suppliers",
+        "inventory",
+        "purchasing_preparation"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R073",
+      "department_id": "D07",
+      "title": "Field Technician",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P1",
+      "delegable_to_digital": false,
+      "accountabilities": [
+        "installation",
+        "field_service",
+        "delivery_proof"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R080",
+      "department_id": "D08",
+      "title": "Operations Lead",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "delivery_system",
+        "capacity",
+        "quality"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R081",
+      "department_id": "D08",
+      "title": "Project / Mission Manager",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "planning",
+        "coordination",
+        "risk",
+        "delivery"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R082",
+      "department_id": "D08",
+      "title": "Implementation Specialist",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P1",
+      "delegable_to_digital": false,
+      "accountabilities": [
+        "deployment",
+        "configuration",
+        "acceptance_support"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R090",
+      "department_id": "D09",
+      "title": "Customer Success Lead",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "adoption",
+        "health",
+        "renewal_support"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R091",
+      "department_id": "D09",
+      "title": "Support Specialist",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "support",
+        "incident_triage",
+        "knowledge_feedback"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R092",
+      "department_id": "D09",
+      "title": "Service Quality Lead",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "service_quality",
+        "root_cause",
+        "feedback_loop"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R100",
+      "department_id": "D10",
+      "title": "Finance Lead / CFO",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "cash",
+        "forecast",
+        "controls",
+        "management_reporting"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R101",
+      "department_id": "D10",
+      "title": "Accounting / Admin Coordinator",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "invoicing",
+        "collections_support",
+        "records",
+        "admin"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R102",
+      "department_id": "D10",
+      "title": "Controller",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P3",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "margin",
+        "budget",
+        "variance",
+        "unit_economics"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R110",
+      "department_id": "D11",
+      "title": "Legal Counsel",
+      "seat_status": "EXTERNAL_PROVIDER_OR_FUTURE_HIRE",
+      "priority": "P2",
+      "delegable_to_digital": false,
+      "accountabilities": [
+        "contracts",
+        "legal_advice",
+        "disputes"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R111",
+      "department_id": "D11",
+      "title": "Compliance / Privacy Lead",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "privacy",
+        "compliance",
+        "risk_controls"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R112",
+      "department_id": "D11",
+      "title": "IP Coordinator",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P3",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "IP_inventory",
+        "filing_preparation",
+        "protection_strategy"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R120",
+      "department_id": "D12",
+      "title": "Head of People / RH",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "workforce",
+        "people_policies",
+        "organization"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R121",
+      "department_id": "D12",
+      "title": "Talent / Recruiting",
+      "seat_status": "FUTURE_HIRE_OR_EXTERNAL_PROVIDER",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "sourcing",
+        "screening",
+        "candidate_pipeline"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R122",
+      "department_id": "D12",
+      "title": "People Operations",
+      "seat_status": "FUTURE_HIRE_OR_DIGITAL_SUPPORT",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "onboarding",
+        "records",
+        "cadence",
+        "offboarding"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R130",
+      "department_id": "D13",
+      "title": "Partnerships Lead",
+      "seat_status": "FUTURE_HIRE_OR_FOUNDER_HELD",
+      "priority": "P1",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "alliances",
+        "channels",
+        "co_sell"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R131",
+      "department_id": "D13",
+      "title": "Channel Manager",
+      "seat_status": "FUTURE_HIRE",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "partner_enablement",
+        "channel_pipeline"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    },
+    {
+      "role_id": "R132",
+      "department_id": "D13",
+      "title": "International Business Developer",
+      "seat_status": "FUTURE_HIRE_OR_CONTRACTOR",
+      "priority": "P2",
+      "delegable_to_digital": true,
+      "accountabilities": [
+        "FR_ES_EU",
+        "market_entry",
+        "international_pipeline"
+      ],
+      "legal_accountability_requires_human": true,
+      "digital_support_is_not_employment": true,
+      "hire_requires_bottleneck_evidence": true
+    }
+  ]
+}
