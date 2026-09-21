@@ -286,11 +286,11 @@ struct FranceOrganismNativeView: View {
 
         return HStack(alignment: .top, spacing: 18) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("FRANCE · ORGANISME TERRITORIAL")
+                Text("FRANCE · JUMEAU VIVANT")
                     .font(.caption.bold())
                     .tracking(2.0)
                     .foregroundStyle(.secondary)
-                Text("La France devient la bête.")
+                Text("France, organisme distribué.")
                     .font(.system(size: 38, weight: .semibold, design: .rounded))
                 Text("\(counts.regions) régions · \(counts.departments) départements · \(counts.epcis.formatted()) EPCI · \(counts.communes.formatted()) communes")
                     .font(.title3)
@@ -317,8 +317,9 @@ struct FranceOrganismNativeView: View {
     }
 
     private var systemStrip: some View {
-        HStack(spacing: 7) {
-            ForEach(systemOrder, id: \.self) { system in
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 7) {
+                ForEach(systemOrder, id: \.self) { system in
                 let value = store.envelope.physiology.systems[system] ?? 0
                 Button {
                     selectedSystem = system
@@ -340,8 +341,10 @@ struct FranceOrganismNativeView: View {
                         in: Capsule()
                     )
                 }
-                .buttonStyle(.plain)
+                    .buttonStyle(.plain)
+                }
             }
+            .padding(.horizontal, 1)
         }
     }
 
@@ -547,7 +550,7 @@ struct FranceOrganismNativeView: View {
                         width: radius * 2,
                         height: radius * 2
                     )),
-                    with: .color(regionColor(region.code).opacity(selected ? 0.82 : 0.42))
+                    with: .color(regionColor(region.code).opacity(selected ? 0.82 : 0.26))
                 )
                 layer.stroke(
                     Path(ellipseIn: CGRect(
@@ -609,9 +612,10 @@ struct FranceOrganismNativeView: View {
     }
 
     private func regionColor(_ code: String) -> Color {
-        let palette: [Color] = [.cyan,.blue,.teal,.mint,.indigo,.purple,.orange,.pink]
-        let index = abs(code.hashValue) % palette.count
-        return palette[index]
+        if code == selectedRegionCode {
+            return systemColor(selectedSystem)
+        }
+        return Color.cyan.opacity(0.72)
     }
 
     private func systemColor(_ system: String) -> Color {
