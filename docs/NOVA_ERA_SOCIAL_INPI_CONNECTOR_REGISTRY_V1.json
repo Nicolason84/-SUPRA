@@ -29,7 +29,7 @@
     {
       "id": "CONN_LINKEDIN",
       "provider": "LinkedIn Official API",
-      "status": "AUTH_AND_API_ACCESS_REQUIRED",
+      "status": "CONNECTED_VIA_WINDSOR_ORGANIC",
       "read": true,
       "write": true,
       "human_gate": "PUBLISH_BY_DEFAULT"
@@ -53,7 +53,7 @@
     {
       "id": "CONN_WINDSOR",
       "provider": "Windsor.ai",
-      "status": "OPTIONAL_AGGREGATOR",
+      "status": "CONNECTED",
       "read": true,
       "write": "SUPPORTED_SOURCES_ONLY",
       "human_gate": "WRITE_CONFIRMATION"
@@ -82,5 +82,22 @@
     "ALL_PUBLIC_CLAIMS_EVIDENCE_BACKED",
     "ONE_BRAND_TRUTH",
     "SOCIAL_RESULTS_RETURN_TO_CANNONICO"
-  ]
+  ],
+  "live_evidence": {
+    "observed_at": "2026-09-21T06:05:59Z",
+    "windsor": {
+      "status": "CONNECTED",
+      "linkedin_organic": {
+        "connected_accounts": 1,
+        "write_actions": [
+          "create_post",
+          "create_image_post"
+        ],
+        "organization_follower_count": 4,
+        "organization_vanity_name": "nova-era-continuity",
+        "organization_website": "https://proofgraph.io",
+        "publication_policy": "HUMAN_GATE_BY_DEFAULT"
+      }
+    }
+  }
 }

@@ -1,0 +1,48 @@
+name: Validate External Nervous System INPI
+
+on:
+  push:
+    branches:
+      - supra/external-nervous-system-inpi-v1-20260921
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Invariants
+        run: |
+          set -euxo pipefail
+          test -f SUPRA/ExternalConnectorModels.swift
+          test -f SUPRA/XOfficialConnector.swift
+          test -f SUPRA/INPIOfficialConnector.swift
+          test -f SUPRA/ExternalConnectionsView.swift
+          test -f SUPRA/INPIUniverseView.swift
+          test -f SUPRA/PublicPresenceView.swift
+          test -f RECOVERY/CONFIGURE_OFFICIAL_CONNECTOR_SECRETS_V1.sh
+          /bin/bash -n RECOVERY/CONFIGURE_OFFICIAL_CONNECTOR_SECRETS_V1.sh
+          grep -Fq 'case connections' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'case inpi' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'case publicPresence' SUPRA/SUPRAOJOHomeView.swift
+          grep -Fq 'https://api.x.com/2' SUPRA/XOfficialConnector.swift
+          grep -Fq 'https://data.inpi.fr' SUPRA/INPIOfficialConnector.swift
+
+      - name: Resolve
+        run: |
+          set -euxo pipefail
+          for ATTEMPT in 1 2 3; do
+            xcodebuild -project SUPRA.xcodeproj -scheme SUPRA -resolvePackageDependencies && exit 0
+            [ "$ATTEMPT" = "3" ] && exit 1
+            sleep 3
+          done
+
+      - name: Release build
+        run: |
+          set -euxo pipefail
+          xcodebuild             -project SUPRA.xcodeproj             -scheme SUPRA             -configuration Release             -sdk macosx             -derivedDataPath "$RUNNER_TEMP/SUPRA_DerivedData"             CODE_SIGNING_ALLOWED=NO             CODE_SIGNING_REQUIRED=NO             build
