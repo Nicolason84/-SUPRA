@@ -409,7 +409,7 @@ struct FranceOrganismNativeView: View {
             Text("Pression territoriale spécifique")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text(region.localPressure ?? "UNRESOLVED")
+            Text(localPressureLabel(region.localPressure))
                 .font(.caption.bold())
                 .foregroundStyle(.orange)
 
@@ -643,6 +643,14 @@ struct FranceOrganismNativeView: View {
         case "health": return "SANTÉ"
         case "geopolitics": return "GÉOPOL."
         default: return system.uppercased()
+        }
+    }
+
+    private func localPressureLabel(_ value: String?) -> String {
+        switch value {
+        case "UNRESOLVED": return "Non résolue"
+        case "OBSERVED": return "Observée"
+        default: return value ?? "—"
         }
     }
 
