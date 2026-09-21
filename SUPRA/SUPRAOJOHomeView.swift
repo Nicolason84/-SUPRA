@@ -382,7 +382,7 @@ struct SUPRAOJOHomeView: View {
 
             Spacer()
 
-            statusPill("ONE CANON", symbol: "checkmark.seal.fill")
+            statusPill("CANON LIVE", symbol: "checkmark.seal.fill")
             statusPill("BUILD-GATED", symbol: "hammer.fill")
             statusPill("CIRCULAR", symbol: "arrow.triangle.2.circlepath")
 
