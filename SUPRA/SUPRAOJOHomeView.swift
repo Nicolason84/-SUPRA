@@ -2,8 +2,8 @@ import SwiftUI
 import AppKit
 
 enum SUPRAOJORoute: String, CaseIterable, Identifiable {
-    case france
     case chat
+    case france
     case ojo
     case supra
     case control
@@ -12,85 +12,160 @@ enum SUPRAOJORoute: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .france: return "France"
         case .chat: return "Chat"
+        case .france: return "France"
         case .ojo: return "ojO"
         case .supra: return "SUPRA"
-        case .control: return "Control Center"
+        case .control: return "Système"
         }
     }
 
     var subtitle: String {
         switch self {
-        case .france: return "Organisme territorial"
-        case .chat: return "Parler à SUPRA · ojO"
-        case .ojo: return "Interface privée"
-        case .supra: return "Executive OS"
-        case .control: return "Runtime & evidence"
+        case .chat: return "Parler · demander · décider"
+        case .france: return "Organisme territorial vivant"
+        case .ojo: return "Introspection & apprentissage"
+        case .supra: return "Décisions & connaissance"
+        case .control: return "Runtime · preuves · diagnostics"
         }
     }
 
     var symbol: String {
         switch self {
-        case .france: return "map.fill"
         case .chat: return "bubble.left.and.bubble.right.fill"
+        case .france: return "map.fill"
         case .ojo: return "waveform.path.ecg.rectangle"
         case .supra: return "sparkles.rectangle.stack"
         case .control: return "gauge.with.dots.needle.50percent"
         }
     }
+
+    var shortcut: KeyEquivalent {
+        switch self {
+        case .chat: return "1"
+        case .france: return "2"
+        case .ojo: return "3"
+        case .supra: return "4"
+        case .control: return "5"
+        }
+    }
 }
 
 struct SUPRAOJOHomeView: View {
-    @State private var selection: SUPRAOJORoute? = .france
+    @AppStorage("SUPRA_PRIMARY_ROUTE_V1")
+    private var storedRoute = SUPRAOJORoute.chat.rawValue
+
+    private var selection: Binding<SUPRAOJORoute?> {
+        Binding(
+            get: { SUPRAOJORoute(rawValue: storedRoute) ?? .chat },
+            set: { storedRoute = ($0 ?? .chat).rawValue }
+        )
+    }
 
     var body: some View {
         NavigationSplitView {
-            List(SUPRAOJORoute.allCases, selection: $selection) { route in
-                Label {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(route.title)
-                            .font(.headline)
-                        Text(route.subtitle)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                } icon: {
-                    Image(systemName: route.symbol)
-                        .symbolRenderingMode(.hierarchical)
-                }
-                .tag(route)
-                .padding(.vertical, 4)
-            }
-            .navigationTitle("SUPRA × ojO")
-            .navigationSplitViewColumnWidth(min: 210, ideal: 245, max: 290)
+            sidebar
+                .navigationSplitViewColumnWidth(min: 220, ideal: 236, max: 260)
         } detail: {
-            Group {
-                switch selection ?? .france {
-                case .france:
-                    FranceOrganismNativeView()
-                case .chat:
-                    SUPRAChatView()
-                case .ojo:
-                    OJOOrganismNativeView()
-                case .supra:
-                    ContentView()
-                case .control:
-                    SupraControlCenterView()
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            detail
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(nsColor: .windowBackgroundColor))
         }
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
+                Button {
+                    storedRoute = SUPRAOJORoute.chat.rawValue
+                } label: {
+                    Label("Chat", systemImage: "bubble.left.and.bubble.right.fill")
+                }
+                .help("Revenir au Chat · ⌘1")
+                .keyboardShortcut("1", modifiers: [.command])
+
                 Button {
                     NSApp.keyWindow?.toggleFullScreen(nil)
                 } label: {
                     Label("Plein écran", systemImage: "arrow.up.left.and.arrow.down.right")
                 }
-                .help("Basculer l’app en plein écran")
+                .help("Basculer en plein écran")
+                .keyboardShortcut("f", modifiers: [.command, .control])
             }
         }
-        .frame(minWidth: 1180, minHeight: 760)
+        .frame(minWidth: 1120, minHeight: 720)
+        .preferredColorScheme(.dark)
+        .tint(.cyan)
+    }
+
+    private var sidebar: some View {
+        List(selection: selection) {
+            sidebarHeader
+
+            Section("Conversation") {
+                routeRow(.chat)
+            }
+
+            Section("Comprendre") {
+                routeRow(.france)
+                routeRow(.ojo)
+            }
+
+            Section("Décider") {
+                routeRow(.supra)
+            }
+
+            Section("Technique") {
+                routeRow(.control)
+            }
+        }
+        .listStyle(.sidebar)
+        .navigationTitle("SUPRA × ojO")
+    }
+
+    private var sidebarHeader: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("SUPRA × ojO")
+                .font(.title2.weight(.semibold))
+            Text("Une seule maison.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.vertical, 8)
+        .listRowSeparator(.hidden)
+    }
+
+    @ViewBuilder
+    private func routeRow(_ route: SUPRAOJORoute) -> some View {
+        Label {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(route.title)
+                    .font(.headline)
+                Text(route.subtitle)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+        } icon: {
+            Image(systemName: route.symbol)
+                .symbolRenderingMode(.hierarchical)
+                .font(.body.weight(.medium))
+                .frame(width: 24)
+        }
+        .tag(route)
+        .padding(.vertical, 5)
+    }
+
+    @ViewBuilder
+    private var detail: some View {
+        switch SUPRAOJORoute(rawValue: storedRoute) ?? .chat {
+        case .chat:
+            SUPRAChatView()
+        case .france:
+            FranceOrganismNativeView()
+        case .ojo:
+            OJOOrganismNativeView()
+        case .supra:
+            ContentView()
+        case .control:
+            SupraControlCenterView()
+        }
     }
 }
