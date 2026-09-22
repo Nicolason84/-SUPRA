@@ -26,7 +26,7 @@ say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 retire_auxiliary_native_surfaces(){
   /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
 tell application "System Events"
-  repeat with procName in {"SUPRAClean", "OjoCompanion"}
+  repeat with procName in {"SUPRAClean", "OjoCompanion", "ChatGPT"}
     if exists process procName then
       try
         tell process procName to keystroke "q" using command down
@@ -36,6 +36,25 @@ tell application "System Events"
 end tell
 OSA
   sleep 1
+}
+
+close_recovery_finder_windows(){
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "Finder"
+  repeat with w in windows
+    try
+      set p to POSIX path of (target of w as alias)
+      if p contains "SUPRA_IMAC_MEMORY_GATEWAY" or p contains "SUPRA_CHATGPT_APP_BRIDGE_V1" then
+        close w
+      end if
+    end try
+  end repeat
+end tell
+OSA
+}
+
+focus_canonical_supra(){
+  /usr/bin/osascript -e 'tell application id "com.nicolasalonso.SUPRA" to activate' >/dev/null 2>&1 || true
 }
 
 close_legacy_supra_web_surface(){
@@ -293,7 +312,9 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   esac
 
   retire_auxiliary_native_surfaces
+  close_recovery_finder_windows
   close_legacy_supra_web_surface
+  focus_canonical_supra
   sleep 0.5
   publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING"
   printf 'SUPRA_PID=%s\n' "$PID"
@@ -476,6 +497,7 @@ xattr -dr com.apple.quarantine "$TARGET" >/dev/null 2>&1 || true
 
 say "9/10 Launch + prove"
 open "$TARGET"
+focus_canonical_supra
 PID=""
 PIDS=""
 RUNNING_COUNT=0
