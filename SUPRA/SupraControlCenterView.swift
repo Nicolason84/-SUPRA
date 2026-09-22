@@ -159,7 +159,7 @@ struct SupraControlCenterView: View {
     @MainActor
     private func startExistingMegabusIfNeeded() async {
         let defaults = UserDefaults.standard
-        let key = "SUPRA_EXISTING_MEGABUS_START_V1_DONE"
+        let key = "SUPRA_EXISTING_MEGABUS_CANONICAL_STORE_V2_DONE"
 
         if SUPRATerminalMegabusBridge.status() == "CONNECTED" {
             defaults.set(true, forKey: key)
@@ -174,23 +174,61 @@ struct SupraControlCenterView: View {
         megabusStartStarted = true
 
         let objective = """
-        Start the EXISTING validated SUPRA Terminal Megabus now.
+        Close ONLY the final EXISTING SUPRA Terminal Megabus lock.
 
-        CANONICAL_EXISTING_ROOT=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1
-        EXISTING_DAEMON=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/megabus_daemon.py
-        EXISTING_PID_FILE=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/megabus.pid
-        EXPECTED_REGISTRY=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/TERMINALS/CURRENT.json
+        PROVEN_ONE_SUPRA=PASS
+        PROVEN_INSTALLED_HEAD=1741f05c0f308e596dd6e29cad18ca712b0ca551
+        PROVEN_CANONICAL_EXEC=$HOME/Applications/SUPRA.app/Contents/MacOS/SUPRA
 
-        Do not create or rewrite Megabus, its daemon, bridge, registry, backend, or runtime.
-        Do not rebuild CAnnoNico or any unrelated component.
-        First inspect only this existing root and its current pid/daemon state.
-        If the daemon is already alive, reuse it.
-        If the daemon exists and is stopped or its pid is stale, start that exact existing daemon using its existing supported start semantics, detached and reversible.
-        Then allow the already-published SUPRA and GABRIEL CLIENT_REGISTERED messages in its INBOX to be consumed.
-        PASS only when the daemon is proven live and TERMINALS/CURRENT.json is produced by the real Megabus path.
-        Never fabricate CURRENT.json.
-        If the exact existing daemon/start path is absent, return the first exact blocker without creating a replacement.
-        Nicolas must not relay Terminal commands.
+        IMPORTANT_CANONICAL_STORE_TRUTH:
+        The current SUPRA app is sandboxed.
+        Its canonical Megabus root is:
+        $HOME/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1
+
+        The old shell-visible root:
+        $HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1
+        is historical/legacy and MUST NOT be treated as the current app store.
+
+        HISTORICAL_PROVEN_RUN:
+        $HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_AND_CANNONICO_FIX_V1/RUNS/20260721_063157
+
+        HISTORICAL_FOLLOWUP_RUN:
+        $HOME/NOVA_OS/CONNECT_SUPRA_GABRIEL_SCRIPT_EDITOR_TO_MEGABUS_V1/RUNS/20260721_063804
+
+        Historical proof:
+        TERMINAL_MEGABUS=STARTED
+        MEGABUS_PID=96457
+        MEGABUS_SELF_TEST=PASS
+        SUPRA_MEGABUS_BRIDGE=PASS
+        GABRIEL_MEGABUS_REGISTRATION=PASS
+        SCRIPT_EDITOR_MEGABUS_BRIDGE=PASS
+        MEGABUS_ROUTED_MESSAGES=3
+
+        DO NOW, SEQUENTIALLY:
+        1) Inspect ONLY the two historical proven run directories above and the current canonical container root.
+        2) Recover the EXISTING Megabus consumer/daemon artifact and its original supported start semantics from those runs or their directly referenced artifacts.
+        3) Do NOT recreate, rewrite, regenerate or replace the consumer/daemon.
+        4) Do NOT rerun the old CAnnoNico core patch/build.
+        5) Do NOT change sandbox entitlements or any security boundary.
+        6) Do NOT fabricate TERMINALS/CURRENT.json.
+        7) If the recovered existing consumer supports selecting/configuring its root without source mutation, start/restart that exact consumer against:
+           $HOME/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1
+        8) If it is already running against that exact canonical root, reuse it.
+        9) Confirm it consumes the real SUPRA/GABRIEL CLIENT_REGISTERED JSON messages already published in the canonical container INBOX.
+        10) Require the real consumer to produce:
+            .../TERMINALS/CURRENT.json
+            under that SAME canonical container root.
+        11) Prove a live consumer process/PID, coherent routing evidence, and the daemon-produced registry.
+        12) If the historical consumer artifact is absent, or is hard-coded to the legacy root and cannot be redirected using an existing supported option/configuration, STOP at that exact bounded blocker. Do not implement an alternative.
+        13) A security-boundary/entitlement change is a TRUE_HUMAN_GATE. Ordinary missing artifact/configuration is BLOCKED/UNPROVEN, not permission to recreate infrastructure.
+
+        PASS requires ALL:
+        - recovered existing consumer, not a recreated one
+        - consumer live on the canonical container root
+        - SUPRA/GABRIEL registration messages consumed
+        - daemon-produced canonical TERMINALS/CURRENT.json
+        - no new engine/runtime/bridge/registry/backend
+        - no entitlement change
 
         RETURN:
         STATUS=PASS|BLOCKED|UNPROVEN
