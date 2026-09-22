@@ -79,19 +79,43 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
     fail "UP_TO_DATE_BUT_CANONICAL_APP_MISSING:$TARGET" 22
   fi
 
-  PID="$(pgrep -x SUPRA | head -1 || true)"
-  if [ -z "$PID" ]; then
-    open -n "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 23
+  PIDS="$(pgrep -x SUPRA || true)"
+  RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
+  CANONICAL_COUNT=0
+  PID=""
+  CMD=""
+
+  for CANDIDATE_PID in $PIDS; do
+    CANDIDATE_CMD="$(ps -ww -p "$CANDIDATE_PID" -o command= 2>/dev/null || true)"
+    case "$CANDIDATE_CMD" in
+      *"$TARGET/Contents/MacOS/SUPRA"*)
+        CANONICAL_COUNT=$((CANONICAL_COUNT + 1))
+        PID="$CANDIDATE_PID"
+        CMD="$CANDIDATE_CMD"
+        ;;
+    esac
+  done
+
+  if [ "$RUNNING_COUNT" -ne 1 ] || [ "$CANONICAL_COUNT" -ne 1 ]; then
+    say "Canonicalize live SUPRA instance"
+    osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
+    sleep 1
+    pkill -x SUPRA >/dev/null 2>&1 || true
+    sleep 1
+    open "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 23
     for _ in $(seq 1 30); do
-      PID="$(pgrep -x SUPRA | head -1 || true)"
-      [ -n "$PID" ] && break
+      PIDS="$(pgrep -x SUPRA || true)"
+      RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
+      [ "$RUNNING_COUNT" -eq 1 ] && break
       sleep 0.5
     done
+    [ "$RUNNING_COUNT" -eq 1 ] || fail "UP_TO_DATE_SINGLE_INSTANCE_NOT_PROVEN:$RUNNING_COUNT" 24
+    PID="$(printf '%s\n' "$PIDS" | sed '/^$/d' | head -1)"
+    CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
   fi
 
   [ -n "$PID" ] || fail "UP_TO_DATE_APP_NOT_RUNNING_AFTER_AUTOLAUNCH" 24
 
-  CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
   case "$CMD" in
     *"$TARGET/Contents/MacOS/SUPRA"*) ;;
     *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 25 ;;
@@ -99,6 +123,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
 
   printf 'SUPRA_PID=%s\n' "$PID"
   printf 'SUPRA_CMD=%s\n' "$CMD"
+  printf 'SUPRA_INSTANCE_COUNT=1\n'
   printf '\nSTATUS=UP_TO_DATE_AND_RUNNING\n'
   exit 0
 fi
@@ -272,27 +297,33 @@ fi
 xattr -dr com.apple.quarantine "$TARGET" >/dev/null 2>&1 || true
 
 say "9/10 Launch + prove"
-open -n "$TARGET"
+open "$TARGET"
 PID=""
+PIDS=""
+RUNNING_COUNT=0
 for _ in $(seq 1 30); do
-  PID="$(pgrep -x SUPRA | head -1 || true)"
-  [ -n "$PID" ] && break
+  PIDS="$(pgrep -x SUPRA || true)"
+  RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
+  if [ "$RUNNING_COUNT" -eq 1 ]; then
+    PID="$(printf '%s\n' "$PIDS" | sed '/^$/d' | head -1)"
+    break
+  fi
   sleep 0.5
 done
 
-if [ -z "$PID" ]; then
+if [ -z "$PID" ] || [ "$RUNNING_COUNT" -ne 1 ]; then
   rm -rf "$TARGET"
-  if [ -n "$BACKUP" ] && [ -d "$BACKUP" ]; then "$DITTO" "$BACKUP" "$TARGET"; open -n "$TARGET" || true; fi
+  if [ -n "$BACKUP" ] && [ -d "$BACKUP" ]; then "$DITTO" "$BACKUP" "$TARGET"; open "$TARGET" || true; fi
   fail "NEW_APP_DID_NOT_LAUNCH_ROLLBACK_ATTEMPTED" 80
 fi
 
 CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
-printf 'PID=%s\nCMD=%s\n' "$PID" "$CMD"
+printf 'PID=%s\nCMD=%s\nSUPRA_INSTANCE_COUNT=%s\n' "$PID" "$CMD" "$RUNNING_COUNT"
 case "$CMD" in
   *"$TARGET/Contents/MacOS/SUPRA"*) ;;
   *)
     rm -rf "$TARGET"
-    if [ -n "$BACKUP" ] && [ -d "$BACKUP" ]; then "$DITTO" "$BACKUP" "$TARGET"; open -n "$TARGET" || true; fi
+    if [ -n "$BACKUP" ] && [ -d "$BACKUP" ]; then "$DITTO" "$BACKUP" "$TARGET"; open "$TARGET" || true; fi
     fail "LAUNCHED_BINARY_PATH_NOT_CANONICAL:$CMD" 81
     ;;
 esac
