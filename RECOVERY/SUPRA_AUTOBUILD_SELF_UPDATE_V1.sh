@@ -13,6 +13,7 @@ LOG_DIR="$SUPPORT/logs"
 ROLLBACK_ROOT="$HOME/Applications/SUPRA Rollback"
 RETIRED_ROOT="$HOME/Applications/SUPRA Retired"
 TARGET="$HOME/Applications/SUPRA.app"
+SYSTEM_LEGACY_TARGET="/Applications/SUPRA.app"
 UPDATER_DST="$SUPPORT/supra_autobuild_self_update.sh"
 
 mkdir -p "$SUPPORT" "$LOG_DIR" "$ROLLBACK_ROOT" "$RETIRED_ROOT" "$HOME/Applications"
@@ -53,8 +54,29 @@ end tell
 OSA
 }
 
+retire_systemwide_legacy_supra(){
+  [ -d "$SYSTEM_LEGACY_TARGET" ] || return 0
+
+  mkdir -p "$RETIRED_ROOT"
+  local destination="$RETIRED_ROOT/SYSTEM_SUPRA_${STAMP}.app"
+
+  if mv "$SYSTEM_LEGACY_TARGET" "$destination" 2>/dev/null; then
+    printf 'SYSTEM_LEGACY_SUPRA_RETIRED=%s\n' "$destination"
+    return 0
+  fi
+
+  printf 'SYSTEM_LEGACY_SUPRA_RETIRE_BLOCKED=%s\n' "$SYSTEM_LEGACY_TARGET"
+  return 1
+}
+
 focus_canonical_supra(){
-  /usr/bin/osascript -e 'tell application id "com.nicolasalonso.SUPRA" to activate' >/dev/null 2>&1 || true
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "System Events"
+  if exists process "SUPRA" then
+    tell process "SUPRA" to set frontmost to true
+  end if
+end tell
+OSA
 }
 
 close_legacy_supra_web_surface(){
@@ -288,27 +310,26 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   if [ "$RUNNING_COUNT" -ne 1 ] || [ "$CANONICAL_COUNT" -ne 1 ]; then
     say "Canonicalize live SUPRA instance"
     retire_auxiliary_native_surfaces
-    osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
-    sleep 1
     pkill -x SUPRA >/dev/null 2>&1 || true
     sleep 1
-    open "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 23
+    retire_systemwide_legacy_supra || fail "SYSTEMWIDE_LEGACY_SUPRA_COULD_NOT_BE_RETIRED:$SYSTEM_LEGACY_TARGET" 23
+    open "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 24
     for _ in $(seq 1 30); do
       PIDS="$(pgrep -x SUPRA || true)"
       RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
       [ "$RUNNING_COUNT" -eq 1 ] && break
       sleep 0.5
     done
-    [ "$RUNNING_COUNT" -eq 1 ] || fail "UP_TO_DATE_SINGLE_INSTANCE_NOT_PROVEN:$RUNNING_COUNT" 24
+    [ "$RUNNING_COUNT" -eq 1 ] || fail "UP_TO_DATE_SINGLE_INSTANCE_NOT_PROVEN:$RUNNING_COUNT" 25
     PID="$(printf '%s\n' "$PIDS" | sed '/^$/d' | head -1)"
     CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
   fi
 
-  [ -n "$PID" ] || fail "UP_TO_DATE_APP_NOT_RUNNING_AFTER_AUTOLAUNCH" 24
+  [ -n "$PID" ] || fail "UP_TO_DATE_APP_NOT_RUNNING_AFTER_AUTOLAUNCH" 25
 
   case "$CMD" in
     *"$TARGET/Contents/MacOS/SUPRA"*) ;;
-    *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 25 ;;
+    *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 26 ;;
   esac
 
   retire_auxiliary_native_surfaces
@@ -477,9 +498,9 @@ for LEGACY in "$HOME/Applications/SUPRA-FRANCE.app" "$HOME/Applications/SUPRA-FR
 done
 
 retire_auxiliary_native_surfaces
-osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
-sleep 1
 pkill -x SUPRA >/dev/null 2>&1 || true
+sleep 1
+retire_systemwide_legacy_supra || fail "SYSTEMWIDE_LEGACY_SUPRA_COULD_NOT_BE_RETIRED:$SYSTEM_LEGACY_TARGET" 70
 sleep 1
 
 CANDIDATE="$HOME/Applications/.SUPRA.candidate.$STAMP.app"
