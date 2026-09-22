@@ -21,7 +21,8 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
 
     private let retiredProcessNames: Set<String> = [
         "SUPRAClean",
-        "OjoCompanion"
+        "OjoCompanion",
+        "ChatGPT"
     ]
 
     func applicationDidFinishLaunching(_ notification: Notification) {
