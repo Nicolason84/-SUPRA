@@ -155,7 +155,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
 }
 
 struct SUPRAOJOHomeView: View {
-    @State private var selection: SUPRAUniverse = .france
+    @State private var selection: SUPRAUniverse = .supra
     @State private var inspectorVisible = true
     @State private var paletteVisible = false
     @State private var railCompact = false
