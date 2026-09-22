@@ -1,3 +1,4 @@
+
 //
 //  SUPRAApp.swift
 //  SUPRA
@@ -14,11 +15,23 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
         .appendingPathComponent("Applications/SUPRA.app")
         .standardizedFileURL
 
+    private let retiredBundleIdentifiers: Set<String> = [
+        "supra.clean.recomposition.v1"
+    ]
+
+    private let retiredProcessNames: Set<String> = [
+        "SUPRAClean",
+        "OjoCompanion"
+    ]
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        enforceCanonicalSingleInstance()
+        guard enforceCanonicalSingleInstance() else { return }
+        retireNoncanonicalSurfaces()
+        NSApp.activate(ignoringOtherApps: true)
     }
 
-    private func enforceCanonicalSingleInstance() {
+    @discardableResult
+    private func enforceCanonicalSingleInstance() -> Bool {
         let current = NSRunningApplication.current
         let currentBundleURL = Bundle.main.bundleURL.standardizedFileURL
 
@@ -36,11 +49,11 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
             ) { _, _ in
                 NSApp.terminate(nil)
             }
-            return
+            return false
         }
 
         guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
-            return
+            return true
         }
 
         let live = NSRunningApplication
@@ -48,7 +61,7 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
             .filter { !$0.isTerminated }
 
         guard live.count > 1 else {
-            return
+            return true
         }
 
         // Canonical instance wins. If more than one canonical process exists,
@@ -61,7 +74,7 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
             .min { $0.processIdentifier < $1.processIdentifier }
 
         guard let keeper else {
-            return
+            return true
         }
 
         for application in live
@@ -72,6 +85,33 @@ final class SUPRASingleInstanceDelegate: NSObject, NSApplicationDelegate {
         if keeper.processIdentifier != current.processIdentifier {
             keeper.activate(options: [.activateIgnoringOtherApps])
             NSApp.terminate(nil)
+            return false
+        }
+
+        return true
+    }
+
+    private func retireNoncanonicalSurfaces() {
+        let currentPID = NSRunningApplication.current.processIdentifier
+
+        for application in NSWorkspace.shared.runningApplications {
+            guard !application.isTerminated,
+                  application.processIdentifier != currentPID else {
+                continue
+            }
+
+            let bundleID = application.bundleIdentifier ?? ""
+            let name = application.localizedName ?? ""
+
+            guard retiredBundleIdentifiers.contains(bundleID)
+                    || retiredProcessNames.contains(name) else {
+                continue
+            }
+
+            // User explicitly requested that legacy/auxiliary visible surfaces
+            // close automatically once canonical SUPRA is ready.
+            // This is graceful only: no forceTerminate / SIGKILL.
+            _ = application.terminate()
         }
     }
 }
