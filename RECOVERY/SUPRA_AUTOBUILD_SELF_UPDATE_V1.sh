@@ -93,6 +93,13 @@ OSA
   "$PY" - "$proof" "$installed_sha" "$observed_sha" "$action" "$native_count" "$pid" "$cmd" "$chrome_supra_count" <<'PY'
 import datetime,json,os,pathlib,sys,tempfile
 path,installed,observed,action,native_count,pid,cmd,chrome_count=sys.argv[1:]
+mission_state_path=pathlib.Path.home()/"NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json"
+mission_state={}
+try:
+  if mission_state_path.exists():
+    mission_state=json.loads(mission_state_path.read_text(encoding="utf-8"))
+except Exception:
+  mission_state={}
 obj={
   "schema":"SUPRA_LOCAL_RUNTIME_PROOF_V1",
   "status":"PASS" if native_count=="1" else "DEGRADED",
@@ -105,6 +112,11 @@ obj={
   "chrome_supra_surface_count":int(chrome_count) if chrome_count.isdigit() else None,
   "chrome_supra_surface_probe": "PASS" if chrome_count.isdigit() else "UNPROVEN",
   "canonical_target":str(pathlib.Path.home()/"Applications/SUPRA.app"),
+  "grande_mission_state_path":str(mission_state_path),
+  "grande_mission_current_phase":mission_state.get("current_phase"),
+  "grande_mission_status":mission_state.get("status"),
+  "grande_mission_updated_at":mission_state.get("updated_at"),
+  "grande_mission_detail":mission_state.get("detail"),
   "timestamp":datetime.datetime.now(datetime.timezone.utc).isoformat()
 }
 p=pathlib.Path(path)
