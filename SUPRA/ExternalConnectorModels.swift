@@ -199,11 +199,11 @@ enum ExternalConnectorCatalog {
             family: "Finance / Payments",
             authorityClass: "C1/C4/C5",
             status: .authRequired,
-            detail: "A provider route exists, but no Stripe account is authenticated yet. Reads can activate after credential setup; money movement stays human-gated.",
+            detail: "DEFERRED HUMAN AUTH — provider route is ready, but Stripe authentication is intentionally parked so it cannot block the current SUPRA mission. Resume later with least-privilege read access; money movement stays human-gated.",
             systemImage: "creditcard.fill",
-            humanGate: "Charge/refund/payout/money movement",
-            officialRoute: "Stripe API / existing aggregator where useful",
-            priority: "P1"
+            humanGate: "Deferred auth; charge/refund/payout/money movement always gated",
+            officialRoute: "Stripe API / Windsor.ai",
+            priority: "P2"
         ),
         .init(
             id: "bank",
