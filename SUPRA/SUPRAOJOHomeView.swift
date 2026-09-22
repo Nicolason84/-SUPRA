@@ -496,7 +496,7 @@ struct SUPRAOJOHomeView: View {
                 )
 
                 inspectorBlock(
-                    title: "HUMAN GATE",
+                    title: "GUARDRAIL · HUMAN GATE ONLY IF TRIGGERED",
                     value: selection.humanGate,
                     symbol: "person.badge.key.fill",
                     tint: .orange
