@@ -1094,7 +1094,7 @@ private actor SUPRAProcessObservatoryScanner {
             let hasValidResult = parsed != nil
             let started = inferredDate(from: id) ?? input?.modifiedAt ?? output?.modifiedAt ?? .now
             let age = max(0, Date().timeIntervalSince(started))
-            let stage = stage(hasInbox: hasInbox, hasOutput: hasOutput, parsed: parsed)
+            let stage = stage(hasInbox: hasInbox, hasOutput: hasOutput, parsed: parsed, age: age)
             let drift = drift(
                 hasInbox: hasInbox,
                 hasOutput: hasOutput,
@@ -1393,7 +1393,8 @@ private actor SUPRAProcessObservatoryScanner {
     private func stage(
         hasInbox: Bool,
         hasOutput: Bool,
-        parsed: SUPRAParsedResult?
+        parsed: SUPRAParsedResult?,
+        age: TimeInterval
     ) -> SUPRAProcessStage {
         if hasOutput && parsed == nil { return .anomaly }
         // A valid OUTBOX receipt may legitimately outlive a consumed/archived INBOX request.
@@ -1402,10 +1403,30 @@ private actor SUPRAProcessObservatoryScanner {
 
         let status = (parsed?.status ?? "").uppercased()
         let f2 = (parsed?.f2StatusAfter ?? "").uppercased()
+        let action = (parsed?.actionNicolas ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .uppercased()
 
         if status.contains("FROZEN") || f2.contains("FROZEN") { return .frozen }
-        if status.contains("BLOCKED") || status.contains("HUMAN_GATE") || status.contains("REJECTED") { return .blocked }
-        if status.contains("FAIL") { return .failed }
+
+        // REJECTED is a terminal receipt, not a live bottleneck. Keep it visible
+        // as failed evidence without allowing it to monopolize Current bottleneck.
+        if status.contains("REJECTED") || status.contains("FAIL") { return .failed }
+
+        if status.contains("BLOCKED") || status.contains("HUMAN_GATE") {
+            let explicitHumanGate =
+                status.contains("HUMAN_GATE")
+                || (!action.isEmpty && action != "NONE" && action != "NONE / NOT OBSERVED")
+
+            // Old blocked receipts are historical evidence unless they still carry
+            // an explicit current human action. Never erase them; just stop
+            // presenting stale history as today's active bottleneck.
+            if age >= 7 * 86_400 && !explicitHumanGate {
+                return .historical
+            }
+            return .blocked
+        }
+
         return .materialized
     }
 
@@ -1437,6 +1458,8 @@ private actor SUPRAProcessObservatoryScanner {
             return parsed?.proofRefs.isEmpty == false ? 0.85 : 0.60
         case .blocked, .failed:
             return parsed?.proofRefs.isEmpty == false ? 0.70 : 0.50
+        case .historical:
+            return parsed?.proofRefs.isEmpty == false ? 0.85 : 0.60
         case .anomaly:
             return 0.10
         case .inFlight:
@@ -1537,7 +1560,7 @@ struct SUPRAObservedProcess: Identifiable, Equatable, Sendable {
 }
 
 enum SUPRAProcessStage: Equatable, Sendable {
-    case inFlight, materialized, frozen, blocked, failed, anomaly, unknown
+    case inFlight, materialized, frozen, blocked, failed, historical, anomaly, unknown
 
     var label: String {
         switch self {
@@ -1546,6 +1569,7 @@ enum SUPRAProcessStage: Equatable, Sendable {
         case .frozen: "Frozen"
         case .blocked: "Blocked"
         case .failed: "Failed"
+        case .historical: "Historical"
         case .anomaly: "Anomaly"
         case .unknown: "Unknown"
         }
@@ -1558,6 +1582,7 @@ enum SUPRAProcessStage: Equatable, Sendable {
         case .frozen: .cyan
         case .blocked: .orange
         case .failed: .red
+        case .historical: .secondary
         case .anomaly: .pink
         case .unknown: .secondary
         }
