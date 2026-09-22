@@ -22,6 +22,18 @@ LOG="$LOG_DIR/update_$STAMP.log"
 exec > >(tee -a "$LOG") 2>&1
 
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
+
+close_legacy_supra_web_surface(){
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "Google Chrome"
+  set doomed to every window whose name is "SUPRA Chat"
+  repeat with w in doomed
+    close w
+  end repeat
+end tell
+OSA
+}
+
 fail(){
   code=1
   [ "$#" -gt 1 ] && code="$2"
@@ -121,9 +133,11 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
     *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 25 ;;
   esac
 
+  close_legacy_supra_web_surface
   printf 'SUPRA_PID=%s\n' "$PID"
   printf 'SUPRA_CMD=%s\n' "$CMD"
   printf 'SUPRA_INSTANCE_COUNT=1\n'
+  printf 'LEGACY_SUPRA_WEB_SURFACE=CLOSE_ATTEMPTED\n'
   printf '\nSTATUS=UP_TO_DATE_AND_RUNNING\n'
   exit 0
 fi
@@ -318,7 +332,9 @@ if [ -z "$PID" ] || [ "$RUNNING_COUNT" -ne 1 ]; then
 fi
 
 CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
+close_legacy_supra_web_surface
 printf 'PID=%s\nCMD=%s\nSUPRA_INSTANCE_COUNT=%s\n' "$PID" "$CMD" "$RUNNING_COUNT"
+printf 'LEGACY_SUPRA_WEB_SURFACE=CLOSE_ATTEMPTED\n'
 case "$CMD" in
   *"$TARGET/Contents/MacOS/SUPRA"*) ;;
   *)
