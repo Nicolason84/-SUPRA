@@ -2,7 +2,6 @@ import SwiftUI
 import AppKit
 
 struct SupraControlCenterView: View {
-    @StateObject private var store: ControlCenterStore
     @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
     @State private var installProof = SUPRALocalInstallProof.load()
     @State private var commandText = ""
@@ -12,58 +11,34 @@ struct SupraControlCenterView: View {
 
     private let runtime = SUPRAChatRuntimeAdapter()
 
-    init() {
-        _store = StateObject(wrappedValue: ControlCenterStore())
-    }
-
-    init(store: ControlCenterStore) {
-        _store = StateObject(wrappedValue: store)
-    }
-
     var body: some View {
         NavigationStack {
-            Group {
-                if let snapshot = store.snapshot {
-                    dashboard(snapshot)
-                } else if store.isLoading {
-                    ProgressView("Loading SUPRA artifacts…")
-                        .controlSize(.large)
-                } else {
-                    ContentUnavailableView(
-                        "Executive Dashboard unavailable",
-                        systemImage: "exclamationmark.triangle",
-                        description: Text(store.errorMessage ?? "No snapshot loaded.")
-                    )
+            dashboard
+                .navigationTitle("SUPRA")
+                .toolbar {
+                    Button("Refresh", systemImage: "arrow.clockwise") {
+                        liveStore.refresh(force: true)
+                        installProof = SUPRALocalInstallProof.load()
+                    }
                 }
-            }
-            .navigationTitle("SUPRA")
-            .toolbar {
-                Button("Refresh", systemImage: "arrow.clockwise") {
-                    store.load()
-                    liveStore.refresh(force: true)
-                    installProof = SUPRALocalInstallProof.load()
-                }
-                .disabled(store.isLoading)
-            }
         }
         .frame(minWidth: 980, minHeight: 680)
         .task {
             liveStore.start()
             liveStore.refresh(force: true)
-            store.load()
             installProof = SUPRALocalInstallProof.load()
         }
     }
 
-    private func dashboard(_ snapshot: Snapshot) -> some View {
+    private var dashboard: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 dashboardHeader
                 commandSurface
-                executiveSummary(snapshot)
+                executiveSummary
                 quickActions
-                runtimeHealth(snapshot)
-                recentActivity(snapshot)
+                runtimeHealth
+                recentActivity
             }
             .padding(32)
             .frame(maxWidth: 1280, alignment: .leading)
@@ -212,7 +187,7 @@ struct SupraControlCenterView: View {
         }
     }
 
-    private func executiveSummary(_ snapshot: Snapshot) -> some View {
+    private var executiveSummary: some View {
         dashboardSection("Executive Summary", systemImage: "chart.bar.xaxis") {
             LazyVGrid(columns: summaryColumns, spacing: 14) {
                 summaryCard(
@@ -296,7 +271,7 @@ struct SupraControlCenterView: View {
         }
     }
 
-    private func runtimeHealth(_ snapshot: Snapshot) -> some View {
+    private var runtimeHealth: some View {
         dashboardSection("Runtime Health", systemImage: "waveform.path.ecg") {
             LazyVGrid(columns: healthColumns, spacing: 10) {
                 liveHealthCard(
@@ -328,7 +303,7 @@ struct SupraControlCenterView: View {
         }
     }
 
-    private func recentActivity(_ snapshot: Snapshot) -> some View {
+    private var recentActivity: some View {
         dashboardSection("Recent Activity", systemImage: "clock.arrow.circlepath") {
             HStack(spacing: 14) {
                 Image(systemName: "arrow.clockwise.circle.fill")
@@ -400,14 +375,6 @@ struct SupraControlCenterView: View {
         .padding(14)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 13))
         .overlay(RoundedRectangle(cornerRadius: 13).stroke(.quaternary))
-    }
-
-    private func healthName(_ artifact: ArtifactStatus) -> String {
-        switch artifact.name {
-        case "BUILD_STATUS": "BUILD"
-        case "Desktop Estate": "ESTATE"
-        default: artifact.name
-        }
     }
 
     private var summaryColumns: [GridItem] {
