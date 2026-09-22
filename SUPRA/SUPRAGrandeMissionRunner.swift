@@ -40,6 +40,15 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let packet: String
     }
 
+    struct ExecutiveObjectiveResult: Sendable {
+        let objectiveID: String
+        let admissionPath: String
+        let receiptPath: String
+        let status: String
+        let response: String
+        let humanGateRequired: Bool
+    }
+
     @Published private(set) var isRunning = false
     @Published private(set) var lastError: String?
     @Published private(set) var activePhaseID: String?
@@ -76,6 +85,161 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     var outboxURL: URL { rootURL.appendingPathComponent("OUTBOX", isDirectory: true) }
     var decisionsURL: URL { rootURL.appendingPathComponent("DECISIONS", isDirectory: true) }
     var stateURL: URL { rootURL.appendingPathComponent("STATE.json") }
+
+    func executeExecutiveObjective(
+        objective: String,
+        runtimePrompt: String
+    ) async throws -> ExecutiveObjectiveResult {
+        let trimmed = objective.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw NSError(
+                domain: "SUPRA.ExecutiveObjective",
+                code: 400,
+                userInfo: [NSLocalizedDescriptionKey: "Executive objective cannot be empty."]
+            )
+        }
+
+        try prepareDirectories()
+
+        let objectiveID = makeExecutiveObjectiveID()
+        let startedAt = iso.string(from: Date())
+        let admissionURL = inboxURL.appendingPathComponent("\(objectiveID).json")
+        let receiptURL = outboxURL.appendingPathComponent("\(objectiveID).result.json")
+
+        let request: [String: Any] = [
+            "schema": "SUPRA_EXECUTIVE_OBJECTIVE_REQUEST_V1",
+            "mission_id": objectiveID,
+            "objective_id": objectiveID,
+            "authority": "NICOLAS",
+            "mode": "EXECUTE_NOT_REINVESTIGATE",
+            "started_at": startedAt,
+            "objective": trimmed,
+            "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode"
+        ]
+
+        let requestData = try JSONSerialization.data(
+            withJSONObject: request,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+        try requestData.write(to: admissionURL, options: .atomic)
+
+        do {
+            try await runtime.checkHealth()
+
+            let correlatedPrompt = """
+            EXECUTIVE_OBJECTIVE
+            OBJECTIVE_ID=\(objectiveID)
+            RUNTIME_ADMISSION=\(admissionURL.path)
+            RUNTIME_CORRELATION_REQUIRED=YES
+
+            \(runtimePrompt)
+
+            The OBJECTIVE_ID above is the durable admission identity for this execution.
+            Preserve it in the response and do not replace it with a chat/session identity.
+
+            RETURN ALSO:
+            OBJECTIVE_ID=\(objectiveID)
+            EXECUTION_VERDICT=MATERIAL_RESULT|HUMAN_GATE|UNPROVEN
+            """
+
+            let response = try await runtime.execute(
+                prompt: correlatedPrompt,
+                mode: .plan
+            )
+
+            let normalized = response
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let upper = normalized.uppercased()
+            let humanGateRequired = upper.contains("HUMAN_GATE_REQUIRED=YES")
+                || upper.contains("EXECUTION_VERDICT=HUMAN_GATE")
+            let runningOnly = [
+                "RUNNING",
+                "RUNNING...",
+                "RUNNING…",
+                "SUPRA IS EXECUTING THROUGH THE EXISTING RUNTIME..."
+            ].contains(upper)
+
+            let status: String
+            if humanGateRequired {
+                status = "BLOCKED"
+            } else if !normalized.isEmpty && !runningOnly {
+                status = "PASS"
+            } else {
+                status = "UNPROVEN"
+            }
+
+            let finishedAt = iso.string(from: Date())
+            let receipt: [String: Any] = [
+                "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
+                "mission_id": objectiveID,
+                "objective_id": objectiveID,
+                "authority": "NICOLAS",
+                "started_at": startedAt,
+                "finished_at": finishedAt,
+                "status": status,
+                "human_gate_required": humanGateRequired ? "YES" : "NO",
+                "objective": trimmed,
+                "runtime_admission": admissionURL.path,
+                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "response": normalized,
+                "proof_refs": [
+                    admissionURL.path,
+                    receiptURL.path
+                ],
+                "action_nicolas": humanGateRequired ? "SEE_EXECUTIVE_RETURN" : "NONE"
+            ]
+
+            let receiptData = try JSONSerialization.data(
+                withJSONObject: receipt,
+                options: [.prettyPrinted, .sortedKeys]
+            )
+            try receiptData.write(to: receiptURL, options: .atomic)
+
+            return ExecutiveObjectiveResult(
+                objectiveID: objectiveID,
+                admissionPath: admissionURL.path,
+                receiptPath: receiptURL.path,
+                status: status,
+                response: normalized,
+                humanGateRequired: humanGateRequired
+            )
+        } catch {
+            let finishedAt = iso.string(from: Date())
+            let receipt: [String: Any] = [
+                "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
+                "mission_id": objectiveID,
+                "objective_id": objectiveID,
+                "authority": "NICOLAS",
+                "started_at": startedAt,
+                "finished_at": finishedAt,
+                "status": "ERROR",
+                "human_gate_required": "NO",
+                "objective": trimmed,
+                "runtime_admission": admissionURL.path,
+                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "response": error.localizedDescription,
+                "proof_refs": [admissionURL.path],
+                "action_nicolas": "NONE"
+            ]
+            if let receiptData = try? JSONSerialization.data(
+                withJSONObject: receipt,
+                options: [.prettyPrinted, .sortedKeys]
+            ) {
+                try? receiptData.write(to: receiptURL, options: .atomic)
+            }
+            throw error
+        }
+    }
+
+    private func makeExecutiveObjectiveID() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        let stamp = formatter.string(from: Date())
+        let suffix = String(UUID().uuidString.prefix(8)).uppercased()
+        return "EXECUTIVE_OBJECTIVE_\(stamp)_\(suffix)"
+    }
 
     func startIfNeeded() {
         guard !isRunning, !isTerminal, !isAwaitingHumanDecision else { return }
