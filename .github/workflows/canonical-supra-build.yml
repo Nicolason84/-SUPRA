@@ -39,6 +39,11 @@ jobs:
           /bin/bash -n RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
           /bin/bash -n RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
 
+      - name: Coherence 0.95 gate
+        run: |
+          set -euxo pipefail
+          /bin/bash RECOVERY/CHECK_SUPRA_COHERENCE_V1.sh
+
       - name: Resolve
         run: |
           set -euxo pipefail
