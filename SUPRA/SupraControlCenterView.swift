@@ -9,7 +9,7 @@ struct SupraControlCenterView: View {
     @State private var commandBusy = false
     @State private var commandError: String?
 
-    private let runtime = SUPRAChatRuntimeAdapter()
+    private let missionRunner = SUPRAGrandeMissionRunner.shared
 
     var body: some View {
         NavigationStack {
@@ -137,8 +137,6 @@ struct SupraControlCenterView: View {
         defer { commandBusy = false }
 
         do {
-            try await runtime.checkHealth()
-
             let prompt = """
             SUPRA_PRIMARY_WORK_SURFACE
             AUTHORITY=NICOLAS
@@ -176,7 +174,20 @@ struct SupraControlCenterView: View {
             NEXT_MACHINE_ACTION=
             """
 
-            commandOutput = try await runtime.execute(prompt: prompt, mode: .plan)
+            let result = try await missionRunner.executeExecutiveObjective(
+                objective: command,
+                runtimePrompt: prompt
+            )
+
+            commandOutput = """
+            OBJECTIVE_ID=\(result.objectiveID)
+            RUNTIME_ADMISSION=\(result.admissionPath)
+            RECEIPT=\(result.receiptPath)
+            STATUS=\(result.status)
+            HUMAN_GATE_REQUIRED=\(result.humanGateRequired ? "YES" : "NO")
+
+            \(result.response)
+            """
 
             if override == nil {
                 commandText = ""
