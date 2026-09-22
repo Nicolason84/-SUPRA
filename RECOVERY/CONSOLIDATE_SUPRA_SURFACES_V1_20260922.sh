@@ -34,9 +34,15 @@ say "2/6 Close only stale Chrome SUPRA Chat surface"
 CHROME_CLOSED=0
 /usr/bin/osascript <<'OSA' >/tmp/supra_surface_chrome_cleanup.out 2>/tmp/supra_surface_chrome_cleanup.err || true
 tell application "Google Chrome"
-  set doomed to every window whose name is "SUPRA Chat"
-  repeat with w in doomed
-    close w
+  repeat with w in windows
+    set tabCount to count of tabs of w
+    repeat with i from tabCount to 1 by -1
+      set t to tab i of w
+      set tabTitle to title of t
+      if tabTitle is "SUPRA Chat" or tabTitle contains "SUPRA — Situation Vivante" or tabTitle contains "SUPRA - Situation Vivante" then
+        close t
+      end if
+    end repeat
   end repeat
 end tell
 OSA
