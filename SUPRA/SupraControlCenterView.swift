@@ -8,6 +8,7 @@ struct SupraControlCenterView: View {
     @State private var commandOutput = "SUPRA ready. Type an objective or continue from the current proven state."
     @State private var commandBusy = false
     @State private var commandError: String?
+    @State private var admissionClosureProbeStarted = false
 
     private let missionRunner = SUPRAGrandeMissionRunner.shared
 
@@ -27,6 +28,7 @@ struct SupraControlCenterView: View {
             liveStore.start()
             liveStore.refresh(force: true)
             installProof = SUPRALocalInstallProof.load()
+            await runExecutiveAdmissionClosureProbeIfNeeded()
         }
     }
 
@@ -123,6 +125,35 @@ struct SupraControlCenterView: View {
     }
 
     @MainActor
+    private func runExecutiveAdmissionClosureProbeIfNeeded() async {
+        let defaults = UserDefaults.standard
+        let key = "SUPRA_EXECUTIVE_ADMISSION_CLOSURE_V1_DONE"
+
+        guard !defaults.bool(forKey: key),
+              !admissionClosureProbeStarted else {
+            return
+        }
+
+        admissionClosureProbeStarted = true
+
+        let objective = """
+        Report the current SUPRA runtime state and identify the first real unresolved blocker using existing evidence only. Make no changes. Return one material result or a true Human Gate.
+        """
+
+        commandText = objective
+        await executeCommand(objective)
+
+        let upper = commandOutput.uppercased()
+        let proven = upper.contains("STATUS=PASS")
+            || upper.contains("HUMAN_GATE_REQUIRED=YES")
+
+        if proven,
+           upper.contains("OBJECTIVE_ID=EXECUTIVE_OBJECTIVE_"),
+           upper.contains("RUNTIME_ADMISSION=") {
+            defaults.set(true, forKey: key)
+        }
+    }
+
     private func executeCommand(_ override: String? = nil) async {
         guard !commandBusy else { return }
 
