@@ -188,9 +188,12 @@ try:
     mission_state=json.loads(mission_state_path.read_text(encoding="utf-8"))
 except Exception:
   mission_state={}
+canonical_target=str(pathlib.Path.home()/"Applications/SUPRA.app/Contents/MacOS/SUPRA")
+canonical_process=(native_count=="1" and canonical_target in (cmd or ""))
+
 obj={
   "schema":"SUPRA_LOCAL_RUNTIME_PROOF_V1",
-  "status":"PASS" if native_count=="1" else "DEGRADED",
+  "status":"PASS" if canonical_process else "DEGRADED",
   "installed_source_sha":installed,
   "observed_canonical_sha":observed,
   "last_action":action,
@@ -211,7 +214,16 @@ obj={
       marker in (supra_network or "") and marker in (supraclean_network or "")
       for marker in ("127.0.0.1:18765","127.0.0.1:4096")
   ),
-  "one_supra_authority":"PROVEN_CANONICAL_ONLY" if int(supraclean_count or 0)==0 else "UNPROVEN_AUXILIARY_SURFACE_PRESENT",
+  "canonical_process_path_proven":canonical_process,
+  "one_supra_authority":(
+      "PROVEN_CANONICAL_ONLY"
+      if canonical_process and int(supraclean_count or 0)==0
+      else (
+          "UNPROVEN_NONCANONICAL_SUPRA_PROCESS"
+          if native_count=="1" and not canonical_process
+          else "UNPROVEN_AUXILIARY_OR_MULTIPLE_SURFACE"
+      )
+  ),
   "chrome_supra_surface_count":int(chrome_count) if chrome_count.isdigit() else None,
   "chrome_supra_surface_probe": "PASS" if chrome_count.isdigit() else "UNPROVEN",
   "canonical_target":str(pathlib.Path.home()/"Applications/SUPRA.app"),
