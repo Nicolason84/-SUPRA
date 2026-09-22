@@ -692,9 +692,8 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     // Only the ten canonical phases of the CURRENT runner are
                     // live mission processes. Older helper/subpart receipts stay
                     // on disk as history but must not reappear as present blockers.
-                    let currentGrandePhaseIDs = Set(
-                        SUPRAGrandeMissionRunner.shared.phases.map(\.id)
-                    )
+                    let currentGrandePhaseIDs =
+                        SUPRAGrandeMissionRunner.shared.observableProcessIDs
                     grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
                     }
