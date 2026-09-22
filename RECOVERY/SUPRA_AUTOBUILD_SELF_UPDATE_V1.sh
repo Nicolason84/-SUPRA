@@ -40,6 +40,84 @@ end tell
 OSA
 }
 
+publish_runtime_proof(){
+  local installed_sha="${1:-UNKNOWN}"
+  local observed_sha="${2:-UNKNOWN}"
+  local action="${3:-UNKNOWN}"
+  local state_dir=""
+  local candidate=""
+
+  for candidate in "$HOME"/Library/CloudStorage/GoogleDrive-*/Mon\ Drive/SUPRA_IMAC_MEMORY_GATEWAY/REMOTE/STATE; do
+    [ -d "$candidate" ] || continue
+    state_dir="$candidate"
+    break
+  done
+
+  if [ -z "$state_dir" ]; then
+    printf 'REMOTE_RUNTIME_PROOF=STATE_DIR_NOT_FOUND\n'
+    return 0
+  fi
+
+  local pids=""
+  local native_count="0"
+  local pid=""
+  local cmd=""
+  local chrome_supra_count="0"
+
+  pids="$(pgrep -x SUPRA || true)"
+  native_count="$(printf '%s\n' "$pids" | sed '/^$/d' | wc -l | tr -d ' ')"
+  pid="$(printf '%s\n' "$pids" | sed '/^$/d' | head -1)"
+  if [ -n "$pid" ]; then
+    cmd="$(ps -ww -p "$pid" -o command= 2>/dev/null || true)"
+  fi
+
+  if pgrep -x "Google Chrome" >/dev/null 2>&1; then
+    chrome_supra_count="$(/usr/bin/osascript <<'OSA' 2>/dev/null || echo UNKNOWN
+tell application "Google Chrome"
+  set n to 0
+  repeat with w in windows
+    repeat with t in tabs of w
+      set tabTitle to title of t
+      if tabTitle contains "SUPRA" or tabTitle contains "Situation Vivante" then
+        set n to n + 1
+      end if
+    end repeat
+  end repeat
+  return n
+end tell
+OSA
+)"
+  fi
+
+  local proof="$state_dir/SUPRA_LOCAL_RUNTIME_PROOF.json"
+  "$PY" - "$proof" "$installed_sha" "$observed_sha" "$action" "$native_count" "$pid" "$cmd" "$chrome_supra_count" <<'PY'
+import datetime,json,os,pathlib,sys,tempfile
+path,installed,observed,action,native_count,pid,cmd,chrome_count=sys.argv[1:]
+obj={
+  "schema":"SUPRA_LOCAL_RUNTIME_PROOF_V1",
+  "status":"PASS" if native_count=="1" else "DEGRADED",
+  "installed_source_sha":installed,
+  "observed_canonical_sha":observed,
+  "last_action":action,
+  "native_instance_count":int(native_count or 0),
+  "native_pid":int(pid) if pid.isdigit() else None,
+  "native_command":cmd or None,
+  "chrome_supra_surface_count":int(chrome_count) if chrome_count.isdigit() else None,
+  "chrome_supra_surface_probe": "PASS" if chrome_count.isdigit() else "UNPROVEN",
+  "canonical_target":str(pathlib.Path.home()/"Applications/SUPRA.app"),
+  "timestamp":datetime.datetime.now(datetime.timezone.utc).isoformat()
+}
+p=pathlib.Path(path)
+p.parent.mkdir(parents=True,exist_ok=True)
+fd,tmp=tempfile.mkstemp(prefix=".SUPRA_LOCAL_RUNTIME_PROOF.",suffix=".json",dir=str(p.parent))
+os.close(fd)
+pathlib.Path(tmp).write_text(json.dumps(obj,indent=2)+"\n",encoding="utf-8")
+os.replace(tmp,p)
+print(json.dumps(obj,separators=(",",":")))
+PY
+  printf 'REMOTE_RUNTIME_PROOF=%s\n' "$proof"
+}
+
 fail(){
   code=1
   [ "$#" -gt 1 ] && code="$2"
@@ -140,6 +218,8 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   esac
 
   close_legacy_supra_web_surface
+  sleep 0.5
+  publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING"
   printf 'SUPRA_PID=%s\n' "$PID"
   printf 'SUPRA_CMD=%s\n' "$CMD"
   printf 'SUPRA_INSTANCE_COUNT=1\n'
@@ -209,6 +289,7 @@ x.update({
 })
 p.write_text(json.dumps(x,indent=2)+"\n")
 PY
+  publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "NO_APP_REBUILD_REQUIRED"
   printf '\nSTATUS=NO_APP_REBUILD_REQUIRED\n'
   exit 0
 fi
@@ -391,4 +472,5 @@ printf '\nSTATUS=MATERIAL_RESULT_PROVEN\n'
 printf 'INSTALLED_SHA=%s\n' "$REMOTE_SHA"
 printf 'TARGET=%s\n' "$TARGET"
 printf 'BRIDGE_HEALTH=%s\n' "$BRIDGE_HEALTH"
+publish_runtime_proof "$REMOTE_SHA" "$REMOTE_SHA" "BUILD_SIGN_INSTALL_LAUNCH_PASS"
 printf 'AUTOUPDATE_SELF_REFRESH=PASS\n'
