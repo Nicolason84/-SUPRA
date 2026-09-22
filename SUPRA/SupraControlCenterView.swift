@@ -61,17 +61,12 @@ struct SupraControlCenterView: View {
     }
 
     private var dashboardHeader: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("EXECUTIVE CONTROL CENTER")
-                .font(.caption.weight(.bold))
-                .tracking(1.6)
-                .foregroundStyle(.secondary)
-            Text("Executive Dashboard")
-                .font(.system(size: 38, weight: .bold, design: .rounded))
-            Text("Primary executive work surface: command, execute through the existing runtime, inspect evidence, and escalate only true human gates.")
-                .font(.title3)
-                .foregroundStyle(.secondary)
-        }
+        SUPRAWorkspaceHeader(
+            eyebrow: "SUPRA · EXECUTIVE WORKSPACE",
+            title: "Executive Operating System",
+            subtitle: "Primary work surface: command, execute through the existing runtime, inspect proof, and escalate only true human gates.",
+            tint: .accentColor
+        )
     }
 
     private var commandSurface: some View {
@@ -278,8 +273,6 @@ struct SupraControlCenterView: View {
                     SUPRAProcessObservatoryView()
                 } else if destination == .supraChat {
                     SUPRAChatView()
-                } else {
-                    ExecutivePlaceholderView(destination: destination)
                 }
             }
         }
@@ -334,9 +327,8 @@ struct SupraControlCenterView: View {
         systemImage: String,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label(title, systemImage: systemImage)
-                .font(.title2.bold())
+        VStack(alignment: .leading, spacing: SUPRAUI.sectionSpacing) {
+            SUPRASectionTitle(title: title, systemImage: systemImage)
             content()
         }
     }
@@ -391,8 +383,6 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
     case decisionInbox
     case missionCenter
     case runtimeMonitor
-    case evidenceExplorer
-    case capabilityBrowser
     case supraChat
 
     var id: Self { self }
@@ -402,8 +392,6 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .decisionInbox: "Decision Inbox"
         case .missionCenter: "Mission Center"
         case .runtimeMonitor: "Runtime Monitor"
-        case .evidenceExplorer: "Evidence Explorer"
-        case .capabilityBrowser: "Capability Browser"
         case .supraChat: "SUPRA Chat"
         }
     }
@@ -413,23 +401,8 @@ private enum ExecutiveDestination: String, CaseIterable, Identifiable, Hashable 
         case .decisionInbox: "tray.full.fill"
         case .missionCenter: "scope"
         case .runtimeMonitor: "waveform.path.ecg"
-        case .evidenceExplorer: "doc.text.magnifyingglass"
-        case .capabilityBrowser: "square.grid.2x2.fill"
         case .supraChat: "bubble.left.and.bubble.right.fill"
         }
-    }
-}
-
-private struct ExecutivePlaceholderView: View {
-    let destination: ExecutiveDestination
-
-    var body: some View {
-        ContentUnavailableView(
-            destination.title,
-            systemImage: destination.systemImage,
-            description: Text("This workspace is ready for its future product view.")
-        )
-        .navigationTitle(destination.title)
     }
 }
 
