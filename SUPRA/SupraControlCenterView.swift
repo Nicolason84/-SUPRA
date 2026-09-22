@@ -2,6 +2,12 @@ import SwiftUI
 
 struct SupraControlCenterView: View {
     @StateObject private var store: ControlCenterStore
+    @State private var commandText = ""
+    @State private var commandOutput = "SUPRA ready. Type an objective or continue from the current proven state."
+    @State private var commandBusy = false
+    @State private var commandError: String?
+
+    private let runtime = SUPRAChatRuntimeAdapter()
 
     init() {
         _store = StateObject(wrappedValue: ControlCenterStore())
@@ -41,6 +47,7 @@ struct SupraControlCenterView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 dashboardHeader
+                commandSurface
                 executiveSummary(snapshot)
                 quickActions
                 runtimeHealth(snapshot)
@@ -61,9 +68,140 @@ struct SupraControlCenterView: View {
                 .foregroundStyle(.secondary)
             Text("Executive Dashboard")
                 .font(.system(size: 38, weight: .bold, design: .rounded))
-            Text("A live, read-only view of SUPRA operational readiness.")
+            Text("Primary executive work surface: command, execute through the existing runtime, inspect evidence, and escalate only true human gates.")
                 .font(.title3)
                 .foregroundStyle(.secondary)
+        }
+    }
+
+    private var commandSurface: some View {
+        dashboardSection("Command SUPRA", systemImage: "terminal.fill") {
+            VStack(alignment: .leading, spacing: 12) {
+                TextEditor(text: $commandText)
+                    .font(.body)
+                    .frame(minHeight: 96, maxHeight: 160)
+                    .padding(10)
+                    .scrollContentBackground(.hidden)
+                    .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(.quaternary)
+                    )
+                    .disabled(commandBusy)
+                    .accessibilityLabel("SUPRA command")
+
+                HStack(spacing: 10) {
+                    Button {
+                        Task { await executeCommand() }
+                    } label: {
+                        Label(commandBusy ? "Running…" : "Execute", systemImage: "bolt.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(
+                        commandBusy
+                        || commandText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    )
+
+                    Button {
+                        Task {
+                            await executeCommand(
+                                "Continue from the current proven state. Resolve the highest-impact machine-solvable blocker, then continue the active mission. Do not ask Nicolas to relay shell commands."
+                            )
+                        }
+                    } label: {
+                        Label("Continue", systemImage: "forward.fill")
+                    }
+                    .buttonStyle(.bordered)
+                    .disabled(commandBusy)
+
+                    Spacer()
+
+                    Text("Existing SUPRA runtime · proof-first · human gate only when required")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let commandError {
+                    Label(commandError, systemImage: "exclamationmark.triangle.fill")
+                        .font(.callout)
+                        .foregroundStyle(.orange)
+                }
+
+                ScrollView {
+                    Text(commandOutput)
+                        .font(.callout.monospaced())
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(minHeight: 90, maxHeight: 220)
+                .padding(12)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+    }
+
+    @MainActor
+    private func executeCommand(_ override: String? = nil) async {
+        guard !commandBusy else { return }
+
+        let raw = override ?? commandText
+        let command = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !command.isEmpty else { return }
+
+        commandBusy = true
+        commandError = nil
+        commandOutput = "SUPRA is executing through the existing runtime…"
+
+        defer { commandBusy = false }
+
+        do {
+            try await runtime.checkHealth()
+
+            let prompt = """
+            SUPRA_PRIMARY_WORK_SURFACE
+            AUTHORITY=NICOLAS
+            CONTROL_SURFACE=SUPRA
+            MODE=EXECUTE_NOT_REINVESTIGATE
+            MEMORY_FIRST=YES
+            PATRIMONY_FIRST=YES
+            PROOF_FIRST=YES
+            NO_NEW_ENGINE=YES
+            NO_NEW_BRIDGE=YES
+            NO_NEW_RUNTIME=YES
+            NO_HUMAN_RELAY=YES
+            NO_FAKE_PASS=YES
+            AUTO_EXECUTE_READ_ONLY=YES
+            AUTO_EXECUTE_REVERSIBLE_LOCAL=YES
+            HUMAN_GATE_ONLY_FOR=IRREVERSIBLE_DELETE|SECURITY_BOUNDARY_CHANGE|AUTHORITY_CHANGE|MONEY_MOVEMENT|LEGAL_ADMIN_SUBMISSION|PUBLICATION|SIGNATURE_BINDING_COMMITMENT
+
+            USER_COMMAND:
+            \(command)
+
+            Work from the existing SUPRA runtime and current evidence.
+            Do all machine-solvable work before asking Nicolas anything.
+            Never ask Nicolas to copy/paste a Terminal command when an existing machine path can do it.
+            Preserve rollback and return concrete evidence.
+
+            RETURN:
+            STATUS=
+            CURRENT_STATE=
+            WORK_COMPLETED=
+            REAL_RESULT=
+            EVIDENCE_REFS=
+            BLOCKERS=
+            HUMAN_GATE_REQUIRED=YES|NO
+            ACTION_NICOLAS=NONE|<single indispensable action>
+            NEXT_MACHINE_ACTION=
+            """
+
+            commandOutput = try await runtime.execute(prompt: prompt, mode: .plan)
+
+            if override == nil {
+                commandText = ""
+            }
+        } catch {
+            commandError = error.localizedDescription
+            commandOutput = "SUPRA runtime did not return a proven result."
         }
     }
 
