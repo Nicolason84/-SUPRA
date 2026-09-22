@@ -1,6 +1,6 @@
 {
   "schema": "NOVA_ERA_EXTERNAL_CONNECTION_LIVE_STATE_V2",
-  "observed_at": "2026-09-22T07:10:00Z",
+  "observed_at": "2026-09-22T08:12:00Z",
   "authority": "NICOLAS",
   "truth_policy": "CONNECTED requires a successful live authenticated read in this audit. INSTALLED, AVAILABLE, CODE_READY, ACCOUNT_LINKED_NO_TARGET and AUTH_REQUIRED are distinct states.",
   "connected": [
@@ -85,9 +85,12 @@
   "auth_or_approval_required": [
     {
       "id": "STRIPE",
-      "status": "AUTH_REQUIRED",
+      "status": "DEFERRED_HUMAN_AUTH",
       "route": "Windsor Stripe connector",
-      "human_action": "enter Stripe API credential in provider authorization form; never paste secret into chat"
+      "human_action": "enter Stripe API credential in provider authorization form; never paste secret into chat",
+      "blocking": false,
+      "reason": "Identity verification / secret-handling flow is human-gated and is intentionally parked to avoid blocking current SUPRA work.",
+      "resume_when": "Nicolas chooses to resume Stripe connection later."
     },
     {
       "id": "HUBSPOT",
@@ -200,6 +203,22 @@
   "notes": [
     "Connections UI source updated to expose verified connector states.",
     "INPI UI source now derives API-readiness badge from runtime configuration instead of a static optimistic label.",
-    "Local installation remains separately verifiable by the existing self-updater receipt."
-  ]
+    "Local installation remains separately verifiable by the existing self-updater receipt.",
+    "Stripe setup parked by authority decision on 2026-09-22; no secret copied into chat or canon.",
+    "Windsor live connector inventory still shows LinkedIn Organic only; Stripe remains unconnected and non-blocking."
+  ],
+  "execution_policy": {
+    "current_focus": "Resume SUPRA core mission and controlled auto-evolution; external connector auth gaps are non-blocking unless a mission explicitly depends on them.",
+    "non_blocking_gates": [
+      "STRIPE",
+      "HUBSPOT",
+      "CLOSE_CRM",
+      "INPI",
+      "DGFIP",
+      "URSSAF",
+      "TAMARIND_BIO",
+      "ADAPTYV_BIO"
+    ],
+    "rule": "No external auth/setup task may block the core runtime unless the active mission declares that connector as a hard dependency."
+  }
 }
