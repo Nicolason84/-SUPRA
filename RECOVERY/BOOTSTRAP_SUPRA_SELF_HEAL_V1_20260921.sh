@@ -17,6 +17,21 @@ BRIDGE_PLIST="$HOME/Library/LaunchAgents/$BRIDGE_LABEL.plist"
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 fail(){ printf '\nSTATUS=FAIL_BOUNDED\nBLOCKER=%s\n' "$1"; exit "${2:-1}"; }
 
+retire_auxiliary_surfaces(){
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "System Events"
+  repeat with procName in {"SUPRAClean", "OjoCompanion"}
+    if exists process procName then
+      try
+        tell process procName to keystroke "q" using command down
+      end try
+    end if
+  end repeat
+end tell
+OSA
+  sleep 1
+}
+
 PY="$(command -v python3 || true)"
 CURL="$(command -v curl || true)"
 [ -n "$PY" ] || fail "PYTHON3_NOT_FOUND" 10
@@ -105,20 +120,33 @@ PY
 [ "$INSTALLED_SHA" = "$REMOTE_SHA" ] || fail "INSTALLED_SHA_MISMATCH:$INSTALLED_SHA!=${REMOTE_SHA}" 60
 [ -d "$TARGET" ] || fail "CANONICAL_APP_MISSING:$TARGET" 61
 
-PID="$(pgrep -x SUPRA | head -1 || true)"
-if [ -z "$PID" ]; then
-  open -n "$TARGET" >/dev/null 2>&1 || fail "CANONICAL_APP_LAUNCH_FAILED" 62
-  for _ in $(seq 1 30); do
-    PID="$(pgrep -x SUPRA | head -1 || true)"
-    [ -n "$PID" ] && break
-    sleep 0.5
-  done
-fi
-[ -n "$PID" ] || fail "CANONICAL_APP_NOT_RUNNING" 63
+retire_auxiliary_surfaces
+osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
+sleep 1
+pkill -x SUPRA >/dev/null 2>&1 || true
+sleep 1
+
+open "$TARGET" >/dev/null 2>&1 || fail "CANONICAL_APP_LAUNCH_FAILED" 62
+
+PIDS=""
+COUNT=0
+PID=""
+for _ in $(seq 1 40); do
+  PIDS="$(pgrep -x SUPRA || true)"
+  COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
+  if [ "$COUNT" -eq 1 ]; then
+    PID="$(printf '%s\n' "$PIDS" | sed '/^$/d' | head -1)"
+    break
+  fi
+  sleep 0.5
+done
+
+[ "$COUNT" -eq 1 ] || fail "CANONICAL_APP_INSTANCE_COUNT_NOT_ONE:$COUNT" 63
+[ -n "$PID" ] || fail "CANONICAL_APP_NOT_RUNNING" 64
 CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
 case "$CMD" in
   *"$TARGET/Contents/MacOS/SUPRA"*) ;;
-  *) fail "NONCANONICAL_SUPRA_PROCESS:$CMD" 64 ;;
+  *) fail "NONCANONICAL_SUPRA_PROCESS:$CMD" 65 ;;
 esac
 
 launchctl print "gui/$UID/$LABEL" >/dev/null 2>&1 || fail "AUTOUPDATE_LAUNCHAGENT_NOT_ACTIVE" 65
@@ -157,7 +185,9 @@ else
 fi
 
 printf 'SUPRA_PID=%s\n' "$PID"
+printf 'SUPRA_INSTANCE_COUNT=1\n'
 printf 'SUPRA_CMD=%s\n' "$CMD"
+printf 'AUXILIARY_SURFACES_RETIRE_ATTEMPTED=YES\n'
 printf 'INSTALLED_SHA=%s\n' "$INSTALLED_SHA"
 printf 'AUTOUPDATE_ACTIVE=PASS\n'
 printf 'AUTOUPDATE_INTERVAL_SECONDS=600\n'
