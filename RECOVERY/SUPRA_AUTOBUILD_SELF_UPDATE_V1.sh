@@ -23,6 +23,21 @@ exec > >(tee -a "$LOG") 2>&1
 
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 
+retire_auxiliary_native_surfaces(){
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "System Events"
+  repeat with procName in {"SUPRAClean", "OjoCompanion"}
+    if exists process procName then
+      try
+        tell process procName to keystroke "q" using command down
+      end try
+    end if
+  end repeat
+end tell
+OSA
+  sleep 1
+}
+
 close_legacy_supra_web_surface(){
   /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
 tell application "Google Chrome"
@@ -253,6 +268,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
 
   if [ "$RUNNING_COUNT" -ne 1 ] || [ "$CANONICAL_COUNT" -ne 1 ]; then
     say "Canonicalize live SUPRA instance"
+    retire_auxiliary_native_surfaces
     osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
     sleep 1
     pkill -x SUPRA >/dev/null 2>&1 || true
@@ -276,6 +292,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
     *) fail "UP_TO_DATE_APP_RUNNING_FROM_NONCANONICAL_PATH:$CMD" 25 ;;
   esac
 
+  retire_auxiliary_native_surfaces
   close_legacy_supra_web_surface
   sleep 0.5
   publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING"
@@ -438,6 +455,7 @@ for LEGACY in "$HOME/Applications/SUPRA-FRANCE.app" "$HOME/Applications/SUPRA-FR
   if [ -d "$LEGACY" ]; then mv "$LEGACY" "$RETIRE_DIR/" || true; fi
 done
 
+retire_auxiliary_native_surfaces
 osascript -e 'tell application id "com.nicolasalonso.SUPRA" to quit' >/dev/null 2>&1 || true
 sleep 1
 pkill -x SUPRA >/dev/null 2>&1 || true
@@ -481,6 +499,7 @@ CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
 close_legacy_supra_web_surface
 printf 'PID=%s\nCMD=%s\nSUPRA_INSTANCE_COUNT=%s\n' "$PID" "$CMD" "$RUNNING_COUNT"
 printf 'LEGACY_SUPRA_WEB_SURFACE=CLOSE_ATTEMPTED\n'
+printf 'AUXILIARY_NATIVE_SURFACES=RETIRE_ATTEMPTED\n'
 case "$CMD" in
   *"$TARGET/Contents/MacOS/SUPRA"*) ;;
   *)
