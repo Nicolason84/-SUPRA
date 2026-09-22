@@ -43,6 +43,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     @Published private(set) var isRunning = false
     @Published private(set) var lastError: String?
     @Published private(set) var activePhaseID: String?
+    @Published private(set) var activeExecutiveObjectiveID: String?
 
     let missionID = "GRANDE_MISSION_TOTAL_IMAC_CANNONICO_ALONSO_20260921"
 
@@ -76,6 +77,160 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     var outboxURL: URL { rootURL.appendingPathComponent("OUTBOX", isDirectory: true) }
     var decisionsURL: URL { rootURL.appendingPathComponent("DECISIONS", isDirectory: true) }
     var stateURL: URL { rootURL.appendingPathComponent("STATE.json") }
+
+    var observableProcessIDs: Set<String> {
+        var ids = Set(phases.map(\.id))
+        if let activeExecutiveObjectiveID {
+            ids.insert(activeExecutiveObjectiveID)
+        }
+
+        let candidates = [inboxURL, outboxURL]
+        var newest: (id: String, date: Date)?
+
+        for directory in candidates {
+            guard let entries = try? fileManager.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: [.contentModificationDateKey],
+                options: [.skipsHiddenFiles]
+            ) else { continue }
+
+            for url in entries {
+                let name = url.lastPathComponent
+                guard name.hasPrefix("EXECUTIVE_OBJECTIVE_") else { continue }
+
+                let id = name
+                    .replacingOccurrences(of: ".result.json", with: "")
+                    .replacingOccurrences(of: ".json", with: "")
+                let date = (try? url.resourceValues(
+                    forKeys: [.contentModificationDateKey]
+                ).contentModificationDate) ?? .distantPast
+
+                if newest == nil || date > newest!.date {
+                    newest = (id, date)
+                }
+            }
+        }
+
+        if let newest {
+            ids.insert(newest.id)
+        }
+        return ids
+    }
+
+    func executeExecutiveObjective(
+        _ objective: String
+    ) async throws -> PhaseReceipt {
+        let trimmed = objective.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw NSError(
+                domain: "SUPRA.ExecutiveObjective",
+                code: 400,
+                userInfo: [NSLocalizedDescriptionKey: "Executive objective cannot be empty."]
+            )
+        }
+
+        guard !isRunning, activeExecutiveObjectiveID == nil else {
+            throw NSError(
+                domain: "SUPRA.ExecutiveObjective",
+                code: 409,
+                userInfo: [NSLocalizedDescriptionKey: "Existing SUPRA mission runner is already executing."]
+            )
+        }
+
+        try prepareDirectories()
+        try await runtime.checkHealth()
+
+        let objectiveID =
+            "EXECUTIVE_OBJECTIVE_"
+            + String(Int(Date().timeIntervalSince1970 * 1_000))
+            + "_"
+            + String(UUID().uuidString.prefix(8))
+
+        let phase = Phase(
+            id: objectiveID,
+            title: "Executive Objective",
+            objective: trimmed
+        )
+
+        activeExecutiveObjectiveID = objectiveID
+        defer { activeExecutiveObjectiveID = nil }
+
+        var previousMachineBlock: String?
+        var lastReceipt: PhaseReceipt?
+
+        for machineAttempt in 1...2 {
+            let startedAt = iso.string(from: Date())
+            try writeRequest(phase: phase, startedAt: startedAt)
+
+            var prompt = promptForExecutiveObjective(phase)
+
+            if let previousMachineBlock {
+                prompt += """
+
+                MACHINE_RECOVERY_ATTEMPT=\(machineAttempt)
+                PREVIOUS_MACHINE_BLOCK:
+                \(String(previousMachineBlock.prefix(6_000)))
+
+                The previous attempt did not prove a material result or a true human-only gate.
+                Resolve the smallest machine-solvable/reversible blocker using existing capabilities.
+                Do not repeat diagnosis without executing the next safe repair/test.
+                """
+            }
+
+            let response = try await runtime.execute(
+                prompt: prompt,
+                mode: .plan
+            )
+
+            let finishedAt = iso.string(from: Date())
+            let upper = response.uppercased()
+            let materialResult = responseField("REAL_RESULT", from: response)
+            let actionNicolas = responseField("ACTION_NICOLAS", from: response)
+
+            let explicitPass =
+                upper.contains("OBJECTIVE_VERDICT=PASS")
+                || upper.contains("OBJECTIVE_VERDICT: PASS")
+
+            let explicitHumanGate =
+                upper.contains("HUMAN_GATE_REQUIRED=YES")
+                && actionNicolas != nil
+                && actionNicolas?.uppercased() != "NONE"
+
+            let status: String
+            if explicitPass, materialResult != nil {
+                status = "PASS"
+            } else if explicitHumanGate {
+                status = "BLOCKED"
+            } else {
+                status = "UNPROVEN"
+            }
+
+            let receipt = PhaseReceipt(
+                schema: "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
+                missionID: missionID,
+                phaseID: objectiveID,
+                phaseTitle: phase.title,
+                startedAt: startedAt,
+                finishedAt: finishedAt,
+                status: status,
+                response: response
+            )
+
+            try writeReceipt(receipt)
+            lastReceipt = receipt
+
+            if status == "PASS" || status == "BLOCKED" {
+                return receipt
+            }
+
+            previousMachineBlock = response
+        }
+
+        guard let lastReceipt else {
+            throw SUPRAChatRuntimeError.emptyResponse
+        }
+        return lastReceipt
+    }
 
     func startIfNeeded() {
         guard !isRunning, !isTerminal, !isAwaitingHumanDecision else { return }
@@ -452,6 +607,84 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             to: stateURL,
             options: .atomic
         )
+    }
+
+    private func responseField(
+        _ name: String,
+        from response: String
+    ) -> String? {
+        let target = name.uppercased()
+
+        for rawLine in response.split(whereSeparator: { $0.isNewline }) {
+            let line = String(rawLine)
+            guard let separator = line.firstIndex(of: "=") else { continue }
+
+            let key = String(line[..<separator])
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .uppercased()
+            guard key == target else { continue }
+
+            let value = String(line[line.index(after: separator)...])
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !value.isEmpty,
+                  !["NONE", "UNPROVEN", "NOT_OBSERVED"].contains(
+                    value.uppercased()
+                  )
+            else { return nil }
+
+            return value
+        }
+
+        return nil
+    }
+
+    private func promptForExecutiveObjective(
+        _ phase: Phase
+    ) -> String {
+        """
+        EXECUTIVE_OBJECTIVE
+        AUTHORITY=NICOLAS
+        CONTROL_SURFACE=SUPRA_EXECUTIVE
+        MISSION_ID=\(missionID)
+        OBJECTIVE_ID=\(phase.id)
+        MODE=EXECUTE_NOT_REINVESTIGATE
+        EXECUTION_PROFILE=FAST_SAFE
+        MEMORY_FIRST=YES
+        PATRIMONY_FIRST=YES
+        PROOF_FIRST=YES
+        NO_NEW_ENGINE=YES
+        NO_NEW_RUNTIME=YES
+        NO_NEW_BRIDGE=YES
+        NO_NEW_REGISTRY=YES
+        NO_HUMAN_RELAY=YES
+        NO_FAKE_PASS=YES
+        AUTO_EXECUTE_READ_ONLY=YES
+        AUTO_EXECUTE_REVERSIBLE_LOCAL=YES
+        HUMAN_GATE_ONLY_FOR=IRREVERSIBLE_DELETE|SECURITY_BOUNDARY_CHANGE|AUTHORITY_CHANGE|MONEY_MOVEMENT|LEGAL_ADMIN_SUBMISSION|PUBLICATION|SIGNATURE_BINDING_COMMITMENT
+
+        OBJECTIVE:
+        \(phase.objective)
+
+        Use the existing SUPRA runtime, bridge, mission infrastructure,
+        CAnnoNico/memory and Human Gates.
+        Execute all machine-solvable work before escalating.
+        A PASS requires a concrete material result, not Running or a plan.
+        If a true human-only gate is reached, state the single indispensable action.
+
+        RETURN EXACTLY:
+        OBJECTIVE_VERDICT=PASS|BLOCKED|UNPROVEN
+        STATUS=PASS|BLOCKED|UNPROVEN
+        OBJECTIVE_ID=\(phase.id)
+        RUNTIME_ADMISSION=PASS
+        CURRENT_STATE=
+        WORK_COMPLETED=
+        REAL_RESULT=
+        EVIDENCE_REFS=
+        BLOCKERS=
+        HUMAN_GATE_REQUIRED=YES|NO
+        ACTION_NICOLAS=NONE|<single indispensable action>
+        NEXT_MACHINE_ACTION=
+        """
     }
 
     private func promptForPhase(
