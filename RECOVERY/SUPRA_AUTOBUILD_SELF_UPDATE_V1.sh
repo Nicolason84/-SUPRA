@@ -63,12 +63,41 @@ publish_runtime_proof(){
   local pid=""
   local cmd=""
   local chrome_supra_count="0"
+  local supra_windows=""
+  local supra_bundle_id=""
+  local supra_network=""
+  local supraclean_pids=""
+  local supraclean_count="0"
+  local supraclean_pid=""
+  local supraclean_cmd=""
+  local supraclean_windows=""
+  local supraclean_bundle_id=""
+  local supraclean_network=""
+  local supraclean_cwd=""
 
   pids="$(pgrep -x SUPRA || true)"
   native_count="$(printf '%s\n' "$pids" | sed '/^$/d' | wc -l | tr -d ' ')"
   pid="$(printf '%s\n' "$pids" | sed '/^$/d' | head -1)"
   if [ -n "$pid" ]; then
     cmd="$(ps -ww -p "$pid" -o command= 2>/dev/null || true)"
+    supra_windows="$(/usr/bin/osascript -e 'tell application "System Events" to tell process "SUPRA" to get name of every window' 2>/dev/null || true)"
+    supra_bundle_id="$(/usr/bin/osascript -e 'tell application "System Events" to get bundle identifier of process "SUPRA"' 2>/dev/null || true)"
+    if [ -x /usr/sbin/lsof ]; then
+      supra_network="$(/usr/sbin/lsof -nP -a -p "$pid" -iTCP 2>/dev/null | tail -n +2 | head -20 | tr '\n' ';' || true)"
+    fi
+  fi
+
+  supraclean_pids="$(pgrep -x SUPRAClean || true)"
+  supraclean_count="$(printf '%s\n' "$supraclean_pids" | sed '/^$/d' | wc -l | tr -d ' ')"
+  supraclean_pid="$(printf '%s\n' "$supraclean_pids" | sed '/^$/d' | head -1)"
+  if [ -n "$supraclean_pid" ]; then
+    supraclean_cmd="$(ps -ww -p "$supraclean_pid" -o command= 2>/dev/null || true)"
+    supraclean_windows="$(/usr/bin/osascript -e 'tell application "System Events" to tell process "SUPRAClean" to get name of every window' 2>/dev/null || true)"
+    supraclean_bundle_id="$(/usr/bin/osascript -e 'tell application "System Events" to get bundle identifier of process "SUPRAClean"' 2>/dev/null || true)"
+    if [ -x /usr/sbin/lsof ]; then
+      supraclean_network="$(/usr/sbin/lsof -nP -a -p "$supraclean_pid" -iTCP 2>/dev/null | tail -n +2 | head -20 | tr '\n' ';' || true)"
+      supraclean_cwd="$(/usr/sbin/lsof -a -p "$supraclean_pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p' | head -1 || true)"
+    fi
   fi
 
   if pgrep -x "Google Chrome" >/dev/null 2>&1; then
@@ -90,9 +119,12 @@ OSA
   fi
 
   local proof="$state_dir/SUPRA_LOCAL_RUNTIME_PROOF.json"
-  "$PY" - "$proof" "$installed_sha" "$observed_sha" "$action" "$native_count" "$pid" "$cmd" "$chrome_supra_count" <<'PY'
+  "$PY" - "$proof" "$installed_sha" "$observed_sha" "$action" "$native_count" "$pid" "$cmd" "$chrome_supra_count" "$supra_windows" "$supra_bundle_id" "$supra_network" "$supraclean_count" "$supraclean_pid" "$supraclean_cmd" "$supraclean_windows" "$supraclean_bundle_id" "$supraclean_network" "$supraclean_cwd" <<'PY'
 import datetime,json,os,pathlib,sys,tempfile
-path,installed,observed,action,native_count,pid,cmd,chrome_count=sys.argv[1:]
+(path,installed,observed,action,native_count,pid,cmd,chrome_count,
+ supra_windows,supra_bundle_id,supra_network,supraclean_count,supraclean_pid,
+ supraclean_cmd,supraclean_windows,supraclean_bundle_id,supraclean_network,
+ supraclean_cwd)=sys.argv[1:]
 mission_state_path=pathlib.Path.home()/"NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json"
 mission_state={}
 try:
@@ -109,6 +141,21 @@ obj={
   "native_instance_count":int(native_count or 0),
   "native_pid":int(pid) if pid.isdigit() else None,
   "native_command":cmd or None,
+  "native_windows":supra_windows or None,
+  "native_bundle_id":supra_bundle_id or None,
+  "native_tcp":supra_network or None,
+  "supraclean_instance_count":int(supraclean_count or 0),
+  "supraclean_pid":int(supraclean_pid) if supraclean_pid.isdigit() else None,
+  "supraclean_command":supraclean_cmd or None,
+  "supraclean_windows":supraclean_windows or None,
+  "supraclean_bundle_id":supraclean_bundle_id or None,
+  "supraclean_tcp":supraclean_network or None,
+  "supraclean_cwd":supraclean_cwd or None,
+  "shared_runtime_endpoint_observed": any(
+      marker in (supra_network or "") and marker in (supraclean_network or "")
+      for marker in ("127.0.0.1:18765","127.0.0.1:4096")
+  ),
+  "one_supra_authority":"PROVEN_CANONICAL_ONLY" if int(supraclean_count or 0)==0 else "UNPROVEN_AUXILIARY_SURFACE_PRESENT",
   "chrome_supra_surface_count":int(chrome_count) if chrome_count.isdigit() else None,
   "chrome_supra_surface_probe": "PASS" if chrome_count.isdigit() else "UNPROVEN",
   "canonical_target":str(pathlib.Path.home()/"Applications/SUPRA.app"),
