@@ -10,9 +10,14 @@ import SwiftUI
 @main
 struct SUPRAApp: App {
     var body: some Scene {
-        WindowGroup {
+        Window("SUPRA", id: "main") {
             SUPRAOJOHomeView()
         }
         .defaultSize(width: 1440, height: 900)
+        .commands {
+            CommandGroup(replacing: .newItem) {
+                EmptyView()
+            }
+        }
     }
 }
