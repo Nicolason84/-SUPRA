@@ -38,6 +38,12 @@ jobs:
           grep -Fq 'defaultHealthURLs' SUPRA/SUPRAChatRuntimeAdapter.swift
           /bin/bash -n RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
           /bin/bash -n RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
+          /bin/bash -n RECOVERY/BOOTSTRAP_SUPRA_SELF_HEAL_V1_20260921.sh
+          ! grep -Fq 'open -n "$TARGET"' RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh
+          ! grep -Fq 'open -n "$TARGET"' RECOVERY/BOOTSTRAP_SUPRA_SELF_HEAL_V1_20260921.sh
+          grep -Fq '<key>RunAtLoad</key>' RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh
+          grep -Fq 'SUPRAClean' SUPRA/SUPRAApp.swift
+          grep -Fq 'OjoCompanion' SUPRA/SUPRAApp.swift
 
       - name: Coherence 0.95 gate
         run: |
