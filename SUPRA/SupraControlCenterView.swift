@@ -9,6 +9,7 @@ struct SupraControlCenterView: View {
     @State private var commandBusy = false
     @State private var commandError: String?
     @State private var admissionClosureProbeStarted = false
+    @State private var megabusStartStarted = false
 
     private let missionRunner = SUPRAGrandeMissionRunner.shared
 
@@ -29,6 +30,7 @@ struct SupraControlCenterView: View {
             liveStore.refresh(force: true)
             installProof = SUPRALocalInstallProof.load()
             await runExecutiveAdmissionClosureProbeIfNeeded()
+            await startExistingMegabusIfNeeded()
         }
     }
 
@@ -150,6 +152,67 @@ struct SupraControlCenterView: View {
         if proven,
            upper.contains("OBJECTIVE_ID=EXECUTIVE_OBJECTIVE_"),
            upper.contains("RUNTIME_ADMISSION=") {
+            defaults.set(true, forKey: key)
+        }
+    }
+
+    @MainActor
+    private func startExistingMegabusIfNeeded() async {
+        let defaults = UserDefaults.standard
+        let key = "SUPRA_EXISTING_MEGABUS_START_V1_DONE"
+
+        if SUPRATerminalMegabusBridge.status() == "CONNECTED" {
+            defaults.set(true, forKey: key)
+            return
+        }
+
+        guard !defaults.bool(forKey: key),
+              !megabusStartStarted else {
+            return
+        }
+
+        megabusStartStarted = true
+
+        let objective = """
+        Start the EXISTING validated SUPRA Terminal Megabus now.
+
+        CANONICAL_EXISTING_ROOT=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1
+        EXISTING_DAEMON=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/megabus_daemon.py
+        EXISTING_PID_FILE=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/megabus.pid
+        EXPECTED_REGISTRY=$HOME/NOVA_OS/SUPRA_TERMINAL_MEGABUS_V1/TERMINALS/CURRENT.json
+
+        Do not create or rewrite Megabus, its daemon, bridge, registry, backend, or runtime.
+        Do not rebuild CAnnoNico or any unrelated component.
+        First inspect only this existing root and its current pid/daemon state.
+        If the daemon is already alive, reuse it.
+        If the daemon exists and is stopped or its pid is stale, start that exact existing daemon using its existing supported start semantics, detached and reversible.
+        Then allow the already-published SUPRA and GABRIEL CLIENT_REGISTERED messages in its INBOX to be consumed.
+        PASS only when the daemon is proven live and TERMINALS/CURRENT.json is produced by the real Megabus path.
+        Never fabricate CURRENT.json.
+        If the exact existing daemon/start path is absent, return the first exact blocker without creating a replacement.
+        Nicolas must not relay Terminal commands.
+
+        RETURN:
+        STATUS=PASS|BLOCKED|UNPROVEN
+        CURRENT_STATE=
+        WORK_COMPLETED=
+        REAL_RESULT=
+        EVIDENCE_REFS=
+        BLOCKERS=
+        HUMAN_GATE_REQUIRED=YES|NO
+        ACTION_NICOLAS=NONE|<single indispensable action>
+        NEXT_MACHINE_ACTION=
+        """
+
+        commandText = objective
+        await executeCommand(objective)
+
+        let upper = commandOutput.uppercased()
+        let proven =
+            upper.contains("STATUS=PASS")
+            && upper.contains("HUMAN_GATE_REQUIRED=NO")
+
+        if proven {
             defaults.set(true, forKey: key)
         }
     }
