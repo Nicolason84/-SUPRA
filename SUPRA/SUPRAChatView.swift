@@ -1,14 +1,14 @@
 import SwiftUI
 
-enum ChatMode: String, CaseIterable, Identifiable {
+enum ChatMode: String, CaseIterable, Identifiable, Codable {
     case ask = "ASK"
     case plan = "PLAN"
 
     var id: Self { self }
 }
 
-struct ChatMessage: Identifiable, Equatable {
-    enum Role {
+struct ChatMessage: Identifiable, Equatable, Codable {
+    enum Role: String, Codable {
         case user
         case runtime
     }
@@ -91,9 +91,9 @@ enum SUPRAChatRuntimeHealthState: Equatable {
 }
 
 struct SUPRAChatView: View {
-    @State private var mode: ChatMode = .ask
-    @State private var prompt = ""
-    @State private var messages: [ChatMessage] = []
+    @AppStorage("supra.chat.mode.v1") private var storedMode = ChatMode.ask.rawValue
+    @AppStorage("supra.chat.draft.v1") private var prompt = ""
+    @AppStorage("supra.chat.messages.v1") private var messagesJSON = "[]"
     @State private var executionState: SUPRAChatExecutionState = .idle
     @State private var runtimeHealth: SUPRAChatRuntimeHealthState = .checking
     @State private var healthTask: Task<Void, Never>?
@@ -122,8 +122,9 @@ struct SUPRAChatView: View {
         .navigationTitle("SUPRA Chat")
         .onAppear(perform: checkRuntimeHealth)
         .onDisappear {
+            // Navigation between universes must not erase or cancel chat work.
+            // Draft + conversation persist via AppStorage.
             healthTask?.cancel()
-            executionTask?.cancel()
         }
     }
 
@@ -140,7 +141,7 @@ struct SUPRAChatView: View {
 
             Spacer()
 
-            Picker("Chat mode", selection: $mode) {
+            Picker("Chat mode", selection: modeBinding) {
                 ForEach(ChatMode.allCases) { chatMode in
                     Text(chatMode.rawValue).tag(chatMode)
                 }
@@ -273,6 +274,35 @@ struct SUPRAChatView: View {
         .background(.bar)
     }
 
+    private var mode: ChatMode {
+        ChatMode(rawValue: storedMode) ?? .ask
+    }
+
+    private var modeBinding: Binding<ChatMode> {
+        Binding(
+            get: { ChatMode(rawValue: storedMode) ?? .ask },
+            set: { storedMode = $0.rawValue }
+        )
+    }
+
+    private var messages: [ChatMessage] {
+        guard let data = messagesJSON.data(using: .utf8),
+              let decoded = try? JSONDecoder().decode([ChatMessage].self, from: data) else {
+            return []
+        }
+        return decoded
+    }
+
+    private func appendMessage(_ message: ChatMessage) {
+        var updated = messages
+        updated.append(message)
+        guard let data = try? JSONEncoder().encode(updated),
+              let json = String(data: data, encoding: .utf8) else {
+            return
+        }
+        messagesJSON = json
+    }
+
     private var trimmedPrompt: String {
         prompt.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -295,7 +325,7 @@ struct SUPRAChatView: View {
         let submittedPrompt = trimmedPrompt
         let submittedMode = mode
 
-        messages.append(
+        appendMessage(
             ChatMessage(
                 role: .user,
                 mode: submittedMode,
@@ -312,7 +342,7 @@ struct SUPRAChatView: View {
                     mode: submittedMode
                 )
                 try Task.checkCancellation()
-                messages.append(
+                appendMessage(
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
@@ -324,7 +354,7 @@ struct SUPRAChatView: View {
                 return
             } catch {
                 let detail = error.localizedDescription
-                messages.append(
+                appendMessage(
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
