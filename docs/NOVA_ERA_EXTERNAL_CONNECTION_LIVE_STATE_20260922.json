@@ -1,6 +1,6 @@
 {
   "schema": "NOVA_ERA_EXTERNAL_CONNECTION_LIVE_STATE_V2",
-  "observed_at": "2026-09-22T06:57:00Z",
+  "observed_at": "2026-09-22T07:10:00Z",
   "authority": "NICOLAS",
   "truth_policy": "CONNECTED requires a successful live authenticated read in this audit. INSTALLED, AVAILABLE, CODE_READY, ACCOUNT_LINKED_NO_TARGET and AUTH_REQUIRED are distinct states.",
   "connected": [
@@ -185,16 +185,21 @@
     "SPREADSHEETS",
     "VISUALIZE"
   ],
-  "current_canonical_source_sha": "0a9a929191ddfb4c3127688aacd3223787f6b1a5",
+  "current_canonical_source_sha": "9f1a52707ba77835986aa28b24705b0dce6ab038",
   "canonical_ci": {
     "workflow": "Validate Canonical SUPRA",
     "status": "PASS",
-    "run_id": 35697000100
+    "run_id": 35697963337
   },
   "constraints": [
     "No secret material in canon",
     "No provider marked CONNECTED without live authenticated evidence",
     "External send, money movement, legal/admin submission and destructive actions remain human-gated",
     "No new bridge, engine or runtime created"
+  ],
+  "notes": [
+    "Connections UI source updated to expose verified connector states.",
+    "INPI UI source now derives API-readiness badge from runtime configuration instead of a static optimistic label.",
+    "Local installation remains separately verifiable by the existing self-updater receipt."
   ]
 }
