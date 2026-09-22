@@ -478,6 +478,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         return """
         GRANDE_MISSION_PHASE
         AUTHORITY=NICOLAS
+        HOST_CANONICAL=MACBOOK
+        LEGACY_ALIAS_IMAC=MACBOOK
         MISSION_ID=\(missionID)
         PHASE_ID=\(phase.id)
         PHASE_TITLE=\(phase.title)
