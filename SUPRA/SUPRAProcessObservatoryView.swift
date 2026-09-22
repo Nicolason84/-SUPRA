@@ -13,7 +13,6 @@ struct SUPRAProcessObservatoryView: View {
             return item
         }
         return store.processes.first(where: { $0.isBottleneck })
-            ?? store.processes.first(where: { $0.id == "F2_LG01_AUTHORITY_OR_ALIAS_GATE_20260920_1920" })
             ?? store.processes.first
     }
 
@@ -1150,8 +1149,6 @@ private actor SUPRAProcessObservatoryScanner {
         }
 
         processes.sort {
-            if $0.id == "F2_LG01_AUTHORITY_OR_ALIAS_GATE_20260920_1920" { return true }
-            if $1.id == "F2_LG01_AUTHORITY_OR_ALIAS_GATE_20260920_1920" { return false }
             if $0.isBottleneck != $1.isBottleneck { return $0.isBottleneck }
             return $0.startedAt > $1.startedAt
         }
