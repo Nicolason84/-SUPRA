@@ -994,7 +994,10 @@ private actor SUPRAProcessObservatoryScanner {
             if result {
                 accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".result.txt")
             } else {
-                accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".json.gdoc")
+                // The mailbox consumer executes raw JSON files only. A Google
+                // Docs FileProvider stub ending in .json.gdoc is not an
+                // executable mission and must never appear as IN_FLIGHT.
+                accepted = lowerName.hasSuffix(".json")
             }
             guard accepted else { continue }
 
