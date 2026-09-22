@@ -697,6 +697,7 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     )
                     grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
+                            || $0.id.hasPrefix("EXECUTIVE_OBJECTIVE_")
                     }
                     self.sourceLabel = root.path + " + GRANDE_MISSION"
                 } else {
