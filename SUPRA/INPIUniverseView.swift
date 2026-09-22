@@ -10,6 +10,7 @@ private struct INPIDomain: Identifiable {
 }
 
 struct INPIUniverseView: View {
+    @State private var apiConfigured = false
     private let domains: [INPIDomain] = [
         .init(id: "rne", title: "RNE / Entreprises", subtitle: "Identity, creations, modifications and cessations.", symbol: "building.2.fill", cadence: "Daily", priority: "P0"),
         .init(id: "accounts", title: "Comptes annuels", subtitle: "Public annual accounts and financial statements.", symbol: "chart.bar.doc.horizontal.fill", cadence: "Daily", priority: "P0"),
@@ -52,6 +53,9 @@ struct INPIUniverseView: View {
                 endPoint: .bottomTrailing
             )
         )
+        .task {
+            apiConfigured = INPIOfficialConnectorConfiguration.fromRuntime() != nil
+        }
     }
 
     private var hero: some View {
@@ -79,8 +83,14 @@ struct INPIUniverseView: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 7) {
-                stateBadge("OFFICIAL API FIRST", .green)
-                stateBadge("READ AUTONOMOUS", .mint)
+                stateBadge(
+                    apiConfigured ? "OFFICIAL API CONFIGURED" : "OFFICIAL API AUTH REQUIRED",
+                    apiConfigured ? .green : .orange
+                )
+                stateBadge(
+                    apiConfigured ? "READ READY" : "READ BLOCKED UNTIL AUTH",
+                    apiConfigured ? .mint : .secondary
+                )
                 stateBadge("FILINGS HUMAN-GATED", .orange)
             }
         }
