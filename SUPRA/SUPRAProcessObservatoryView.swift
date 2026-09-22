@@ -1396,7 +1396,8 @@ private actor SUPRAProcessObservatoryScanner {
         parsed: SUPRAParsedResult?
     ) -> SUPRAProcessStage {
         if hasOutput && parsed == nil { return .anomaly }
-        if parsed != nil && !hasInbox { return .anomaly }
+        // A valid OUTBOX receipt may legitimately outlive a consumed/archived INBOX request.
+        // Treat it by its receipt status below instead of fabricating drift.
         guard hasOutput else { return hasInbox ? .inFlight : .unknown }
 
         let status = (parsed?.status ?? "").uppercased()
@@ -1415,7 +1416,8 @@ private actor SUPRAProcessObservatoryScanner {
         age: TimeInterval
     ) -> SUPRAProcessDrift {
         if hasOutput && !hasValidResult { return .anomaly }
-        if hasValidResult && !hasInbox { return .anomaly }
+        // Missing INBOX is expected after successful mailbox consumption.
+        // A valid OUTBOX receipt is evidence of completion, not drift.
         guard hasInbox && !hasOutput else { return .none }
 
         if age >= 3600 { return .critical }
