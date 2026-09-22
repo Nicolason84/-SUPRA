@@ -1,0 +1,200 @@
+{
+  "schema": "NOVA_ERA_EXTERNAL_CONNECTION_LIVE_STATE_V2",
+  "observed_at": "2026-09-22T06:57:00Z",
+  "authority": "NICOLAS",
+  "truth_policy": "CONNECTED requires a successful live authenticated read in this audit. INSTALLED, AVAILABLE, CODE_READY, ACCOUNT_LINKED_NO_TARGET and AUTH_REQUIRED are distinct states.",
+  "connected": [
+    {
+      "id": "GOOGLE_DRIVE",
+      "status": "CONNECTED",
+      "evidence": "live Drive read/write + SUPRA private mailbox roundtrip PASS"
+    },
+    {
+      "id": "GMAIL",
+      "status": "CONNECTED",
+      "evidence": "live Gmail search/read surface PASS"
+    },
+    {
+      "id": "GOOGLE_CALENDAR",
+      "status": "CONNECTED",
+      "evidence": "authenticated profile read PASS"
+    },
+    {
+      "id": "GOOGLE_CONTACTS",
+      "status": "CONNECTED",
+      "evidence": "authenticated profile read PASS"
+    },
+    {
+      "id": "GITHUB",
+      "status": "CONNECTED",
+      "evidence": "repo read/write and canonical CI PASS"
+    },
+    {
+      "id": "FIGMA",
+      "status": "CONNECTED",
+      "evidence": "authenticated whoami PASS"
+    },
+    {
+      "id": "CANVA",
+      "status": "CONNECTED",
+      "evidence": "authenticated root folder listing PASS"
+    },
+    {
+      "id": "NOTION",
+      "status": "CONNECTED",
+      "evidence": "workspace self + search/fetch PASS"
+    },
+    {
+      "id": "LINEAR",
+      "status": "CONNECTED",
+      "evidence": "workspace search PASS"
+    },
+    {
+      "id": "WINDSOR_AI",
+      "status": "CONNECTED",
+      "evidence": "connector API responsive"
+    },
+    {
+      "id": "LINKEDIN_ORGANIC",
+      "status": "CONNECTED",
+      "evidence": "one live Windsor LinkedIn organic account observed; publishing remains gated"
+    },
+    {
+      "id": "APOLLO_IO",
+      "status": "CONNECTED",
+      "evidence": "authenticated Apollo profile read PASS"
+    },
+    {
+      "id": "ATLASSIAN_ROVO",
+      "status": "CONNECTED",
+      "evidence": "authenticated Atlassian user + accessible Jira resource observed"
+    },
+    {
+      "id": "POSTHOG",
+      "status": "CONNECTED_LIMITED_SCOPES",
+      "evidence": "project listing PASS; some advanced scopes are not granted"
+    }
+  ],
+  "connected_without_operational_target": [
+    {
+      "id": "SUPABASE",
+      "status": "ACCOUNT_LINKED_NO_PROJECT",
+      "evidence": "authenticated organization visible; no projects returned"
+    }
+  ],
+  "auth_or_approval_required": [
+    {
+      "id": "STRIPE",
+      "status": "AUTH_REQUIRED",
+      "route": "Windsor Stripe connector",
+      "human_action": "enter Stripe API credential in provider authorization form; never paste secret into chat"
+    },
+    {
+      "id": "HUBSPOT",
+      "status": "AUTH_REQUIRED",
+      "route": "HubSpot plugin or Windsor OAuth",
+      "human_action": "approve OAuth connection"
+    },
+    {
+      "id": "CLOSE_CRM",
+      "status": "AUTH_REQUIRED",
+      "route": "Close plugin or Windsor",
+      "human_action": "authorize provider / enter credential in provider form"
+    },
+    {
+      "id": "INPI",
+      "status": "AUTH_REQUIRED",
+      "route": "existing SUPRA/INPIOfficialConnector.swift",
+      "human_action": "supply official API runtime configuration/credential through approved secret store"
+    },
+    {
+      "id": "DGFIP",
+      "status": "APPROVAL_REQUIRED",
+      "human_action": "eligible official access / habilitation before private data use"
+    },
+    {
+      "id": "URSSAF",
+      "status": "APPROVAL_REQUIRED",
+      "human_action": "eligible official access for certified/private data; declaration/payment remain human-gated"
+    },
+    {
+      "id": "TAMARIND_BIO",
+      "status": "AUTH_INVALID",
+      "human_action": "re-authenticate Tamarind; current credential rejected"
+    },
+    {
+      "id": "ADAPTYV_BIO",
+      "status": "UNAVAILABLE_THIS_SESSION",
+      "human_action": "connect when an eligible plugin/tool route is available"
+    }
+  ],
+  "not_connected": [
+    {
+      "id": "X",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "INSTAGRAM_META",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "FACEBOOK_ORGANIC",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "THREADS",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "YOUTUBE",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "GOOGLE_BUSINESS_PROFILE",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "WHATSAPP_BUSINESS",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "QONTO",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "PLAID_OPEN_BANKING",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "DOCUSIGN",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "RINGCENTRAL_SMS_PHONE",
+      "status": "NOT_CONNECTED"
+    },
+    {
+      "id": "TWILIO",
+      "status": "NOT_CONNECTED"
+    }
+  ],
+  "internal_capabilities_not_external_accounts": [
+    "DEEP_RESEARCH",
+    "WEB_SEARCH",
+    "DATA_ANALYTICS",
+    "SPREADSHEETS",
+    "VISUALIZE"
+  ],
+  "current_canonical_source_sha": "0a9a929191ddfb4c3127688aacd3223787f6b1a5",
+  "canonical_ci": {
+    "workflow": "Validate Canonical SUPRA",
+    "status": "PASS",
+    "run_id": 35697000100
+  },
+  "constraints": [
+    "No secret material in canon",
+    "No provider marked CONNECTED without live authenticated evidence",
+    "External send, money movement, legal/admin submission and destructive actions remain human-gated",
+    "No new bridge, engine or runtime created"
+  ]
+}
