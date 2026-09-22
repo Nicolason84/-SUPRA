@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct SupraControlCenterView: View {
     @StateObject private var store: ControlCenterStore
@@ -452,13 +453,20 @@ private struct SUPRALocalInstallProof {
         let installed = object["installed_source_sha"] as? String ?? ""
         let observed = object["observed_canonical_sha"] as? String ?? installed
 
+        let applications = NSRunningApplication.runningApplications(
+            withBundleIdentifier: "com.nicolasalonso.SUPRA"
+        )
+        let canonicalExec = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Applications/SUPRA.app/Contents/MacOS/SUPRA")
+            .path
+
         return SUPRALocalInstallProof(
             status: installed.isEmpty ? "UNAVAILABLE" : "PASS",
             installedSourceSHA: installed,
             observedCanonicalSHA: observed,
             lastAction: object["last_action"] as? String ?? "UNKNOWN",
-            nativeInstanceCount: 1,
-            nativeCommand: "/Users/nicolasalonso/Applications/SUPRA.app/Contents/MacOS/SUPRA"
+            nativeInstanceCount: applications.count,
+            nativeCommand: canonicalExec
         )
     }
 
