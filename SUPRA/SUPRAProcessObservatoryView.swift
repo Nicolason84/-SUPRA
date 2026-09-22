@@ -682,7 +682,16 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
                 let grandeProcesses: [SUPRAObservedProcess]
                 if grandeSnapshot?.bridgeAvailable == true {
-                    grandeProcesses = grandeSnapshot?.processes ?? []
+                    // SUPRA_GRANDE_MISSION_V1 is a long-lived evidence folder.
+                    // Only the ten canonical phases of the CURRENT runner are
+                    // live mission processes. Older helper/subpart receipts stay
+                    // on disk as history but must not reappear as present blockers.
+                    let currentGrandePhaseIDs = Set(
+                        SUPRAGrandeMissionRunner.shared.phases.map(\.id)
+                    )
+                    grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
+                        currentGrandePhaseIDs.contains($0.id)
+                    }
                     self.sourceLabel = root.path + " + GRANDE_MISSION"
                 } else {
                     grandeProcesses = []
