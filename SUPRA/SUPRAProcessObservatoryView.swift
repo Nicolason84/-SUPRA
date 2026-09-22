@@ -1408,7 +1408,14 @@ private actor SUPRAProcessObservatoryScanner {
         if hasOutput && parsed == nil { return .anomaly }
         // A valid OUTBOX receipt may legitimately outlive a consumed/archived INBOX request.
         // Treat it by its receipt status below instead of fabricating drift.
-        guard hasOutput else { return hasInbox ? .inFlight : .unknown }
+        // An abandoned INBOX item older than seven days is historical evidence,
+        // not a live process that should block today's execution radar.
+        guard hasOutput else {
+            if hasInbox && age >= 7 * 86_400 {
+                return .historical
+            }
+            return hasInbox ? .inFlight : .unknown
+        }
 
         let status = (parsed?.status ?? "").uppercased()
         let f2 = (parsed?.f2StatusAfter ?? "").uppercased()
