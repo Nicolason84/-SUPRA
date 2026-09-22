@@ -85,8 +85,17 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     var blockedPhase: Phase? {
         phases.first { phase in
             guard let receipt = receipt(for: phase.id) else { return false }
-            return receipt.status == "BLOCKED" || receipt.status == "UNPROVEN"
+            return receiptRequiresHumanDecision(receipt)
         }
+    }
+
+    private func receiptRequiresHumanDecision(
+        _ receipt: PhaseReceipt
+    ) -> Bool {
+        guard receipt.status == "BLOCKED" else { return false }
+
+        let upper = receipt.response.uppercased()
+        return upper.contains("HUMAN_GATE_REQUIRED=YES")
     }
 
     var isAwaitingHumanDecision: Bool {
