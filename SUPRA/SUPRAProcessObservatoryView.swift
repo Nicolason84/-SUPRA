@@ -1422,9 +1422,14 @@ private actor SUPRAProcessObservatoryScanner {
         // as failed evidence without allowing it to monopolize Current bottleneck.
         if status.contains("REJECTED") || status.contains("FAIL") { return .failed }
 
-        if status.contains("BLOCKED") || status.contains("HUMAN_GATE") {
+        let negativeHumanGate =
+            status.contains("HUMAN_GATE_REQUIRED=NO")
+            || status.contains("HUMAN_GATE=NONE")
+            || status.contains("NO_HUMAN_GATE")
+
+        if status.contains("BLOCKED") || (status.contains("HUMAN_GATE") && !negativeHumanGate) {
             let explicitHumanGate =
-                status.contains("HUMAN_GATE")
+                (status.contains("HUMAN_GATE") && !negativeHumanGate)
                 || (!action.isEmpty && action != "NONE" && action != "NONE / NOT OBSERVED")
 
             // A stale receipt is historical evidence, not a live blocker. Preserve
