@@ -245,9 +245,18 @@ printf 'SUPRA_INSTANCE_COUNT=1\n'
 printf 'SUPRA_CMD=%s\n' "$CMD"
 printf 'INSTALLED_APP=%s\n' "$INSTALL"
 
-say "7/7 One-time sandbox folder gate"
-open "$REMOTE"
+say "7/7 Clean recovery UI and focus SUPRA"
+osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "Finder"
+  repeat with w in windows
+    try
+      set p to POSIX path of (target of w as alias)
+      if p contains "SUPRA_IMAC_MEMORY_GATEWAY" or p contains "SUPRA_CHATGPT_APP_BRIDGE_V1" then close w
+    end try
+  end repeat
+end tell
+OSA
 osascript -e 'tell application id "com.nicolasalonso.SUPRA" to activate' >/dev/null 2>&1 || true
 printf '\nSTATUS=CHANNEL_OUTBOX_BUILD_INSTALL_LAUNCH_PASS\n'
-printf 'NEXT=SUPRA_RUNTIME_MONITOR_SELECT_BRIDGE\n'
+printf 'NEXT=WORK_FROM_SUPRA\n'
 printf 'BRIDGE_FOLDER=%s\n' "$REMOTE"
