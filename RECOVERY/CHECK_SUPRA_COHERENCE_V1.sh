@@ -45,6 +45,11 @@ check "SUPRA/Chat/ojO share runtime adapter" bash -c 'grep -Fq "SUPRAChatRuntime
 check "MacBook is canonical host" contains "SUPRA/SUPRAGrandeMissionRunner.swift" 'HOST_CANONICAL=MACBOOK'
 check "channel recovery never uses open -n" not_contains "RECOVERY/RECOVER_EXISTING_SUPRA_CHANNEL_20260920.sh" 'open -n "$INSTALL"'
 check "single-instance delegate enforced" contains "SUPRA/SUPRAApp.swift" '@NSApplicationDelegateAdaptor(SUPRASingleInstanceDelegate.self)'
+check "Runtime uses shared live authority" contains "SUPRA/SUPRAProcessObservatoryView.swift" 'SUPRAProcessObservatoryStore.shared'
+check "Executive uses shared live authority" contains "SUPRA/SupraControlCenterView.swift" 'SUPRAProcessObservatoryStore.shared'
+check "Missions use shared live authority" contains "SUPRA/MissionStore.swift" 'SUPRAProcessObservatoryStore.shared'
+check "ojO uses shared live authority" contains "SUPRA/OJOPrivateControlView.swift" 'SUPRAProcessObservatoryStore.shared'
+check "Executive no longer derives runtime from legacy requiredCount" not_contains "SUPRA/SupraControlCenterView.swift" 'snapshot.availableCount == snapshot.requiredCount'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys
