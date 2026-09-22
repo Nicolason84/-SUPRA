@@ -135,7 +135,7 @@ struct SUPRAChatView: View {
                     .font(.caption.weight(.bold))
                     .tracking(1.5)
                     .foregroundStyle(.secondary)
-                Text("Command workspace")
+                Text("Conversation workspace")
                     .font(.title2.bold())
             }
 
@@ -190,7 +190,7 @@ struct SUPRAChatView: View {
                     ContentUnavailableView {
                         Label("Start a conversation", systemImage: "bubble.left.and.bubble.right")
                     } description: {
-                        Text("Choose ASK or PLAN, then enter a prompt for SUPRA.")
+                        Text("Use ASK to understand or PLAN to prepare work. Execute system work from the SUPRA universe.")
                     }
                     .frame(maxWidth: .infinity, minHeight: 330)
                 } else {
