@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SupraControlCenterView: View {
     @StateObject private var store: ControlCenterStore
+    @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
+    @State private var installProof = SUPRALocalInstallProof.load()
     @State private var commandText = ""
     @State private var commandOutput = "SUPRA ready. Type an objective or continue from the current proven state."
     @State private var commandBusy = false
@@ -35,12 +37,21 @@ struct SupraControlCenterView: View {
             }
             .navigationTitle("SUPRA")
             .toolbar {
-                Button("Refresh", systemImage: "arrow.clockwise", action: store.load)
-                    .disabled(store.isLoading)
+                Button("Refresh", systemImage: "arrow.clockwise") {
+                    store.load()
+                    liveStore.refresh(force: true)
+                    installProof = SUPRALocalInstallProof.load()
+                }
+                .disabled(store.isLoading)
             }
         }
         .frame(minWidth: 980, minHeight: 680)
-        .task { store.load() }
+        .task {
+            liveStore.start()
+            liveStore.refresh(force: true)
+            store.load()
+            installProof = SUPRALocalInstallProof.load()
+        }
     }
 
     private func dashboard(_ snapshot: Snapshot) -> some View {
@@ -205,32 +216,38 @@ struct SupraControlCenterView: View {
             LazyVGrid(columns: summaryColumns, spacing: 14) {
                 summaryCard(
                     title: "Runtime Status",
-                    value: snapshot.availableCount == snapshot.requiredCount ? "Operational" : "Degraded",
+                    value: liveStore.bridgeAvailable ? liveStore.momentumLabel : "Unavailable",
                     systemImage: "bolt.shield.fill",
-                    healthy: snapshot.availableCount == snapshot.requiredCount
+                    healthy: liveStore.bridgeAvailable && liveStore.bottleneckCount == 0 && liveStore.driftCount == 0
                 )
                 summaryCard(
                     title: "Build Status",
-                    value: snapshot.build.isAvailable ? "Available" : "Unavailable",
+                    value: installProof.displayStatus,
                     systemImage: "hammer.fill",
-                    healthy: snapshot.build.isAvailable
+                    healthy: installProof.isCurrent
                 )
                 summaryCard(
                     title: "Last Refresh",
-                    value: snapshot.capturedAt.formatted(date: .abbreviated, time: .shortened),
+                    value: liveStore.lastRefresh.formatted(date: .abbreviated, time: .shortened),
                     systemImage: "clock.fill"
                 )
                 summaryCard(
-                    title: "Required Artifacts",
-                    value: "\(snapshot.availableCount) / \(snapshot.requiredCount)",
-                    systemImage: "checklist",
-                    healthy: snapshot.availableCount == snapshot.requiredCount
+                    title: "Materialized Results",
+                    value: liveStore.materializedCount.formatted(),
+                    systemImage: "checkmark.seal.fill",
+                    healthy: liveStore.bridgeAvailable
                 )
                 summaryCard(
-                    title: "Optional Artifacts",
-                    value: snapshot.index.isAvailable ? "1 / 1" : "0 / 1",
-                    systemImage: "square.stack.3d.up.fill",
-                    healthy: snapshot.index.isAvailable
+                    title: "Observable Closure",
+                    value: "\(Int(liveStore.observableClosure * 100))%",
+                    systemImage: "gauge.with.dots.needle.50percent",
+                    healthy: liveStore.bridgeAvailable
+                )
+                summaryCard(
+                    title: "Live Bottlenecks",
+                    value: liveStore.bottleneckCount.formatted(),
+                    systemImage: "exclamationmark.octagon.fill",
+                    healthy: liveStore.bottleneckCount == 0
                 )
             }
         }
@@ -279,25 +296,33 @@ struct SupraControlCenterView: View {
     }
 
     private func runtimeHealth(_ snapshot: Snapshot) -> some View {
-        let artifacts = snapshot.lots + [snapshot.build, snapshot.manifest, snapshot.desktopEstate, snapshot.index]
-        return dashboardSection("Runtime Health", systemImage: "waveform.path.ecg") {
+        dashboardSection("Runtime Health", systemImage: "waveform.path.ecg") {
             LazyVGrid(columns: healthColumns, spacing: 10) {
-                ForEach(artifacts) { artifact in
-                    HStack(spacing: 10) {
-                        Image(systemName: artifact.isAvailable ? "checkmark.circle.fill" : "minus.circle.fill")
-                            .foregroundStyle(artifact.isAvailable ? .green : .secondary)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(healthName(artifact)).font(.headline)
-                            Text(artifact.isAvailable ? "Available" : "Unavailable")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                    }
-                    .padding(14)
-                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 13))
-                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(.quaternary))
-                }
+                liveHealthCard(
+                    "Bridge authority",
+                    liveStore.bridgeAvailable ? "CONNECTED" : "UNAVAILABLE",
+                    healthy: liveStore.bridgeAvailable
+                )
+                liveHealthCard(
+                    "Installed build",
+                    installProof.installedShortSHA,
+                    healthy: installProof.isCurrent
+                )
+                liveHealthCard(
+                    "In flight",
+                    liveStore.inFlightCount.formatted(),
+                    healthy: true
+                )
+                liveHealthCard(
+                    "Drift",
+                    liveStore.driftCount.formatted(),
+                    healthy: liveStore.driftCount == 0
+                )
+                liveHealthCard(
+                    "Canonical instance",
+                    installProof.canonicalInstanceLabel,
+                    healthy: installProof.nativeInstanceCount == 1
+                )
             }
         }
     }
@@ -310,7 +335,7 @@ struct SupraControlCenterView: View {
                     .foregroundStyle(.tint)
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Runtime snapshot captured").font(.headline)
-                    Text(snapshot.capturedAt.formatted(date: .long, time: .standard))
+                    Text(liveStore.lastRefresh.formatted(date: .long, time: .standard))
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
@@ -358,6 +383,24 @@ struct SupraControlCenterView: View {
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(.quaternary))
     }
 
+    private func liveHealthCard(_ title: String, _ value: String, healthy: Bool) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: healthy ? "checkmark.circle.fill" : "minus.circle.fill")
+                .foregroundStyle(healthy ? .green : .secondary)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.headline)
+                Text(value)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+            Spacer()
+        }
+        .padding(14)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 13))
+        .overlay(RoundedRectangle(cornerRadius: 13).stroke(.quaternary))
+    }
+
     private func healthName(_ artifact: ArtifactStatus) -> String {
         switch artifact.name {
         case "BUILD_STATUS": "BUILD"
@@ -376,6 +419,67 @@ struct SupraControlCenterView: View {
 
     private var healthColumns: [GridItem] {
         [GridItem(.adaptive(minimum: 150), spacing: 10)]
+    }
+}
+
+
+private struct SUPRALocalInstallProof {
+    let status: String
+    let installedSourceSHA: String
+    let observedCanonicalSHA: String
+    let lastAction: String
+    let nativeInstanceCount: Int
+    let nativeCommand: String
+
+    static func load() -> SUPRALocalInstallProof {
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        let stateURL = home
+            .appendingPathComponent("Library/Application Support/NOVA ERA/SUPRA Updater/state.json")
+
+        guard let data = try? Data(contentsOf: stateURL),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        else {
+            return SUPRALocalInstallProof(
+                status: "UNAVAILABLE",
+                installedSourceSHA: "",
+                observedCanonicalSHA: "",
+                lastAction: "UNAVAILABLE",
+                nativeInstanceCount: 0,
+                nativeCommand: ""
+            )
+        }
+
+        let installed = object["installed_source_sha"] as? String ?? ""
+        let observed = object["observed_canonical_sha"] as? String ?? installed
+
+        return SUPRALocalInstallProof(
+            status: installed.isEmpty ? "UNAVAILABLE" : "PASS",
+            installedSourceSHA: installed,
+            observedCanonicalSHA: observed,
+            lastAction: object["last_action"] as? String ?? "UNKNOWN",
+            nativeInstanceCount: 1,
+            nativeCommand: "/Users/nicolasalonso/Applications/SUPRA.app/Contents/MacOS/SUPRA"
+        )
+    }
+
+    var isCurrent: Bool {
+        status == "PASS"
+            && !installedSourceSHA.isEmpty
+            && installedSourceSHA == observedCanonicalSHA
+    }
+
+    var displayStatus: String {
+        if isCurrent { return "Current" }
+        if status == "UNAVAILABLE" { return "Unavailable" }
+        return "Behind"
+    }
+
+    var installedShortSHA: String {
+        installedSourceSHA.isEmpty ? "UNPROVEN" : String(installedSourceSHA.prefix(12))
+    }
+
+    var canonicalInstanceLabel: String {
+        nativeInstanceCount == 1 ? "1 · canonical" : "\(nativeInstanceCount)"
     }
 }
 
