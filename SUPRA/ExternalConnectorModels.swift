@@ -264,6 +264,138 @@ enum ExternalConnectorCatalog {
             humanGate: "Declaration/payment/private-account action",
             officialRoute: "URSSAF / API Entreprise official interfaces",
             priority: "P0"
+        ),
+        .init(
+            id: "windsor",
+            provider: "Windsor.ai",
+            family: "Partner Fabric",
+            authorityClass: "C1/C2/C3",
+            status: .connected,
+            detail: "Provider fabric is authenticated. LinkedIn organic is live; other provider accounts remain independently gated.",
+            systemImage: "link.circle.fill",
+            humanGate: "Provider write actions follow each connector policy",
+            officialRoute: "Windsor.ai connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "figma",
+            provider: "Figma",
+            family: "Design / Product",
+            authorityClass: "C1/C2",
+            status: .connected,
+            detail: "Authenticated design workspace observed. Design reads and supported design workflows are available.",
+            systemImage: "square.3.layers.3d",
+            humanGate: "Material shared-design writes",
+            officialRoute: "Figma connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "canva",
+            provider: "Canva",
+            family: "Design / Media",
+            authorityClass: "C1/C2/C3",
+            status: .connected,
+            detail: "Authenticated Canva workspace and existing designs observed.",
+            systemImage: "paintpalette.fill",
+            humanGate: "External publication / material shared-design changes",
+            officialRoute: "Canva connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "notion",
+            provider: "Notion",
+            family: "Knowledge / Operations",
+            authorityClass: "C1/C2",
+            status: .connected,
+            detail: "Authenticated workspace search and page reads are operational.",
+            systemImage: "doc.text.fill",
+            humanGate: "Material workspace writes follow mission authority",
+            officialRoute: "Notion connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "linear",
+            provider: "Linear",
+            family: "Product / Operations",
+            authorityClass: "C1/C2",
+            status: .connected,
+            detail: "Authenticated workspace search is operational.",
+            systemImage: "checklist",
+            humanGate: "Material issue/project mutations follow mission authority",
+            officialRoute: "Linear connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "posthog",
+            provider: "PostHog",
+            family: "Analytics / Product",
+            authorityClass: "C1/C2",
+            status: .connected,
+            detail: "A live project is accessible. Core project tools respond; some advanced scopes are not granted.",
+            systemImage: "chart.line.uptrend.xyaxis",
+            humanGate: "Production flags/experiments and destructive writes",
+            officialRoute: "PostHog connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "supabase",
+            provider: "Supabase",
+            family: "Data / Backend",
+            authorityClass: "C1/C2",
+            status: .available,
+            detail: "Authenticated organization is visible, but no Supabase project is currently accessible to operate on.",
+            systemImage: "cylinder.fill",
+            humanGate: "Schema/auth/production mutations follow change policy",
+            officialRoute: "Supabase connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "apollo",
+            provider: "Apollo.io",
+            family: "Commercial Intelligence",
+            authorityClass: "C1/C2/C3",
+            status: .connected,
+            detail: "Authenticated Apollo workspace profile is readable.",
+            systemImage: "scope",
+            humanGate: "Outbound sends and material CRM mutations",
+            officialRoute: "Apollo.io connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "atlassian",
+            provider: "Atlassian Rovo",
+            family: "Engineering / Knowledge",
+            authorityClass: "C1/C2",
+            status: .connected,
+            detail: "Authenticated Atlassian account and an accessible Jira resource are observed.",
+            systemImage: "shippingbox.fill",
+            humanGate: "Issue/page writes follow mission authority",
+            officialRoute: "Atlassian Rovo connector",
+            priority: "P1"
+        ),
+        .init(
+            id: "tamarind",
+            provider: "Tamarind Bio",
+            family: "Life Sciences",
+            authorityClass: "C1/C2",
+            status: .authRequired,
+            detail: "Tool route is present, but the current credential is rejected and must be re-authenticated.",
+            systemImage: "atom",
+            humanGate: "Paid compute submission and publication",
+            officialRoute: "Tamarind Bio connector",
+            priority: "P2"
+        ),
+        .init(
+            id: "adaptyv",
+            provider: "Adaptyv Bio",
+            family: "Life Sciences",
+            authorityClass: "C1/C2",
+            status: .providerRequired,
+            detail: "No live Adaptyv tool route is available in this session; do not present it as connected.",
+            systemImage: "testtube.2",
+            humanGate: "Experiment submission / spend",
+            officialRoute: "Adaptyv Bio eligible connector",
+            priority: "P2"
         )
     ]
 }
