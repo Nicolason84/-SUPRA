@@ -472,16 +472,20 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     }
 
     var inFlightCount: Int { processes.filter { $0.stage == .inFlight }.count }
-    var materializedCount: Int { processes.filter(\.hasResult).count }
+    var materializedCount: Int {
+        processes.filter { $0.stage == .materialized || $0.stage == .frozen }.count
+    }
     var bottleneckCount: Int { processes.filter(\.isBottleneck).count }
     var driftCount: Int { processes.filter { $0.drift != .none }.count }
     var observableClosure: Double {
-        guard !processes.isEmpty else { return 0 }
-        return processes.map(\.progress).reduce(0, +) / Double(processes.count)
+        let current = processes.filter { $0.stage != .historical }
+        guard !current.isEmpty else { return 1 }
+        return current.map(\.progress).reduce(0, +) / Double(current.count)
     }
 
     var momentumLabel: String {
         if !bridgeAvailable { return "OFFLINE" }
+        if inFlightCount == 0 && bottleneckCount == 0 && driftCount == 0 { return "CLEAR" }
         if bottleneckCount > 0 && stagnationSeconds >= 120 { return "BOTTLENECK" }
         if latestDriftDelta > 0 && latestMaterializedDelta == 0 && latestClosureDelta <= 0 { return "DEGRADING" }
         if velocityPerMinute > 0.01 && accelerationPerMinute > 0.10 { return "ACCELERATING" }
@@ -494,6 +498,7 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         switch momentumLabel {
         case "ACCELERATING": return .cyan
         case "PROGRESSING": return .green
+        case "CLEAR": return .green
         case "STEADY": return .secondary
         case "STALLED": return .yellow
         case "BOTTLENECK": return .orange
@@ -510,8 +515,9 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         switch momentumLabel {
         case "ACCELERATING": return "Throughput is increasing."
         case "PROGRESSING": return "New materialized evidence or closure detected."
+        case "CLEAR": return "No live blocker, no drift and no process currently in flight."
         case "STEADY": return "Live and stable; no significant delta in the latest pulse."
-        case "STALLED": return "No measurable progress for at least 2 minutes."
+        case "STALLED": return "Work is still active but no measurable progress was observed for at least 2 minutes."
         case "BOTTLENECK": return "An unresolved process is blocking forward motion."
         case "DEGRADING": return "Drift is increasing without compensating progress."
         case "OFFLINE": return "Bridge observation unavailable."
@@ -1427,7 +1433,9 @@ private actor SUPRAProcessObservatoryScanner {
 
         // REJECTED is a terminal receipt, not a live bottleneck. Keep it visible
         // as failed evidence without allowing it to monopolize Current bottleneck.
-        if status.contains("REJECTED") || status.contains("FAIL") { return .failed }
+        if status.contains("REJECTED") || status.contains("FAIL") {
+            return age >= 86_400 ? .historical : .failed
+        }
 
         let negativeHumanGate =
             status.contains("HUMAN_GATE_REQUIRED=NO")
