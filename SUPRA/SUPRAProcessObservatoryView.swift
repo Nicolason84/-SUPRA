@@ -4,7 +4,7 @@ import Combine
 import Foundation
 
 struct SUPRAProcessObservatoryView: View {
-    @StateObject private var store = SUPRAProcessObservatoryStore()
+    @ObservedObject private var store = SUPRAProcessObservatoryStore.shared
     @State private var selectedID: String?
 
     private var selected: SUPRAObservedProcess? {
@@ -43,7 +43,6 @@ struct SUPRAProcessObservatoryView: View {
             }
         }
         .task { store.start() }
-        .onDisappear { store.stop() }
     }
 
     private var header: some View {
@@ -444,6 +443,7 @@ private struct SUPRAPulseSample {
 
 @MainActor
 final class SUPRAProcessObservatoryStore: ObservableObject {
+    static let shared = SUPRAProcessObservatoryStore()
     @Published private(set) var processes: [SUPRAObservedProcess] = []
     @Published private(set) var lastRefresh: Date = .now
     @Published private(set) var bridgeAvailable = false
