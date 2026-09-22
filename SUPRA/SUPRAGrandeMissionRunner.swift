@@ -235,54 +235,102 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 }
 
                 activePhaseID = phase.id
-                let startedAt = iso.string(from: Date())
+                var machineAttempt = 0
+                let maxMachineAttempts = 2
+                var previousMachineBlock: String?
 
-                try writeRequest(
-                    phase: phase,
-                    startedAt: startedAt
-                )
+                while machineAttempt < maxMachineAttempts {
+                    machineAttempt += 1
+                    let startedAt = iso.string(from: Date())
 
-                let response = try await runtime.execute(
-                    prompt: promptForPhase(phase),
-                    mode: .plan
-                )
+                    try writeRequest(
+                        phase: phase,
+                        startedAt: startedAt
+                    )
 
-                let finishedAt = iso.string(from: Date())
+                    var phasePrompt = promptForPhase(phase)
 
-                let upper = response.uppercased()
-                let explicitPass =
-                    upper.contains("PHASE_VERDICT=PASS")
-                    || upper.contains("PHASE_VERDICT: PASS")
+                    if let previousMachineBlock {
+                        phasePrompt += """
 
-                let explicitBlock =
-                    upper.contains("PHASE_VERDICT=BLOCKED")
-                    || upper.contains("HUMAN_GATE_REQUIRED=YES")
+                        MACHINE_RECOVERY_ATTEMPT=\(machineAttempt)
+                        PREVIOUS_MACHINE_BLOCK:
+                        \(String(previousMachineBlock.prefix(6_000)))
 
-                let status =
-                    explicitPass
-                    ? "PASS"
-                    : (explicitBlock ? "BLOCKED" : "UNPROVEN")
+                        The previous attempt did not identify a human-only gate.
+                        Resolve the smallest machine-solvable/reversible blocker now using existing capabilities.
+                        Do not repeat the same diagnosis without executing the next safe repair/test.
+                        """
+                    }
 
-                let receipt = PhaseReceipt(
-                    schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
-                    missionID: missionID,
-                    phaseID: phase.id,
-                    phaseTitle: phase.title,
-                    startedAt: startedAt,
-                    finishedAt: finishedAt,
-                    status: status,
-                    response: response
-                )
+                    let response = try await runtime.execute(
+                        prompt: phasePrompt,
+                        mode: .plan
+                    )
 
-                try writeReceipt(receipt)
-                try writeState(
-                    currentPhase: phase.id,
-                    status: status,
-                    detail: response
-                )
+                    let finishedAt = iso.string(from: Date())
+                    let upper = response.uppercased()
 
-                guard status == "PASS" else {
-                    lastError = "Phase \(phase.id) stopped with \(status)."
+                    let explicitPass =
+                        upper.contains("PHASE_VERDICT=PASS")
+                        || upper.contains("PHASE_VERDICT: PASS")
+
+                    let explicitHumanGate =
+                        upper.contains("HUMAN_GATE_REQUIRED=YES")
+
+                    let explicitBlockedVerdict =
+                        upper.contains("PHASE_VERDICT=BLOCKED")
+                        || upper.contains("PHASE_VERDICT: BLOCKED")
+
+                    let status: String
+                    if explicitPass {
+                        status = "PASS"
+                    } else if explicitHumanGate {
+                        status = "BLOCKED"
+                    } else {
+                        // A machine-solvable BLOCKED/UNPROVEN response is not
+                        // a Nicolas gate. Keep the evidence and perform one
+                        // bounded recovery attempt inside the same run.
+                        status = "UNPROVEN"
+                    }
+
+                    let receipt = PhaseReceipt(
+                        schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
+                        missionID: missionID,
+                        phaseID: phase.id,
+                        phaseTitle: phase.title,
+                        startedAt: startedAt,
+                        finishedAt: finishedAt,
+                        status: status,
+                        response: response
+                    )
+
+                    try writeReceipt(receipt)
+                    try writeState(
+                        currentPhase: phase.id,
+                        status: status,
+                        detail: response
+                    )
+
+                    if status == "PASS" {
+                        break
+                    }
+
+                    if status == "BLOCKED" {
+                        lastError = "Phase \(phase.id) requires an explicit human decision."
+                        return
+                    }
+
+                    if machineAttempt < maxMachineAttempts {
+                        previousMachineBlock =
+                            explicitBlockedVerdict
+                            ? response
+                            : "UNPROVEN without human gate. " + response
+                        continue
+                    }
+
+                    lastError =
+                        "Phase \(phase.id) remains UNPROVEN after \(maxMachineAttempts) bounded machine attempts."
                     return
                 }
             }
