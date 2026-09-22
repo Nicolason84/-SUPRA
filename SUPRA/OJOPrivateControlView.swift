@@ -37,6 +37,7 @@ struct OJOPrivateControlView: View {
     @State private var topBottleneck = "Not queried"
     @State private var nextMachineAction = "Not queried"
     @State private var nextHumanAction = "Not queried"
+    @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
 
     private let runtime = SUPRAChatRuntimeAdapter()
 
@@ -70,6 +71,9 @@ struct OJOPrivateControlView: View {
         )
         .task {
             await bootstrap()
+        }
+        .onReceive(liveStore.$processes) { _ in
+            refreshFromLiveStore()
         }
     }
 
@@ -370,13 +374,19 @@ struct OJOPrivateControlView: View {
 
     @MainActor
     private func bootstrap() async {
+        liveStore.start()
+        liveStore.refresh(force: true)
+        refreshFromLiveStore()
+
         do {
             try await runtime.checkHealth()
             runtimeState = "CONNECTED"
-            await query(kind: "PRIVATE_EXECUTIVE_NOW", mode: .ask)
+            lastError = nil
+            refreshFromLiveStore()
         } catch {
-            runtimeState = "ERROR"
-            lastError = error.localizedDescription
+            runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : "ERROR"
+            lastError = liveStore.bridgeAvailable ? nil : error.localizedDescription
+            refreshFromLiveStore()
         }
     }
 
@@ -391,6 +401,12 @@ struct OJOPrivateControlView: View {
         case .connections: "PRIVATE_CONNECTION_STATE"
         case .context: "PRIVATE_CONTEXT_STATE"
         case .signals: "SIGNALS"
+        }
+
+        if selected == .now {
+            liveStore.refresh(force: true)
+            refreshFromLiveStore()
+            return
         }
 
         let mode: ChatMode = selected == .autonomous ? .plan : .ask
@@ -452,6 +468,54 @@ struct OJOPrivateControlView: View {
         }
 
         isBusy = false
+    }
+
+    @MainActor
+    private func refreshFromLiveStore() {
+        let bottleneck = liveStore.processes.first(where: { $0.isBottleneck })
+        let humanAction = liveStore.processes
+            .compactMap(\.actionNicolas)
+            .first { value in
+                let normalized = value.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+                return !normalized.isEmpty
+                    && normalized != "NONE"
+                    && normalized != "NONE / NOT OBSERVED"
+            }
+
+        lastMaterialChange = liveStore.lastProgressLabel == "not observed"
+            ? liveStore.lastRefresh.formatted(date: .omitted, time: .standard)
+            : liveStore.lastProgressLabel
+        topBottleneck = bottleneck?.title ?? "NONE"
+        nextMachineAction = {
+            if liveStore.inFlightCount > 0 {
+                return "Continue \(liveStore.inFlightCount) live process(es)"
+            }
+            if let bottleneck {
+                return "Resolve \(bottleneck.title)"
+            }
+            return "No machine blocker"
+        }()
+        nextHumanAction = humanAction ?? "NONE"
+
+        output = """
+        CURRENT_STATE=\(liveStore.momentumLabel)
+        MOMENTUM=\(liveStore.momentumDetail)
+        LAST_MATERIAL_CHANGE=\(lastMaterialChange)
+        CURRENT_MISSION=\(liveStore.processes.first(where: { $0.id.hasPrefix("0") })?.title ?? "NONE")
+        TOP_BOTTLENECK=\(topBottleneck)
+        NEEDS_NICOLAS=\(nextHumanAction)
+        MACHINE_CAN_CONTINUE=\(nextMachineAction)
+        MATERIALIZED_RESULTS=\(liveStore.materializedCount)
+        IN_FLIGHT=\(liveStore.inFlightCount)
+        DRIFT=\(liveStore.driftCount)
+        NEXT_MACHINE_ACTION=\(nextMachineAction)
+        NEXT_HUMAN_ACTION=\(nextHumanAction)
+        EVIDENCE_REFS=SHARED_SUPRA_PROCESS_OBSERVATORY_STORE
+        """
+        lastQuery = .now
+        if liveStore.bridgeAvailable {
+            runtimeState = "CONNECTED"
+        }
     }
 
     private func parseExecutiveFields(_ text: String) {
