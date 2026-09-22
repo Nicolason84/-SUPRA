@@ -146,10 +146,10 @@ struct OJOPrivateControlView: View {
                         .tracking(1.6)
                         .foregroundStyle(.purple)
 
-                    Text("Private command surface.")
+                    Text("Private authority surface.")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
 
-                    Text("What needs you, what can continue alone, what changed, and where to go next.")
+                    Text("Your private lens for true human gates, context, decisions and what the machine can continue alone.")
                         .font(.title3)
                         .foregroundStyle(.secondary)
                 }
@@ -193,11 +193,7 @@ struct OJOPrivateControlView: View {
             }
         }
         .padding(22)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
-        .overlay(
-            RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.purple.opacity(0.18))
-        )
+        .supraCard(radius: SUPRAUI.heroRadius, strokeOpacity: 0.10)
     }
 
     @ViewBuilder
@@ -311,11 +307,7 @@ struct OJOPrivateControlView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 18))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(Color.purple.opacity(0.18))
-        )
+        .supraCard()
     }
 
     private func executiveChip(
@@ -361,7 +353,7 @@ struct OJOPrivateControlView: View {
             }
             .padding(16)
             .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+            .supraCard(radius: 16)
         }
         .buttonStyle(.plain)
         .disabled(isBusy)
