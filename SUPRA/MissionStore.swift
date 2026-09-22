@@ -36,11 +36,14 @@ final class MissionStore: ObservableObject {
         didSet { applyPresentation() }
     }
 
+    private let liveStore = SUPRAProcessObservatoryStore.shared
+
     func load() {
         isLoading = true
         errorMessage = nil
 
         let runner = SUPRAGrandeMissionRunner.shared
+        liveStore.start()
         missions = [makeGrandeMission(from: runner)]
         runner.startIfNeeded()
 
@@ -66,8 +69,31 @@ final class MissionStore: ObservableObject {
 
 
     private func makeGrandeMission(from runner: SUPRAGrandeMissionRunner) -> Mission {
-        let phaseStatuses = runner.phases.map { phase in
-            (phase, runner.receiptStatus(for: phase.id) ?? (runner.activePhaseID == phase.id ? "RUNNING" : "PENDING"))
+        let liveByID = Dictionary(
+            uniqueKeysWithValues: liveStore.processes
+                .filter { process in runner.phases.contains(where: { $0.id == process.id }) }
+                .map { ($0.id, $0) }
+        )
+
+        let phaseStatuses = runner.phases.map { phase -> (SUPRAGrandeMissionRunner.Phase, String) in
+            if let live = liveByID[phase.id] {
+                let liveStatus: String = switch live.stage {
+                case .materialized, .frozen: "PASS"
+                case .inFlight: "RUNNING"
+                case .blocked: "BLOCKED"
+                case .failed, .anomaly: "ERROR"
+                case .historical, .unknown:
+                    runner.receiptStatus(for: phase.id)
+                        ?? (runner.activePhaseID == phase.id ? "RUNNING" : "PENDING")
+                }
+                return (phase, liveStatus)
+            }
+
+            return (
+                phase,
+                runner.receiptStatus(for: phase.id)
+                    ?? (runner.activePhaseID == phase.id ? "RUNNING" : "PENDING")
+            )
         }
 
         let completed = phaseStatuses.filter { $0.1 == "PASS" }.count
@@ -120,7 +146,7 @@ final class MissionStore: ObservableObject {
 
         return Mission(
             id: stableUUID(runner.missionID),
-            title: "Grande Mission · Total iMac / CAnnoNico / Alonso",
+            title: "Grande Mission · MacBook / CAnnoNico / Alonso",
             status: status,
             priority: .critical,
             category: "System Consolidation",
