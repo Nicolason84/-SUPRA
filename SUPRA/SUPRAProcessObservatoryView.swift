@@ -1418,11 +1418,15 @@ private actor SUPRAProcessObservatoryScanner {
                 status.contains("HUMAN_GATE")
                 || (!action.isEmpty && action != "NONE" && action != "NONE / NOT OBSERVED")
 
-            // Old blocked receipts are historical evidence unless they still carry
-            // an explicit current human action. Never erase them; just stop
-            // presenting stale history as today's active bottleneck.
-            if age >= 7 * 86_400 && !explicitHumanGate {
+            // A stale receipt is historical evidence, not a live blocker. Preserve
+            // it in the ledger, but never let old state monopolize today's
+            // bottleneck radar. Current human gates remain blocked only while
+            // their receipt is fresh enough to represent the live control plane.
+            if age >= 7 * 86_400 {
                 return .historical
+            }
+            if explicitHumanGate {
+                return .blocked
             }
             return .blocked
         }
