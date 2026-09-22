@@ -3091,9 +3091,11 @@ final class SUPRAExecutiveStore: ObservableObject {
 
         do {
             var request = URLRequest(url: chatURL)
+            // Grande Mission phases can legitimately take several minutes.
+            // Keep the request timeout aligned with the session timeout instead
+            // of silently overriding 600s with the old 180s ceiling.
             request.timeoutInterval = 600
             request.httpMethod = "POST"
-            request.timeoutInterval = 180
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("SUPRA.app", forHTTPHeaderField: "X-SUPRA-Client")
             request.httpBody = try JSONEncoder().encode(SUPRAChatRequest(message: text))
