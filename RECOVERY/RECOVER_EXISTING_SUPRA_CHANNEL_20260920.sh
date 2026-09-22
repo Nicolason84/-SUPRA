@@ -209,18 +209,40 @@ if ! ditto "$BUILT" "$INSTALL"; then
   die "INSTALL_COPY_FAILED_ROLLBACK_ATTEMPTED" 29
 fi
 
-open -n "$INSTALL"
-for _ in $(seq 1 20); do
-  if pgrep -x SUPRA >/dev/null 2>&1; then break; fi
-  sleep 1
+open "$INSTALL"
+PIDS=""
+COUNT=0
+PID=""
+for _ in $(seq 1 30); do
+  PIDS="$(pgrep -x SUPRA || true)"
+  COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
+  if [ "$COUNT" -eq 1 ]; then
+    PID="$(printf '%s\n' "$PIDS" | sed '/^$/d' | head -1)"
+    break
+  fi
+  sleep 0.5
 done
-if ! pgrep -x SUPRA >/dev/null 2>&1; then
+if [ "$COUNT" -ne 1 ] || [ -z "$PID" ]; then
+  pkill -x SUPRA >/dev/null 2>&1 || true
   rm -rf "$INSTALL"
-  [ -d "$BACKUP" ] && { ditto "$BACKUP" "$INSTALL"; open -n "$INSTALL"; } || true
-  die "SUPRA_LAUNCH_FAILED_ROLLBACK_ATTEMPTED" 30
+  [ -d "$BACKUP" ] && { ditto "$BACKUP" "$INSTALL"; open "$INSTALL"; } || true
+  die "SUPRA_SINGLE_INSTANCE_NOT_PROVEN_ROLLBACK_ATTEMPTED:$COUNT" 30
 fi
 
-printf 'SUPRA_PID=%s\n' "$(pgrep -x SUPRA | head -1)"
+CMD="$(ps -ww -p "$PID" -o command= 2>/dev/null || true)"
+case "$CMD" in
+  *"$INSTALL/Contents/MacOS/SUPRA"*) ;;
+  *)
+    pkill -x SUPRA >/dev/null 2>&1 || true
+    rm -rf "$INSTALL"
+    [ -d "$BACKUP" ] && { ditto "$BACKUP" "$INSTALL"; open "$INSTALL"; } || true
+    die "SUPRA_NONCANONICAL_EXECUTABLE_ROLLBACK_ATTEMPTED:$CMD" 31
+    ;;
+esac
+
+printf 'SUPRA_PID=%s\n' "$PID"
+printf 'SUPRA_INSTANCE_COUNT=1\n'
+printf 'SUPRA_CMD=%s\n' "$CMD"
 printf 'INSTALLED_APP=%s\n' "$INSTALL"
 
 say "7/7 One-time sandbox folder gate"
