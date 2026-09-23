@@ -741,19 +741,32 @@ private struct SUPRALocalInstallProof {
             )
         }
 
-        let installed = object["installed_source_sha"] as? String ?? ""
-        let observed = object["observed_canonical_sha"] as? String ?? installed
+        let stateInstalled = object["installed_source_sha"] as? String ?? ""
+        let observed = object["observed_canonical_sha"] as? String ?? stateInstalled
+
+        let canonicalApp = home.appendingPathComponent("Applications/SUPRA.app")
+        let embeddedSourceSHA = Bundle(url: canonicalApp)?
+            .object(forInfoDictionaryKey: "SUPRASourceSHA") as? String ?? ""
 
         let applications = NSRunningApplication.runningApplications(
             withBundleIdentifier: "com.nicolasalonso.SUPRA"
         )
-        let canonicalExec = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Applications/SUPRA.app/Contents/MacOS/SUPRA")
+        let canonicalExec = canonicalApp
+            .appendingPathComponent("Contents/MacOS/SUPRA")
             .path
 
+        let proofStatus: String
+        if embeddedSourceSHA.isEmpty {
+            proofStatus = "UNAVAILABLE"
+        } else if !stateInstalled.isEmpty && stateInstalled != embeddedSourceSHA {
+            proofStatus = "DRIFT"
+        } else {
+            proofStatus = "PASS"
+        }
+
         return SUPRALocalInstallProof(
-            status: installed.isEmpty ? "UNAVAILABLE" : "PASS",
-            installedSourceSHA: installed,
+            status: proofStatus,
+            installedSourceSHA: embeddedSourceSHA,
             observedCanonicalSHA: observed,
             lastAction: object["last_action"] as? String ?? "UNKNOWN",
             nativeInstanceCount: applications.count,
@@ -772,7 +785,8 @@ private struct SUPRALocalInstallProof {
 
     var displayStatus: String {
         if isCurrent { return "Current" }
-        if status == "UNAVAILABLE" { return "Unavailable" }
+        if status == "UNAVAILABLE" { return "Unproven" }
+        if status == "DRIFT" { return "Drift" }
         return "Behind"
     }
 
