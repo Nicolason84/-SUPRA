@@ -3,6 +3,13 @@ import AppKit
 import Foundation
 import CAnnoNicoContracts
 
+private enum SUPRAHostProjectionPaths {
+    static let home = URL(
+        fileURLWithPath: "/Users/nicolasalonso",
+        isDirectory: true
+    )
+}
+
 struct SUPRAPatrimonyEntity: Identifiable {
     let id: String
     let name: String
@@ -34,7 +41,7 @@ struct SUPRAPatrimonySnapshot {
 
 enum SUPRAPatrimonyLoader {
     static func load() -> SUPRAPatrimonySnapshot {
-        let home = FileManager.default.homeDirectoryForCurrentUser
+        let home = SUPRAHostProjectionPaths.home
         let patrimony = home.appendingPathComponent(
             "NOVA_DEV/NOVA_ERA_PATRIMONY_QUERY_INDEX_V1",
             isDirectory: true
@@ -330,7 +337,7 @@ struct SUPRALibraryProjectionView: View {
                 evidenceSection
                 Button {
                     NSWorkspace.shared.open(
-                        FileManager.default.homeDirectoryForCurrentUser
+                        SUPRAHostProjectionPaths.home
                             .appendingPathComponent("NOVA_DEV/NOVA_ERA_PATRIMONY_QUERY_INDEX_V1")
                     )
                 } label: {
@@ -489,7 +496,7 @@ struct SUPRALabsProjectionView: View {
                 HStack(spacing: 12) {
                     Button {
                         NSWorkspace.shared.open(
-                            FileManager.default.homeDirectoryForCurrentUser
+                            SUPRAHostProjectionPaths.home
                                 .appendingPathComponent("NOVA_LABS")
                         )
                     } label: {
@@ -498,7 +505,7 @@ struct SUPRALabsProjectionView: View {
                     .buttonStyle(.borderedProminent)
                     Button {
                         NSWorkspace.shared.open(
-                            FileManager.default.homeDirectoryForCurrentUser
+                            SUPRAHostProjectionPaths.home
                                 .appendingPathComponent("NOVA_LABS/00_CANON")
                         )
                     } label: {
@@ -508,7 +515,7 @@ struct SUPRALabsProjectionView: View {
 
                     Button {
                         NSWorkspace.shared.open(
-                            FileManager.default.homeDirectoryForCurrentUser
+                            SUPRAHostProjectionPaths.home
                                 .appendingPathComponent("NOVA_LABS/10_ENVIRONMENT/product_registry")
                         )
                     } label: {
