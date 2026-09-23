@@ -206,8 +206,24 @@ printf '[4/5] Clean, sign and verify native bundle\n'
 /usr/bin/xattr -dr com.apple.quarantine "$APP" >/dev/null 2>&1 || true
 /usr/bin/file "$EXEC" | grep -q 'Mach-O'
 
-printf '[5/5] Launch CAnnoNico V4\n'
-/usr/bin/open "$APP"
+printf '[5/5] Register and launch CAnnoNico V4\n'
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+if [ -x "$LSREGISTER" ]; then
+  "$LSREGISTER" -u "$APP" >/dev/null 2>&1 || true
+  "$LSREGISTER" -f "$APP" >/dev/null 2>&1 || true
+fi
+
+/usr/bin/touch "$APP"
+if ! /usr/bin/open -n "$APP"; then
+  ("$EXEC" >"$SUPPORT/cannonico_native_v4.stdout.log" 2>"$SUPPORT/cannonico_native_v4.stderr.log" </dev/null &) >/dev/null 2>&1
+fi
+
+/bin/sleep 1
+if ! /usr/bin/pgrep -f "$EXEC" >/dev/null 2>&1; then
+  printf 'STATUS=FAIL_BOUNDED\n'
+  printf 'BLOCKER=CANNONICO_NATIVE_PROCESS_NOT_RUNNING\n'
+  exit 70
+fi
 
 printf '\nSTATUS=PASS\n'
 printf 'CANNONICO_APP=%s\n' "$APP"
