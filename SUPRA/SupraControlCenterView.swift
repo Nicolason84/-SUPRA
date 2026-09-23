@@ -823,41 +823,39 @@ private struct SUPRALocalInstallProof {
     let nativeCommand: String
 
     static func load() -> SUPRALocalInstallProof {
-        let home = FileManager.default.homeDirectoryForCurrentUser
-        let stateURL = home
-            .appendingPathComponent("Library/Application Support/NOVA ERA/SUPRA Updater/state.json")
+        let fm = FileManager.default
+        let embeddedSourceSHA = Bundle.main
+            .object(forInfoDictionaryKey: "SUPRASourceSHA") as? String ?? ""
 
-        guard let data = try? Data(contentsOf: stateURL),
-              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-        else {
-            return SUPRALocalInstallProof(
-                status: "UNAVAILABLE",
-                installedSourceSHA: "",
-                observedCanonicalSHA: "",
-                lastAction: "UNAVAILABLE",
-                nativeInstanceCount: 0,
-                nativeCommand: ""
-            )
+        var projection: [String: Any] = [:]
+        if let appSupport = fm.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first {
+            let projectionURL = appSupport
+                .appendingPathComponent("SUPRA", isDirectory: true)
+                .appendingPathComponent("Projection", isDirectory: true)
+                .appendingPathComponent("UPDATER_STATE.json")
+
+            if let data = try? Data(contentsOf: projectionURL, options: [.mappedIfSafe]),
+               let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                projection = object
+            }
         }
 
-        let stateInstalled = object["installed_source_sha"] as? String ?? ""
-        let observed = object["observed_canonical_sha"] as? String ?? stateInstalled
-
-        let canonicalApp = home.appendingPathComponent("Applications/SUPRA.app")
-        let embeddedSourceSHA = Bundle(url: canonicalApp)?
-            .object(forInfoDictionaryKey: "SUPRASourceSHA") as? String ?? ""
+        let projectedInstalled = projection["installed_source_sha"] as? String ?? ""
+        let observed = projection["observed_canonical_sha"] as? String ?? ""
+        let installed = embeddedSourceSHA.isEmpty ? projectedInstalled : embeddedSourceSHA
 
         let applications = NSRunningApplication.runningApplications(
             withBundleIdentifier: "com.nicolasalonso.SUPRA"
         )
-        let canonicalExec = canonicalApp
-            .appendingPathComponent("Contents/MacOS/SUPRA")
-            .path
+        let canonicalExec = Bundle.main.executableURL?.path ?? ""
 
         let proofStatus: String
-        if embeddedSourceSHA.isEmpty {
+        if installed.isEmpty {
             proofStatus = "UNAVAILABLE"
-        } else if !stateInstalled.isEmpty && stateInstalled != embeddedSourceSHA {
+        } else if !projectedInstalled.isEmpty && projectedInstalled != installed {
             proofStatus = "DRIFT"
         } else {
             proofStatus = "PASS"
@@ -865,9 +863,10 @@ private struct SUPRALocalInstallProof {
 
         return SUPRALocalInstallProof(
             status: proofStatus,
-            installedSourceSHA: embeddedSourceSHA,
+            installedSourceSHA: installed,
             observedCanonicalSHA: observed,
-            lastAction: object["last_action"] as? String ?? "UNKNOWN",
+            lastAction: projection["last_action"] as? String
+                ?? (installed.isEmpty ? "UNAVAILABLE" : "PROJECTION_PENDING"),
             nativeInstanceCount: applications.count,
             nativeCommand: canonicalExec
         )
