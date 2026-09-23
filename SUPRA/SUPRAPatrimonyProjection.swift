@@ -41,6 +41,10 @@ struct SUPRAPatrimonySnapshot {
 
 enum SUPRAPatrimonyLoader {
     static func load() -> SUPRAPatrimonySnapshot {
+        if let projected = projectedSnapshot() {
+            return projected
+        }
+
         let home = SUPRAHostProjectionPaths.home
         let patrimony = home.appendingPathComponent(
             "NOVA_DEV/NOVA_ERA_PATRIMONY_QUERY_INDEX_V1",
@@ -102,6 +106,69 @@ enum SUPRAPatrimonyLoader {
             unknown: int(statusCounts["UNKNOWN"]),
             capabilities: capabilities.count,
             memoryObjects: memoryIndex.count,
+            labsCanonStatus: labsCanon["status"] as? String ?? "UNKNOWN",
+            labsRule: labsCanon["rule"] as? String ?? "UNKNOWN",
+            labsNextPriority: labsCanon["next_priority"] as? String ?? "UNKNOWN",
+            products: products,
+            foundationalEntities: foundational
+        )
+    }
+
+    private static func projectedSnapshot() -> SUPRAPatrimonySnapshot? {
+        guard let appSupport = FileManager.default.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first else { return nil }
+
+        let projectionURL = appSupport
+            .appendingPathComponent("SUPRA", isDirectory: true)
+            .appendingPathComponent("Projection", isDirectory: true)
+            .appendingPathComponent("PATRIMONY_STATE.json")
+
+        guard let projection = dictionary(at: projectionURL),
+              projection["schema"] as? String == "SUPRA_PATRIMONY_PROJECTION_V1"
+        else { return nil }
+
+        let entityCounts = projection["entity_counts"] as? [String: Any] ?? [:]
+        let statusCounts = projection["status_counts"] as? [String: Any] ?? [:]
+        let labsCanon = projection["labs_canon"] as? [String: Any] ?? [:]
+
+        let rawProducts = projection["products"] as? [String: Any] ?? [:]
+        var products: [String: Int] = [:]
+        for (key, value) in rawProducts {
+            products[key] = int(value)
+        }
+
+        let foundational = (
+            projection["foundational_entities"] as? [[String: Any]] ?? []
+        ).compactMap { row -> SUPRAPatrimonyEntity? in
+            guard let id = row["entity_id"] as? String,
+                  let name = row["canonical_name"] as? String
+            else { return nil }
+
+            return SUPRAPatrimonyEntity(
+                id: id,
+                name: name,
+                status: row["evidence_status"] as? String ?? "UNKNOWN",
+                category: row["category"] as? String ?? "UNKNOWN",
+                sourcePath: (row["source_paths"] as? [String])?.first
+            )
+        }
+
+        return SUPRAPatrimonySnapshot(
+            observedAt: Date(),
+            total: int(entityCounts["total"]),
+            theories: int(entityCounts["theories"]),
+            intellectualAssets: int(entityCounts["intellectual_assets"]),
+            softwareAssets: int(entityCounts["software_assets"]),
+            businessAssets: int(entityCounts["business_assets"]),
+            creativeAssets: int(entityCounts["creative_assets"]),
+            legalIPAssets: int(entityCounts["legal_ip_assets"]),
+            authenticated: int(statusCounts["AUTHENTICATED"]),
+            partial: int(statusCounts["PARTIAL"]),
+            unknown: int(statusCounts["UNKNOWN"]),
+            capabilities: int(projection["capabilities_count"]),
+            memoryObjects: int(projection["memory_objects"]),
             labsCanonStatus: labsCanon["status"] as? String ?? "UNKNOWN",
             labsRule: labsCanon["rule"] as? String ?? "UNKNOWN",
             labsNextPriority: labsCanon["next_priority"] as? String ?? "UNKNOWN",
