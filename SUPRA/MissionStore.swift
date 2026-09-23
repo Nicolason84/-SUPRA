@@ -561,13 +561,20 @@ final class MissionStore: ObservableObject {
         visibleMissions = filtered.sorted { lhs, rhs in
             switch activeSort {
             case .dueDate:
-                (lhs.dueDate ?? .distantFuture) < (rhs.dueDate ?? .distantFuture)
+                let lhsDue = lhs.dueDate ?? .distantFuture
+                let rhsDue = rhs.dueDate ?? .distantFuture
+                if lhsDue != rhsDue {
+                    return lhsDue < rhsDue
+                }
+                let lhsActivity = lhs.timeline.first?.date ?? .distantPast
+                let rhsActivity = rhs.timeline.first?.date ?? .distantPast
+                return lhsActivity > rhsActivity
             case .priority:
-                priorityRank(lhs.priority) < priorityRank(rhs.priority)
+                return priorityRank(lhs.priority) < priorityRank(rhs.priority)
             case .progress:
-                lhs.progress > rhs.progress
+                return lhs.progress > rhs.progress
             case .title:
-                lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
+                return lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
             }
         }
     }
