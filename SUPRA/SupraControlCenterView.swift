@@ -448,7 +448,7 @@ struct SupraControlCenterView: View {
                         .foregroundStyle(versionRefreshError == nil ? .green : .orange)
                     Text(versionRefreshError ?? versionRefreshStatus)
                         .font(.callout)
-                        .foregroundStyle(versionRefreshError == nil ? .secondary : .orange)
+                        .foregroundStyle(versionRefreshError == nil ? Color.secondary : Color.orange)
                 }
 
                 Text("Uses the existing governed updater only: exact canonical SHA → CI gate → Release build → sign → rollback-safe install → single canonical relaunch → runtime proof.")
