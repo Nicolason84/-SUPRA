@@ -714,15 +714,17 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 let grandeProcesses: [SUPRAObservedProcess]
                 if grandeSnapshot?.bridgeAvailable == true {
                     // SUPRA_GRANDE_MISSION_V1 is a long-lived evidence folder.
-                    // Only the ten canonical phases of the CURRENT runner are
-                    // live mission processes. Older helper/subpart receipts stay
-                    // on disk as history but must not reappear as present blockers.
+                    // Keep only CURRENT canonical phases plus explicitly admitted
+                    // durable execution identities (Executive + ojO Media). Older
+                    // helper/subpart receipts remain history and must not reappear
+                    // as present blockers.
                     let currentGrandePhaseIDs = Set(
                         SUPRAGrandeMissionRunner.shared.phases.map(\.id)
                     )
                     grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
                             || $0.id.hasPrefix("EXECUTIVE_OBJECTIVE_")
+                            || $0.id.hasPrefix("OJO_MEDIA_")
                     }
                     self.sourceLabel = root.path + " + GRANDE_MISSION"
                 } else {

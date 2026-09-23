@@ -88,6 +88,9 @@ check "Universal Media refuses invented media verification" contains "SUPRA/SUPR
 check "Universal Media self-heals runtime bridge before action" contains "SUPRA/SUPRAMediaUniversalView.swift" 'try await runtime.checkHealth()'
 check "Chat runtime restarts canonical bridge watcher" contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.supra.bridge-watcher'
 check "Chat runtime does not restart retired bridge label" not_contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.sol-github-bridge'
+check "Runtime observes durable ojO Media identities" contains "SUPRA/SUPRAProcessObservatoryView.swift" '$0.id.hasPrefix("OJO_MEDIA_")'
+check "Universal Media writes durable failure receipts" contains "SUPRA/SUPRAMediaUniversalView.swift" 'materializeFailureReceipt('
+check "Universal Media refreshes observatory after admission" contains "SUPRA/SUPRAMediaUniversalView.swift" 'durableAdmission = admission'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys

@@ -49,6 +49,42 @@ final class SUPRAMediaHeroRouter: ObservableObject {
     func dismiss() { context = nil }
 }
 
+private enum SUPRAMediaProvider: String {
+    case youtube = "YOUTUBE"
+    case figma = "FIGMA"
+    case canva = "CANVA"
+    case close = "CLOSE"
+    case web = "WEB"
+    case local = "LOCAL"
+
+    static func resolve(_ url: URL) -> Self {
+        if url.isFileURL { return .local }
+        let host = (url.host ?? "").lowercased()
+        if host.contains("youtube.com") || host == "youtu.be" { return .youtube }
+        if host.contains("figma.com") { return .figma }
+        if host.contains("canva.com") || host.contains("canva.link") { return .canva }
+        if host.contains("close.com") { return .close }
+        return .web
+    }
+
+    var guardrail: String {
+        switch self {
+        case .youtube:
+            return "URL identity is not proof of watched/transcribed content."
+        case .figma:
+            return "Do not claim Figma layer/design access unless runtime connector evidence proves it."
+        case .canva:
+            return "Do not claim Canva page/brand content access unless runtime connector evidence proves it."
+        case .close:
+            return "Treat Close as CRM object context, not media content; never mutate CRM from Media Hero."
+        case .web:
+            return "Treat the page URL as source identity until accessible content is evidenced."
+        case .local:
+            return "Local file rendering proves file access, not semantic interpretation."
+        }
+    }
+}
+
 private enum SUPRAMediaSurfaceKind: String {
     case youtube = "YOUTUBE"
     case web = "WEB"
@@ -200,6 +236,10 @@ struct SUPRAMediaUniversalView: View {
 
     private var sourceKind: SUPRAMediaSurfaceKind? {
         sourceURL.map(SUPRAMediaSurfaceKind.resolve)
+    }
+
+    private var sourceProvider: SUPRAMediaProvider? {
+        sourceURL.map(SUPRAMediaProvider.resolve)
     }
 
     private var mediaReference: CAnnoNicoSourceReference? {
@@ -788,16 +828,21 @@ struct SUPRAMediaUniversalView: View {
         NEXT_ACTION
         """
 
-        do {
-            runtimeState = "RECOVERING"
-            try await runtime.checkHealth()
-            runtimeState = "RUNNING"
+        var durableAdmission: DurableMediaAdmission?
 
+        do {
             let admission = try materializeAdmission(
                 action: action,
                 sourceURL: sourceURL,
                 note: noteValue
             )
+            durableAdmission = admission
+            liveStore.refresh(force: true)
+
+            runtimeState = "RECOVERING"
+            try await runtime.checkHealth()
+            runtimeState = "RUNNING"
+
             let correlatedPrompt = """
             MEDIA_OBJECTIVE_ID=\(admission.id)
             RUNTIME_ADMISSION=\(admission.request.path)
@@ -811,6 +856,13 @@ struct SUPRAMediaUniversalView: View {
             runtimeState = action == .memoryReturn ? "PREPARED" : "COMPLETE"
             liveStore.refresh(force: true)
         } catch {
+            if let durableAdmission {
+                try? materializeFailureReceipt(
+                    admission: durableAdmission,
+                    action: action,
+                    error: error
+                )
+            }
             runtimeOutput = ""
             runtimeState = "ERROR"
             lastError = error.localizedDescription
@@ -879,6 +931,31 @@ struct SUPRAMediaUniversalView: View {
             "canonical_write": "NO",
             "proof_refs": [admission.request.path, admission.receipt.path],
             "action_nicolas": action == .memoryReturn ? "VALIDATE_MEMORY_RETURN_CANDIDATE" : "NONE"
+        ]
+        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
+            .write(to: admission.receipt, options: .atomic)
+    }
+
+    private func materializeFailureReceipt(
+        admission: DurableMediaAdmission,
+        action: SUPRAMediaRuntimeAction,
+        error: Error
+    ) throws {
+        let body: [String: Any] = [
+            "schema": "OJO_UNIVERSAL_MEDIA_RECEIPT_V1",
+            "mission_id": admission.id,
+            "objective_id": admission.id,
+            "authority": "NICOLAS",
+            "started_at": admission.startedAt,
+            "finished_at": ISO8601DateFormatter().string(from: Date()),
+            "status": "FAILED",
+            "action": action.rawValue,
+            "response": "",
+            "error": error.localizedDescription,
+            "memory_return_candidate": "NO",
+            "canonical_write": "NO",
+            "proof_refs": [admission.request.path, admission.receipt.path],
+            "action_nicolas": "RETRY_OR_INSPECT_RUNTIME"
         ]
         try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
             .write(to: admission.receipt, options: .atomic)
