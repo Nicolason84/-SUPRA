@@ -8,6 +8,9 @@ struct SupraControlCenterView: View {
     @State private var commandOutput = "SUPRA ready. Type an objective or continue from the current proven state."
     @State private var commandBusy = false
     @State private var commandError: String?
+    @State private var versionRefreshBusy = false
+    @State private var versionRefreshStatus = "Ready"
+    @State private var versionRefreshError: String?
     @State private var admissionClosureProbeStarted = false
     @State private var megabusStartStarted = false
 
@@ -18,10 +21,23 @@ struct SupraControlCenterView: View {
             dashboard
                 .navigationTitle("SUPRA")
                 .toolbar {
-                    Button("Refresh", systemImage: "arrow.clockwise") {
+                    Button("Refresh data", systemImage: "arrow.clockwise") {
                         liveStore.refresh(force: true)
                         installProof = SUPRALocalInstallProof.load()
                     }
+
+                    Button {
+                        Task { await refreshCanonicalVersion() }
+                    } label: {
+                        Label(
+                            versionRefreshBusy ? "Updating…" : "Update & Relaunch",
+                            systemImage: versionRefreshBusy
+                                ? "arrow.triangle.2.circlepath.circle.fill"
+                                : "shippingbox.and.arrow.backward.fill"
+                        )
+                    }
+                    .disabled(versionRefreshBusy)
+                    .help("Build Release → sign → install with rollback → relaunch canonical SUPRA")
                 }
         }
         .frame(minWidth: 980, minHeight: 680)
@@ -40,6 +56,7 @@ struct SupraControlCenterView: View {
                 dashboardHeader
                 commandSurface
                 executiveSummary
+                versionRelease
                 quickActions
                 runtimeHealth
                 recentActivity
@@ -372,6 +389,170 @@ struct SupraControlCenterView: View {
         }
     }
 
+    private var versionRelease: some View {
+        dashboardSection("Version & Release", systemImage: "shippingbox.and.arrow.backward.fill") {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 16) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Installed app baseline")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(installProof.installedShortSHA)
+                            .font(.headline.monospaced())
+                    }
+
+                    Divider()
+                        .frame(height: 34)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Observed canonical")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(installProof.observedShortSHA)
+                            .font(.headline.monospaced())
+                    }
+
+                    Divider()
+                        .frame(height: 34)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Updater")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(installProof.lastAction)
+                            .font(.caption.monospaced())
+                            .lineLimit(2)
+                    }
+
+                    Spacer()
+
+                    Button {
+                        Task { await refreshCanonicalVersion() }
+                    } label: {
+                        HStack(spacing: 8) {
+                            if versionRefreshBusy {
+                                ProgressView()
+                                    .controlSize(.small)
+                            } else {
+                                Image(systemName: "hammer.fill")
+                            }
+                            Text(versionRefreshBusy ? "Release in progress…" : "Build Release + Relaunch")
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(versionRefreshBusy)
+                }
+
+                HStack(spacing: 8) {
+                    Image(systemName: versionRefreshError == nil ? "checkmark.shield.fill" : "exclamationmark.triangle.fill")
+                        .foregroundStyle(versionRefreshError == nil ? .green : .orange)
+                    Text(versionRefreshError ?? versionRefreshStatus)
+                        .font(.callout)
+                        .foregroundStyle(versionRefreshError == nil ? .secondary : .orange)
+                }
+
+                Text("Uses the existing governed updater only: exact canonical SHA → CI gate → Release build → sign → rollback-safe install → single canonical relaunch → runtime proof.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(18)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(.quaternary))
+        }
+    }
+
+    @MainActor
+    private func refreshCanonicalVersion() async {
+        guard !versionRefreshBusy else { return }
+
+        versionRefreshBusy = true
+        versionRefreshError = nil
+        versionRefreshStatus = "Starting the existing SUPRA updater…"
+
+        let installedBefore = installProof.installedSourceSHA
+
+        let kicked = await kickstartExistingUpdater()
+        if kicked {
+            versionRefreshStatus = "Release build started. SUPRA will install with rollback and relaunch automatically."
+        } else {
+            versionRefreshStatus = "Direct updater kickstart unavailable. Routing the same bounded update through the existing SUPRA runtime…"
+
+            do {
+                let objective = """
+                Refresh the canonical SUPRA application now using ONLY the existing governed updater.
+
+                REQUIRED_SEQUENCE:
+                1) Resolve the current canonical branch head and distinguish app-impacting changes from control-only commits.
+                2) Require successful Validate Canonical SUPRA CI for the exact source being installed.
+                3) Reuse ONLY com.novaera.supra-autoupdate and the existing supra_autobuild_self_update.sh.
+                4) Perform the existing Release build, signing, rollback-safe install and canonical relaunch.
+                5) Launch exactly one /Users/nicolasalonso/Applications/SUPRA.app instance.
+                6) Preserve rollback and do not create any engine, bridge, runtime, backend or updater.
+                7) Publish the existing SUPRA_LOCAL_RUNTIME_PROOF.json.
+                8) Do not ask Nicolas to use Terminal.
+
+                RETURN ONE MATERIAL RESULT OR THE FIRST EXACT BLOCKER.
+                """
+
+                _ = try await missionRunner.executeExecutiveObjective(
+                    objective: "Refresh SUPRA to the latest CI-passed canonical application version and relaunch it.",
+                    runtimePrompt: objective
+                )
+                versionRefreshStatus = "Update admitted through the existing runtime. Waiting for install/relaunch proof…"
+            } catch {
+                versionRefreshError = "Updater unavailable: \(error.localizedDescription)"
+                versionRefreshBusy = false
+                return
+            }
+        }
+
+        for _ in 0..<150 {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            let proof = SUPRALocalInstallProof.load()
+            installProof = proof
+
+            if proof.lastAction == "BUILD_SIGN_INSTALL_LAUNCH_PASS",
+               proof.installedSourceSHA != installedBefore {
+                versionRefreshStatus = "Release installed. SUPRA is relaunching on the fresh build…"
+                return
+            }
+
+            if proof.lastAction == "NO_APP_REBUILD_REQUIRED",
+               proof.isCurrent {
+                versionRefreshStatus = "Already current. No app-impacting rebuild was required."
+                versionRefreshBusy = false
+                return
+            }
+        }
+
+        versionRefreshError = "Updater started, but final install proof was not observed within 5 minutes."
+        versionRefreshBusy = false
+    }
+
+    private func kickstartExistingUpdater() async -> Bool {
+        await Task.detached(priority: .userInitiated) {
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/launchctl")
+            process.arguments = [
+                "kickstart",
+                "-k",
+                "gui/\(getuid())/com.novaera.supra-autoupdate"
+            ]
+
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
+
+            do {
+                try process.run()
+                process.waitUntilExit()
+                return process.terminationStatus == 0
+            } catch {
+                return false
+            }
+        }.value
+    }
+
     private var quickActions: some View {
         dashboardSection("Quick Actions", systemImage: "bolt.fill") {
             LazyVGrid(columns: actionColumns, spacing: 14) {
@@ -583,7 +764,10 @@ private struct SUPRALocalInstallProof {
     var isCurrent: Bool {
         status == "PASS"
             && !installedSourceSHA.isEmpty
-            && installedSourceSHA == observedCanonicalSHA
+            && (
+                installedSourceSHA == observedCanonicalSHA
+                || lastAction == "NO_APP_REBUILD_REQUIRED"
+            )
     }
 
     var displayStatus: String {
@@ -594,6 +778,10 @@ private struct SUPRALocalInstallProof {
 
     var installedShortSHA: String {
         installedSourceSHA.isEmpty ? "UNPROVEN" : String(installedSourceSHA.prefix(12))
+    }
+
+    var observedShortSHA: String {
+        observedCanonicalSHA.isEmpty ? "UNPROVEN" : String(observedCanonicalSHA.prefix(12))
     }
 
     var canonicalInstanceLabel: String {
