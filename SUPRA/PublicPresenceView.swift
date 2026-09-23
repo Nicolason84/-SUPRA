@@ -264,7 +264,7 @@ struct PublicPresenceView: View {
                                 )
                             }
                         } label: {
-                            Label("Open contextual Media Hero", systemImage: "play.rectangle.on.rectangle.fill")
+                            Label("Open ojO Universal Media · contextual", systemImage: "play.rectangle.on.rectangle.fill")
                         }
                         .buttonStyle(.borderedProminent)
                     }

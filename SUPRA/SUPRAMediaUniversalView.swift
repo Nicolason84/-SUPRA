@@ -156,7 +156,7 @@ private enum SUPRAMediaRuntimeAction: String, CaseIterable, Identifiable {
         case .memoryReturn:
             return """
             Prepare a governed memory-return candidate.
-            Do not write canon silently and do not mutate authority.
+            Do not write canon silently. Do not mutate authority.
             Separate FACTS, USER_NOTE, INFERENCES, UNKNOWN, EVIDENCE_NEEDED, MEMORY_RETURN_CANDIDATE and NEXT_ACTION.
             """
         }
@@ -768,7 +768,7 @@ struct SUPRAMediaUniversalView: View {
 
         GLOBAL_GUARDRAILS:
         - Treat the URL as source identity, not proof that media contents were observed.
-        - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
+        - Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.\n        - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
         - Reuse existing Puchero, Atlas, Twins, VideoSwap, Evidence and Memory owners when present.
         - No silent canonical write, no invented relation, no authority mutation.
         - USER_NOTE remains attributed to Nicolas unless independently evidenced.
