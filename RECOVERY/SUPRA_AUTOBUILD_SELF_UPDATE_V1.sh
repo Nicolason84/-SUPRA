@@ -305,6 +305,89 @@ PY
   printf 'REMOTE_RUNTIME_PROOF=%s\n' "$proof"
 }
 
+publish_container_projection(){
+  local projection_root="$HOME/Library/Containers/com.nicolasalonso.SUPRA/Data/Library/Application Support/SUPRA/Projection"
+  local decisions_source="$HOME/NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/ARCHITECTURAL_DECISIONS.json"
+  local updater_projection="$projection_root/UPDATER_STATE.json"
+  local decisions_projection="$projection_root/ARCHITECTURAL_DECISIONS.json"
+
+  mkdir -p "$projection_root" || {
+    printf 'CONTAINER_PROJECTION=UNAVAILABLE_CREATE_DIR\n'
+    return 0
+  }
+
+  if [ -s "$STATE" ]; then
+    "$PY" - "$STATE" "$updater_projection" <<'PY'
+import json,os,pathlib,sys,tempfile,datetime
+src=pathlib.Path(sys.argv[1]); dst=pathlib.Path(sys.argv[2])
+try:
+    raw=json.loads(src.read_text(encoding="utf-8"))
+except Exception:
+    raise SystemExit(2)
+allowed={
+    "schema":raw.get("schema"),
+    "installed_source_sha":raw.get("installed_source_sha"),
+    "observed_canonical_sha":raw.get("observed_canonical_sha"),
+    "installed_exec_sha256":raw.get("installed_exec_sha256"),
+    "last_ci":raw.get("last_ci"),
+    "bridge_health":raw.get("bridge_health"),
+    "installed_path":raw.get("installed_path"),
+    "rollback_path":raw.get("rollback_path"),
+    "installed_at":raw.get("installed_at"),
+    "last_check_at":raw.get("last_check_at"),
+    "last_action":raw.get("last_action"),
+    "projection_generated_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "projection_authority":"EXISTING_GOVERNED_SUPRA_UPDATER"
+}
+dst.parent.mkdir(parents=True,exist_ok=True)
+fd,tmp=tempfile.mkstemp(prefix=".UPDATER_STATE.",suffix=".json",dir=str(dst.parent)); os.close(fd)
+pathlib.Path(tmp).write_text(json.dumps(allowed,indent=2)+"\n",encoding="utf-8")
+os.replace(tmp,dst)
+PY
+    if [ "$?" -eq 0 ]; then
+      printf 'CONTAINER_UPDATER_PROJECTION=%s\n' "$updater_projection"
+    else
+      printf 'CONTAINER_UPDATER_PROJECTION=UNPROVEN\n'
+    fi
+  else
+    printf 'CONTAINER_UPDATER_PROJECTION=STATE_MISSING\n'
+  fi
+
+  if [ -s "$decisions_source" ]; then
+    "$PY" - "$decisions_source" "$decisions_projection" <<'PY'
+import json,os,pathlib,sys,tempfile,datetime
+src=pathlib.Path(sys.argv[1]); dst=pathlib.Path(sys.argv[2])
+try:
+    raw=json.loads(src.read_text(encoding="utf-8"))
+except Exception:
+    raise SystemExit(2)
+out={
+    "schema":"SUPRA_ARCHITECTURAL_DECISIONS_PROJECTION_V1",
+    "projection_authority":"EXISTING_GOVERNED_SUPRA_UPDATER",
+    "projection_generated_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source_path":str(src),
+    "source_generated_at":raw.get("generated_at"),
+    "source_status":raw.get("status"),
+    "source_mission":raw.get("mission"),
+    "execution_authorized":bool(raw.get("execution_authorized",False)),
+    "decision_count":raw.get("decision_count",len(raw.get("decisions",[]))),
+    "decisions":raw.get("decisions",[])
+}
+dst.parent.mkdir(parents=True,exist_ok=True)
+fd,tmp=tempfile.mkstemp(prefix=".ARCHITECTURAL_DECISIONS.",suffix=".json",dir=str(dst.parent)); os.close(fd)
+pathlib.Path(tmp).write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
+os.replace(tmp,dst)
+PY
+    if [ "$?" -eq 0 ]; then
+      printf 'CONTAINER_DECISION_PROJECTION=%s\n' "$decisions_projection"
+    else
+      printf 'CONTAINER_DECISION_PROJECTION=UNPROVEN\n'
+    fi
+  else
+    printf 'CONTAINER_DECISION_PROJECTION=SOURCE_MISSING\n'
+  fi
+}
+
 fail(){
   code=1
   [ "$#" -gt 1 ] && code="$2"
@@ -444,6 +527,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   focus_canonical_supra
   sleep 0.5
   publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
+  publish_container_projection || printf 'CONTAINER_PROJECTION=NON_BLOCKING_FAILURE\n'
   printf 'SUPRA_PID=%s\n' "$PID"
   printf 'SUPRA_CMD=%s\n' "$CMD"
   printf 'SUPRA_INSTANCE_COUNT=1\n'
@@ -525,6 +609,7 @@ x.update({
 p.write_text(json.dumps(x,indent=2)+"\n")
 PY
     publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "NO_APP_REBUILD_REQUIRED" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
+    publish_container_projection || printf 'CONTAINER_PROJECTION=NON_BLOCKING_FAILURE\n'
   printf '\nSTATUS=NO_APP_REBUILD_REQUIRED\n'
   exit 0
 fi
@@ -720,4 +805,5 @@ printf 'INSTALLED_SHA=%s\n' "$REMOTE_SHA"
 printf 'TARGET=%s\n' "$TARGET"
 printf 'BRIDGE_HEALTH=%s\n' "$BRIDGE_HEALTH"
 publish_runtime_proof "$REMOTE_SHA" "$REMOTE_SHA" "BUILD_SIGN_INSTALL_LAUNCH_PASS" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
+publish_container_projection || printf 'CONTAINER_PROJECTION=NON_BLOCKING_FAILURE\n'
 printf 'AUTOUPDATE_SELF_REFRESH=PASS\n'
