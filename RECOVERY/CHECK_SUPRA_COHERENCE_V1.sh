@@ -27,6 +27,17 @@ exists(){ test -f "$1"; }
 
 check "shared UI primitives exist" exists "SUPRA/SUPRAUI.swift"
 check "default universe is SUPRA" contains "SUPRA/SUPRAOJOHomeView.swift" '@State private var selection: SUPRAUniverse = .supra'
+check "Alonso full pyramid card exists" contains "SUPRA/SUPRAOJOHomeView.swift" 'private var alonsoPyramidCard: some View'
+check "Alonso full pyramid is gated by global SUPRA selection" contains "SUPRA/SUPRAOJOHomeView.swift" 'if selection == .supra {'
+check "Alonso uses canonical L1 foundation" contains "SUPRA/SUPRAOJOHomeView.swift" 'case 1: return "FOUNDATION"'
+check "Alonso uses canonical L7 executive action" contains "SUPRA/SUPRAOJOHomeView.swift" 'case 7: return "EXECUTIVE ACTION"'
+check "Alonso promotion floor 0.92 is explicit" contains "SUPRA/SUPRAOJOHomeView.swift" 'COHERENCE < 0.92 → REMEDIATION · NO AUTOMATIC PROMOTION'
+check "Alonso fail descends one level" contains "SUPRA/SUPRAOJOHomeView.swift" 'FAIL → DESCEND_ONE_LEVEL'
+check "Alonso old selection-tinted pseudo-status removed" not_contains "SUPRA/SUPRAOJOHomeView.swift" '.fill(levelTint(level))'
+check "Missions map to executive action layer" contains "SUPRA/SUPRAOJOHomeView.swift" 'case .missions: return "L7 · EXECUTIVE ACTION / E2E"'
+check "Alonso L4 anchors Puchero" contains "SUPRA/SUPRAOJOHomeView.swift" 'Puchero · CAnnoNico · SUPRA Memory V5'
+check "Alonso L5 anchors Twin knowledge fabric" contains "SUPRA/SUPRAOJOHomeView.swift" 'Knowledge/Company/People/Market/Opportunity/Evidence Twins · Atlas'
+check "Alonso L7 anchors Case and Decision Twins" contains "SUPRA/SUPRAOJOHomeView.swift" 'Case Twin · Decision Twin · Missions · Control · SUPRA'
 check "SUPRA routes to executive control center" contains "SUPRA/SUPRAOJOHomeView.swift" 'case .supra:'
 check "SUPRA route renders SupraControlCenterView" contains "SUPRA/SUPRAOJOHomeView.swift" 'SupraControlCenterView()'
 check "Chat route renders SUPRAChatView" contains "SUPRA/SUPRAOJOHomeView.swift" 'SUPRAChatView()'
