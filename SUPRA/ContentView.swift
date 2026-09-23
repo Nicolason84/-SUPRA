@@ -508,7 +508,8 @@ struct ContentView: View {
             systemIntegrity = SUPRASystemIntegrityLoader.load()
             SUPRATerminalMegabusBridge.registerSUPRAAndGabriel()
             terminalMegabusStatus = SUPRATerminalMegabusBridge.status()
-            startAutopilotIfNeeded()
+            // Observation/load must not silently launch autonomous work.
+            // Autopilot remains available only through an explicit mission or command.
             gabrielSnapshot = SUPRAGabrielConductorRuntime.load()
         }
         .onChange(of: operationalDecisionCandidates.count) { _, _ in
