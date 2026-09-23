@@ -347,9 +347,14 @@ final class MissionStore: ObservableObject {
             )
         }
 
+        let canonicalStateDate = grandeMissionStateDate(from: runner)
+
         let current: String
         if completed == runner.phases.count {
-            current = "TOTAL_SYSTEM_READY candidate — all ten phases returned explicit PASS receipts."
+            let updated = canonicalStateDate.map {
+                ISO8601DateFormatter().string(from: $0)
+            } ?? "UNKNOWN"
+            current = "COMPLETED · all ten phases returned explicit PASS receipts · CANONICAL_STATE_UPDATED=\(updated)"
         } else if let blocked {
             current = "Stopped fail-closed at \(blocked.0.id): \(blocked.1). \(runner.lastError ?? "")"
         } else if let active = runner.activePhaseID,
@@ -385,14 +390,27 @@ final class MissionStore: ObservableObject {
             ],
             timeline: [
                 Mission.TimelineEntry(
-                    id: stableUUID("timeline-authorized"),
-                    date: Date(),
-                    title: "Mission authorized",
-                    detail: "Mission 0 readiness passed; execution routed through existing runtime."
+                    id: stableUUID("timeline-canonical-state"),
+                    date: canonicalStateDate ?? .distantPast,
+                    title: completed == runner.phases.count
+                        ? "Canonical mission completed"
+                        : "Canonical mission state",
+                    detail: completed == runner.phases.count
+                        ? "All ten phases returned explicit PASS receipts."
+                        : current
                 )
             ],
             currentStatus: current
         )
+    }
+
+    private func grandeMissionStateDate(from runner: SUPRAGrandeMissionRunner) -> Date? {
+        guard let data = try? Data(contentsOf: runner.stateURL),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let raw = object["updated_at"] as? String else {
+            return nil
+        }
+        return ISO8601DateFormatter().date(from: raw)
     }
 
     private func stableUUID(_ seed: String) -> UUID {
