@@ -49,8 +49,9 @@ struct SupraControlCenterView: View {
             liveStore.start()
             liveStore.refresh(force: true)
             installProof = SUPRALocalInstallProof.load()
-            await runExecutiveAdmissionClosureProbeIfNeeded()
-            await startExistingMegabusIfNeeded()
+            // UI lifecycle is observation-only. Durable executive objectives are
+            // admitted only by an explicit Execute/Resume action from Nicolas.
+            // This prevents launch/relaunch from manufacturing duplicate missions.
         }
     }
 
