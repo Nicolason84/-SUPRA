@@ -79,6 +79,65 @@ end tell
 OSA
 }
 
+ensure_cannonico_desktop_launcher(){
+  local desktop_dir="$HOME/Desktop"
+  local launcher="$desktop_dir/CAnnoNico.app"
+  local tmpdir=""
+  local tmpapp=""
+  local source=""
+
+  mkdir -p "$desktop_dir" || return 1
+  tmpdir="$(mktemp -d /tmp/CANNONICO_DESKTOP_LAUNCHER.XXXXXX)" || return 1
+  tmpapp="$tmpdir/CAnnoNico.app"
+  source="$tmpdir/CAnnoNico.applescript"
+
+  cat >"$source" <<'APPLESCRIPT'
+on run
+  set homePath to POSIX path of (path to home folder)
+  set supportPath to homePath & "Library/Application Support/NOVA ERA/SUPRA Updater"
+  set updaterPath to supportPath & "/supra_autobuild_self_update.sh"
+  set logPath to supportPath & "/desktop_launcher.log"
+  set appPath to homePath & "Applications/SUPRA.app"
+  set shellCommand to "set -e; " & ¬
+    "SUPPORT=" & quoted form of supportPath & "; " & ¬
+    "UPDATER=" & quoted form of updaterPath & "; " & ¬
+    "LOG=" & quoted form of logPath & "; " & ¬
+    "APP=" & quoted form of appPath & "; " & ¬
+    "/bin/test -x \"$UPDATER\"; " & ¬
+    "n=0; while [ -d \"$SUPPORT/update.lock\" ]; do n=$((n+1)); [ \"$n\" -le 900 ] || exit 75; /bin/sleep 1; done; " & ¬
+    "/bin/bash \"$UPDATER\" >>\"$LOG\" 2>&1; " & ¬
+    "n=0; while [ -d \"$SUPPORT/update.lock\" ]; do n=$((n+1)); [ \"$n\" -le 900 ] || exit 76; /bin/sleep 1; done; " & ¬
+    "/bin/test -d \"$APP\"; /usr/bin/open \"$APP\""
+
+  try
+    with timeout of 7200 seconds
+      do shell script "/bin/bash -lc " & quoted form of shellCommand
+    end timeout
+  on error errMsg number errNum
+    display alert "CAnnoNico" message ("SUPRA n’a pas pu être actualisée/lancée (" & errNum & ")." & return & return & errMsg) as critical
+  end try
+end run
+APPLESCRIPT
+
+  if ! /usr/bin/osacompile -o "$tmpapp" "$source" >/dev/null 2>&1; then
+    rm -rf "$tmpdir"
+    return 1
+  fi
+
+  /usr/libexec/PlistBuddy -c "Set :CFBundleName CAnnoNico" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
+  /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName CAnnoNico" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
+  /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.novaera.cannonico-launcher" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || \
+    /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string com.novaera.cannonico-launcher" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
+
+  rm -rf "$launcher"
+  mv "$tmpapp" "$launcher" || { rm -rf "$tmpdir"; return 1; }
+  xattr -dr com.apple.quarantine "$launcher" >/dev/null 2>&1 || true
+  rm -rf "$tmpdir"
+
+  printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
+  return 0
+}
+
 close_legacy_supra_web_surface(){
   /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
 tell application "Google Chrome"
@@ -271,6 +330,15 @@ if ! mkdir "$LOCK" 2>/dev/null; then
 fi
 cleanup_lock(){ rmdir "$LOCK" >/dev/null 2>&1 || true; }
 trap cleanup_lock EXIT
+
+CANNONICO_LAUNCHER_STATUS=UNPROVEN
+if ensure_cannonico_desktop_launcher; then
+  CANNONICO_LAUNCHER_STATUS=PASS
+else
+  CANNONICO_LAUNCHER_STATUS=DEGRADED
+  printf 'CANNONICO_DESKTOP_LAUNCHER=DEGRADED\n'
+fi
+printf 'CANNONICO_LAUNCHER_STATUS=%s\n' "$CANNONICO_LAUNCHER_STATUS"
 
 say "1/10 Resolve canonical remote SHA"
 ENC_BRANCH="$(printf '%s' "$CANON_BRANCH" | sed 's#/#%2F#g')"
