@@ -49,19 +49,42 @@ struct PublicPresenceView: View {
     }
 
     private var hero: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("PUBLIC PRESENCE")
-                .font(.caption.weight(.heavy))
-                .tracking(1.8)
-                .foregroundStyle(.pink)
+        HStack(alignment: .center, spacing: 20) {
+            ZStack {
+                Circle()
+                    .fill(Color.pink.opacity(0.10))
+                Circle()
+                    .stroke(Color.pink.opacity(0.34), lineWidth: 1)
+                    .padding(7)
+                Image(systemName: "dot.radiowaves.left.and.right")
+                    .font(.system(size: 34, weight: .semibold))
+                    .foregroundStyle(.pink)
+                    .shadow(color: .pink.opacity(0.30), radius: 16)
+            }
+            .frame(width: 82, height: 82)
 
-            Text("One brand truth. Many channels. Measurable return.")
-                .font(.system(size: 34, weight: .bold, design: .rounded))
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    Text("PRÉSENCE")
+                        .font(.caption.weight(.heavy))
+                        .tracking(1.8)
+                        .foregroundStyle(.pink)
+                    Text("CORE SURFACE")
+                        .font(.caption2.weight(.heavy))
+                        .foregroundStyle(.pink)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 4)
+                        .background(Color.pink.opacity(0.10), in: Capsule())
+                }
 
-            Text("Every post originates from a real event or proven asset, becomes a channel-specific derivative, and returns engagement + leads to Commercial, Product and CAnnoNico.")
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: 980, alignment: .leading)
+                Text("Exist visibly. Emit proof. Receive the world.")
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+
+                Text("The external living surface of SUPRA: proven events become public signal, engagement returns as evidence, and every channel feeds Commercial, Product and CAnnoNico.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: 1040, alignment: .leading)
+            }
         }
         .padding(22)
         .frame(maxWidth: .infinity, alignment: .leading)

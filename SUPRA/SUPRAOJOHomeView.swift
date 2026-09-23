@@ -26,9 +26,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .organization: return "Organization"
         case .connections: return "Connections"
         case .inpi: return "INPI"
-        case .publicPresence: return "Public Presence"
+        case .publicPresence: return "Présence"
         case .runtime: return "Runtime"
-        case .ojo: return "ojO"
+        case .ojo: return "Œil"
         case .supra: return "SUPRA"
         case .control: return "Control"
         }
@@ -43,9 +43,9 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         case .organization: return "People · départements · autorité"
         case .connections: return "Comms · banques · APIs · organismes"
         case .inpi: return "RNE · comptes · actes · propriété industrielle"
-        case .publicPresence: return "LinkedIn · X · Instagram · YouTube"
+        case .publicPresence: return "Présence publique · signal · influence"
         case .runtime: return "Processus · bridge · santé"
-        case .ojo: return "Interface privée Nicolas"
+        case .ojo: return "Perception privée · attention · jugement"
         case .supra: return "Executive Operating System"
         case .control: return "Décisions · preuves · autorité"
         }
@@ -165,6 +165,12 @@ struct SUPRAOJOHomeView: View {
         "WORLD", "OBSERVE", "EVIDENCE", "DECIDE", "MISSION",
         "EXECUTE", "RESULT", "LEARN", "MEMORY", "CANON"
     ]
+
+    private let primaryUniverses: [SUPRAUniverse] = [.supra, .ojo, .publicPresence]
+
+    private var secondaryUniverses: [SUPRAUniverse] {
+        SUPRAUniverse.allCases.filter { !primaryUniverses.contains($0) }
+    }
 
     var body: some View {
         ZStack {
@@ -377,7 +383,7 @@ struct SUPRAOJOHomeView: View {
 
                 if !railCompact {
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("SUPRA × ojO")
+                        Text("SUPRA × ŒIL × PRÉSENCE")
                             .font(.headline.weight(.heavy))
                         Text("EXECUTIVE ORGANISM")
                             .font(.caption2.weight(.semibold))
@@ -391,8 +397,33 @@ struct SUPRAOJOHomeView: View {
             .padding(.horizontal, 12)
 
             ScrollView {
-                VStack(spacing: 6) {
-                    ForEach(SUPRAUniverse.allCases) { universe in
+                VStack(spacing: 7) {
+                    if !railCompact {
+                        Text("CORE")
+                            .font(.caption2.weight(.heavy))
+                            .tracking(1.4)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 9)
+                    }
+
+                    ForEach(primaryUniverses) { universe in
+                        universeButton(universe, isCore: true)
+                    }
+
+                    Divider()
+                        .padding(.vertical, 4)
+
+                    if !railCompact {
+                        Text("SYSTEMS")
+                            .font(.caption2.weight(.heavy))
+                            .tracking(1.4)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 9)
+                    }
+
+                    ForEach(secondaryUniverses) { universe in
                         universeButton(universe)
                     }
                 }
@@ -425,7 +456,7 @@ struct SUPRAOJOHomeView: View {
         .glassEffect(.regular, in: Rectangle())
     }
 
-    private func universeButton(_ universe: SUPRAUniverse) -> some View {
+    private func universeButton(_ universe: SUPRAUniverse, isCore: Bool = false) -> some View {
         Button {
             selection = universe
         } label: {
@@ -452,7 +483,15 @@ struct SUPRAOJOHomeView: View {
 
                     Spacer(minLength: 4)
 
-                    if universe == selection {
+                    if isCore {
+                        Text("CORE")
+                            .font(.system(size: 8, weight: .heavy, design: .rounded))
+                            .tracking(0.8)
+                            .foregroundStyle(universe.accent)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(universe.accent.opacity(0.10), in: Capsule())
+                    } else if universe == selection {
                         Circle()
                             .fill(universe.accent)
                             .frame(width: 6, height: 6)
@@ -467,13 +506,17 @@ struct SUPRAOJOHomeView: View {
         }
         .buttonStyle(.plain)
         .background(
-            universe == selection ? universe.accent.opacity(0.075) : Color.clear,
+            universe == selection
+                ? universe.accent.opacity(isCore ? 0.14 : 0.075)
+                : (isCore ? universe.accent.opacity(0.035) : Color.clear),
             in: RoundedRectangle(cornerRadius: 14, style: .continuous)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .stroke(
-                    universe == selection ? universe.accent.opacity(0.25) : .white.opacity(0.025),
+                    universe == selection
+                        ? universe.accent.opacity(isCore ? 0.48 : 0.25)
+                        : (isCore ? universe.accent.opacity(0.13) : .white.opacity(0.025)),
                     lineWidth: 1
                 )
         )

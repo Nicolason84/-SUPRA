@@ -80,10 +80,14 @@ struct OJOPrivateControlView: View {
     private var privateRail: some View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("ojO")
-                    .font(.title2.bold())
-                    .foregroundStyle(.purple)
-                Text("PRIVATE CONTROL")
+                HStack(spacing: 8) {
+                    Image(systemName: "eye.fill")
+                        .foregroundStyle(.purple)
+                    Text("ŒIL")
+                        .font(.title2.bold())
+                        .foregroundStyle(.purple)
+                }
+                Text("PRIVATE PERCEPTION + CONTROL")
                     .font(.caption2.weight(.heavy))
                     .tracking(1.4)
                     .foregroundStyle(.secondary)
@@ -143,17 +147,35 @@ struct OJOPrivateControlView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top) {
+            HStack(alignment: .top, spacing: 18) {
+                ZStack {
+                    Circle()
+                        .fill(Color.purple.opacity(0.10))
+                    Circle()
+                        .stroke(Color.purple.opacity(0.36), lineWidth: 1)
+                        .padding(6)
+                    Image(systemName: "eye.fill")
+                        .font(.system(size: 34, weight: .semibold))
+                        .foregroundStyle(.purple)
+                        .shadow(color: .purple.opacity(0.35), radius: 14)
+                }
+                .frame(width: 78, height: 78)
+
                 VStack(alignment: .leading, spacing: 7) {
-                    Text("NICOLAS ↔ SUPRA")
+                    Text("ŒIL · NICOLAS ↔ SUPRA")
                         .font(.caption.weight(.heavy))
                         .tracking(1.6)
                         .foregroundStyle(.purple)
 
                     Text("Private authority surface.")
+                        .font(.caption.weight(.heavy))
+                        .tracking(1.2)
+                        .foregroundStyle(.secondary)
+
+                    Text("See what matters. Ignore the noise.")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
 
-                    Text("Your private lens for true human gates, context, decisions and what the machine can continue alone.")
+                    Text("Primary perceptual layer for true human gates, live context, weak signals, decisions and what the machine can continue alone.")
                         .font(.title3)
                         .foregroundStyle(.secondary)
                 }
@@ -206,7 +228,7 @@ struct OJOPrivateControlView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Label("System signals", systemImage: "waveform.path.ecg")
                     .font(.title2.bold())
-                Text("Secondary physiological visualization. Useful for pattern sensing, not as the primary control surface.")
+                Text("Primary perceptual visualization for pattern sensing, weak-signal detection and living-system awareness. It informs control without replacing proof.")
                     .foregroundStyle(.secondary)
                 OJOOrganismNativeView()
                     .frame(minHeight: 680)
