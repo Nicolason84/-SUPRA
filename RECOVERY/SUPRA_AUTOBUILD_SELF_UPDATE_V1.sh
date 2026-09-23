@@ -128,14 +128,14 @@ ensure_cannonico_desktop_launcher(){
 
   if [ -x "$executable" ] && [ -f "$plist" ]; then
     version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$plist" 2>/dev/null || true)"
-    if [ "$version" = "4.0" ]; then
+    if [ "$version" = "5.0" ]; then
       printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
-      printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=NATIVE_MACHO_V4\n'
+      printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=ONE_SUPRA_NATIVE_V5\n'
       return 0
     fi
   fi
 
-  printf 'CANNONICO_DESKTOP_LAUNCHER=NEEDS_NATIVE_V4_INSTALL\n'
+  printf 'CANNONICO_DESKTOP_LAUNCHER=NEEDS_NATIVE_V5_INSTALL\n'
   return 0
 }
 
