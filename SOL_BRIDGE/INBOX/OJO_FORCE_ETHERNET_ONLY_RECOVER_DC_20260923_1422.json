@@ -1,0 +1,6 @@
+{
+  "id": "OJO_FORCE_ETHERNET_ONLY_RECOVER_DC_20260923_1422",
+  "type": "C1_CHAT",
+  "authority": "NICOLAS",
+  "message": "AUTHORITY=NICOLAS\nPROJECT=SUPRA\nMISSION=FORCE_ETHERNET_ONLY_AND_RECOVER_DESKTOP_COMMANDER\nMODE=EXECUTE_EXISTING_PATH_ONLY\nNO_NEW_BRIDGE=YES\nNO_NEW_RUNTIME=YES\nNO_WIFI_RECONFIG=YES\n\nPROVEN_NOW:\n- SUPRA Drive bridge heartbeat remains CONNECTED.\n- Desktop Commander dropped OFFLINE immediately after en0 Wi-Fi power was turned ON.\n- Before that, default route was en8 USB 10/100/1G/2.5G LAN, 192.168.1.220, gateway 192.168.1.1, stable.\n- Service order has en8 first and Wi-Fi third.\n\nDO NOW:\n1) Disable Wi-Fi power on en0 ONLY: networksetup -setairportpower en0 off.\n2) Verify default route remains en8 and internet route is alive.\n3) Preserve Google Drive, SUPRA bridge 18765, OpenCode 4096, updater, SUPRA, Ethernet and user data.\n4) Restart the EXISTING Desktop Commander remote client only if needed, preserving existing device identity; do not revoke/re-pair/reinstall.\n5) Return proof of en0 OFF, en8 default, bridge alive, Desktop Commander remote client process alive.\n\nRETURN EXACTLY:\nSTATUS=MATERIAL_RESULT_PROVEN|FAIL_BOUNDED\nWIFI_EN0=OFF|ON|UNKNOWN\nDEFAULT_INTERFACE=en8|OTHER|UNKNOWN\nBRIDGE_18765=PASS|FAIL|UNPROVEN\nDESKTOP_COMMANDER_REMOTE=PASS|FAIL|UNPROVEN\nACTION_NICOLAS=NONE|<single indispensable action>"
+}
