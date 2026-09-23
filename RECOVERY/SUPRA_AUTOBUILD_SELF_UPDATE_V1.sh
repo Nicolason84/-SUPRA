@@ -99,28 +99,42 @@ SUPPORT="$HOME/Library/Application Support/NOVA ERA/SUPRA Updater"
 UPDATER="$SUPPORT/supra_autobuild_self_update.sh"
 APP="$HOME/Applications/SUPRA.app"
 LOG="$SUPPORT/cannonico_launcher.log"
-LABEL="com.novaera.supra-autoupdate"
+LOCK="$SUPPORT/update.lock"
 
 mkdir -p "$SUPPORT"
 
-/usr/bin/osascript -e 'display notification "SUPRA démarre. Vérification canonique en arrière-plan…" with title "CAnnoNico"' >/dev/null 2>&1 || true
+/usr/bin/osascript -e 'display notification "Vérification de la version canonique…" with title "CAnnoNico"' >/dev/null 2>&1 || true
 
-# Immediate visible response: open the canonical installed app now.
-if [ -d "$APP" ]; then
-  /usr/bin/open "$APP" >/dev/null 2>&1 || true
-fi
-
-# Then refresh through the ONE existing governed updater.
-# It already enforces exact canonical HEAD, CI success, rollback-safe install and relaunch.
-if /bin/launchctl print "gui/$UID/$LABEL" >/dev/null 2>&1; then
-  /bin/launchctl kickstart -k "gui/$UID/$LABEL" >>"$LOG" 2>&1 || true
-elif [ -x "$UPDATER" ]; then
-  (/bin/bash "$UPDATER" >>"$LOG" 2>&1 </dev/null &) >/dev/null 2>&1
-else
+if [ ! -x "$UPDATER" ]; then
   /usr/bin/osascript -e 'display alert "CAnnoNico" message "Updater SUPRA introuvable." as critical' >/dev/null 2>&1 || true
   exit 2
 fi
 
+n=0
+while [ -d "$LOCK" ]; do
+  n=$((n+1))
+  if [ "$n" -gt 900 ]; then
+    /usr/bin/osascript -e 'display alert "CAnnoNico" message "Une mise à jour SUPRA est restée verrouillée trop longtemps." as critical' >/dev/null 2>&1 || true
+    exit 75
+  fi
+  /bin/sleep 1
+done
+
+/bin/bash "$UPDATER" >>"$LOG" 2>&1
+rc=$?
+
+if [ "$rc" -ne 0 ]; then
+  /usr/bin/osascript -e 'display alert "CAnnoNico" message "La mise à jour SUPRA a échoué. Consulte cannonico_launcher.log." as critical' >/dev/null 2>&1 || true
+  exit "$rc"
+fi
+
+if [ ! -d "$APP" ]; then
+  /usr/bin/osascript -e 'display alert "CAnnoNico" message "SUPRA canonique introuvable après mise à jour." as critical' >/dev/null 2>&1 || true
+  exit 3
+fi
+
+/usr/bin/open "$APP" >/dev/null 2>&1 || exit 4
+/usr/bin/osascript -e 'display notification "SUPRA canonique prête." with title "CAnnoNico"' >/dev/null 2>&1 || true
 exit 0
 SH
 
@@ -131,22 +145,14 @@ SH
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleDisplayName</key>
-  <string>CAnnoNico</string>
-  <key>CFBundleExecutable</key>
-  <string>CAnnoNico</string>
-  <key>CFBundleIdentifier</key>
-  <string>com.novaera.cannonico-launcher</string>
-  <key>CFBundleName</key>
-  <string>CAnnoNico</string>
-  <key>CFBundlePackageType</key>
-  <string>APPL</string>
-  <key>CFBundleShortVersionString</key>
-  <string>2.0</string>
-  <key>CFBundleVersion</key>
-  <string>2</string>
-  <key>LSMinimumSystemVersion</key>
-  <string>13.0</string>
+  <key>CFBundleDisplayName</key><string>CAnnoNico</string>
+  <key>CFBundleExecutable</key><string>CAnnoNico</string>
+  <key>CFBundleIdentifier</key><string>com.novaera.cannonico-launcher</string>
+  <key>CFBundleName</key><string>CAnnoNico</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>3.0</string>
+  <key>CFBundleVersion</key><string>3</string>
+  <key>LSMinimumSystemVersion</key><string>13.0</string>
 </dict>
 </plist>
 PLIST
@@ -157,9 +163,8 @@ PLIST
 
   [ -x "$executable" ] || return 1
   [ -f "$plist" ] || return 1
-
   printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
-  printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=NATIVE_SHELL_BUNDLE_V2\n'
+  printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=UPDATE_FIRST_V3\n'
   return 0
 }
 
