@@ -272,6 +272,14 @@ fail(){
   exit "$code"
 }
 
+on_err(){
+  rc=$?
+  printf '\nSTATUS=FAIL_BOUNDED\nBLOCKER=UNEXPECTED_COMMAND_FAILURE\n'
+  printf 'FAIL_RC=%s\nFAIL_LINE=%s\nFAIL_COMMAND=%s\n' "$rc" "${BASH_LINENO[0]:-UNKNOWN}" "${BASH_COMMAND:-UNKNOWN}"
+  exit "$rc"
+}
+trap on_err ERR
+
 PY="$(command -v python3 || true)"
 CURL="$(command -v curl || true)"
 XCODEBUILD="$(command -v xcodebuild || true)"
@@ -378,7 +386,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   close_legacy_supra_web_surface
   focus_canonical_supra
   sleep 0.5
-  publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING"
+  publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "UP_TO_DATE_AND_RUNNING" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
   printf 'SUPRA_PID=%s\n' "$PID"
   printf 'SUPRA_CMD=%s\n' "$CMD"
   printf 'SUPRA_INSTANCE_COUNT=1\n'
@@ -459,7 +467,7 @@ x.update({
 })
 p.write_text(json.dumps(x,indent=2)+"\n")
 PY
-  publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "NO_APP_REBUILD_REQUIRED"
+    publish_runtime_proof "$INSTALLED_SHA" "$REMOTE_SHA" "NO_APP_REBUILD_REQUIRED" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
   printf '\nSTATUS=NO_APP_REBUILD_REQUIRED\n'
   exit 0
 fi
@@ -645,5 +653,5 @@ printf '\nSTATUS=MATERIAL_RESULT_PROVEN\n'
 printf 'INSTALLED_SHA=%s\n' "$REMOTE_SHA"
 printf 'TARGET=%s\n' "$TARGET"
 printf 'BRIDGE_HEALTH=%s\n' "$BRIDGE_HEALTH"
-publish_runtime_proof "$REMOTE_SHA" "$REMOTE_SHA" "BUILD_SIGN_INSTALL_LAUNCH_PASS"
+publish_runtime_proof "$REMOTE_SHA" "$REMOTE_SHA" "BUILD_SIGN_INSTALL_LAUNCH_PASS" || printf 'REMOTE_RUNTIME_PROOF=NON_BLOCKING_FAILURE\n'
 printf 'AUTOUPDATE_SELF_REFRESH=PASS\n'
