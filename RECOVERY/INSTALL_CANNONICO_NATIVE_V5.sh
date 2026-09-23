@@ -108,8 +108,7 @@ cat >"$TMP/main.m" <<'OBJC'
         return;
     }
 
-    NSString *shell = @
-    "set -u; "
+    NSString *shell = @"set -u; "
     "kill_all(){ "
       "/usr/bin/pkill -TERM -x SUPRA >/dev/null 2>&1 || true; "
       "/usr/bin/pkill -TERM -x SUPRAClean >/dev/null 2>&1 || true; "
@@ -163,11 +162,11 @@ cat >"$TMP/main.m" <<'OBJC'
     self.task = [[NSTask alloc] init];
     self.task.executableURL = [NSURL fileURLWithPath:@"/bin/bash"];
     self.task.arguments = @[@"-lc", shell];
-    self.task.environment = @{
-        @"UPDATER": updater,
-        @"SUPRA_APP": supraApp,
-        @"LOGFILE": self.logPath
-    };
+    NSMutableDictionary *env = [[[NSProcessInfo processInfo] environment] mutableCopy];
+    env[@"UPDATER"] = updater;
+    env[@"SUPRA_APP"] = supraApp;
+    env[@"LOGFILE"] = self.logPath;
+    self.task.environment = env;
     self.task.standardOutput = self.logHandle;
     self.task.standardError = self.logHandle;
 
