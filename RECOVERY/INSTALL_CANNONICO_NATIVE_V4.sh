@@ -100,12 +100,13 @@ cat >"$TMP/main.m" <<'OBJC'
          "REPO='Nicolason84/-SUPRA'; "
          "BRANCH='supra/human-gate-single-source-20260721_072447'; "
          "API='https://api.github.com/repos/'\"$REPO\"; "
-         "ENC_BRANCH=$(/usr/bin/python3 -c 'import urllib.parse; print(urllib.parse.quote(\"supra/human-gate-single-source-20260721_072447\", safe=\"\"))'); "
-         "HEAD=$(/usr/bin/curl -fsSL \"$API/branches/$ENC_BRANCH\" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)[\"commit\"][\"sha\"])'); "
-         "ok=0; "
-         "for i in $(seq 1 120); do "
+         "PY=$(command -v python3); [ -n \"$PY\" ]; "
+         "ENC_BRANCH=$($PY -c 'import urllib.parse; print(urllib.parse.quote(\"supra/human-gate-single-source-20260721_072447\", safe=\"\"))'); "
+         "HEAD=$(/usr/bin/curl -fsSL \"$API/branches/$ENC_BRANCH\" | $PY -c 'import json,sys; print(json.load(sys.stdin)[\"commit\"][\"sha\"])'); "
+         "ok=0; i=0; "
+         "while [ \"$i\" -lt 120 ]; do i=$((i+1)); "
            "RUNS=$(/usr/bin/curl -fsSL \"$API/actions/runs?head_sha=$HEAD&status=completed&per_page=50\" || true); "
-           "if printf '%%s' \"$RUNS\" | /usr/bin/python3 -c 'import json,sys; "
+           "if printf '%%s' \"$RUNS\" | $PY -c 'import json,sys; "
              "x=json.load(sys.stdin); "
              "raise SystemExit(0 if any(r.get(\"name\")==\"Validate Canonical SUPRA\" and r.get(\"conclusion\")==\"success\" for r in x.get(\"workflow_runs\",[])) else 1)' >/dev/null 2>&1; then "
              "ok=1; break; "
@@ -113,7 +114,7 @@ cat >"$TMP/main.m" <<'OBJC'
            "/bin/sleep 5; "
          "done; "
          "[ \"$ok\" = 1 ] || exit 31; "
-         "exec /bin/bash %@",
+         "exec /bin/bash '%@'",
          [updater stringByReplacingOccurrencesOfString:@"'" withString:@"'\\''"]];
 
     self.task = [[NSTask alloc] init];
