@@ -82,59 +82,84 @@ OSA
 ensure_cannonico_desktop_launcher(){
   local desktop_dir="$HOME/Desktop"
   local launcher="$desktop_dir/CAnnoNico.app"
-  local tmpdir=""
-  local tmpapp=""
-  local source=""
+  local contents="$launcher/Contents"
+  local macos="$contents/MacOS"
+  local executable="$macos/CAnnoNico"
+  local plist="$contents/Info.plist"
 
   mkdir -p "$desktop_dir" || return 1
-  tmpdir="$(mktemp -d /tmp/CANNONICO_DESKTOP_LAUNCHER.XXXXXX)" || return 1
-  tmpapp="$tmpdir/CAnnoNico.app"
-  source="$tmpdir/CAnnoNico.applescript"
-
-  cat >"$source" <<'APPLESCRIPT'
-on run
-  set homePath to POSIX path of (path to home folder)
-  set supportPath to homePath & "Library/Application Support/NOVA ERA/SUPRA Updater"
-  set updaterPath to supportPath & "/supra_autobuild_self_update.sh"
-  set logPath to supportPath & "/desktop_launcher.log"
-  set appPath to homePath & "Applications/SUPRA.app"
-  set shellCommand to "set -e; " & ¬
-    "SUPPORT=" & quoted form of supportPath & "; " & ¬
-    "UPDATER=" & quoted form of updaterPath & "; " & ¬
-    "LOG=" & quoted form of logPath & "; " & ¬
-    "APP=" & quoted form of appPath & "; " & ¬
-    "/bin/test -x \"$UPDATER\"; " & ¬
-    "n=0; while [ -d \"$SUPPORT/update.lock\" ]; do n=$((n+1)); [ \"$n\" -le 900 ] || exit 75; /bin/sleep 1; done; " & ¬
-    "/bin/bash \"$UPDATER\" >>\"$LOG\" 2>&1; " & ¬
-    "n=0; while [ -d \"$SUPPORT/update.lock\" ]; do n=$((n+1)); [ \"$n\" -le 900 ] || exit 76; /bin/sleep 1; done; " & ¬
-    "/bin/test -d \"$APP\"; /usr/bin/open \"$APP\""
-
-  try
-    with timeout of 7200 seconds
-      do shell script "/bin/bash -lc " & quoted form of shellCommand
-    end timeout
-  on error errMsg number errNum
-    display alert "CAnnoNico" message ("SUPRA n’a pas pu être actualisée/lancée (" & errNum & ")." & return & return & errMsg) as critical
-  end try
-end run
-APPLESCRIPT
-
-  if ! /usr/bin/osacompile -o "$tmpapp" "$source" >/dev/null 2>&1; then
-    rm -rf "$tmpdir"
-    return 1
-  fi
-
-  /usr/libexec/PlistBuddy -c "Set :CFBundleName CAnnoNico" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
-  /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName CAnnoNico" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
-  /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.novaera.cannonico-launcher" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || \
-    /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string com.novaera.cannonico-launcher" "$tmpapp/Contents/Info.plist" >/dev/null 2>&1 || true
-
   rm -rf "$launcher"
-  mv "$tmpapp" "$launcher" || { rm -rf "$tmpdir"; return 1; }
+  mkdir -p "$macos" || return 1
+
+  cat >"$executable" <<'SH'
+#!/bin/bash
+set -u
+
+SUPPORT="$HOME/Library/Application Support/NOVA ERA/SUPRA Updater"
+UPDATER="$SUPPORT/supra_autobuild_self_update.sh"
+APP="$HOME/Applications/SUPRA.app"
+LOG="$SUPPORT/cannonico_launcher.log"
+LABEL="com.novaera.supra-autoupdate"
+
+mkdir -p "$SUPPORT"
+
+/usr/bin/osascript -e 'display notification "SUPRA démarre. Vérification canonique en arrière-plan…" with title "CAnnoNico"' >/dev/null 2>&1 || true
+
+# Immediate visible response: open the canonical installed app now.
+if [ -d "$APP" ]; then
+  /usr/bin/open "$APP" >/dev/null 2>&1 || true
+fi
+
+# Then refresh through the ONE existing governed updater.
+# It already enforces exact canonical HEAD, CI success, rollback-safe install and relaunch.
+if /bin/launchctl print "gui/$UID/$LABEL" >/dev/null 2>&1; then
+  /bin/launchctl kickstart -k "gui/$UID/$LABEL" >>"$LOG" 2>&1 || true
+elif [ -x "$UPDATER" ]; then
+  (/bin/bash "$UPDATER" >>"$LOG" 2>&1 </dev/null &) >/dev/null 2>&1
+else
+  /usr/bin/osascript -e 'display alert "CAnnoNico" message "Updater SUPRA introuvable." as critical' >/dev/null 2>&1 || true
+  exit 2
+fi
+
+exit 0
+SH
+
+  chmod 755 "$executable" || return 1
+
+  cat >"$plist" <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDisplayName</key>
+  <string>CAnnoNico</string>
+  <key>CFBundleExecutable</key>
+  <string>CAnnoNico</string>
+  <key>CFBundleIdentifier</key>
+  <string>com.novaera.cannonico-launcher</string>
+  <key>CFBundleName</key>
+  <string>CAnnoNico</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleShortVersionString</key>
+  <string>2.0</string>
+  <key>CFBundleVersion</key>
+  <string>2</string>
+  <key>LSMinimumSystemVersion</key>
+  <string>13.0</string>
+</dict>
+</plist>
+PLIST
+
+  /usr/bin/plutil -lint "$plist" >/dev/null 2>&1 || return 1
+  /usr/bin/codesign --force --sign - --timestamp=none "$launcher" >/dev/null 2>&1 || true
   xattr -dr com.apple.quarantine "$launcher" >/dev/null 2>&1 || true
-  rm -rf "$tmpdir"
+
+  [ -x "$executable" ] || return 1
+  [ -f "$plist" ] || return 1
 
   printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
+  printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=NATIVE_SHELL_BUNDLE_V2\n'
   return 0
 }
 
