@@ -75,6 +75,12 @@ check "Missions use shared live authority" contains "SUPRA/MissionStore.swift" '
 check "ojO uses shared live authority" contains "SUPRA/OJOPrivateControlView.swift" 'SUPRAProcessObservatoryStore.shared'
 check "Executive no longer derives runtime from legacy requiredCount" not_contains "SUPRA/SupraControlCenterView.swift" 'snapshot.availableCount == snapshot.requiredCount'
 
+
+check "Runtime never hydrates dataless FileProvider receipts for observability" contains "SUPRA/SUPRAProcessObservatoryView.swift" "if file.isDataless {"
+check "Runtime detects dataless receipts with metadata-only lstat" contains "SUPRA/SUPRAProcessObservatoryView.swift" 'lstat($0, &fileStat)'
+check "Runtime prefers hydrated duplicate receipts" contains "SUPRA/SUPRAProcessObservatoryView.swift" "if candidateDataless != currentDataless"
+check "Runtime labels metadata-only receipts truthfully" contains "SUPRA/SUPRAProcessObservatoryView.swift" "OUTBOX receipt present · cloud content not hydrated"
+
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys
 p,t=map(int,sys.argv[1:])
