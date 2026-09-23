@@ -181,13 +181,19 @@ struct SupraControlCenterView: View {
     private func runExecutiveAdmissionClosureProbeIfNeeded() async {
         let defaults = UserDefaults.standard
         let key = "SUPRA_EXECUTIVE_ADMISSION_CLOSURE_V1_DONE"
+        let lastAttemptKey = "SUPRA_EXECUTIVE_ADMISSION_CLOSURE_V1_LAST_ATTEMPT"
+        let now = Date().timeIntervalSince1970
+        let lastAttempt = defaults.double(forKey: lastAttemptKey)
+        let cooldown: TimeInterval = 15 * 60
 
         guard !defaults.bool(forKey: key),
-              !admissionClosureProbeStarted else {
+              !admissionClosureProbeStarted,
+              lastAttempt == 0 || now - lastAttempt >= cooldown else {
             return
         }
 
         admissionClosureProbeStarted = true
+        defaults.set(now, forKey: lastAttemptKey)
 
         let objective = """
         Report the current SUPRA runtime state and identify the first real unresolved blocker using existing evidence only. Make no changes. Return one material result or a true Human Gate.
