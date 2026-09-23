@@ -49,9 +49,22 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let humanGateRequired: Bool
     }
 
+    enum ExecutiveInterruptionIntent: String, Sendable {
+        case standby = "STANDBY"
+        case abort = "ABORTED"
+    }
+
     @Published private(set) var isRunning = false
     @Published private(set) var lastError: String?
     @Published private(set) var activePhaseID: String?
+    @Published private(set) var activeExecutiveObjectiveID: String?
+    @Published private(set) var isStandby = false
+    @Published private(set) var isAborted = false
+
+    private var executiveRuntimeTask: Task<String, Error>?
+    private var phaseRuntimeTask: Task<String, Error>?
+    private var executiveInterruptionIntent: ExecutiveInterruptionIntent?
+    private var phaseAbortRequested = false
 
     let missionID = "GRANDE_MISSION_TOTAL_IMAC_CANNONICO_ALONSO_20260921"
 
@@ -102,6 +115,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         try prepareDirectories()
 
         let objectiveID = makeExecutiveObjectiveID()
+        activeExecutiveObjectiveID = objectiveID
+        executiveInterruptionIntent = nil
+        defer {
+            if activeExecutiveObjectiveID == objectiveID {
+                activeExecutiveObjectiveID = nil
+                executiveRuntimeTask = nil
+                executiveInterruptionIntent = nil
+            }
+        }
+
         let startedAt = iso.string(from: Date())
         let admissionURL = inboxURL.appendingPathComponent("\(objectiveID).json")
         let receiptURL = outboxURL.appendingPathComponent("\(objectiveID).result.json")
@@ -142,10 +165,15 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             EXECUTION_VERDICT=MATERIAL_RESULT|HUMAN_GATE|UNPROVEN
             """
 
-            let response = try await runtime.execute(
-                prompt: correlatedPrompt,
-                mode: .plan
-            )
+            let runtimeTask = Task<String, Error> {
+                try await runtime.execute(
+                    prompt: correlatedPrompt,
+                    mode: .plan
+                )
+            }
+            executiveRuntimeTask = runtimeTask
+            let response = try await runtimeTask.value
+            executiveRuntimeTask = nil
 
             let normalized = response
                 .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -203,6 +231,33 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 response: normalized,
                 humanGateRequired: humanGateRequired
             )
+        } catch is CancellationError {
+            let finishedAt = iso.string(from: Date())
+            let intent = executiveInterruptionIntent ?? .abort
+            let receipt: [String: Any] = [
+                "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
+                "mission_id": objectiveID,
+                "objective_id": objectiveID,
+                "authority": "NICOLAS",
+                "started_at": startedAt,
+                "finished_at": finishedAt,
+                "status": "CANCELLED",
+                "interruption": intent.rawValue,
+                "human_gate_required": "NO",
+                "objective": trimmed,
+                "runtime_admission": admissionURL.path,
+                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "response": "Execution interrupted by Nicolas: \(intent.rawValue)",
+                "proof_refs": [admissionURL.path, receiptURL.path],
+                "action_nicolas": "NONE"
+            ]
+            if let receiptData = try? JSONSerialization.data(
+                withJSONObject: receipt,
+                options: [.prettyPrinted, .sortedKeys]
+            ) {
+                try? receiptData.write(to: receiptURL, options: .atomic)
+            }
+            throw CancellationError()
         } catch {
             let finishedAt = iso.string(from: Date())
             let receipt: [String: Any] = [
@@ -231,6 +286,12 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         }
     }
 
+    func requestExecutiveInterruption(_ intent: ExecutiveInterruptionIntent) {
+        guard activeExecutiveObjectiveID != nil else { return }
+        executiveInterruptionIntent = intent
+        executiveRuntimeTask?.cancel()
+    }
+
     private func makeExecutiveObjectiveID() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -242,8 +303,39 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     }
 
     func startIfNeeded() {
-        guard !isRunning, !isTerminal, !isAwaitingHumanDecision else { return }
+        guard !isRunning,
+              !isStandby,
+              !isAborted,
+              !isTerminal,
+              !isAwaitingHumanDecision else { return }
         Task { await run() }
+    }
+
+    func standbyCurrentMission() {
+        guard isRunning else { return }
+        isStandby = true
+        phaseAbortRequested = false
+        phaseRuntimeTask?.cancel()
+    }
+
+    func resumeFromStandby() {
+        guard isStandby else { return }
+        isStandby = false
+        isAborted = false
+        startIfNeeded()
+    }
+
+    func abortCurrentMission() {
+        guard isRunning || isStandby else { return }
+        phaseAbortRequested = true
+        isStandby = false
+        isAborted = true
+        phaseRuntimeTask?.cancel()
+        try? writeState(
+            currentPhase: activePhaseID ?? "ABORTED",
+            status: "ABORTED",
+            detail: "Mission execution aborted by Nicolas. Existing evidence and PASS receipts are preserved."
+        )
     }
 
     var blockedPhase: Phase? {
@@ -427,10 +519,15 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                         """
                     }
 
-                    let response = try await runtime.execute(
-                        prompt: phasePrompt,
-                        mode: .plan
-                    )
+                    let runtimeTask = Task<String, Error> {
+                        try await runtime.execute(
+                            prompt: phasePrompt,
+                            mode: .plan
+                        )
+                    }
+                    phaseRuntimeTask = runtimeTask
+                    let response = try await runtimeTask.value
+                    phaseRuntimeTask = nil
 
                     let finishedAt = iso.string(from: Date())
                     let upper = response.uppercased()
@@ -504,7 +601,33 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 status: "PASS",
                 detail: "All ten phases returned explicit PASS receipts."
             )
+        } catch is CancellationError {
+            phaseRuntimeTask = nil
+            if isStandby {
+                lastError = nil
+                try? writeState(
+                    currentPhase: activePhaseID ?? "STANDBY",
+                    status: "STANDBY",
+                    detail: "Mission placed in standby by Nicolas. Resume preserves existing PASS receipts and restarts only the current non-PASS phase."
+                )
+            } else if phaseAbortRequested || isAborted {
+                lastError = nil
+                try? writeState(
+                    currentPhase: activePhaseID ?? "ABORTED",
+                    status: "ABORTED",
+                    detail: "Mission execution aborted by Nicolas. Existing evidence and PASS receipts are preserved."
+                )
+            } else {
+                lastError = "Mission execution cancelled."
+                try? writeState(
+                    currentPhase: activePhaseID ?? "CANCELLED",
+                    status: "CANCELLED",
+                    detail: "Mission execution cancelled."
+                )
+            }
+            phaseAbortRequested = false
         } catch {
+            phaseRuntimeTask = nil
             lastError = error.localizedDescription
             try? writeState(
                 currentPhase: activePhaseID ?? "UNKNOWN",
