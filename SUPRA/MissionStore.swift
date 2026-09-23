@@ -94,7 +94,7 @@ final class MissionStore: ObservableObject {
             return []
         }
 
-        return urls
+        let sorted = urls
             .filter { $0.pathExtension.lowercased() == "json" }
             .compactMap { historicalMission(at: $0) }
             .filter { $0.id != operationalID }
@@ -103,6 +103,53 @@ final class MissionStore: ObservableObject {
                 let r = rhs.timeline.first?.date ?? .distantPast
                 return l > r
             }
+
+        return deduplicatedHistoricalPatrimony(sorted)
+    }
+
+    private func deduplicatedHistoricalPatrimony(_ missions: [Mission]) -> [Mission] {
+        var seen = Set<String>()
+        return missions.filter { mission in
+            seen.insert(historicalSemanticKey(mission.title)).inserted
+        }
+    }
+
+    private func historicalSemanticKey(_ title: String) -> String {
+        let normalized = title
+            .folding(
+                options: [.diacriticInsensitive, .caseInsensitive],
+                locale: Locale(identifier: "en_US_POSIX")
+            )
+            .lowercased()
+            .replacingOccurrences(
+                of: "[^a-z0-9]+",
+                with: " ",
+                options: .regularExpression
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if normalized.contains("premier revenu significatif")
+            || normalized.contains("generate revenue for nova era by acquiring new clients") {
+            return "nova-era-revenue-acquisition"
+        }
+        if normalized.contains("close evidence gap") {
+            return "close-evidence-gap"
+        }
+        if normalized.contains("nova integral development v1") {
+            return "nova-integral-development-v1"
+        }
+        if normalized.contains("30k by 2026 09 01")
+            || normalized.contains("atteindre 30 000 eur") {
+            return "nova-era-30k-2026-09-01"
+        }
+        if normalized.contains("handoff")
+            && (normalized.contains("probe")
+                || normalized.contains("witness")
+                || normalized.contains("successive")) {
+            return "human-handoff-e2e-validation"
+        }
+
+        return normalized
     }
 
     private func historicalMission(at url: URL) -> Mission? {
