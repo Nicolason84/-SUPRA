@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct ExternalConnectionsView: View {
+    @State private var xReadReady = false
+    @State private var inpiReady = false
+    @State private var readinessCheckedAt: Date?
+
     private let columns = [
         GridItem(.adaptive(minimum: 270, maximum: 390), spacing: 14)
     ]
@@ -15,6 +19,7 @@ struct ExternalConnectionsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 hero
+                truthPanel
                 authorityRail
                 ForEach(grouped, id: \.0) { family, items in
                     section(family, items: items)
@@ -23,6 +28,9 @@ struct ExternalConnectionsView: View {
             .padding(26)
             .frame(maxWidth: 1560, alignment: .leading)
             .frame(maxWidth: .infinity)
+        }
+        .task {
+            refreshRuntimeReadiness()
         }
         .background(
             LinearGradient(
@@ -59,11 +67,67 @@ struct ExternalConnectionsView: View {
             VStack(alignment: .trailing, spacing: 7) {
                 metric(String(ExternalConnectorCatalog.all.count), "connectors")
                 metric(String(ExternalConnectorCatalog.all.filter { $0.priority == "P0" }.count), "P0")
-                metric(String(ExternalConnectorCatalog.all.filter { $0.status == .connected }.count), "connected now")
+                metric(String(ExternalConnectorCatalog.connectedCount), "catalog connected")
             }
         }
         .padding(22)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+
+    private var truthPanel: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Label("CONNECTION TRUTH", systemImage: "checkmark.shield.fill")
+                    .font(.caption.weight(.heavy))
+                    .tracking(1.4)
+                    .foregroundStyle(.cyan)
+
+                Spacer()
+
+                Button {
+                    refreshRuntimeReadiness()
+                } label: {
+                    Label("Refresh local readiness", systemImage: "arrow.clockwise")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
+
+            Text("CONNECTED means a previously proven authenticated route. Local credential/config readiness is shown separately and is never promoted to CONNECTED without a live proof.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                readinessBadge(
+                    "X API READ",
+                    xReadReady ? "LOCAL READY" : "AUTH MISSING",
+                    ready: xReadReady
+                )
+                readinessBadge(
+                    "INPI API",
+                    inpiReady ? "LOCAL READY" : "CONFIG MISSING",
+                    ready: inpiReady
+                )
+                readinessBadge(
+                    "CATALOG LIVE",
+                    "\(ExternalConnectorCatalog.connectedCount) PROVEN",
+                    ready: true
+                )
+                readinessBadge(
+                    "NEEDS AUTH / APPROVAL",
+                    "\(ExternalConnectorCatalog.attentionCount)",
+                    ready: ExternalConnectorCatalog.attentionCount == 0
+                )
+            }
+
+            if let readinessCheckedAt {
+                Text("Local readiness checked \(readinessCheckedAt.formatted(date: .omitted, time: .standard)) · secrets remain in Keychain/runtime only.")
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.tertiary)
+            }
+        }
+        .padding(18)
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var authorityRail: some View {
@@ -142,10 +206,39 @@ struct ExternalConnectionsView: View {
             Label(connector.humanGate, systemImage: "person.badge.key.fill")
                 .font(.caption)
                 .foregroundStyle(.orange)
+
+            if connector.id == "x" {
+                readinessBadge("LOCAL X", xReadReady ? "READY" : "MISSING", ready: xReadReady)
+            } else if connector.id == "inpi-rne" || connector.id == "inpi-ip" {
+                readinessBadge("LOCAL INPI", inpiReady ? "READY" : "MISSING", ready: inpiReady)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, minHeight: 200, alignment: .topLeading)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func readinessBadge(_ title: String, _ value: String, ready: Bool) -> some View {
+        HStack(spacing: 7) {
+            Circle()
+                .fill(ready ? Color.green : Color.orange)
+                .frame(width: 7, height: 7)
+            Text(title)
+                .font(.caption2.weight(.heavy))
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(ready ? .green : .orange)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(.quaternary, in: Capsule())
+    }
+
+    private func refreshRuntimeReadiness() {
+        xReadReady = ExternalConnectorRuntimeReadiness.xReadCredentialConfigured
+        inpiReady = ExternalConnectorRuntimeReadiness.inpiRuntimeConfigured
+        readinessCheckedAt = .now
     }
 
     private func authorityBadge(_ code: String, _ text: String, tint: Color) -> some View {

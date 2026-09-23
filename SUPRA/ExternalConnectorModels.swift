@@ -36,6 +36,23 @@ struct ExternalConnectorDescriptor: Identifiable {
 }
 
 enum ExternalConnectorCatalog {
+    static func descriptor(id: String) -> ExternalConnectorDescriptor? {
+        all.first { $0.id == id }
+    }
+
+    static var connectedCount: Int {
+        all.filter { $0.status == .connected }.count
+    }
+
+    static var attentionCount: Int {
+        all.filter {
+            $0.status == .authRequired
+                || $0.status == .approvalRequired
+                || $0.status == .providerRequired
+                || $0.status == .blocked
+        }.count
+    }
+
     static let all: [ExternalConnectorDescriptor] = [
         .init(
             id: "gmail",
@@ -398,4 +415,18 @@ enum ExternalConnectorCatalog {
             priority: "P2"
         )
     ]
+}
+
+
+enum ExternalConnectorRuntimeReadiness {
+    static var xReadCredentialConfigured: Bool {
+        ConnectorCredentialVault.readString(
+            service: XOfficialConnector.keychainService,
+            account: XOfficialConnector.bearerTokenAccount
+        ) != nil || !(ProcessInfo.processInfo.environment["SUPRA_X_BEARER_TOKEN"] ?? "").isEmpty
+    }
+
+    static var inpiRuntimeConfigured: Bool {
+        INPIOfficialConnectorConfiguration.fromRuntime() != nil
+    }
 }

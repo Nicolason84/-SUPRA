@@ -4,18 +4,17 @@ private struct PublicChannel: Identifiable {
     let id: String
     let name: String
     let role: String
-    let status: ExternalConnectionStatus
     let symbol: String
     let priority: String
 }
 
 struct PublicPresenceView: View {
     private let channels: [PublicChannel] = [
-        .init(id: "linkedin", name: "LinkedIn", role: "Founder + company + B2B authority", status: .authRequired, symbol: "person.text.rectangle.fill", priority: "P1"),
-        .init(id: "x", name: "X", role: "Realtime intelligence + technical voice", status: .authRequired, symbol: "text.bubble.fill", priority: "P1"),
-        .init(id: "instagram", name: "Instagram / Meta", role: "Visual proof + products + brand", status: .authRequired, symbol: "camera.fill", priority: "P1"),
-        .init(id: "youtube", name: "YouTube", role: "Demos + technical narratives + Shorts", status: .authRequired, symbol: "play.rectangle.fill", priority: "P1"),
-        .init(id: "gbp", name: "Google Business Profile", role: "Local presence + reviews + posts", status: .approvalRequired, symbol: "mappin.and.ellipse", priority: "P1")
+        .init(id: "linkedin", name: "LinkedIn", role: "Founder + company + B2B authority", symbol: "person.text.rectangle.fill", priority: "P1"),
+        .init(id: "x", name: "X", role: "Realtime intelligence + technical voice", symbol: "text.bubble.fill", priority: "P1"),
+        .init(id: "instagram", name: "Instagram / Meta", role: "Visual proof + products + brand", symbol: "camera.fill", priority: "P1"),
+        .init(id: "youtube", name: "YouTube", role: "Demos + technical narratives + Shorts", symbol: "play.rectangle.fill", priority: "P1"),
+        .init(id: "gbp", name: "Google Business Profile", role: "Local presence + reviews + posts", symbol: "mappin.and.ellipse", priority: "P1")
     ]
 
     private let pipeline = [
@@ -98,11 +97,14 @@ struct PublicPresenceView: View {
             spacing: 14
         ) {
             ForEach(channels) { channel in
+                let descriptor = ExternalConnectorCatalog.descriptor(id: channel.id)
+                let status = descriptor?.status ?? .planned
+
                 VStack(alignment: .leading, spacing: 11) {
                     HStack {
                         Image(systemName: channel.symbol)
                             .font(.title2)
-                            .foregroundStyle(channel.status.tint)
+                            .foregroundStyle(status.tint)
                         Spacer()
                         Text(channel.priority)
                             .font(.caption2.weight(.heavy))
@@ -118,9 +120,19 @@ struct PublicPresenceView: View {
 
                     Divider()
 
-                    Text(channel.status.rawValue)
+                    Text(status.rawValue)
                         .font(.caption2.weight(.heavy))
-                        .foregroundStyle(channel.status.tint)
+                        .foregroundStyle(status.tint)
+
+                    if let descriptor {
+                        Label(descriptor.officialRoute, systemImage: "link")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+
+                        Label(descriptor.humanGate, systemImage: "person.badge.key.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                    }
                 }
                 .padding(17)
                 .frame(maxWidth: .infinity, minHeight: 150, alignment: .topLeading)
