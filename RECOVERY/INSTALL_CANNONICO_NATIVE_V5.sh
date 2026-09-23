@@ -16,6 +16,9 @@ PLIST="$CONTENTS/Info.plist"
 TMP="$(mktemp -d /tmp/CANNONICO_NATIVE_V5.XXXXXX)"
 trap 'rm -rf "$TMP"' EXIT
 
+/usr/bin/pkill -TERM -x CAnnoNico >/dev/null 2>&1 || true
+/bin/sleep 0.5
+/usr/bin/pkill -KILL -x CAnnoNico >/dev/null 2>&1 || true
 rm -rf "$APP"
 mkdir -p "$SUPPORT" "$MACOS"
 
