@@ -89,8 +89,10 @@ check "Universal Media self-heals runtime bridge before action" contains "SUPRA/
 check "Chat runtime restarts canonical bridge watcher" contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.supra.bridge-watcher'
 check "Chat runtime does not restart retired bridge label" not_contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.sol-github-bridge'
 check "Runtime observes durable ojO Media identities" contains "SUPRA/SUPRAProcessObservatoryView.swift" '$0.id.hasPrefix("OJO_MEDIA_")'
-check "Universal Media writes durable failure receipts" contains "SUPRA/SUPRAMediaUniversalView.swift" 'materializeFailureReceipt('
-check "Universal Media refreshes observatory after admission" contains "SUPRA/SUPRAMediaUniversalView.swift" 'durableAdmission = admission'
+check "Universal Media delegates durable materialization to existing bridge" contains "SUPRA/SUPRAMediaUniversalView.swift" 'MATERIALIZE_VIA_EXISTING_BRIDGE=YES'
+check "Universal Media avoids sandboxed HOME durability" not_contains "SUPRA/SUPRAMediaUniversalView.swift" 'homeDirectoryForCurrentUser'
+check "Media bridge materialization patch is recoverable" contains "RECOVERY/PATCH_OJO_MEDIA_BRIDGE_MATERIALIZATION_V1_20260923.sh" 'MODE=EXISTING_BRIDGE_MEDIA_MATERIALIZATION'
+check "Media bridge patch emits canonical receipt schema" contains "RECOVERY/OJO_MEDIA_BRIDGE_MATERIALIZATION_V1.patch" 'OJO_UNIVERSAL_MEDIA_RECEIPT_V1'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys

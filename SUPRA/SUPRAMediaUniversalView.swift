@@ -842,41 +842,28 @@ struct SUPRAMediaUniversalView: View {
         NEXT_ACTION
         """
 
-        var durableAdmission: DurableMediaAdmission?
+        let objectiveID = makeMediaObjectiveID(action)
 
         do {
-            let admission = try materializeAdmission(
-                action: action,
-                sourceURL: sourceURL,
-                note: noteValue
-            )
-            durableAdmission = admission
-            liveStore.refresh(force: true)
-
             runtimeState = "RECOVERING"
             try await runtime.checkHealth()
             runtimeState = "RUNNING"
 
             let correlatedPrompt = """
-            MEDIA_OBJECTIVE_ID=\(admission.id)
-            RUNTIME_ADMISSION=\(admission.request.path)
+            MEDIA_OBJECTIVE_ID=\(objectiveID)
+            MATERIALIZE_VIA_EXISTING_BRIDGE=YES
             RUNTIME_CORRELATION_REQUIRED=YES
 
             \(prompt)
             """
-            let response = try await runtime.execute(prompt: correlatedPrompt, mode: action.mode)
-            try materializeReceipt(admission: admission, action: action, response: response)
+            let response = try await runtime.execute(
+                prompt: correlatedPrompt,
+                mode: action.mode
+            )
             runtimeOutput = response
             runtimeState = action == .memoryReturn ? "PREPARED" : "COMPLETE"
             liveStore.refresh(force: true)
         } catch {
-            if let durableAdmission {
-                try? materializeFailureReceipt(
-                    admission: durableAdmission,
-                    action: action,
-                    error: error
-                )
-            }
             runtimeOutput = ""
             runtimeState = "ERROR"
             lastError = error.localizedDescription
@@ -884,97 +871,9 @@ struct SUPRAMediaUniversalView: View {
         }
     }
 
-    private struct DurableMediaAdmission {
-        let id: String
-        let request: URL
-        let receipt: URL
-        let startedAt: String
-    }
-
-    private func materializeAdmission(
-        action: SUPRAMediaRuntimeAction,
-        sourceURL: URL,
-        note: String
-    ) throws -> DurableMediaAdmission {
-        let fm = FileManager.default
-        let root = fm.homeDirectoryForCurrentUser
-            .appendingPathComponent("NOVA_OS/SUPRA_GRANDE_MISSION_V1", isDirectory: true)
-        let inbox = root.appendingPathComponent("INBOX", isDirectory: true)
-        let outbox = root.appendingPathComponent("OUTBOX", isDirectory: true)
-        try fm.createDirectory(at: inbox, withIntermediateDirectories: true)
-        try fm.createDirectory(at: outbox, withIntermediateDirectories: true)
-
+    private func makeMediaObjectiveID(_ action: SUPRAMediaRuntimeAction) -> String {
         let stamp = Self.mediaStamp.string(from: Date())
-        let id = "OJO_MEDIA_\(action.rawValue)_\(stamp)_\(UUID().uuidString.prefix(8))"
-        let request = inbox.appendingPathComponent("\(id).json")
-        let receipt = outbox.appendingPathComponent("\(id).result.json")
-        let startedAt = ISO8601DateFormatter().string(from: Date())
-        let body: [String: Any] = [
-            "schema": "OJO_UNIVERSAL_MEDIA_REQUEST_V1",
-            "mission_id": id, "objective_id": id, "authority": "NICOLAS",
-            "started_at": startedAt, "action": action.rawValue,
-            "source": sourceURL.absoluteString,
-            "source_kind": sourceKind?.rawValue ?? "UNKNOWN",
-            "source_provider": sourceProvider?.rawValue ?? "UNKNOWN",
-            "provider_guardrail": sourceProvider?.guardrail ?? "No provider-specific contract",
-            "human_note": note,
-            "ojo_object_id": heroContext?.objectID ?? "UNSCOPED",
-            "ojo_object_type": heroContext?.objectType ?? "UNSCOPED",
-            "ojo_object_title": heroContext?.title ?? "UNSCOPED",
-            "ojo_object_lineage": heroContext?.lineageRefs ?? [],
-            "canonical_write": "NO"
-        ]
-        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
-            .write(to: request, options: .atomic)
-        return .init(id: id, request: request, receipt: receipt, startedAt: startedAt)
-    }
-
-    private func materializeReceipt(
-        admission: DurableMediaAdmission,
-        action: SUPRAMediaRuntimeAction,
-        response: String
-    ) throws {
-        let normalized = response.trimmingCharacters(in: .whitespacesAndNewlines)
-        let status = normalized.isEmpty ? "UNPROVEN" : "PASS"
-        let memoryCandidate = action == .memoryReturn ? "YES" : "NO"
-        let body: [String: Any] = [
-            "schema": "OJO_UNIVERSAL_MEDIA_RECEIPT_V1",
-            "mission_id": admission.id, "objective_id": admission.id,
-            "authority": "NICOLAS", "started_at": admission.startedAt,
-            "finished_at": ISO8601DateFormatter().string(from: Date()),
-            "status": status, "action": action.rawValue,
-            "response": normalized, "memory_return_candidate": memoryCandidate,
-            "canonical_write": "NO",
-            "proof_refs": [admission.request.path, admission.receipt.path],
-            "action_nicolas": action == .memoryReturn ? "VALIDATE_MEMORY_RETURN_CANDIDATE" : "NONE"
-        ]
-        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
-            .write(to: admission.receipt, options: .atomic)
-    }
-
-    private func materializeFailureReceipt(
-        admission: DurableMediaAdmission,
-        action: SUPRAMediaRuntimeAction,
-        error: Error
-    ) throws {
-        let body: [String: Any] = [
-            "schema": "OJO_UNIVERSAL_MEDIA_RECEIPT_V1",
-            "mission_id": admission.id,
-            "objective_id": admission.id,
-            "authority": "NICOLAS",
-            "started_at": admission.startedAt,
-            "finished_at": ISO8601DateFormatter().string(from: Date()),
-            "status": "FAILED",
-            "action": action.rawValue,
-            "response": "",
-            "error": error.localizedDescription,
-            "memory_return_candidate": "NO",
-            "canonical_write": "NO",
-            "proof_refs": [admission.request.path, admission.receipt.path],
-            "action_nicolas": "RETRY_OR_INSPECT_RUNTIME"
-        ]
-        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
-            .write(to: admission.receipt, options: .atomic)
+        return "OJO_MEDIA_\(action.rawValue)_\(stamp)_\(UUID().uuidString.prefix(8))"
     }
 
     private static let mediaStamp: DateFormatter = {

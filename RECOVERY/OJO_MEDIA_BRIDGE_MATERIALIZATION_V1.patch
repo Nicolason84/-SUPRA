@@ -1,0 +1,159 @@
+--- a/supra_chatgpt_app_bridge.py
++++ b/supra_chatgpt_app_bridge.py
+@@ -637,6 +637,113 @@
+
+     def stop(self, *_):
+         self.running = False
++
++    def _media_contract(self, message):
++        fields = {}
++        for raw in str(message or "").splitlines():
++            line = raw.strip()
++            if "=" not in line:
++                continue
++            key, value = line.split("=", 1)
++            key = key.strip()
++            if key in {
++                "MEDIA_OBJECTIVE_ID", "ACTION", "SOURCE", "SOURCE_KIND",
++                "OJO_OBJECT_ID", "OJO_OBJECT_TYPE", "OJO_OBJECT_TITLE",
++                "OJO_OBJECT_LINEAGE", "INVOCATION_ORIGIN",
++            }:
++                fields[key] = value.strip()
++        objective_id = fields.get("MEDIA_OBJECTIVE_ID", "")
++        if not re.fullmatch(r"OJO_MEDIA_[A-Z0-9_]+_[0-9]{8}_[0-9]{6}_[A-F0-9]{8}", objective_id):
++            return None
++        action = fields.get("ACTION", "")
++        if action not in {"UNDERSTAND", "EVIDENCE", "LINEAGE", "MEMORY_RETURN"}:
++            raise ValueError("INVALID_MEDIA_ACTION")
++        return {
++            "objective_id": objective_id,
++            "action": action,
++            "source": fields.get("SOURCE", ""),
++            "source_kind": fields.get("SOURCE_KIND", "UNKNOWN"),
++            "ojo_object_id": fields.get("OJO_OBJECT_ID", "UNSCOPED"),
++            "ojo_object_type": fields.get("OJO_OBJECT_TYPE", "UNSCOPED"),
++            "ojo_object_title": fields.get("OJO_OBJECT_TITLE", "UNSCOPED"),
++            "ojo_object_lineage": fields.get("OJO_OBJECT_LINEAGE", "NONE"),
++            "origin": fields.get("INVOCATION_ORIGIN", "ojO"),
++        }
++
++    def begin_media_materialization(self, message):
++        contract = self._media_contract(message)
++        if contract is None:
++            return None
++        objective_id = contract["objective_id"]
++        request_path = self.inbox / (objective_id + ".json")
++        receipt_path = self.outbox / (objective_id + ".result.json")
++        started_at = now()
++        request = {
++            "schema": "OJO_UNIVERSAL_MEDIA_REQUEST_V1",
++            "mission_id": objective_id,
++            "objective_id": objective_id,
++            "authority": "NICOLAS",
++            "started_at": started_at,
++            "action": contract["action"],
++            "source": contract["source"],
++            "source_kind": contract["source_kind"],
++            "ojo_object_id": contract["ojo_object_id"],
++            "ojo_object_type": contract["ojo_object_type"],
++            "ojo_object_title": contract["ojo_object_title"],
++            "ojo_object_lineage": contract["ojo_object_lineage"],
++            "invocation_origin": contract["origin"],
++            "canonical_write": "NO",
++            "runtime_route": "/v1/chat",
++        }
++        atomic_json(request_path, request)
++        contract.update({
++            "request_path": str(request_path),
++            "receipt_path": str(receipt_path),
++            "started_at": started_at,
++        })
++        return contract
++
++    def finish_media_materialization(self, contract, response, http_status):
++        if contract is None:
++            return
++        objective_id = contract["objective_id"]
++        reply = ""
++        if isinstance(response, dict):
++            reply = str(response.get("reply") or response.get("error") or "")
++        status = (
++            "PASS"
++            if 200 <= int(http_status) < 300
++            and isinstance(response, dict)
++            and response.get("status") == "PASS"
++            and bool(reply.strip())
++            else "UNPROVEN"
++        )
++        action = contract["action"]
++        receipt = {
++            "schema": "OJO_UNIVERSAL_MEDIA_RECEIPT_V1",
++            "mission_id": objective_id,
++            "objective_id": objective_id,
++            "authority": "NICOLAS",
++            "started_at": contract["started_at"],
++            "finished_at": now(),
++            "status": status,
++            "action": action,
++            "source": contract["source"],
++            "source_kind": contract["source_kind"],
++            "ojo_object_id": contract["ojo_object_id"],
++            "ojo_object_type": contract["ojo_object_type"],
++            "ojo_object_title": contract["ojo_object_title"],
++            "response": reply,
++            "memory_return_candidate": "YES" if action == "MEMORY_RETURN" else "NO",
++            "canonical_write": "NO",
++            "proof_refs": [contract["request_path"], contract["receipt_path"]],
++            "action_nicolas": (
++                "VALIDATE_MEMORY_RETURN_CANDIDATE"
++                if action == "MEMORY_RETURN" else "NONE"
++            ),
++            "runtime_route": "/v1/chat",
++        }
++        atomic_json(pathlib.Path(contract["receipt_path"]), receipt)
+
+     def start_chat_job(self, message, chat_id=None, auth_envelope=None):
+         with self.job_lock:
+@@ -2406,6 +2513,7 @@
+                 trace_status = "ERROR"
+                 trace_result = "request_failed"
+                 governed_on = governed_auth_enabled()
++                media_contract = None
+                 trace_mutation_authorized = False
+                 trace_scope_present = False
+                 trace_mission_present = False
+@@ -2414,6 +2522,7 @@
+                     body = json.loads(self.rfile.read(length).decode("utf-8"))
+                     message = body.get("message", "")
+                     chat_id = str(body.get("chat_id", "")).strip() or None
++                    media_contract = bridge.begin_media_materialization(message)
+
+                     if governed_on:
+                         auth_envelope, auth_error = validate_c1_authority_envelope(body)
+@@ -2468,6 +2577,16 @@
+                 except Exception as exc:
+                     response = {"status": "ERROR", "error": str(exc)[:2000]}
+                     trace_result = type(exc).__name__
++                try:
++                    bridge.finish_media_materialization(media_contract, response, http_status)
++                except Exception as exc:
++                    response = {
++                        "status": "ERROR",
++                        "error": ("MEDIA_MATERIALIZATION_FAILED:" + str(exc))[:2000],
++                    }
++                    http_status = 500
++                    trace_status = "ERROR"
++                    trace_result = "media_materialization_failed"
+                 try:
+                     trace_path = bridge.root / "CURRENT" / "C1_CHAT_TRACE.jsonl"
+                     trace_record = {
+@@ -2554,6 +2673,9 @@
+         for path in sorted(self.inbox.glob("*.json")):
+             if path.name.startswith("."):
+                 continue
++            pending = load_json(path, None)
++            if isinstance(pending, dict) and pending.get("schema") == "OJO_UNIVERSAL_MEDIA_REQUEST_V1":
++                continue
+             if path.name.startswith(ECONOMIC_REQUEST_PREFIX) and path.name.endswith(".result.json"):
+                 self.consume_economic_result(path)
+             else:
