@@ -45,17 +45,100 @@ private enum SUPRAMediaSurfaceKind: String {
     }
 }
 
+private enum SUPRAMediaRuntimeAction: String, CaseIterable, Identifiable {
+    case understand = "UNDERSTAND"
+    case evidence = "EVIDENCE"
+    case lineage = "LINEAGE"
+    case memoryReturn = "MEMORY_RETURN"
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .understand: return "Understand"
+        case .evidence: return "Evidence"
+        case .lineage: return "Lineage"
+        case .memoryReturn: return "Memory return"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .understand: return "Read only what is actually accessible."
+        case .evidence: return "Separate proof from inference and unknown."
+        case .lineage: return "Relate source to existing canon and twins."
+        case .memoryReturn: return "Prepare a governed return packet."
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .understand: return "sparkles.rectangle.stack"
+        case .evidence: return "checkmark.seal.fill"
+        case .lineage: return "point.3.connected.trianglepath.dotted"
+        case .memoryReturn: return "brain.head.profile"
+        }
+    }
+
+    var mode: ChatMode {
+        switch self {
+        case .understand, .lineage: return .ask
+        case .evidence, .memoryReturn: return .plan
+        }
+    }
+
+    var contract: String {
+        switch self {
+        case .understand:
+            return """
+            Determine what can be understood from the selected source using only accessible runtime evidence.
+            Distinguish source identity, directly accessible content, context, inference and unknown.
+            Never claim playback, transcription, metadata or semantics that were not actually observed.
+            """
+        case .evidence:
+            return """
+            Build a bounded evidence packet from what is actually accessible.
+            For every material claim, return provenance or mark EVIDENCE_NEEDED.
+            Preserve the original source identity and do not silently transform a user note into fact.
+            """
+        case .lineage:
+            return """
+            Relate the source to EXISTING Puchero memory, Atlas, twins, missions, products and evidence when proven.
+            Reuse existing identities. Do not create a parallel canon, duplicate twin or invented relationship.
+            Return MATCHED_EXISTING, POSSIBLE_MATCH and UNRESOLVED separately.
+            """
+        case .memoryReturn:
+            return """
+            Prepare a governed memory-return candidate.
+            Do not write canon silently and do not mutate authority.
+            Separate FACTS, USER_NOTE, INFERENCES, UNKNOWN, EVIDENCE_NEEDED, MEMORY_RETURN_CANDIDATE and NEXT_ACTION.
+            """
+        }
+    }
+}
+
 struct SUPRAMediaUniversalView: View {
+    @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
+
     @State private var address = ""
     @State private var sourceURL: URL?
     @State private var note = ""
     @State private var runtimeOutput = ""
     @State private var runtimeState = "IDLE"
+    @State private var runtimeActionLabel = "NONE"
     @State private var lastError: String?
-    @State private var isPreparingReturn = false
+    @State private var activeAction: SUPRAMediaRuntimeAction?
 
     private let runtime = SUPRAChatRuntimeAdapter()
     private let integration = SUPRACAnnoNicoIntegration.snapshot()
+    private let invocationOrigin: String
+
+    init(initialURL: URL? = nil, origin: String = "ojO") {
+        invocationOrigin = origin
+        _address = State(initialValue: initialURL?.absoluteString ?? "")
+        _sourceURL = State(initialValue: initialURL)
+        _runtimeState = State(initialValue: initialURL == nil ? "IDLE" : "SOURCE_READY")
+    }
 
     private var sourceKind: SUPRAMediaSurfaceKind? {
         sourceURL.map(SUPRAMediaSurfaceKind.resolve)
@@ -69,11 +152,35 @@ struct SUPRAMediaUniversalView: View {
         ExternalConnectorCatalog.descriptor(id: "youtube")
     }
 
+    private var canonicalReferences: [CAnnoNicoSourceReference] {
+        let rank = [
+            "puchero.memory",
+            "atlas.runtime",
+            "twin.registry",
+            "twin.environment.fabric",
+            "twin.system.file",
+            "video.swap"
+        ]
+        return integration.references.sorted {
+            (rank.firstIndex(of: $0.id) ?? rank.count)
+                < (rank.firstIndex(of: $1.id) ?? rank.count)
+        }
+    }
+
+    private var liveProcesses: [SUPRAObservedProcess] {
+        Array(
+            liveStore.processes
+                .filter { $0.stage != .historical }
+                .prefix(4)
+        )
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 hero
                 sourceControls
+                runtimeActions
 
                 HStack(alignment: .top, spacing: 16) {
                     mediaStage
@@ -100,6 +207,10 @@ struct SUPRAMediaUniversalView: View {
                 endPoint: .bottomTrailing
             )
         )
+        .task {
+            liveStore.start()
+            liveStore.refresh(force: true)
+        }
     }
 
     private var hero: some View {
@@ -171,6 +282,7 @@ struct SUPRAMediaUniversalView: View {
                 note = ""
                 runtimeOutput = ""
                 runtimeState = "IDLE"
+                runtimeActionLabel = "NONE"
                 lastError = nil
             }
             .buttonStyle(.plain)
@@ -212,6 +324,58 @@ struct SUPRAMediaUniversalView: View {
         .supraCard(radius: 20, strokeOpacity: 0.08)
     }
 
+    private var runtimeActions: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Label("RUNTIME ACTIONS", systemImage: "bolt.horizontal.circle.fill")
+                    .font(.caption.weight(.heavy))
+                    .foregroundStyle(.purple)
+                Spacer()
+                Text("SOURCE → RUNTIME → EVIDENCE → MEMORY → CANON")
+                    .font(.caption2.monospaced().weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 220), spacing: 10)],
+                spacing: 10
+            ) {
+                ForEach(SUPRAMediaRuntimeAction.allCases) { action in
+                    Button {
+                        Task { await runAction(action) }
+                    } label: {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: action.symbol)
+                                .font(.title3)
+                                .foregroundStyle(.purple)
+                                .frame(width: 28)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(
+                                    activeAction == action
+                                        ? "\(action.title)…"
+                                        : action.title
+                                )
+                                .font(.headline)
+                                Text(action.subtitle)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            Spacer(minLength: 0)
+                        }
+                        .padding(12)
+                        .frame(maxWidth: .infinity, minHeight: 76, alignment: .topLeading)
+                        .background(.quaternary, in: RoundedRectangle(cornerRadius: 14))
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(sourceURL == nil || activeAction != nil)
+                }
+            }
+        }
+        .padding(16)
+        .supraCard(radius: 18, strokeOpacity: 0.07)
+    }
+
     private var contextRail: some View {
         VStack(alignment: .leading, spacing: 14) {
             contextBlock("SOURCE", symbol: "link") {
@@ -239,6 +403,57 @@ struct SUPRAMediaUniversalView: View {
                 }
             }
 
+            contextBlock("LIVE OJO CONTEXT", symbol: "dot.radiowaves.left.and.right") {
+                truthRow("Bridge", liveStore.bridgeAvailable ? "CONNECTED" : "UNAVAILABLE")
+                truthRow("Flow", liveStore.momentumLabel)
+                truthRow("In flight", "\(liveStore.inFlightCount)")
+                truthRow("Materialized", "\(liveStore.materializedCount)")
+
+                if liveProcesses.isEmpty {
+                    Text("No current non-historical process projected.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Divider()
+                    ForEach(liveProcesses, id: \.id) { process in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(process.title)
+                                .font(.caption.weight(.semibold))
+                                .lineLimit(1)
+                            Text("\(process.stage.label) · \(process.ageLabel) · \(process.id)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                        }
+                    }
+                }
+            }
+
+            contextBlock("CANONICAL LINEAGE", symbol: "point.3.connected.trianglepath.dotted") {
+                Text("Existing owners only · no parallel canon")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                ForEach(canonicalReferences, id: \.id) { reference in
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Text(reference.id)
+                                .font(.caption.monospaced().weight(.semibold))
+                            Spacer()
+                            Text(reference.state.rawValue.uppercased())
+                                .font(.caption2.monospaced().weight(.heavy))
+                                .foregroundStyle(
+                                    reference.state == .recovered ? .green : .orange
+                                )
+                        }
+                        Text(reference.role)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+            }
+
             contextBlock("CIRCULATION", symbol: "arrow.triangle.2.circlepath") {
                 Text("SOURCE → CONTEXT → EVIDENCE → NOTE → MEMORY RETURN → CANNONICO")
                     .font(.caption.monospaced().weight(.semibold))
@@ -254,15 +469,15 @@ struct SUPRAMediaUniversalView: View {
                     .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
 
                 Button {
-                    Task { await prepareMemoryReturn() }
+                    Task { await runAction(.memoryReturn) }
                 } label: {
                     Label(
-                        isPreparingReturn ? "Preparing…" : "Prepare memory return",
+                        activeAction == .memoryReturn ? "Preparing…" : "Prepare memory return",
                         systemImage: "brain.head.profile"
                     )
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(sourceURL == nil || isPreparingReturn)
+                .disabled(sourceURL == nil || activeAction != nil)
             }
 
             contextBlock("GUARDRAIL", symbol: "person.badge.key.fill") {
@@ -276,10 +491,15 @@ struct SUPRAMediaUniversalView: View {
     private var runtimeCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Label("MEMORY RETURN PACKET", systemImage: "shippingbox.fill")
+                Label(
+                    runtimeActionLabel == "MEMORY_RETURN"
+                        ? "MEMORY RETURN PACKET"
+                        : "MEDIA RUNTIME RESULT",
+                    systemImage: "shippingbox.fill"
+                )
                     .font(.headline)
                 Spacer()
-                Text(runtimeState)
+                Text("\(runtimeActionLabel) · \(runtimeState)")
                     .font(.caption.weight(.heavy))
                     .foregroundStyle(lastError == nil ? .green : .red)
             }
@@ -328,12 +548,34 @@ struct SUPRAMediaUniversalView: View {
             Spacer()
             Text(value)
                 .font(.caption2.monospaced().weight(.semibold))
-                .foregroundStyle(
-                    value.contains("CONNECTED") || value.contains("RECOVERED") || value.contains("FRESH")
-                        ? .green
-                        : .orange
-                )
+                .foregroundStyle(truthTint(value))
         }
+    }
+
+    private func truthTint(_ value: String) -> Color {
+        let upper = value.uppercased()
+        if upper.contains("CONNECTED")
+            || upper.contains("RECOVERED")
+            || upper.contains("FRESH")
+            || upper == "PASS"
+            || upper == "CLEAR"
+            || upper == "PROGRESSING"
+            || upper == "ACCELERATING" {
+            return .green
+        }
+        if upper.contains("ERROR")
+            || upper.contains("FAILED")
+            || upper.contains("UNAVAILABLE")
+            || upper.contains("CRITICAL") {
+            return .red
+        }
+        if upper.contains("UNPROVEN")
+            || upper.contains("UNRESOLVED")
+            || upper.contains("STALE")
+            || upper.contains("BLOCK") {
+            return .orange
+        }
+        return .secondary
     }
     private func resolveAddress() {
         let raw = address.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -380,36 +622,75 @@ struct SUPRAMediaUniversalView: View {
     }
 
     @MainActor
-    private func prepareMemoryReturn() async {
-        guard let sourceURL else { return }
+    private func runAction(_ action: SUPRAMediaRuntimeAction) async {
+        guard let sourceURL, activeAction == nil else { return }
 
-        isPreparingReturn = true
+        activeAction = action
+        runtimeActionLabel = action.rawValue
         runtimeState = "RUNNING"
+        runtimeOutput = ""
         lastError = nil
-        defer { isPreparingReturn = false }
+        liveStore.refresh(force: true)
+        defer { activeAction = nil }
 
         let mediaState = mediaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let youtubeState = youtubeDescriptor?.status.rawValue ?? "UNPROVEN"
         let noteValue = note.trimmingCharacters(in: .whitespacesAndNewlines)
+        let processContext = liveProcesses.map {
+            let proof = $0.proofRefs.prefix(3).joined(separator: ",")
+            return "\($0.id)|stage=\($0.stage.label)|status=\($0.statusText ?? "UNKNOWN")|proof=\(proof.isEmpty ? "NONE" : proof)"
+        }.joined(separator: "\n")
+        let canonContext = canonicalReferences.map {
+            "\($0.id)|state=\($0.state.rawValue.uppercased())|role=\($0.role)|outputs=\($0.outputs.joined(separator: ","))"
+        }.joined(separator: "\n")
 
         let prompt = """
+        OJO_UNIVERSAL_MEDIA_V2
         AUTHORITY=NICOLAS
-        MISSION=OJO_MEDIA_MEMORY_RETURN_PREPARE_V1
+        ACTION=\(action.rawValue)
+        INVOCATION_ORIGIN=\(invocationOrigin)
+        READ_EXISTING_FIRST=YES
+        NO_PARALLEL_ENGINE=YES
+
         SOURCE=\(sourceURL.absoluteString)
         SOURCE_KIND=\(sourceKind?.rawValue ?? "UNKNOWN")
         YOUTUBE_CONNECTION=\(youtubeState)
         MEDIA_CAPABILITY=\(mediaState)
         HUMAN_NOTE=\(noteValue.isEmpty ? "NONE" : noteValue)
 
-        Prepare a bounded evidence-return packet using existing SUPRA memory, provenance and canon.
-        Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.
-        Do not write canon silently.
-        Separate FACTS, USER_NOTE, UNKNOWN, EVIDENCE_NEEDED, MEMORY_RETURN_CANDIDATE and NEXT_ACTION.
+        LIVE_RUNTIME_CONTEXT:
+        \(processContext.isEmpty ? "NONE" : processContext)
+
+        EXISTING_CANNONICO_REFERENCES:
+        \(canonContext.isEmpty ? "NONE" : canonContext)
+
+        ACTION_CONTRACT:
+        \(action.contract)
+
+        GLOBAL_GUARDRAILS:
+        - Treat the URL as source identity, not proof that media contents were observed.
+        - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
+        - Reuse existing Puchero, Atlas, Twins, VideoSwap, Evidence and Memory owners when present.
+        - No silent canonical write, no invented relation, no authority mutation.
+        - USER_NOTE remains attributed to Nicolas unless independently evidenced.
+
+        RETURN:
+        ACTION
+        ACCESS_PROOF
+        FACTS
+        USER_NOTE
+        INFERENCES
+        UNKNOWN
+        EVIDENCE_REFS
+        EXISTING_LINEAGE
+        EVIDENCE_NEEDED
+        MEMORY_RETURN_CANDIDATE
+        NEXT_ACTION
         """
 
         do {
-            runtimeOutput = try await runtime.execute(prompt: prompt, mode: .plan)
-            runtimeState = "PREPARED"
+            runtimeOutput = try await runtime.execute(prompt: prompt, mode: action.mode)
+            runtimeState = action == .memoryReturn ? "PREPARED" : "COMPLETE"
         } catch {
             runtimeOutput = ""
             runtimeState = "ERROR"
