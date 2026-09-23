@@ -2025,6 +2025,9 @@ struct ContentView: View {
         .task {
             startAutonomousHumanGateIfNeeded()
         }
+        .onChange(of: store.chatMessages.count) { _, _ in
+            startAutonomousHumanGateIfNeeded()
+        }
     }
 
     private var humanAutonomyCard: some View {
@@ -2272,49 +2275,28 @@ struct ContentView: View {
             return
         }
 
-        autonomousHumanGateStarted = true
-
-        Task {
-            while autonomousHumanGateEnabled {
-                if Task.isCancelled {
-                    break
-                }
-
-                if let reply = autopilotLatestReply,
-                   reply != autonomousLastProcessedReply {
-                    autonomousLastProcessedReply = reply
-
-                    let synthesis =
-                        humanSynthesis(from: reply)
-
-                    if synthesis.requiresHuman {
-                        autonomousStatus = "HUMAN GATE"
-                        autonomousHumanGateEnabled = false
-                        break
-                    }
-
-                    if !store.chatBusy {
-                        autonomousCycleCount += 1
-                        autonomousStatus =
-                            "AUTONOMOUS · CYCLE "
-                            + "\(autonomousCycleCount)"
-
-                        await store.sendChat(
-                            "SUPRA AUTONOMOUS CLOSED LOOP. Continue le travail automatiquement. "
-                            + "Observe, vérifie, combine, hybridise, fusionne, complète, réduit, amplifie et mémorise uniquement ce qui est sûr, prouvé, allowlisté et réversible. "
-                            + "Ne demande aucune intervention humaine sauf décision critique: risque élevé, conflit d’autorité, rupture de compatibilité, promotion canonique, action irréversible ou impact humain/stratégique majeur. "
-                            + "Retourne d’abord une synthèse humaine, puis les opérations structurées MODULE, OPERATION, SOURCE, CIBLE, CONTRAT_IO, PREUVES, RISQUE, ACTION_AUTOMATIQUE, DECISION_HUMAINE_REQUISE."
-                        )
-                    }
-                }
-
-                try? await Task.sleep(
-                    nanoseconds: 4_000_000_000
-                )
-            }
-
-            autonomousHumanGateStarted = false
+        guard let reply = autopilotLatestReply,
+              reply != autonomousLastProcessedReply
+        else {
+            return
         }
+
+        autonomousHumanGateStarted = true
+        autonomousLastProcessedReply = reply
+
+        let synthesis = humanSynthesis(from: reply)
+
+        if synthesis.requiresHuman {
+            autonomousStatus = "HUMAN GATE"
+            autonomousHumanGateEnabled = false
+        } else {
+            autonomousCycleCount += 1
+            autonomousStatus = "AUTONOMOUS · WAITING FOR MATERIAL EVENT"
+        }
+
+        // Do not self-prompt from an assistant reply. A new cycle must be
+        // admitted by a fresh material event or an explicit human request.
+        autonomousHumanGateStarted = false
     }
 
     private func sendHumanChatDraft() {
