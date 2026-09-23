@@ -310,6 +310,12 @@ publish_container_projection(){
   local decisions_source="$HOME/NOVA_OS/SUPRA_READ_RECONCILED_VERDICT_AND_REPUBLISH_ARCHITECTURE_DECISION_BOARD_V1/CURRENT/ARCHITECTURAL_DECISIONS.json"
   local updater_projection="$projection_root/UPDATER_STATE.json"
   local decisions_projection="$projection_root/ARCHITECTURAL_DECISIONS.json"
+  local patrimony_projection="$projection_root/PATRIMONY_STATE.json"
+  local patrimony_root="$HOME/NOVA_DEV/NOVA_ERA_PATRIMONY_QUERY_INDEX_V1"
+  local capability_source="$HOME/NOVA_OS/SUPRA_FACTORY_V1/REGISTRIES/CAPABILITY_REGISTRY.json"
+  local memory_source="$HOME/NOVA_LABS/04_MEMORY_CORE/STATE/memory_index.json"
+  local labs_canon_source="$HOME/NOVA_LABS/00_CANON/CANON_BOOT.json"
+  local product_source="$HOME/NOVA_LABS/10_ENVIRONMENT/product_registry/PRODUCT_REGISTRY_SUMMARY.json"
 
   mkdir -p "$projection_root" || {
     printf 'CONTAINER_PROJECTION=UNAVAILABLE_CREATE_DIR\n'
@@ -385,6 +391,82 @@ PY
     fi
   else
     printf 'CONTAINER_DECISION_PROJECTION=SOURCE_MISSING\n'
+  fi
+
+  if [ -s "$patrimony_root/QUERY_INDEX.json" ] &&
+     [ -s "$patrimony_root/ENTITY_INDEX.json" ] &&
+     [ -s "$capability_source" ] &&
+     [ -s "$memory_source" ] &&
+     [ -s "$labs_canon_source" ] &&
+     [ -s "$product_source" ]; then
+    if "$PY" -       "$patrimony_root/QUERY_INDEX.json"       "$patrimony_root/ENTITY_INDEX.json"       "$capability_source"       "$memory_source"       "$labs_canon_source"       "$product_source"       "$patrimony_projection" <<'PY'
+import datetime,json,os,pathlib,sys,tempfile
+
+query_path, entity_path, capability_path, memory_path, labs_path, product_path, destination = map(pathlib.Path, sys.argv[1:])
+
+def load(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+query=load(query_path)
+entities=load(entity_path)
+capabilities=load(capability_path)
+memory=load(memory_path)
+labs=load(labs_path)
+products=load(product_path)
+
+foundation_categories={"ARCHITECTURE","KNOWLEDGE","HISTORY"}
+foundational=[
+    {
+        "entity_id":row.get("entity_id"),
+        "canonical_name":row.get("canonical_name"),
+        "evidence_status":row.get("evidence_status","UNKNOWN"),
+        "category":row.get("category","UNKNOWN"),
+        "source_paths":row.get("source_paths",[])
+    }
+    for row in entities
+    if row.get("category") in foundation_categories
+][:12]
+
+capability_rows=capabilities.get("capabilities",[]) if isinstance(capabilities,dict) else []
+memory_objects=len(memory) if isinstance(memory,(dict,list)) else 0
+
+out={
+    "schema":"SUPRA_PATRIMONY_PROJECTION_V1",
+    "projection_authority":"EXISTING_GOVERNED_SUPRA_UPDATER",
+    "projection_generated_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source_paths":{
+        "query_index":str(query_path),
+        "entity_index":str(entity_path),
+        "capability_registry":str(capability_path),
+        "memory_index":str(memory_path),
+        "labs_canon":str(labs_path),
+        "product_registry":str(product_path)
+    },
+    "entity_counts":query.get("entity_counts",{}),
+    "status_counts":query.get("status_counts",{}),
+    "capabilities_count":len(capability_rows),
+    "memory_objects":memory_objects,
+    "labs_canon":{
+        "status":labs.get("status","UNKNOWN"),
+        "rule":labs.get("rule","UNKNOWN"),
+        "next_priority":labs.get("next_priority","UNKNOWN")
+    },
+    "products":products.get("products",{}),
+    "foundational_entities":foundational
+}
+
+destination.parent.mkdir(parents=True,exist_ok=True)
+fd,tmp=tempfile.mkstemp(prefix=".PATRIMONY_STATE.",suffix=".json",dir=str(destination.parent)); os.close(fd)
+pathlib.Path(tmp).write_text(json.dumps(out,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+os.replace(tmp,destination)
+PY
+    then
+      printf 'CONTAINER_PATRIMONY_PROJECTION=%s\n' "$patrimony_projection"
+    else
+      printf 'CONTAINER_PATRIMONY_PROJECTION=UNPROVEN\n'
+    fi
+  else
+    printf 'CONTAINER_PATRIMONY_PROJECTION=SOURCE_MISSING\n'
   fi
 }
 
