@@ -20,6 +20,7 @@ struct Decision: Identifiable, Hashable, Sendable {
         case approved = "Approved"
         case rejected = "Rejected"
         case deferred = "Deferred"
+        case historical = "Historical"
     }
 
     enum Priority: String, CaseIterable, Hashable, Sendable {
