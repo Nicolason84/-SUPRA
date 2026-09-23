@@ -768,7 +768,8 @@ struct SUPRAMediaUniversalView: View {
 
         GLOBAL_GUARDRAILS:
         - Treat the URL as source identity, not proof that media contents were observed.
-        - Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.\n        - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
+        - Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.
+        - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
         - Reuse existing Puchero, Atlas, Twins, VideoSwap, Evidence and Memory owners when present.
         - No silent canonical write, no invented relation, no authority mutation.
         - USER_NOTE remains attributed to Nicolas unless independently evidenced.
@@ -788,6 +789,10 @@ struct SUPRAMediaUniversalView: View {
         """
 
         do {
+            runtimeState = "RECOVERING"
+            try await runtime.checkHealth()
+            runtimeState = "RUNNING"
+
             let admission = try materializeAdmission(
                 action: action,
                 sourceURL: sourceURL,

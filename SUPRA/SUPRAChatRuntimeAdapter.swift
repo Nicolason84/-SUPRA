@@ -108,42 +108,35 @@ final class SUPRAChatRuntimeAdapter: SUPRAChatRuntimeProtocol {
     }
 
     private func restartExistingBridge() async throws {
-        let fileManager = FileManager.default
-        let plist = fileManager.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/LaunchAgents/com.novaera.sol-github-bridge.plist")
-
-        guard fileManager.fileExists(atPath: plist.path) else {
-            throw SUPRAChatRuntimeError.bridgeUnavailable(
-                "Bridge local existant introuvable."
-            )
-        }
-
         let uid = getuid()
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/launchctl")
-        process.arguments = [
-            "kickstart",
-            "-k",
-            "gui/\(uid)/com.novaera.sol-github-bridge"
-        ]
+        let label = "com.novaera.supra.bridge-watcher"
+        let domain = "gui/\(uid)"
 
-        let output = Pipe()
-        process.standardOutput = output
-        process.standardError = output
+        func runLaunchctl(_ arguments: [String]) -> Int32 {
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/bin/launchctl")
+            process.arguments = arguments
+            let output = Pipe()
+            process.standardOutput = output
+            process.standardError = output
 
-        do {
-            try process.run()
-            process.waitUntilExit()
-        } catch {
-            throw SUPRAChatRuntimeError.bridgeUnavailable(
-                "Impossible de relancer le bridge local existant."
-            )
+            do {
+                try process.run()
+                process.waitUntilExit()
+                return process.terminationStatus
+            } catch {
+                return -1
+            }
         }
 
-        guard process.terminationStatus == 0 else {
-            throw SUPRAChatRuntimeError.bridgeUnavailable(
-                "Le bridge local n’a pas pu être relancé."
-            )
+        if runLaunchctl(["kickstart", "-k", "\(domain)/\(label)"]) != 0 {
+            let userHome = NSHomeDirectoryForUser(NSUserName())
+                ?? "/Users/\(NSUserName())"
+            let plist = URL(fileURLWithPath: userHome, isDirectory: true)
+                .appendingPathComponent("Library/LaunchAgents/\(label).plist")
+
+            _ = runLaunchctl(["bootstrap", domain, plist.path])
+            _ = runLaunchctl(["kickstart", "-k", "\(domain)/\(label)"])
         }
 
         try? await Task.sleep(nanoseconds: 1_200_000_000)

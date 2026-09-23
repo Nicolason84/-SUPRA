@@ -85,6 +85,9 @@ check "ojO Media tab renders universal media surface" contains "SUPRA/OJOPrivate
 check "Presence YouTube routes to ojO universal media" contains "SUPRA/PublicPresenceView.swift" 'Open ojO Universal Media'
 check "Universal Media refuses silent canon writes" contains "SUPRA/SUPRAMediaUniversalView.swift" 'Do not write canon silently.'
 check "Universal Media refuses invented media verification" contains "SUPRA/SUPRAMediaUniversalView.swift" 'Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.'
+check "Universal Media self-heals runtime bridge before action" contains "SUPRA/SUPRAMediaUniversalView.swift" 'try await runtime.checkHealth()'
+check "Chat runtime restarts canonical bridge watcher" contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.supra.bridge-watcher'
+check "Chat runtime does not restart retired bridge label" not_contains "SUPRA/SUPRAChatRuntimeAdapter.swift" 'com.novaera.sol-github-bridge'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys
