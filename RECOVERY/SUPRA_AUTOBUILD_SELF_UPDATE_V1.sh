@@ -106,8 +106,8 @@ retire_systemwide_legacy_supra(){
     return 0
   fi
 
-  printf 'SYSTEM_LEGACY_SUPRA_RETIRE_BLOCKED=%s\n' "$SYSTEM_LEGACY_TARGET"
-  return 1
+  printf 'SYSTEM_LEGACY_SUPRA_RETIRE_BLOCKED_NON_FATAL=%s\n' "$SYSTEM_LEGACY_TARGET"
+  return 0
 }
 
 focus_canonical_supra(){
