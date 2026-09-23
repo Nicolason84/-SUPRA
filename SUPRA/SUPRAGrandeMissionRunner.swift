@@ -87,6 +87,17 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     private init() {
         runtime = SUPRAChatRuntimeAdapter()
+        restorePersistedExecutionControlState()
+    }
+
+    private func restorePersistedExecutionControlState() {
+        guard let data = try? Data(contentsOf: stateURL),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let status = object["status"] as? String else {
+            return
+        }
+        isStandby = status == "STANDBY"
+        isAborted = status == "ABORTED"
     }
 
     var rootURL: URL {
