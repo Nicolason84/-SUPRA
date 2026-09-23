@@ -5,6 +5,7 @@ REPO_SLUG="Nicolason84/-SUPRA"
 CANON_BRANCH="supra/human-gate-single-source-20260721_072447"
 API_ROOT="https://api.github.com/repos/$REPO_SLUG"
 CODELOAD_ROOT="https://codeload.github.com/$REPO_SLUG/tar.gz"
+RAW_ROOT="https://raw.githubusercontent.com/$REPO_SLUG"
 WORKFLOW_NAME="Validate Canonical SUPRA"
 
 SUPPORT="$HOME/Library/Application Support/NOVA ERA/SUPRA Updater"
@@ -80,91 +81,21 @@ OSA
 }
 
 ensure_cannonico_desktop_launcher(){
-  local desktop_dir="$HOME/Desktop"
-  local launcher="$desktop_dir/CAnnoNico.app"
-  local contents="$launcher/Contents"
-  local macos="$contents/MacOS"
-  local executable="$macos/CAnnoNico"
-  local plist="$contents/Info.plist"
+  local launcher="$HOME/Desktop/CAnnoNico.app"
+  local executable="$launcher/Contents/MacOS/CAnnoNico"
+  local plist="$launcher/Contents/Info.plist"
+  local version=""
 
-  mkdir -p "$desktop_dir" || return 1
-  rm -rf "$launcher"
-  mkdir -p "$macos" || return 1
-
-  cat >"$executable" <<'SH'
-#!/bin/bash
-set -u
-
-SUPPORT="$HOME/Library/Application Support/NOVA ERA/SUPRA Updater"
-UPDATER="$SUPPORT/supra_autobuild_self_update.sh"
-APP="$HOME/Applications/SUPRA.app"
-LOG="$SUPPORT/cannonico_launcher.log"
-LOCK="$SUPPORT/update.lock"
-
-mkdir -p "$SUPPORT"
-
-/usr/bin/osascript -e 'display notification "Vérification de la version canonique…" with title "CAnnoNico"' >/dev/null 2>&1 || true
-
-if [ ! -x "$UPDATER" ]; then
-  /usr/bin/osascript -e 'display alert "CAnnoNico" message "Updater SUPRA introuvable." as critical' >/dev/null 2>&1 || true
-  exit 2
-fi
-
-n=0
-while [ -d "$LOCK" ]; do
-  n=$((n+1))
-  if [ "$n" -gt 900 ]; then
-    /usr/bin/osascript -e 'display alert "CAnnoNico" message "Une mise à jour SUPRA est restée verrouillée trop longtemps." as critical' >/dev/null 2>&1 || true
-    exit 75
+  if [ -x "$executable" ] && [ -f "$plist" ]; then
+    version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$plist" 2>/dev/null || true)"
+    if [ "$version" = "4.0" ]; then
+      printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
+      printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=NATIVE_MACHO_V4\n'
+      return 0
+    fi
   fi
-  /bin/sleep 1
-done
 
-/bin/bash "$UPDATER" >>"$LOG" 2>&1
-rc=$?
-
-if [ "$rc" -ne 0 ]; then
-  /usr/bin/osascript -e 'display alert "CAnnoNico" message "La mise à jour SUPRA a échoué. Consulte cannonico_launcher.log." as critical' >/dev/null 2>&1 || true
-  exit "$rc"
-fi
-
-if [ ! -d "$APP" ]; then
-  /usr/bin/osascript -e 'display alert "CAnnoNico" message "SUPRA canonique introuvable après mise à jour." as critical' >/dev/null 2>&1 || true
-  exit 3
-fi
-
-/usr/bin/open "$APP" >/dev/null 2>&1 || exit 4
-/usr/bin/osascript -e 'display notification "SUPRA canonique prête." with title "CAnnoNico"' >/dev/null 2>&1 || true
-exit 0
-SH
-
-  chmod 755 "$executable" || return 1
-
-  cat >"$plist" <<'PLIST'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>CFBundleDisplayName</key><string>CAnnoNico</string>
-  <key>CFBundleExecutable</key><string>CAnnoNico</string>
-  <key>CFBundleIdentifier</key><string>com.novaera.cannonico-launcher</string>
-  <key>CFBundleName</key><string>CAnnoNico</string>
-  <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>3.0</string>
-  <key>CFBundleVersion</key><string>3</string>
-  <key>LSMinimumSystemVersion</key><string>13.0</string>
-</dict>
-</plist>
-PLIST
-
-  /usr/bin/plutil -lint "$plist" >/dev/null 2>&1 || return 1
-  /usr/bin/codesign --force --sign - --timestamp=none "$launcher" >/dev/null 2>&1 || true
-  xattr -dr com.apple.quarantine "$launcher" >/dev/null 2>&1 || true
-
-  [ -x "$executable" ] || return 1
-  [ -f "$plist" ] || return 1
-  printf 'CANNONICO_DESKTOP_LAUNCHER=%s\n' "$launcher"
-  printf 'CANNONICO_DESKTOP_LAUNCHER_MODE=UPDATE_FIRST_V3\n'
+  printf 'CANNONICO_DESKTOP_LAUNCHER=NEEDS_NATIVE_V4_INSTALL\n'
   return 0
 }
 
@@ -472,7 +403,7 @@ PY
 import json,sys
 x=json.load(open(sys.argv[1],encoding="utf-8"))
 files=[f.get("filename","") for f in x.get("files",[])]
-prefixes=("SUPRA/","Packages/","SUPRA.xcodeproj/","RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh","RECOVERY/INSTALL_SUPRA_AUTOUPDATE_LAUNCHAGENT_V1.sh")
+prefixes=("SUPRA/","Packages/","SUPRA.xcodeproj/")
 print("YES" if any(p.startswith(prefixes) for p in files) else "NO")
 PY
 )"
@@ -500,6 +431,17 @@ printf 'CI_PROOF=%s\n' "$CI_PROOF"
 
 if [ "$NEEDS_BUILD" = "NO" ] && [ -d "$TARGET" ]; then
   say "4/10 No app-impacting change"
+
+  SELF_REFRESH_TMP="$(mktemp)"
+  if "$CURL" -fsSL "$RAW_ROOT/$REMOTE_SHA/RECOVERY/SUPRA_AUTOBUILD_SELF_UPDATE_V1.sh" -o "$SELF_REFRESH_TMP" &&
+     /bin/bash -n "$SELF_REFRESH_TMP"; then
+    cp "$SELF_REFRESH_TMP" "$UPDATER_DST"
+    chmod 700 "$UPDATER_DST"
+    printf 'AUTOUPDATE_SELF_REFRESH=PASS\n'
+  else
+    printf 'AUTOUPDATE_SELF_REFRESH=UNPROVEN\n'
+  fi
+  rm -f "$SELF_REFRESH_TMP"
   "$PY" - "$STATE" "$REMOTE_SHA" "$INSTALLED_SHA" "$CI_PROOF" <<'PY'
 import json,sys,datetime,pathlib
 p=pathlib.Path(sys.argv[1])
