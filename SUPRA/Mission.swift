@@ -21,6 +21,7 @@ struct Mission: Identifiable, Hashable, Sendable {
         case active = "Active"
         case blocked = "Blocked"
         case completed = "Completed"
+        case historical = "Historical"
     }
 
     enum Priority: String, CaseIterable, Hashable, Sendable {
