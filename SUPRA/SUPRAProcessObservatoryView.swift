@@ -929,6 +929,10 @@ private actor SUPRAProcessObservatoryScanner {
     private let maxRetainedTextBytes = 4_096
     private let maxRetainedProofRefs = 32
     private let maxRetainedProofRefBytes = 2_048
+    // OpenCode execution is bounded to 15 minutes. Five minutes of grace keeps
+    // slow terminalization from becoming false history while preventing an
+    // orphaned executive admission from blocking the live radar for seven days.
+    private let executiveAdmissionGrace: TimeInterval = 20 * 60
     private var parsedCache: [String: SUPRAParsedCacheEntry] = [:]
     private var scanCursor = 0
 
@@ -1136,13 +1140,22 @@ private actor SUPRAProcessObservatoryScanner {
             let hasValidResult = parsed != nil
             let started = inferredDate(from: id) ?? input?.modifiedAt ?? output?.modifiedAt ?? .now
             let age = max(0, Date().timeIntervalSince(started))
-            let stage = stage(hasInbox: hasInbox, hasOutput: hasOutput, parsed: parsed, age: age)
-            let drift = drift(
-                hasInbox: hasInbox,
-                hasOutput: hasOutput,
-                hasValidResult: hasValidResult,
-                age: age
-            )
+            let expiredExecutiveAdmission =
+                id.hasPrefix("EXECUTIVE_OBJECTIVE_")
+                && hasInbox
+                && !hasOutput
+                && age >= executiveAdmissionGrace
+            let stage = expiredExecutiveAdmission
+                ? SUPRAProcessStage.historical
+                : stage(hasInbox: hasInbox, hasOutput: hasOutput, parsed: parsed, age: age)
+            let drift = expiredExecutiveAdmission
+                ? SUPRAProcessDrift.none
+                : drift(
+                    hasInbox: hasInbox,
+                    hasOutput: hasOutput,
+                    hasValidResult: hasValidResult,
+                    age: age
+                )
 
             processes.append(
                 SUPRAObservedProcess(
@@ -1155,12 +1168,16 @@ private actor SUPRAProcessObservatoryScanner {
                     progress: progress(for: stage, parsed: parsed),
                     drift: drift,
                     isBottleneck: false,
-                    statusText: hasOutput && parsed == nil
-                        ? invalidResultStatus(
-                            output,
-                            aggregateBudgetLimited: aggregateBudgetLimitedIDs.contains(id)
-                        )
-                        : parsed?.status,
+                    statusText: expiredExecutiveAdmission
+                        ? "Historical unresolved executive admission · no receipt after bounded runtime + grace"
+                        : (
+                            hasOutput && parsed == nil
+                                ? invalidResultStatus(
+                                    output,
+                                    aggregateBudgetLimited: aggregateBudgetLimitedIDs.contains(id)
+                                )
+                                : parsed?.status
+                        ),
                     actionNicolas: parsed?.actionNicolas,
                     f2StatusAfter: parsed?.f2StatusAfter,
                     lg01Classification: parsed?.lg01Classification,
@@ -1458,7 +1475,7 @@ private actor SUPRAProcessObservatoryScanner {
 
         // REJECTED is a terminal receipt, not a live bottleneck. Keep it visible
         // as failed evidence without allowing it to monopolize Current bottleneck.
-        if status.contains("REJECTED") || status.contains("FAIL") {
+        if status.contains("REJECTED") || status.contains("FAIL") || status.contains("ERROR") {
             return age >= 86_400 ? .historical : .failed
         }
 
