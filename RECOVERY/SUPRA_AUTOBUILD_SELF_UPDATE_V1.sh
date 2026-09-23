@@ -402,7 +402,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
     sleep 1
     retire_systemwide_legacy_supra || fail "SYSTEMWIDE_LEGACY_SUPRA_COULD_NOT_BE_RETIRED:$SYSTEM_LEGACY_TARGET" 23
     open "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 24
-    for _ in $(seq 1 30); do
+    for ((WAIT_I=0; WAIT_I<30; WAIT_I++)); do
       PIDS="$(pgrep -x SUPRA || true)"
       RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
       [ "$RUNNING_COUNT" -eq 1 ] && break
@@ -577,7 +577,7 @@ bridge_health(){
 }
 
 BRIDGE_HEALTH=UNPROVEN
-for _ in $(seq 1 12); do
+for ((BRIDGE_I=0; BRIDGE_I<12; BRIDGE_I++)); do
   if bridge_health; then BRIDGE_HEALTH=PASS; break; fi
   sleep 0.5
 done
@@ -620,7 +620,7 @@ focus_canonical_supra
 PID=""
 PIDS=""
 RUNNING_COUNT=0
-for _ in $(seq 1 30); do
+for ((LAUNCH_I=0; LAUNCH_I<30; LAUNCH_I++)); do
   PIDS="$(pgrep -x SUPRA || true)"
   RUNNING_COUNT="$(printf '%s\n' "$PIDS" | sed '/^$/d' | wc -l | tr -d ' ')"
   if [ "$RUNNING_COUNT" -eq 1 ]; then
