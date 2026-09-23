@@ -168,7 +168,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             let runtimeTask = Task<String, Error> {
                 try await runtime.execute(
                     prompt: correlatedPrompt,
-                    mode: .plan
+                    mode: .ask
                 )
             }
             executiveRuntimeTask = runtimeTask
@@ -522,7 +522,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                     let runtimeTask = Task<String, Error> {
                         try await runtime.execute(
                             prompt: phasePrompt,
-                            mode: .plan
+                            mode: .ask
                         )
                     }
                     phaseRuntimeTask = runtimeTask
