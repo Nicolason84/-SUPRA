@@ -95,9 +95,30 @@ cat >"$TMP/main.m" <<'OBJC'
     self.logHandle = [NSFileHandle fileHandleForWritingAtPath:logPath];
     [self.logHandle seekToEndOfFile];
 
+    NSString *gateScript = [NSString stringWithFormat:
+        @"set -e; "
+         "REPO='Nicolason84/-SUPRA'; "
+         "BRANCH='supra/human-gate-single-source-20260721_072447'; "
+         "API='https://api.github.com/repos/'\"$REPO\"; "
+         "ENC_BRANCH=$(/usr/bin/python3 -c 'import urllib.parse; print(urllib.parse.quote(\"supra/human-gate-single-source-20260721_072447\", safe=\"\"))'); "
+         "HEAD=$(/usr/bin/curl -fsSL \"$API/branches/$ENC_BRANCH\" | /usr/bin/python3 -c 'import json,sys; print(json.load(sys.stdin)[\"commit\"][\"sha\"])'); "
+         "ok=0; "
+         "for i in $(seq 1 120); do "
+           "RUNS=$(/usr/bin/curl -fsSL \"$API/actions/runs?head_sha=$HEAD&status=completed&per_page=50\" || true); "
+           "if printf '%%s' \"$RUNS\" | /usr/bin/python3 -c 'import json,sys; "
+             "x=json.load(sys.stdin); "
+             "raise SystemExit(0 if any(r.get(\"name\")==\"Validate Canonical SUPRA\" and r.get(\"conclusion\")==\"success\" for r in x.get(\"workflow_runs\",[])) else 1)' >/dev/null 2>&1; then "
+             "ok=1; break; "
+           "fi; "
+           "/bin/sleep 5; "
+         "done; "
+         "[ \"$ok\" = 1 ] || exit 31; "
+         "exec /bin/bash %@",
+         [updater stringByReplacingOccurrencesOfString:@"'" withString:@"'\\''"]];
+
     self.task = [[NSTask alloc] init];
     self.task.executableURL = [NSURL fileURLWithPath:@"/bin/bash"];
-    self.task.arguments = @[updater];
+    self.task.arguments = @[@"-lc", gateScript];
     self.task.standardOutput = self.logHandle;
     self.task.standardError = self.logHandle;
 
@@ -165,8 +186,8 @@ cat >"$PLIST" <<'PLIST'
   <key>CFBundleIdentifier</key><string>com.novaera.cannonico-launcher</string>
   <key>CFBundleName</key><string>CAnnoNico</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>4.0</string>
-  <key>CFBundleVersion</key><string>4</string>
+  <key>CFBundleShortVersionString</key><string>4.1</string>
+  <key>CFBundleVersion</key><string>41</string>
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>NSHighResolutionCapable</key><true/>
 </dict>
@@ -186,6 +207,6 @@ printf '[5/5] Launch CAnnoNico V4\n'
 
 printf '\nSTATUS=PASS\n'
 printf 'CANNONICO_APP=%s\n' "$APP"
-printf 'MODE=NATIVE_MACHO_UPDATE_FIRST_V4\n'
+printf 'MODE=NATIVE_MACHO_CI_WAIT_UPDATE_FIRST_V4_1\n'
 printf 'UPDATER_COMMIT=%s\n' "$UPDATER_COMMIT"
 printf 'ACTION_NICOLAS=NONE\n'
