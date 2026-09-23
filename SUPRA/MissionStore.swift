@@ -129,18 +129,19 @@ final class MissionStore: ObservableObject {
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         if normalized.contains("premier revenu significatif")
-            || normalized.contains("generate revenue for nova era by acquiring new clients") {
-            return "nova-era-revenue-acquisition"
-        }
-        if normalized.contains("close evidence gap") {
-            return "close-evidence-gap"
-        }
-        if normalized.contains("nova integral development v1") {
-            return "nova-integral-development-v1"
-        }
-        if normalized.contains("30k by 2026 09 01")
+            || normalized.contains("generate revenue for nova era by acquiring new clients")
+            || normalized.contains("30k by 2026 09 01")
             || normalized.contains("atteindre 30 000 eur") {
-            return "nova-era-30k-2026-09-01"
+            return "nova-era-revenue"
+        }
+        if normalized.contains("nova integral development v1")
+            || normalized.contains("supra self development control plane v1") {
+            return "supra-development"
+        }
+        if normalized.contains("close evidence gap")
+            || normalized.contains("system health critical")
+            || normalized.contains("supra self repair analysis latency v1") {
+            return "runtime-reliability"
         }
         if normalized.contains("handoff")
             && (normalized.contains("probe")
