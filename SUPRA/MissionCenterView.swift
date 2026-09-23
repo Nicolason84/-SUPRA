@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MissionCenterView: View {
     @StateObject private var store = MissionStore()
+    @ObservedObject private var runner = SUPRAGrandeMissionRunner.shared
     @State private var selection: Mission.ID?
 
     var body: some View {
@@ -61,6 +62,24 @@ struct MissionCenterView: View {
         ToolbarItemGroup {
             Button("Refresh", systemImage: "arrow.clockwise", action: store.refresh)
                 .disabled(store.isLoading)
+
+            if runner.isRunning {
+                Button("Standby", systemImage: "pause.circle.fill") {
+                    runner.standbyCurrentMission()
+                }
+
+                Button("Abort mission", systemImage: "stop.circle.fill", role: .destructive) {
+                    runner.abortCurrentMission()
+                }
+            } else if runner.isStandby {
+                Button("Resume", systemImage: "play.circle.fill") {
+                    runner.resumeFromStandby()
+                }
+
+                Button("Abort mission", systemImage: "stop.circle", role: .destructive) {
+                    runner.abortCurrentMission()
+                }
+            }
 
             Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
                 Picker("Filter", selection: $store.activeFilter) {
