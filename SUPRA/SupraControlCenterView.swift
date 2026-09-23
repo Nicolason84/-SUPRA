@@ -9,8 +9,8 @@ struct SupraControlCenterView: View {
     @State private var commandBusy = false
     @State private var commandError: String?
     @State private var activeCommandText: String?
-    @State private var standbyCommandText: String?
-    @State private var standbyObjectiveID: String?
+    @AppStorage("supra.command.standby.text.v1") private var standbyCommandText = ""
+    @AppStorage("supra.command.standby.objective.v1") private var standbyObjectiveID = ""
     @State private var commandInterruptionIntent: SUPRAGrandeMissionRunner.ExecutiveInterruptionIntent?
     @State private var versionRefreshBusy = false
     @State private var versionRefreshStatus = "Ready"
@@ -135,7 +135,7 @@ struct SupraControlCenterView: View {
                             Label("Abort", systemImage: "stop.circle.fill")
                         }
                         .buttonStyle(.bordered)
-                    } else if standbyCommandText != nil {
+                    } else if !standbyCommandText.isEmpty {
                         Button {
                             resumeStandbyCommand()
                         } label: {
@@ -393,7 +393,7 @@ struct SupraControlCenterView: View {
             case .standby:
                 commandOutput = """
                 STATUS=STANDBY
-                OBJECTIVE_ID=\(standbyObjectiveID ?? missionRunner.activeExecutiveObjectiveID ?? "UNPROVEN")
+                OBJECTIVE_ID=\(!standbyObjectiveID.isEmpty ? standbyObjectiveID : (missionRunner.activeExecutiveObjectiveID ?? "UNPROVEN"))
                 ACTION_NICOLAS=NONE
                 NEXT=Resume or Abort
                 """
@@ -415,33 +415,34 @@ struct SupraControlCenterView: View {
     private func standbyCommand() {
         guard commandBusy else { return }
         standbyCommandText = activeCommandText ?? commandText
-        standbyObjectiveID = missionRunner.activeExecutiveObjectiveID
+        standbyObjectiveID = missionRunner.activeExecutiveObjectiveID ?? ""
         commandInterruptionIntent = .standby
         missionRunner.requestExecutiveInterruption(.standby)
     }
 
     private func abortCommand() {
         guard commandBusy else { return }
-        standbyCommandText = nil
-        standbyObjectiveID = nil
+        standbyCommandText = ""
+        standbyObjectiveID = ""
         commandInterruptionIntent = .abort
         missionRunner.requestExecutiveInterruption(.abort)
     }
 
     private func resumeStandbyCommand() {
-        guard !commandBusy, let command = standbyCommandText else { return }
+        guard !commandBusy, !standbyCommandText.isEmpty else { return }
+        let command = standbyCommandText
         let parent = standbyObjectiveID
-        standbyCommandText = nil
-        standbyObjectiveID = nil
-        let resumed = parent.map {
-            "RESUME_FROM_OBJECTIVE_ID=\($0)\n" + command
-        } ?? command
+        standbyCommandText = ""
+        standbyObjectiveID = ""
+        let resumed = parent.isEmpty
+            ? command
+            : "RESUME_FROM_OBJECTIVE_ID=\(parent)\n" + command
         Task { await executeCommand(resumed) }
     }
 
     private func discardStandbyCommand() {
-        standbyCommandText = nil
-        standbyObjectiveID = nil
+        standbyCommandText = ""
+        standbyObjectiveID = ""
         commandOutput = "STATUS=ABORTED\nACTION_NICOLAS=NONE\nNEXT=Ready for a new objective"
     }
 
