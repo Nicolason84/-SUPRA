@@ -87,18 +87,18 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
 
     var alonsoLevel: String {
         switch self {
-        case .france: return "L5 · WORLD / MISSIONS"
-        case .chat: return "L6 · HUMAN GATE"
-        case .cannonico: return "L4 · MEMORY / KNOWLEDGE"
-        case .missions: return "L5 · MISSIONS E2E"
-        case .organization: return "L6–L7 · PEOPLE / GOVERNANCE"
-        case .connections: return "L3–L6 · EXTERNAL CONNECTIVITY"
-        case .inpi: return "L4–L6 · LEGAL / EVIDENCE"
-        case .publicPresence: return "L5–L6 · MARKET / EXPERIENCE"
+        case .france: return "L5 · KNOWLEDGE / WORLD"
+        case .chat: return "L6 · EXPERIENCE / HUMAN INTERFACE"
+        case .cannonico: return "L4–L5 · MEMORY / KNOWLEDGE"
+        case .missions: return "L7 · EXECUTIVE ACTION / E2E"
+        case .organization: return "L6–L7 · EXPERIENCE / AUTHORITY"
+        case .connections: return "L3–L5 · RUNTIME / KNOWLEDGE"
+        case .inpi: return "L5 · KNOWLEDGE / EVIDENCE"
+        case .publicPresence: return "L6 · EXPERIENCE / MARKET"
         case .runtime: return "L3 · RUNTIME"
-        case .ojo: return "L6 · EXPERIENCE"
-        case .supra: return "L7 · EXECUTIVE / AUTONOMY"
-        case .control: return "L6 · AUTHORITY / EVIDENCE"
+        case .ojo: return "L6 · EXPERIENCE / HUMAN GATE"
+        case .supra: return "L7 · EXECUTIVE ACTION"
+        case .control: return "L7 · EXECUTIVE ACTION / AUTHORITY"
         }
     }
 
@@ -650,7 +650,7 @@ struct SUPRAOJOHomeView: View {
                 inspectorHero
 
                 inspectorBlock(
-                    title: "ALONSO GATE",
+                    title: "ALONSO LAYER",
                     value: selection.alonsoLevel,
                     symbol: "triangle.fill",
                     tint: selection.accent
@@ -677,35 +677,139 @@ struct SUPRAOJOHomeView: View {
                     tint: .orange
                 )
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("PYRAMIDE ALONSO")
-                        .font(.caption2.weight(.heavy))
-                        .tracking(1.3)
-                        .foregroundStyle(.secondary)
-
-                    ForEach(1...7, id: \.self) { level in
-                        HStack(spacing: 9) {
-                            Circle()
-                                .fill(levelTint(level))
-                                .frame(width: 7, height: 7)
-                                .shadow(color: levelTint(level).opacity(0.55), radius: 5)
-                            Text("L\(level)")
-                                .font(.caption.weight(.bold))
-                                .frame(width: 25, alignment: .leading)
-                            Rectangle()
-                                .fill(levelTint(level).opacity(0.22))
-                                .frame(height: 4)
-                                .clipShape(Capsule())
-                        }
-                    }
+                if selection == .supra {
+                    alonsoPyramidCard
                 }
-                .padding(16)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
             .padding(14)
         }
         .scrollIndicators(.hidden)
         .background(.black.opacity(0.025))
+    }
+
+    private var alonsoPyramidCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top, spacing: 10) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("PYRAMIDE ALONSO")
+                        .font(.caption2.weight(.heavy))
+                        .tracking(1.3)
+                    Text("GLOBAL · SYSTEM-WIDE PROGRESSION LAW")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Text("PROMOTION MIN 0.92")
+                    .font(.caption2.weight(.heavy))
+                    .foregroundStyle(selection.accent)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(selection.accent.opacity(0.10), in: Capsule())
+            }
+
+            Text("Upper layers never compensate for a broken lower layer. No level is marked PASS here without live evidence.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            ForEach(1...7, id: \.self) { level in
+                HStack(alignment: .top, spacing: 10) {
+                    Text("L\(level)")
+                        .font(.caption.weight(.heavy))
+                        .foregroundStyle(selection.accent)
+                        .frame(width: 26, alignment: .leading)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(alonsoLevelTitle(level))
+                            .font(.caption.weight(.bold))
+                        Text(alonsoLevelContract(level))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("EXISTING ANCHORS · \(alonsoLevelAnchors(level))")
+                            .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(.tertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(10)
+                .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+
+            Divider()
+
+            Label("ASCEND only after proof · stability · control · recoverability", systemImage: "arrow.up.circle.fill")
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(.secondary)
+
+            Label("COHERENCE < 0.92 → REMEDIATION · NO AUTOMATIC PROMOTION", systemImage: "exclamationmark.triangle.fill")
+                .font(.caption2.weight(.heavy))
+                .foregroundStyle(.orange)
+
+            Label("FAIL → DESCEND_ONE_LEVEL · PROOF > CLAIM · REALITY > PROJECTION", systemImage: "arrow.down.circle.fill")
+                .font(.caption2.weight(.heavy))
+                .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func alonsoLevelTitle(_ level: Int) -> String {
+        switch level {
+        case 1: return "FOUNDATION"
+        case 2: return "BUILD"
+        case 3: return "RUNTIME"
+        case 4: return "MEMORY"
+        case 5: return "KNOWLEDGE"
+        case 6: return "EXPERIENCE"
+        case 7: return "EXECUTIVE ACTION"
+        default: return "UNKNOWN"
+        }
+    }
+
+    private func alonsoLevelContract(_ level: Int) -> String {
+        switch level {
+        case 1:
+            return "identity · authority · legal ability · hardware/OS/storage/network · basic truth"
+        case 2:
+            return "recover + compose existing capabilities · smallest necessary implementation · no equivalent reconstruction"
+        case 3:
+            return "real executable path · dependency path · rollback · observability"
+        case 4:
+            return "lineage · history · prior evidence · contradictions · no-loss patrimony"
+        case 5:
+            return "facts · inferences · unknowns · models · evidence quality"
+        case 6:
+            return "human usability · understandable proposition · fair interaction · human gate"
+        case 7:
+            return "decision · execution · result · proof · memory return · canon return · controlled self-evolution"
+        default:
+            return "unmapped"
+        }
+    }
+
+    private func alonsoLevelAnchors(_ level: Int) -> String {
+        switch level {
+        case 1:
+            return "Environment Twin · Total System/File Twin · Storage Twin"
+        case 2:
+            return "Twin Factory V1 · Universal Twin Contract · build/toolchain"
+        case 3:
+            return "Runtime · Event Bus · Gabriel workers · bridges"
+        case 4:
+            return "Puchero · CAnnoNico · SUPRA Memory V5"
+        case 5:
+            return "Knowledge/Company/People/Market/Opportunity/Evidence Twins · Atlas"
+        case 6:
+            return "Subject/Human/Media Twins · ojO · Chat"
+        case 7:
+            return "Case Twin · Decision Twin · Missions · Control · SUPRA"
+        default:
+            return "unmapped"
+        }
     }
 
     private var inspectorHero: some View {
@@ -745,14 +849,6 @@ struct SUPRAOJOHomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
-    private func levelTint(_ level: Int) -> Color {
-        let digits = selection.alonsoLevel.compactMap { $0.wholeNumberValue }
-        if digits.contains(level) {
-            return selection.accent
-        }
-        return .secondary.opacity(0.30)
     }
 
     private var circulationDock: some View {
