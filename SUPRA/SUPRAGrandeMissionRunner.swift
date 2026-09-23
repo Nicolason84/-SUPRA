@@ -123,6 +123,17 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             )
         }
 
+        guard activeExecutiveObjectiveID == nil else {
+            throw NSError(
+                domain: "SUPRA.ExecutiveObjective",
+                code: 409,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "An executive objective is already running. Reuse, Standby, Abort or Resume it; no second durable admission was created."
+                ]
+            )
+        }
+
         try prepareDirectories()
 
         let objectiveID = makeExecutiveObjectiveID()
