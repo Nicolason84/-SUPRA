@@ -371,7 +371,25 @@ print(x.get("observed_canonical_sha",""))
 PY
 )"
 fi
-printf 'INSTALLED_SHA=%s\nOBSERVED_SHA=%s\n' "$INSTALLED_SHA" "$OBSERVED_SHA"
+APP_PROVEN_SHA=""
+if [ -f "$TARGET/Contents/Info.plist" ]; then
+  APP_PROVEN_SHA="$(/usr/libexec/PlistBuddy -c 'Print :SUPRASourceSHA' "$TARGET/Contents/Info.plist" 2>/dev/null || true)"
+fi
+
+printf 'STATE_INSTALLED_SHA=%s\nOBSERVED_SHA=%s\nAPP_PROVEN_SHA=%s\n' "$INSTALLED_SHA" "$OBSERVED_SHA" "$APP_PROVEN_SHA"
+
+if [ -d "$TARGET" ]; then
+  if [ -n "$APP_PROVEN_SHA" ]; then
+    if [ -n "$INSTALLED_SHA" ] && [ "$INSTALLED_SHA" != "$APP_PROVEN_SHA" ]; then
+      printf 'INSTALL_STATE_DRIFT=STATE:%s APP:%s\n' "$INSTALLED_SHA" "$APP_PROVEN_SHA"
+    fi
+    INSTALLED_SHA="$APP_PROVEN_SHA"
+  else
+    printf 'INSTALL_STATE_DRIFT=APP_PROVENANCE_MISSING_FORCE_REBUILD\n'
+    INSTALLED_SHA=""
+  fi
+fi
+printf 'EFFECTIVE_INSTALLED_SHA=%s\n' "$INSTALLED_SHA"
 
 if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
   say "2/10 Canonical app is up to date — ensure it is running"
@@ -549,7 +567,14 @@ BUILD_LOG="$TMP/xcodebuild.log"
 BUILT="$(find "$DERIVED/Build/Products/Release" -maxdepth 1 -type d -name 'SUPRA.app' -print -quit)"
 [ -d "$BUILT" ] || fail "BUILT_APP_NOT_FOUND" 52
 
-say "6/10 Sign + verify candidate"
+say "6/10 Stamp source provenance + sign + verify candidate"
+BUILT_INFO="$BUILT/Contents/Info.plist"
+[ -f "$BUILT_INFO" ] || fail "BUILT_INFO_PLIST_MISSING" 59
+/usr/libexec/PlistBuddy -c "Delete :SUPRASourceSHA" "$BUILT_INFO" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :SUPRASourceSHA string $REMOTE_SHA" "$BUILT_INFO" || fail "SOURCE_SHA_STAMP_FAILED" 59
+/usr/libexec/PlistBuddy -c "Delete :SUPRABuildUTC" "$BUILT_INFO" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :SUPRABuildUTC string $(date -u '+%Y-%m-%dT%H:%M:%SZ')" "$BUILT_INFO" || true
+
 ENTITLEMENTS="$SRC/SUPRA/SUPRA.entitlements"
 if [ -f "$ENTITLEMENTS" ]; then
   "$CODESIGN" --force --deep --sign - --timestamp=none --entitlements "$ENTITLEMENTS" "$BUILT" || fail "ADHOC_SIGN_FAILED" 60
@@ -613,6 +638,9 @@ if ! mv "$CANDIDATE" "$TARGET"; then
   fail "TARGET_SWAP_FAILED_ROLLBACK_ATTEMPTED" 73
 fi
 xattr -dr com.apple.quarantine "$TARGET" >/dev/null 2>&1 || true
+INSTALLED_APP_SHA="$(/usr/libexec/PlistBuddy -c 'Print :SUPRASourceSHA' "$TARGET/Contents/Info.plist" 2>/dev/null || true)"
+[ "$INSTALLED_APP_SHA" = "$REMOTE_SHA" ] || fail "INSTALLED_APP_SHA_MISMATCH:$INSTALLED_APP_SHA!=${REMOTE_SHA}" 74
+printf 'INSTALLED_APP_SHA=%s\n' "$INSTALLED_APP_SHA"
 
 say "9/10 Launch + prove"
 open "$TARGET"
