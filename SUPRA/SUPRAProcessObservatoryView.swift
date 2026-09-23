@@ -30,7 +30,31 @@ struct SUPRAProcessObservatoryView: View {
             .frame(maxWidth: 1400, alignment: .leading)
             .frame(maxWidth: .infinity)
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background {
+            ZStack {
+                Color(nsColor: .windowBackgroundColor)
+
+                RadialGradient(
+                    colors: [
+                        store.momentumColor.opacity(0.12),
+                        store.momentumColor.opacity(0.035),
+                        .clear
+                    ],
+                    center: .topTrailing,
+                    startRadius: 22,
+                    endRadius: 720
+                )
+
+                LinearGradient(
+                    colors: [
+                        .clear,
+                        store.momentumColor.opacity(0.035)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            }
+        }
         .navigationTitle("Process Observatory")
         .toolbar {
             Toggle("Live", isOn: $store.isLive)

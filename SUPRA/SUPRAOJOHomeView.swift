@@ -159,6 +159,7 @@ struct SUPRAOJOHomeView: View {
     @State private var inspectorVisible = true
     @State private var paletteVisible = false
     @State private var railCompact = false
+    @State private var spatialImmersion = true
 
     private let circulationStages = [
         "WORLD", "OBSERVE", "EVIDENCE", "DECIDE", "MISSION",
@@ -168,6 +169,11 @@ struct SUPRAOJOHomeView: View {
     var body: some View {
         ZStack {
             technicalBackplate
+
+            if spatialImmersion {
+                spatialDepthField
+                    .transition(.opacity)
+            }
 
             HStack(spacing: 0) {
                 universeRail
@@ -205,6 +211,7 @@ struct SUPRAOJOHomeView: View {
         }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
+        .animation(.easeInOut(duration: 0.35), value: spatialImmersion)
         .task {
             SUPRAGrandeMissionRunner.shared.startIfNeeded()
         }
@@ -243,6 +250,117 @@ struct SUPRAOJOHomeView: View {
             }
         }
         .ignoresSafeArea()
+    }
+
+    private var spatialDepthField: some View {
+        GeometryReader { proxy in
+            ZStack {
+                RadialGradient(
+                    colors: [
+                        selection.accent.opacity(0.18),
+                        selection.accent.opacity(0.045),
+                        .clear
+                    ],
+                    center: .topTrailing,
+                    startRadius: 16,
+                    endRadius: max(proxy.size.width, proxy.size.height) * 0.78
+                )
+
+                Circle()
+                    .stroke(selection.accent.opacity(0.10), lineWidth: 1)
+                    .frame(
+                        width: min(proxy.size.width, proxy.size.height) * 0.92,
+                        height: min(proxy.size.width, proxy.size.height) * 0.92
+                    )
+                    .offset(
+                        x: proxy.size.width * 0.27,
+                        y: -proxy.size.height * 0.19
+                    )
+
+                Circle()
+                    .stroke(selection.accent.opacity(0.06), lineWidth: 1)
+                    .frame(
+                        width: min(proxy.size.width, proxy.size.height) * 0.58,
+                        height: min(proxy.size.width, proxy.size.height) * 0.58
+                    )
+                    .offset(
+                        x: proxy.size.width * 0.23,
+                        y: -proxy.size.height * 0.15
+                    )
+
+                RoundedRectangle(cornerRadius: 40, style: .continuous)
+                    .stroke(selection.accent.opacity(0.055), lineWidth: 1)
+                    .frame(
+                        width: proxy.size.width * 0.82,
+                        height: proxy.size.height * 0.50
+                    )
+                    .rotation3DEffect(
+                        .degrees(62),
+                        axis: (x: 1, y: 0, z: 0),
+                        perspective: 0.72
+                    )
+                    .offset(y: proxy.size.height * 0.34)
+
+                Path { path in
+                    let center = CGPoint(
+                        x: proxy.size.width * 0.72,
+                        y: proxy.size.height * 0.24
+                    )
+                    path.move(to: CGPoint(x: 0, y: center.y))
+                    path.addLine(to: CGPoint(x: proxy.size.width, y: center.y))
+                    path.move(to: CGPoint(x: center.x, y: 0))
+                    path.addLine(to: CGPoint(x: center.x, y: proxy.size.height))
+                }
+                .stroke(selection.accent.opacity(0.045), lineWidth: 0.8)
+            }
+        }
+        .compositingGroup()
+        .allowsHitTesting(false)
+        .ignoresSafeArea()
+    }
+
+    private func spatialHUD(_ universe: SUPRAUniverse) -> some View {
+        VStack {
+            HStack(spacing: 10) {
+                Label("SPATIAL HUD", systemImage: "viewfinder")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(1.1)
+                    .foregroundStyle(universe.accent)
+
+                Text(universe.alonsoLevel)
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                Label("LIVE CONTEXT", systemImage: "dot.radiowaves.left.and.right")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            HStack(spacing: 10) {
+                Label(universe.circulation, systemImage: "arrow.triangle.2.circlepath")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                Label("AUGMENTED · IMMERSIVE", systemImage: "scope")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(0.9)
+                    .foregroundStyle(universe.accent)
+            }
+        }
+        .padding(20)
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(universe.accent.opacity(0.11), lineWidth: 1)
+                .padding(8)
+        }
+        .shadow(color: universe.accent.opacity(0.08), radius: 24)
+        .allowsHitTesting(false)
     }
 
     private var universeRail: some View {
@@ -409,6 +527,15 @@ struct SUPRAOJOHomeView: View {
             .help("Toggle universe inspector")
 
             Button {
+                spatialImmersion.toggle()
+            } label: {
+                Image(systemName: spatialImmersion ? "viewfinder.circle.fill" : "viewfinder.circle")
+                    .frame(width: 28, height: 28)
+            }
+            .buttonStyle(.plain)
+            .help(spatialImmersion ? "Disable augmented spatial HUD" : "Enable augmented spatial HUD")
+
+            Button {
                 NSApp.keyWindow?.toggleFullScreen(nil)
             } label: {
                 Image(systemName: "arrow.up.left.and.arrow.down.right")
@@ -466,6 +593,11 @@ struct SUPRAOJOHomeView: View {
             }
             .id(universe)
             .transition(.opacity.combined(with: .scale(scale: 0.995)))
+
+            if spatialImmersion {
+                spatialHUD(universe)
+                    .transition(.opacity)
+            }
         }
     }
 
