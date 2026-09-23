@@ -158,11 +158,13 @@ final class MissionStore: ObservableObject {
               let raw = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let idString = raw["id"] as? String,
               let id = UUID(uuidString: idString),
-              let title = raw["title"] as? String,
-              !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+              let rawTitle = raw["title"] as? String,
+              !rawTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         else {
             return nil
         }
+
+        let title = historicalDisplayTitle(from: rawTitle)
 
         let storedStatus = stringValue(
             raw["status"] ?? raw["state"] ?? raw["currentStatus"]
@@ -239,6 +241,28 @@ final class MissionStore: ObservableObject {
             timeline: timeline,
             currentStatus: historicalStatus
         )
+    }
+
+    private func historicalDisplayTitle(from rawTitle: String) -> String {
+        let lines = rawTitle
+            .components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        if let markerIndex = lines.firstIndex(of: "NEXT_FOUNDATION="),
+           lines.indices.contains(markerIndex + 1) {
+            return lines[markerIndex + 1]
+        }
+
+        if let missionLine = lines.first(where: { $0.hasPrefix("MISSION=") }) {
+            return String(missionLine.dropFirst("MISSION=".count))
+        }
+
+        if let missionIDLine = lines.first(where: { $0.hasPrefix("MISSION_ID=") }) {
+            return String(missionIDLine.dropFirst("MISSION_ID=".count))
+        }
+
+        return lines.first ?? rawTitle
     }
 
     private func stringValue(_ value: Any?) -> String {
