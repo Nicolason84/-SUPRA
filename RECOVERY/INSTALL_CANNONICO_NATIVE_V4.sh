@@ -197,10 +197,13 @@ PLIST
 
 /usr/bin/plutil -lint "$PLIST" >/dev/null
 
-printf '[4/5] Sign and verify native bundle\n'
-/usr/bin/codesign --force --sign - --timestamp=none "$APP" >/dev/null
-/usr/bin/codesign --verify --deep --strict "$APP"
-xattr -dr com.apple.quarantine "$APP" >/dev/null 2>&1 || true
+printf '[4/5] Clean, sign and verify native bundle\n'
+/usr/bin/xattr -cr "$APP" >/dev/null 2>&1 || true
+/usr/bin/dot_clean -m "$APP" >/dev/null 2>&1 || true
+/usr/bin/xattr -cr "$APP" >/dev/null 2>&1 || true
+/usr/bin/codesign --force --deep --sign - --timestamp=none "$APP"
+/usr/bin/codesign --verify --deep --strict --verbose=2 "$APP"
+/usr/bin/xattr -dr com.apple.quarantine "$APP" >/dev/null 2>&1 || true
 /usr/bin/file "$EXEC" | grep -q 'Mach-O'
 
 printf '[5/5] Launch CAnnoNico V4\n'
