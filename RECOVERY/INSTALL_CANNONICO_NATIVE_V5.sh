@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="Nicolason84/-SUPRA"
-UPDATER_COMMIT="f7dcd46ec863ec5053cd8febea28366b055c7220"
+UPDATER_COMMIT="8c2fc54706175b3882332e85eb6f7f56002c2548"
 RAW="https://raw.githubusercontent.com/$REPO/$UPDATER_COMMIT"
 
 SUPPORT="$HOME/Library/Application Support/NOVA ERA/SUPRA Updater"
