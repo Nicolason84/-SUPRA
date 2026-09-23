@@ -25,10 +25,50 @@ exec > >(tee -a "$LOG") 2>&1
 
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 
+kill_all_supra_surfaces(){
+  local pid=""
+  local cmd=""
+
+  /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
+tell application "System Events"
+  repeat with procName in {"SUPRA", "SUPRAClean", "OjoCompanion"}
+    if exists process procName then
+      try
+        tell process procName to keystroke "q" using command down
+      end try
+    end if
+  end repeat
+end tell
+OSA
+
+  /bin/sleep 0.8
+  /usr/bin/pkill -TERM -x SUPRA >/dev/null 2>&1 || true
+  /usr/bin/pkill -TERM -x SUPRAClean >/dev/null 2>&1 || true
+  /usr/bin/pkill -TERM -x OjoCompanion >/dev/null 2>&1 || true
+  /bin/sleep 0.8
+
+  /usr/bin/pkill -KILL -x SUPRA >/dev/null 2>&1 || true
+  /usr/bin/pkill -KILL -x SUPRAClean >/dev/null 2>&1 || true
+  /usr/bin/pkill -KILL -x OjoCompanion >/dev/null 2>&1 || true
+
+  while read -r pid; do
+    [ -n "$pid" ] || continue
+    cmd="$(/bin/ps -ww -p "$pid" -o command= 2>/dev/null || true)"
+    case "$cmd" in
+      *"/SUPRA-FRANCE.app/Contents/MacOS/"*|*"/SUPRA-FRANCE-CLEAN.app/Contents/MacOS/"*|*"/SUPRAClean.app/Contents/MacOS/"*|*"/OjoCompanion.app/Contents/MacOS/"*)
+        /bin/kill -KILL "$pid" >/dev/null 2>&1 || true
+        ;;
+    esac
+  done < <(/usr/bin/pgrep -f 'SUPRA-FRANCE\.app/Contents/MacOS|SUPRA-FRANCE-CLEAN\.app/Contents/MacOS|SUPRAClean\.app/Contents/MacOS|OjoCompanion\.app/Contents/MacOS' || true)
+
+  printf 'LEGACY_SUPRA_PROCESSES=KILL_ATTEMPTED\n'
+}
+
+
 retire_auxiliary_native_surfaces(){
   /usr/bin/osascript <<'OSA' >/dev/null 2>&1 || true
 tell application "System Events"
-  repeat with procName in {"SUPRAClean", "OjoCompanion", "ChatGPT"}
+  repeat with procName in {"SUPRAClean", "OjoCompanion"}
     if exists process procName then
       try
         tell process procName to keystroke "q" using command down
@@ -358,8 +398,7 @@ if [ -n "$INSTALLED_SHA" ] && [ "$REMOTE_SHA" = "$INSTALLED_SHA" ]; then
 
   if [ "$RUNNING_COUNT" -ne 1 ] || [ "$CANONICAL_COUNT" -ne 1 ]; then
     say "Canonicalize live SUPRA instance"
-    retire_auxiliary_native_surfaces
-    pkill -x SUPRA >/dev/null 2>&1 || true
+    kill_all_supra_surfaces
     sleep 1
     retire_systemwide_legacy_supra || fail "SYSTEMWIDE_LEGACY_SUPRA_COULD_NOT_BE_RETIRED:$SYSTEM_LEGACY_TARGET" 23
     open "$TARGET" || fail "UP_TO_DATE_APP_AUTOLAUNCH_FAILED" 24
@@ -557,8 +596,7 @@ for LEGACY in "$HOME/Applications/SUPRA-FRANCE.app" "$HOME/Applications/SUPRA-FR
   if [ -d "$LEGACY" ]; then mv "$LEGACY" "$RETIRE_DIR/" || true; fi
 done
 
-retire_auxiliary_native_surfaces
-pkill -x SUPRA >/dev/null 2>&1 || true
+kill_all_supra_surfaces
 sleep 1
 retire_systemwide_legacy_supra || fail "SYSTEMWIDE_LEGACY_SUPRA_COULD_NOT_BE_RETIRED:$SYSTEM_LEGACY_TARGET" 70
 sleep 1
