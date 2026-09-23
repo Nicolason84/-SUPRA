@@ -9,6 +9,7 @@ final class MissionStore: ObservableObject {
         case active = "Active"
         case blocked = "Blocked"
         case completed = "Completed"
+        case historical = "Historical"
 
         var id: Self { self }
     }
@@ -44,7 +45,11 @@ final class MissionStore: ObservableObject {
 
         let runner = SUPRAGrandeMissionRunner.shared
         liveStore.start()
-        missions = [makeGrandeMission(from: runner)]
+
+        let operational = makeGrandeMission(from: runner)
+        let historical = loadPersistedMissionPatrimony(excluding: operational.id)
+        missions = [operational] + historical
+
         runner.startIfNeeded()
 
         isLoading = false
@@ -67,6 +72,144 @@ final class MissionStore: ObservableObject {
         activeSort = sort
     }
 
+
+    private func loadPersistedMissionPatrimony(excluding operationalID: UUID) -> [Mission] {
+        let fm = FileManager.default
+        guard let appSupport = fm.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first else {
+            return []
+        }
+
+        let root = appSupport
+            .appendingPathComponent("SUPRA", isDirectory: true)
+            .appendingPathComponent("Missions", isDirectory: true)
+
+        guard let urls = try? fm.contentsOfDirectory(
+            at: root,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return []
+        }
+
+        return urls
+            .filter { $0.pathExtension.lowercased() == "json" }
+            .compactMap { historicalMission(at: $0) }
+            .filter { $0.id != operationalID }
+            .sorted { lhs, rhs in
+                let l = lhs.timeline.first?.date ?? .distantPast
+                let r = rhs.timeline.first?.date ?? .distantPast
+                return l > r
+            }
+    }
+
+    private func historicalMission(at url: URL) -> Mission? {
+        guard let data = try? Data(contentsOf: url, options: [.mappedIfSafe]),
+              let raw = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let idString = raw["id"] as? String,
+              let id = UUID(uuidString: idString),
+              let title = raw["title"] as? String,
+              !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else {
+            return nil
+        }
+
+        let storedStatus = stringValue(
+            raw["status"] ?? raw["state"] ?? raw["currentStatus"]
+        )
+        let storedAuthority = stringValue(raw["authority"])
+        let storedOwner = stringValue(raw["owner"])
+        let storedCategory = stringValue(raw["category"])
+        let updated = dateValue(
+            raw["updatedAt"] ?? raw["updated_at"] ?? raw["createdAt"]
+        )
+
+        let summaryCandidates = [
+            stringValue(raw["summary"]),
+            stringValue(raw["intent"]),
+            stringValue(raw["objective"])
+        ]
+        let summary = summaryCandidates.first(where: { !$0.isEmpty })
+            ?? "Persisted SUPRA mission patrimony."
+
+        let progress: Double = {
+            if let value = raw["progress"] as? Double { return min(max(value, 0), 1) }
+            if let value = raw["progress"] as? Int { return min(max(Double(value), 0), 1) }
+            return 0
+        }()
+
+        let priority: Mission.Priority = {
+            switch stringValue(raw["priority"]).uppercased() {
+            case "CRITICAL": return .critical
+            case "HIGH": return .high
+            case "LOW": return .low
+            default: return .medium
+            }
+        }()
+
+        let dueDate = dateValue(raw["deadline"] ?? raw["dueDate"])
+        let owner = !storedOwner.isEmpty
+            ? storedOwner
+            : (!storedAuthority.isEmpty ? storedAuthority : "Historical patrimony")
+        let category = storedCategory.isEmpty
+            ? "Historical Mission"
+            : "Historical · \(storedCategory)"
+
+        let historicalStatus = [
+            "HISTORICAL",
+            storedStatus.isEmpty ? "STORED_STATUS=UNKNOWN" : "STORED_STATUS=\(storedStatus)",
+            storedAuthority.isEmpty ? nil : "AUTHORITY=\(storedAuthority)",
+            updated.map { "LAST_UPDATED=\(ISO8601DateFormatter().string(from: $0))" }
+        ]
+        .compactMap { $0 }
+        .joined(separator: " · ")
+
+        let timeline = [
+            Mission.TimelineEntry(
+                id: stableUUID("historical-timeline-" + id.uuidString),
+                date: updated ?? .distantPast,
+                title: "Historical persisted record",
+                detail: historicalStatus
+            )
+        ]
+
+        return Mission(
+            id: id,
+            title: title,
+            status: .historical,
+            priority: priority,
+            category: category,
+            owner: owner,
+            dueDate: dueDate,
+            progress: progress,
+            summary: summary,
+            objectives: [],
+            tasks: [],
+            dependencies: [],
+            timeline: timeline,
+            currentStatus: historicalStatus
+        )
+    }
+
+    private func stringValue(_ value: Any?) -> String {
+        if let value = value as? String { return value }
+        if let value { return String(describing: value) }
+        return ""
+    }
+
+    private func dateValue(_ value: Any?) -> Date? {
+        guard let raw = value as? String, !raw.isEmpty else { return nil }
+        let iso = ISO8601DateFormatter()
+        if let date = iso.date(from: raw) { return date }
+
+        let day = DateFormatter()
+        day.locale = Locale(identifier: "en_US_POSIX")
+        day.timeZone = TimeZone(secondsFromGMT: 0)
+        day.dateFormat = "yyyy-MM-dd"
+        return day.date(from: raw)
+    }
 
     private func makeGrandeMission(from runner: SUPRAGrandeMissionRunner) -> Mission {
         let liveByID = Dictionary(
@@ -211,6 +354,7 @@ final class MissionStore: ObservableObject {
             case .active: mission.status == .active
             case .blocked: mission.status == .blocked
             case .completed: mission.status == .completed
+            case .historical: mission.status == .historical
             }
             return matchesQuery && matchesFilter
         }
