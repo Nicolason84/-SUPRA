@@ -93,6 +93,9 @@ check "Universal Media delegates durable materialization to existing bridge" con
 check "Universal Media avoids sandboxed HOME durability" not_contains "SUPRA/SUPRAMediaUniversalView.swift" 'homeDirectoryForCurrentUser'
 check "Media bridge materialization patch is recoverable" contains "RECOVERY/PATCH_OJO_MEDIA_BRIDGE_MATERIALIZATION_V1_20260923.sh" 'MODE=EXISTING_BRIDGE_MEDIA_MATERIALIZATION'
 check "Media bridge patch emits canonical receipt schema" contains "RECOVERY/OJO_MEDIA_BRIDGE_MATERIALIZATION_V1.patch" 'OJO_UNIVERSAL_MEDIA_RECEIPT_V1'
+check "Media bridge persists provider identity" contains "RECOVERY/OJO_MEDIA_BRIDGE_MATERIALIZATION_V1.patch" '"source_provider": contract["source_provider"]'
+check "Media bridge persists provider guardrail" contains "RECOVERY/OJO_MEDIA_BRIDGE_MATERIALIZATION_V1.patch" '"provider_guardrail": contract["provider_guardrail"]'
+check "Media bridge recovery upgrades prior materialization" contains "RECOVERY/PATCH_OJO_MEDIA_BRIDGE_MATERIALIZATION_V1_20260923.sh" 'Provider-aware media materialization upgrade applied'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys
