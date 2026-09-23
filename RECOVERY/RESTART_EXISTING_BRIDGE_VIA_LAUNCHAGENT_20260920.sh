@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-LABEL="com.novaera.sol-github-bridge"
+LABEL="com.novaera.supra.bridge-watcher"
 PLIST="$HOME/Library/LaunchAgents/${LABEL}.plist"
 
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }

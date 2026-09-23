@@ -60,7 +60,7 @@ grep -Fq '@State private var selection: SUPRAOJORoute? = .france' "$SRCROOT/SUPR
 grep -Fq 'FranceOrganismNativeView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route France absente" 43
 grep -Fq 'case chat' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Route Chat absente" 44
 grep -Fq 'SUPRAChatView()' "$SRCROOT/SUPRA/SUPRAOJOHomeView.swift" || die "Vue Chat absente" 45
-grep -Fq 'com.novaera.sol-github-bridge' "$SRCROOT/SUPRA/SUPRAChatRuntimeAdapter.swift" || die "Auto-reconnexion bridge absente" 46
+grep -Fq 'com.novaera.supra.bridge-watcher' "$SRCROOT/SUPRA/SUPRAChatRuntimeAdapter.swift" || die "Auto-reconnexion bridge absente" 46
 
 say "6/8 Résolution dépendances + compilation Release locale"
 DERIVED="$TMP/DerivedData"

@@ -11,7 +11,7 @@ STATE="$SUPPORT/state.json"
 UPDATER="$SUPPORT/supra_autobuild_self_update.sh"
 TARGET="$HOME/Applications/SUPRA.app"
 LABEL="com.novaera.supra-autoupdate"
-BRIDGE_LABEL="com.novaera.sol-github-bridge"
+BRIDGE_LABEL="com.novaera.supra.bridge-watcher"
 BRIDGE_PLIST="$HOME/Library/LaunchAgents/$BRIDGE_LABEL.plist"
 
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }

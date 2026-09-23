@@ -758,7 +758,7 @@ EXEC_SHA="$(shasum -a 256 "$EXEC" | awk '{print $1}')"
 printf 'BUILT_EXEC_SHA256=%s\n' "$EXEC_SHA"
 
 say "7/10 Restore existing bridge before swap"
-LABEL="com.novaera.sol-github-bridge"
+LABEL="com.novaera.supra.bridge-watcher"
 PLIST="$HOME/Library/LaunchAgents/"$LABEL".plist"
 if [ -f "$PLIST" ]; then
   launchctl bootstrap "gui/$UID" "$PLIST" >/dev/null 2>&1 || true

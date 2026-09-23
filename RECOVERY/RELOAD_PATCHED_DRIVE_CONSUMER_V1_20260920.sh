@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$HOME/NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1"
 PY="$ROOT/ENGINE/supra_chatgpt_app_bridge.py"
 HELPER="$ROOT/CURRENT/supra_fileprovider_coordinated_read"
-LABEL="com.novaera.sol-github-bridge"
+LABEL="com.novaera.supra.bridge-watcher"
 EXPECTED_PY_SHA="aede33098a30f36114d3d0682ab9057521fe14f4dd09e2e524bdbc0f3275197d"
 EXPECTED_HELPER_SHA="8ee8ce5cbbfdf72d9065449437d954c7bcde525660dcdc171933c556a28e1962"
 
