@@ -155,6 +155,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
 }
 
 struct SUPRAOJOHomeView: View {
+    @ObservedObject private var mediaRouter = SUPRAMediaHeroRouter.shared
     @State private var selection: SUPRAUniverse = .supra
     @State private var inspectorVisible = true
     @State private var paletteVisible = false
@@ -208,6 +209,13 @@ struct SUPRAOJOHomeView: View {
 
                     circulationDock
                 }
+            }
+
+            if let context = mediaRouter.context {
+                SUPRAMediaUniversalView(context: context)
+                    .background(.ultraThickMaterial)
+                    .transition(.opacity.combined(with: .scale(scale: 0.992)))
+                    .zIndex(100)
             }
         }
         .tint(selection.accent)
@@ -549,6 +557,25 @@ struct SUPRAOJOHomeView: View {
             statusPill("CANON LIVE", symbol: "checkmark.seal.fill")
             statusPill("BUILD-GATED", symbol: "hammer.fill")
             statusPill("CIRCULAR", symbol: "arrow.triangle.2.circlepath")
+
+            Button {
+                mediaRouter.present(
+                    SUPRAMediaHeroContext(
+                        objectID: "UNIVERSE_\(selection.rawValue.uppercased())",
+                        objectType: "SUPRA_UNIVERSE",
+                        title: selection.title,
+                        subtitle: selection.subtitle,
+                        origin: "SUPRAOJOHomeView",
+                        lineageRefs: [selection.alonsoLevel, selection.circulation]
+                    )
+                )
+            } label: {
+                Image(systemName: "play.rectangle.on.rectangle.fill")
+                    .frame(width: 28, height: 28)
+            }
+            .buttonStyle(.plain)
+            .help("Open contextual Media Hero")
+            .keyboardShortcut("m", modifiers: [.command, .shift])
 
             Button {
                 paletteVisible = true

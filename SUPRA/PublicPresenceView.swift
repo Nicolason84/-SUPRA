@@ -10,7 +10,6 @@ private struct PublicChannel: Identifiable {
 
 struct PublicPresenceView: View {
     @State private var selectedChannel: PublicChannel?
-    @State private var mediaHeroPresented = false
 
     private let channels: [PublicChannel] = [
         .init(id: "linkedin", name: "LinkedIn", role: "Founder + company + B2B authority", symbol: "person.text.rectangle.fill", priority: "P1"),
@@ -50,10 +49,6 @@ struct PublicPresenceView: View {
         )
         .sheet(item: $selectedChannel) { channel in
             channelDetail(channel)
-        }
-        .sheet(isPresented: $mediaHeroPresented) {
-            SUPRAMediaUniversalView()
-                .frame(minWidth: 1180, minHeight: 780)
         }
     }
 
@@ -253,10 +248,23 @@ struct PublicPresenceView: View {
                             selectedChannel = nil
                             Task { @MainActor in
                                 try? await Task.sleep(for: .milliseconds(180))
-                                mediaHeroPresented = true
+                                SUPRAMediaHeroRouter.shared.present(
+                                    SUPRAMediaHeroContext(
+                                        objectID: "PUBLIC_CHANNEL_YOUTUBE",
+                                        objectType: "EXTERNAL_CHANNEL",
+                                        title: channel.name,
+                                        subtitle: channel.role,
+                                        origin: "PublicPresenceView",
+                                        lineageRefs: [
+                                            "PUBLIC_PRESENCE",
+                                            "EXTERNAL_CONNECTOR:youtube",
+                                            "EVIDENCE→MEMORY→CANNONICO"
+                                        ]
+                                    )
+                                )
                             }
                         } label: {
-                            Label("Open ojO Universal Media", systemImage: "play.rectangle.on.rectangle.fill")
+                            Label("Open contextual Media Hero", systemImage: "play.rectangle.on.rectangle.fill")
                         }
                         .buttonStyle(.borderedProminent)
                     }

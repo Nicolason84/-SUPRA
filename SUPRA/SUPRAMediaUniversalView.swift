@@ -1,7 +1,53 @@
 import SwiftUI
+import Combine
 import AppKit
 import WebKit
+import AVKit
+import PDFKit
 import CAnnoNicoContracts
+
+struct SUPRAMediaHeroContext: Identifiable, Equatable {
+    let id: String
+    let objectID: String
+    let objectType: String
+    let title: String
+    let subtitle: String
+    let sourceURL: URL?
+    let origin: String
+    let lineageRefs: [String]
+    let initialNote: String
+
+    init(
+        id: String = UUID().uuidString,
+        objectID: String,
+        objectType: String,
+        title: String,
+        subtitle: String = "",
+        sourceURL: URL? = nil,
+        origin: String = "ojO",
+        lineageRefs: [String] = [],
+        initialNote: String = ""
+    ) {
+        self.id = id
+        self.objectID = objectID
+        self.objectType = objectType
+        self.title = title
+        self.subtitle = subtitle
+        self.sourceURL = sourceURL
+        self.origin = origin
+        self.lineageRefs = lineageRefs
+        self.initialNote = initialNote
+    }
+}
+
+@MainActor
+final class SUPRAMediaHeroRouter: ObservableObject {
+    static let shared = SUPRAMediaHeroRouter()
+    @Published var context: SUPRAMediaHeroContext?
+
+    func present(_ context: SUPRAMediaHeroContext) { self.context = context }
+    func dismiss() { context = nil }
+}
 
 private enum SUPRAMediaSurfaceKind: String {
     case youtube = "YOUTUBE"
@@ -119,6 +165,7 @@ private enum SUPRAMediaRuntimeAction: String, CaseIterable, Identifiable {
 
 struct SUPRAMediaUniversalView: View {
     @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
+    @ObservedObject private var heroRouter = SUPRAMediaHeroRouter.shared
 
     @State private var address = ""
     @State private var sourceURL: URL?
@@ -132,12 +179,23 @@ struct SUPRAMediaUniversalView: View {
     private let runtime = SUPRAChatRuntimeAdapter()
     private let integration = SUPRACAnnoNicoIntegration.snapshot()
     private let invocationOrigin: String
+    private let heroContext: SUPRAMediaHeroContext?
 
     init(initialURL: URL? = nil, origin: String = "ojO") {
         invocationOrigin = origin
+        heroContext = nil
         _address = State(initialValue: initialURL?.absoluteString ?? "")
         _sourceURL = State(initialValue: initialURL)
         _runtimeState = State(initialValue: initialURL == nil ? "IDLE" : "SOURCE_READY")
+    }
+
+    init(context: SUPRAMediaHeroContext) {
+        invocationOrigin = context.origin
+        heroContext = context
+        _address = State(initialValue: context.sourceURL?.absoluteString ?? "")
+        _sourceURL = State(initialValue: context.sourceURL)
+        _note = State(initialValue: context.initialNote)
+        _runtimeState = State(initialValue: context.sourceURL == nil ? "CONTEXT_READY" : "SOURCE_READY")
     }
 
     private var sourceKind: SUPRAMediaSurfaceKind? {
@@ -234,12 +292,26 @@ struct SUPRAMediaUniversalView: View {
 
             Spacer()
 
-            Label("AUTO-ADAPTIVE", systemImage: "viewfinder")
-                .font(.caption.weight(.heavy))
-                .foregroundStyle(.purple)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 7)
-                .background(Color.purple.opacity(0.09), in: Capsule())
+            VStack(alignment: .trailing, spacing: 8) {
+                Label("AUTO-ADAPTIVE", systemImage: "viewfinder")
+                    .font(.caption.weight(.heavy))
+                    .foregroundStyle(.purple)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .background(Color.purple.opacity(0.09), in: Capsule())
+
+                if let heroContext {
+                    Text("\(heroContext.objectType) · \(heroContext.objectID)")
+                        .font(.caption2.monospaced().weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+
+                    Button("Close Hero", systemImage: "xmark.circle.fill") {
+                        heroRouter.dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
         }
         .padding(20)
         .supraCard(radius: 22, strokeOpacity: 0.10)
@@ -304,7 +376,7 @@ struct SUPRAMediaUniversalView: View {
             }
 
             if let sourceURL {
-                SUPRAMediaWebView(url: playbackURL(for: sourceURL))
+                adaptiveRenderer(for: sourceURL)
                     .frame(minHeight: 505)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .overlay(
@@ -378,6 +450,29 @@ struct SUPRAMediaUniversalView: View {
 
     private var contextRail: some View {
         VStack(alignment: .leading, spacing: 14) {
+            if let heroContext {
+                contextBlock("SELECTED OJO OBJECT", symbol: "scope") {
+                    Text(heroContext.title)
+                        .font(.headline)
+                    if !heroContext.subtitle.isEmpty {
+                        Text(heroContext.subtitle)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    truthRow("Type", heroContext.objectType)
+                    truthRow("ID", heroContext.objectID)
+                    truthRow("Origin", heroContext.origin)
+                    if !heroContext.lineageRefs.isEmpty {
+                        Divider()
+                        ForEach(heroContext.lineageRefs, id: \.self) { ref in
+                            Text(ref)
+                                .font(.caption2.monospaced())
+                                .textSelection(.enabled)
+                        }
+                    }
+                }
+            }
+
             contextBlock("SOURCE", symbol: "link") {
                 Text(sourceURL?.absoluteString ?? "UNSELECTED")
                     .font(.caption.monospaced())
@@ -385,7 +480,7 @@ struct SUPRAMediaUniversalView: View {
                     .lineLimit(4)
             }
 
-            contextBlock("CONNECTION TRUTH", symbol: "checkmark.shield.fill") {
+            contextBlock("EVIDENCE · CONNECTION TRUTH", symbol: "checkmark.shield.fill") {
                 if let youtubeDescriptor {
                     truthRow("YouTube", youtubeDescriptor.status.rawValue)
                     truthRow(
@@ -429,7 +524,7 @@ struct SUPRAMediaUniversalView: View {
                 }
             }
 
-            contextBlock("CANONICAL LINEAGE", symbol: "point.3.connected.trianglepath.dotted") {
+            contextBlock("LINEAGE · CANONICAL", symbol: "point.3.connected.trianglepath.dotted") {
                 Text("Existing owners only · no parallel canon")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
@@ -460,7 +555,7 @@ struct SUPRAMediaUniversalView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            contextBlock("NOTE / OBSERVATION", symbol: "square.and.pencil") {
+            contextBlock("MEMORY · NOTE / OBSERVATION", symbol: "square.and.pencil") {
                 TextEditor(text: $note)
                     .font(.callout)
                     .frame(minHeight: 115)
@@ -657,6 +752,10 @@ struct SUPRAMediaUniversalView: View {
         YOUTUBE_CONNECTION=\(youtubeState)
         MEDIA_CAPABILITY=\(mediaState)
         HUMAN_NOTE=\(noteValue.isEmpty ? "NONE" : noteValue)
+        OJO_OBJECT_ID=\(heroContext?.objectID ?? "UNSCOPED")
+        OJO_OBJECT_TYPE=\(heroContext?.objectType ?? "UNSCOPED")
+        OJO_OBJECT_TITLE=\(heroContext?.title ?? "UNSCOPED")
+        OJO_OBJECT_LINEAGE=\(heroContext?.lineageRefs.joined(separator: ",") ?? "NONE")
 
         LIVE_RUNTIME_CONTEXT:
         \(processContext.isEmpty ? "NONE" : processContext)
@@ -689,12 +788,124 @@ struct SUPRAMediaUniversalView: View {
         """
 
         do {
-            runtimeOutput = try await runtime.execute(prompt: prompt, mode: action.mode)
+            let admission = try materializeAdmission(
+                action: action,
+                sourceURL: sourceURL,
+                note: noteValue
+            )
+            let correlatedPrompt = """
+            MEDIA_OBJECTIVE_ID=\(admission.id)
+            RUNTIME_ADMISSION=\(admission.request.path)
+            RUNTIME_CORRELATION_REQUIRED=YES
+
+            \(prompt)
+            """
+            let response = try await runtime.execute(prompt: correlatedPrompt, mode: action.mode)
+            try materializeReceipt(admission: admission, action: action, response: response)
+            runtimeOutput = response
             runtimeState = action == .memoryReturn ? "PREPARED" : "COMPLETE"
+            liveStore.refresh(force: true)
         } catch {
             runtimeOutput = ""
             runtimeState = "ERROR"
             lastError = error.localizedDescription
+            liveStore.refresh(force: true)
+        }
+    }
+
+    private struct DurableMediaAdmission {
+        let id: String
+        let request: URL
+        let receipt: URL
+        let startedAt: String
+    }
+
+    private func materializeAdmission(
+        action: SUPRAMediaRuntimeAction,
+        sourceURL: URL,
+        note: String
+    ) throws -> DurableMediaAdmission {
+        let fm = FileManager.default
+        let root = fm.homeDirectoryForCurrentUser
+            .appendingPathComponent("NOVA_OS/SUPRA_GRANDE_MISSION_V1", isDirectory: true)
+        let inbox = root.appendingPathComponent("INBOX", isDirectory: true)
+        let outbox = root.appendingPathComponent("OUTBOX", isDirectory: true)
+        try fm.createDirectory(at: inbox, withIntermediateDirectories: true)
+        try fm.createDirectory(at: outbox, withIntermediateDirectories: true)
+
+        let stamp = Self.mediaStamp.string(from: Date())
+        let id = "OJO_MEDIA_\(action.rawValue)_\(stamp)_\(UUID().uuidString.prefix(8))"
+        let request = inbox.appendingPathComponent("\(id).json")
+        let receipt = outbox.appendingPathComponent("\(id).result.json")
+        let startedAt = ISO8601DateFormatter().string(from: Date())
+        let body: [String: Any] = [
+            "schema": "OJO_UNIVERSAL_MEDIA_REQUEST_V1",
+            "mission_id": id, "objective_id": id, "authority": "NICOLAS",
+            "started_at": startedAt, "action": action.rawValue,
+            "source": sourceURL.absoluteString,
+            "source_kind": sourceKind?.rawValue ?? "UNKNOWN",
+            "human_note": note,
+            "ojo_object_id": heroContext?.objectID ?? "UNSCOPED",
+            "ojo_object_type": heroContext?.objectType ?? "UNSCOPED",
+            "ojo_object_title": heroContext?.title ?? "UNSCOPED",
+            "ojo_object_lineage": heroContext?.lineageRefs ?? [],
+            "canonical_write": "NO"
+        ]
+        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
+            .write(to: request, options: .atomic)
+        return .init(id: id, request: request, receipt: receipt, startedAt: startedAt)
+    }
+
+    private func materializeReceipt(
+        admission: DurableMediaAdmission,
+        action: SUPRAMediaRuntimeAction,
+        response: String
+    ) throws {
+        let normalized = response.trimmingCharacters(in: .whitespacesAndNewlines)
+        let status = normalized.isEmpty ? "UNPROVEN" : "PASS"
+        let memoryCandidate = action == .memoryReturn ? "YES" : "NO"
+        let body: [String: Any] = [
+            "schema": "OJO_UNIVERSAL_MEDIA_RECEIPT_V1",
+            "mission_id": admission.id, "objective_id": admission.id,
+            "authority": "NICOLAS", "started_at": admission.startedAt,
+            "finished_at": ISO8601DateFormatter().string(from: Date()),
+            "status": status, "action": action.rawValue,
+            "response": normalized, "memory_return_candidate": memoryCandidate,
+            "canonical_write": "NO",
+            "proof_refs": [admission.request.path, admission.receipt.path],
+            "action_nicolas": action == .memoryReturn ? "VALIDATE_MEMORY_RETURN_CANDIDATE" : "NONE"
+        ]
+        try JSONSerialization.data(withJSONObject: body, options: [.prettyPrinted, .sortedKeys])
+            .write(to: admission.receipt, options: .atomic)
+    }
+
+    private static let mediaStamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyyMMdd_HHmmss"
+        return formatter
+    }()
+
+    @ViewBuilder
+    private func adaptiveRenderer(for url: URL) -> some View {
+        switch SUPRAMediaSurfaceKind.resolve(url) {
+        case .youtube:
+            SUPRAMediaWebView(url: playbackURL(for: url))
+        case .web:
+            SUPRAMediaWebView(url: url)
+        case .video, .audio:
+            SUPRAMediaAVPlayerView(url: url)
+        case .image:
+            SUPRAMediaImageView(url: url)
+        case .pdf:
+            if url.isFileURL {
+                SUPRAMediaPDFView(url: url)
+            } else {
+                SUPRAMediaWebView(url: url)
+            }
+        case .file:
+            SUPRAMediaWebView(url: url)
         }
     }
 
@@ -770,5 +981,76 @@ private struct SUPRAMediaWebView: NSViewRepresentable {
 
     static func dismantleNSView(_ webView: WKWebView, coordinator: Coordinator) {
         webView.stopLoading()
+    }
+}
+private struct SUPRAMediaAVPlayerView: NSViewRepresentable {
+    let url: URL
+
+    func makeNSView(context: Context) -> AVPlayerView {
+        let view = AVPlayerView(frame: .zero)
+        view.controlsStyle = .floating
+        view.videoGravity = .resizeAspect
+        view.player = AVPlayer(url: url)
+        return view
+    }
+
+    func updateNSView(_ view: AVPlayerView, context: Context) {
+        guard let current = (view.player?.currentItem?.asset as? AVURLAsset)?.url,
+              current == url else {
+            view.player = AVPlayer(url: url)
+            return
+        }
+    }
+
+    static func dismantleNSView(_ view: AVPlayerView, coordinator: ()) {
+        view.player?.pause()
+        view.player = nil
+    }
+}
+
+private struct SUPRAMediaImageView: View {
+    let url: URL
+
+    var body: some View {
+        Group {
+            if url.isFileURL, let image = NSImage(contentsOf: url) {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().scaledToFit()
+                    case .failure:
+                        ContentUnavailableView("Image unavailable", systemImage: "photo.badge.exclamationmark")
+                    case .empty:
+                        ProgressView("Loading image…")
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black.opacity(0.03))
+    }
+}
+
+private struct SUPRAMediaPDFView: NSViewRepresentable {
+    let url: URL
+
+    func makeNSView(context: Context) -> PDFView {
+        let view = PDFView(frame: .zero)
+        view.autoScales = true
+        view.displayMode = .singlePageContinuous
+        view.displayDirection = .vertical
+        view.document = PDFDocument(url: url)
+        return view
+    }
+
+    func updateNSView(_ view: PDFView, context: Context) {
+        guard view.document?.documentURL != url else { return }
+        view.document = PDFDocument(url: url)
     }
 }
