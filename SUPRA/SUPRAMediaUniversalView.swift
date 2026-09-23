@@ -410,7 +410,11 @@ struct SUPRAMediaUniversalView: View {
                     .font(.caption.weight(.heavy))
                     .foregroundStyle(.purple)
                 Spacer()
-                Text(sourceKind?.rawValue ?? "NO SOURCE")
+                Text(
+                    sourceURL == nil
+                        ? "NO SOURCE"
+                        : "\(sourceProvider?.rawValue ?? "UNKNOWN") · \(sourceKind?.rawValue ?? "UNKNOWN")"
+                )
                     .font(.caption2.weight(.heavy))
                     .foregroundStyle(sourceURL == nil ? .orange : .green)
             }
@@ -518,6 +522,14 @@ struct SUPRAMediaUniversalView: View {
                     .font(.caption.monospaced())
                     .textSelection(.enabled)
                     .lineLimit(4)
+                if let sourceProvider {
+                    truthRow("Provider", sourceProvider.rawValue)
+                    truthRow("Renderer", sourceKind?.rawValue ?? "UNKNOWN")
+                    Text(sourceProvider.guardrail)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
 
             contextBlock("EVIDENCE · CONNECTION TRUTH", symbol: "checkmark.shield.fill") {
@@ -789,6 +801,8 @@ struct SUPRAMediaUniversalView: View {
 
         SOURCE=\(sourceURL.absoluteString)
         SOURCE_KIND=\(sourceKind?.rawValue ?? "UNKNOWN")
+        SOURCE_PROVIDER=\(sourceProvider?.rawValue ?? "UNKNOWN")
+        PROVIDER_GUARDRAIL=\(sourceProvider?.guardrail ?? "No provider-specific contract")
         YOUTUBE_CONNECTION=\(youtubeState)
         MEDIA_CAPABILITY=\(mediaState)
         HUMAN_NOTE=\(noteValue.isEmpty ? "NONE" : noteValue)
@@ -901,6 +915,8 @@ struct SUPRAMediaUniversalView: View {
             "started_at": startedAt, "action": action.rawValue,
             "source": sourceURL.absoluteString,
             "source_kind": sourceKind?.rawValue ?? "UNKNOWN",
+            "source_provider": sourceProvider?.rawValue ?? "UNKNOWN",
+            "provider_guardrail": sourceProvider?.guardrail ?? "No provider-specific contract",
             "human_note": note,
             "ojo_object_id": heroContext?.objectID ?? "UNSCOPED",
             "ojo_object_type": heroContext?.objectType ?? "UNSCOPED",
