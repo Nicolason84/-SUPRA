@@ -80,6 +80,11 @@ check "Runtime never hydrates dataless FileProvider receipts for observability" 
 check "Runtime detects dataless receipts with metadata-only lstat" contains "SUPRA/SUPRAProcessObservatoryView.swift" 'lstat($0, &fileStat)'
 check "Runtime prefers hydrated duplicate receipts" contains "SUPRA/SUPRAProcessObservatoryView.swift" "if candidateDataless != currentDataless"
 check "Runtime labels metadata-only receipts truthfully" contains "SUPRA/SUPRAProcessObservatoryView.swift" "OUTBOX receipt present · cloud content not hydrated"
+check "ojO exposes universal Media tab" contains "SUPRA/OJOPrivateControlView.swift" 'case media = "Media"'
+check "ojO Media tab renders universal media surface" contains "SUPRA/OJOPrivateControlView.swift" 'SUPRAMediaUniversalView()'
+check "Presence YouTube routes to ojO universal media" contains "SUPRA/PublicPresenceView.swift" 'Open ojO Universal Media'
+check "Universal Media refuses silent canon writes" contains "SUPRA/SUPRAMediaUniversalView.swift" 'Do not write canon silently.'
+check "Universal Media refuses invented media verification" contains "SUPRA/SUPRAMediaUniversalView.swift" 'Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.'
 
 SCORE="$(python3 - "$PASS" "$TOTAL" <<'PY'
 import sys

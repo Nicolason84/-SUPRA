@@ -8,6 +8,7 @@ enum OJOPrivateTab: String, CaseIterable, Identifiable {
     case decisions = "Decisions"
     case connections = "Connections"
     case context = "Private context"
+    case media = "Media"
     case signals = "Signals"
 
     var id: Self { self }
@@ -21,6 +22,7 @@ enum OJOPrivateTab: String, CaseIterable, Identifiable {
         case .decisions: "gauge.with.dots.needle.50percent"
         case .connections: "point.3.connected.trianglepath.dotted"
         case .context: "brain.head.profile"
+        case .media: "play.rectangle.on.rectangle.fill"
         case .signals: "waveform.path.ecg"
         }
     }
@@ -98,7 +100,7 @@ struct OJOPrivateControlView: View {
             ForEach(OJOPrivateTab.allCases) { item in
                 Button {
                     tab = item
-                    if item != .signals {
+                    if item != .signals && item != .media {
                         Task { await queryForTab(item) }
                     }
                 } label: {
@@ -234,6 +236,9 @@ struct OJOPrivateControlView: View {
                     .frame(minHeight: 680)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
             }
+        } else if tab == .media {
+            SUPRAMediaUniversalView()
+                .frame(minHeight: 760)
         } else {
             VStack(alignment: .leading, spacing: 16) {
                 actionStrip
@@ -422,6 +427,7 @@ struct OJOPrivateControlView: View {
         case .decisions: "PRIVATE_DECISIONS"
         case .connections: "PRIVATE_CONNECTION_STATE"
         case .context: "PRIVATE_CONTEXT_STATE"
+        case .media: "MEDIA_CONTEXT"
         case .signals: "SIGNALS"
         }
 
