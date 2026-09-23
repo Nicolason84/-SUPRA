@@ -1489,7 +1489,9 @@ private actor SUPRAProcessObservatoryScanner {
         case .frozen:
             return 1.0
         case .materialized:
-            return parsed?.proofRefs.isEmpty == false ? 0.85 : 0.60
+            // A valid OUTBOX result classified as materialized is a completed
+            // observable process. Reflect that truthfully as a closed bar.
+            return 1.0
         case .blocked, .failed:
             return parsed?.proofRefs.isEmpty == false ? 0.70 : 0.50
         case .historical:
