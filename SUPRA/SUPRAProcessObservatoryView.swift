@@ -1006,43 +1006,78 @@ private actor SUPRAProcessObservatoryScanner {
             .generationIdentifierKey
         ]
 
-        var enumerationError: Error?
-        guard let enumerator = fileManager.enumerator(
-            at: directory,
-            includingPropertiesForKeys: Array(keys),
-            options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants],
-            errorHandler: { _, error in
-                enumerationError = error
-                return false
-            }
-        ) else {
+        let listed: [URL]
+        do {
+            listed = try fileManager.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+            )
+        } catch {
             return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
         }
 
-        var files: [SUPRAObservedFile] = []
-        files.reserveCapacity(min(maxDirectoryEntries, 1_024))
-        var visitedEntries = 0
+        guard listed.count <= maxDirectoryEntries else {
+            return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
+        }
 
-        while let object = enumerator.nextObject() {
+        // FileProvider metadata is the expensive operation. Reduce the mailbox
+        // to one preferred artifact per process BEFORE asking Google Drive for
+        // metadata. This keeps live observation bounded even when OUTBOX grows
+        // into the thousands.
+        var preferredByID: [String: URL] = [:]
+        preferredByID.reserveCapacity(min(listed.count, maxProcessIDs * 2))
+
+        for url in listed {
             if Swift.Task.isCancelled { return .cancelled }
-            guard let url = object as? URL else { continue }
-
-            visitedEntries += 1
-            guard visitedEntries <= maxDirectoryEntries else {
-                return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
-            }
 
             let lowerName = url.lastPathComponent.lowercased()
             let accepted: Bool
             if result {
-                accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".result.txt")
+                accepted = lowerName.hasSuffix(".result.json")
+                    || lowerName.hasSuffix(".result.txt")
+                    || (lowerName.hasSuffix(".json") && !lowerName.hasSuffix(".json.gdoc"))
             } else {
-                // The mailbox consumer executes raw JSON files only. A Google
-                // Docs FileProvider stub ending in .json.gdoc is not an
-                // executable mission and must never appear as IN_FLIGHT.
+                // Google Docs stubs are not executable missions.
                 accepted = lowerName.hasSuffix(".json")
+                    && !lowerName.hasSuffix(".json.gdoc")
             }
             guard accepted else { continue }
+
+            let id = normalizedID(url.lastPathComponent)
+            if let current = preferredByID[id] {
+                let currentName = current.lastPathComponent.lowercased()
+                let candidateIsJSON = lowerName.hasSuffix(".result.json")
+                    || (lowerName.hasSuffix(".json") && !lowerName.hasSuffix(".result.txt"))
+                let currentIsJSON = currentName.hasSuffix(".result.json")
+                    || (currentName.hasSuffix(".json") && !currentName.hasSuffix(".result.txt"))
+
+                if candidateIsJSON && !currentIsJSON {
+                    preferredByID[id] = url
+                } else if candidateIsJSON == currentIsJSON,
+                          url.lastPathComponent < current.lastPathComponent {
+                    preferredByID[id] = url
+                }
+            } else {
+                preferredByID[id] = url
+            }
+        }
+
+        let selectedIDs = preferredByID.keys.sorted { lhs, rhs in
+            let lhsDate = inferredDate(from: lhs) ?? .distantPast
+            let rhsDate = inferredDate(from: rhs) ?? .distantPast
+            if lhsDate != rhsDate { return lhsDate > rhsDate }
+            return lhs > rhs
+        }
+        .prefix(maxProcessIDs)
+
+        var files: [SUPRAObservedFile] = []
+        files.reserveCapacity(selectedIDs.count)
+        var metadataFailures = 0
+
+        for id in selectedIDs {
+            if Swift.Task.isCancelled { return .cancelled }
+            guard let url = preferredByID[id] else { continue }
 
             do {
                 let values = try url.resourceValues(forKeys: keys)
@@ -1050,9 +1085,9 @@ private actor SUPRAProcessObservatoryScanner {
 
                 files.append(
                     SUPRAObservedFile(
-                        id: normalizedID(url.lastPathComponent),
+                        id: id,
                         url: url,
-                        modifiedAt: values.contentModificationDate,
+                        modifiedAt: values.contentModificationDate ?? inferredDate(from: id),
                         fileSize: values.fileSize,
                         resourceIdentifier: values.fileResourceIdentifier.map {
                             String(reflecting: $0)
@@ -1063,13 +1098,14 @@ private actor SUPRAProcessObservatoryScanner {
                     )
                 )
             } catch {
-                return .failure("BRIDGE FILE METADATA READ FAILED")
+                // One broken FileProvider stub must not take the whole bridge
+                // offline. Omit only that artifact and keep the scan truthful.
+                metadataFailures += 1
             }
         }
 
-        if Swift.Task.isCancelled { return .cancelled }
-        if enumerationError != nil {
-            return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
+        if files.isEmpty, !selectedIDs.isEmpty, metadataFailures == selectedIDs.count {
+            return .failure("BRIDGE FILE METADATA READ FAILED")
         }
 
         return .success(files)
@@ -1231,8 +1267,9 @@ private actor SUPRAProcessObservatoryScanner {
         inbox: [String: SUPRAObservedFile],
         outbox: [String: SUPRAObservedFile]
     ) -> Date {
-        let inputDate = inbox[id]?.modifiedAt ?? .distantPast
-        let outputDate = outbox[id]?.modifiedAt ?? .distantPast
+        let inferred = inferredDate(from: id) ?? .distantPast
+        let inputDate = inbox[id]?.modifiedAt ?? inferred
+        let outputDate = outbox[id]?.modifiedAt ?? inferred
         return max(inputDate, outputDate)
     }
 
