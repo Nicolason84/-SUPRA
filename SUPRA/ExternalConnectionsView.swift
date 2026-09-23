@@ -1,16 +1,42 @@
 import SwiftUI
 
+private enum ExternalConnectionFilter: String, CaseIterable, Identifiable {
+    case all = "ALL"
+    case live = "LIVE"
+    case attention = "ATTENTION"
+    case stale = "STALE"
+
+    var id: Self { self }
+}
+
 struct ExternalConnectionsView: View {
     @State private var xReadReady = false
     @State private var inpiReady = false
     @State private var readinessCheckedAt: Date?
+    @State private var filter: ExternalConnectionFilter = .all
 
     private let columns = [
         GridItem(.adaptive(minimum: 270, maximum: 390), spacing: 14)
     ]
 
     private var grouped: [(String, [ExternalConnectorDescriptor])] {
-        Dictionary(grouping: ExternalConnectorCatalog.all, by: \.family)
+        let source = ExternalConnectorCatalog.all.filter { connector in
+            switch filter {
+            case .all:
+                return true
+            case .live:
+                return ExternalConnectionProofLedger.freshness(for: connector) == .live
+            case .stale:
+                return ExternalConnectionProofLedger.freshness(for: connector) == .stale
+            case .attention:
+                return connector.status == .authRequired
+                    || connector.status == .approvalRequired
+                    || connector.status == .providerRequired
+                    || connector.status == .blocked
+            }
+        }
+
+        return Dictionary(grouping: source, by: \.family)
             .map { ($0.key, $0.value.sorted { $0.priority < $1.priority }) }
             .sorted { $0.0 < $1.0 }
     }
@@ -20,6 +46,7 @@ struct ExternalConnectionsView: View {
             VStack(alignment: .leading, spacing: 24) {
                 hero
                 truthPanel
+                filterRail
                 authorityRail
                 ForEach(grouped, id: \.0) { family, items in
                     section(family, items: items)
@@ -67,7 +94,8 @@ struct ExternalConnectionsView: View {
             VStack(alignment: .trailing, spacing: 7) {
                 metric(String(ExternalConnectorCatalog.all.count), "connectors")
                 metric(String(ExternalConnectorCatalog.all.filter { $0.priority == "P0" }.count), "P0")
-                metric(String(ExternalConnectorCatalog.connectedCount), "catalog connected")
+                metric(String(ExternalConnectionProofLedger.liveCount), "fresh proof")
+                metric(String(ExternalConnectionProofLedger.staleCount), "stale proof")
             }
         }
         .padding(22)
@@ -109,9 +137,9 @@ struct ExternalConnectionsView: View {
                     ready: inpiReady
                 )
                 readinessBadge(
-                    "CATALOG LIVE",
-                    "\(ExternalConnectorCatalog.connectedCount) PROVEN",
-                    ready: true
+                    "FRESH PROOF",
+                    "\(ExternalConnectionProofLedger.liveCount)",
+                    ready: ExternalConnectionProofLedger.liveCount > 0
                 )
                 readinessBadge(
                     "NEEDS AUTH / APPROVAL",
@@ -128,6 +156,46 @@ struct ExternalConnectionsView: View {
         }
         .padding(18)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private var filterRail: some View {
+        HStack(spacing: 8) {
+            ForEach(ExternalConnectionFilter.allCases) { item in
+                Button {
+                    withAnimation(.snappy(duration: 0.18)) {
+                        filter = item
+                    }
+                } label: {
+                    HStack(spacing: 7) {
+                        Circle()
+                            .fill(filterTint(item))
+                            .frame(width: 7, height: 7)
+                        Text(item.rawValue)
+                            .font(.caption2.weight(.heavy))
+                    }
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 8)
+                    .background(
+                        filter == item ? filterTint(item).opacity(0.13) : Color.clear,
+                        in: Capsule()
+                    )
+                    .overlay {
+                        Capsule()
+                            .stroke(
+                                filter == item ? filterTint(item).opacity(0.45) : .white.opacity(0.06),
+                                lineWidth: 1
+                            )
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+
+            Spacer()
+
+            Text("\(grouped.reduce(0) { $0 + $1.1.count }) visible")
+                .font(.caption2.monospacedDigit().weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
     }
 
     private var authorityRail: some View {
@@ -163,7 +231,11 @@ struct ExternalConnectionsView: View {
     }
 
     private func connectorCard(_ connector: ExternalConnectorDescriptor) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let proof = ExternalConnectionProofLedger.proof(for: connector.id)
+        let freshness = ExternalConnectionProofLedger.freshness(for: connector)
+        let age = ExternalConnectionProofLedger.ageLabel(for: connector.id)
+
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 11) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -184,18 +256,53 @@ struct ExternalConnectionsView: View {
 
                 Spacer()
 
-                Text(connector.status.rawValue)
-                    .font(.caption2.weight(.heavy))
-                    .foregroundStyle(connector.status.tint)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 5)
-                    .background(connector.status.tint.opacity(0.10), in: Capsule())
+                VStack(alignment: .trailing, spacing: 5) {
+                    Text(connector.status.rawValue)
+                        .font(.caption2.weight(.heavy))
+                        .foregroundStyle(connector.status.tint)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 5)
+                        .background(connector.status.tint.opacity(0.10), in: Capsule())
+
+                    if connector.status == .connected {
+                        HStack(spacing: 5) {
+                            Circle()
+                                .fill(freshness.tint)
+                                .frame(width: 6, height: 6)
+                            Text(freshness.rawValue)
+                                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                                .foregroundStyle(freshness.tint)
+                            if let age {
+                                Text("· \(age)")
+                                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
             }
 
             Text(connector.detail)
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let proof {
+                HStack(alignment: .top, spacing: 7) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(freshness.tint)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(proof.evidence)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                        Text(proof.source)
+                            .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(.tertiary)
+                            .lineLimit(1)
+                    }
+                }
+            }
 
             Divider()
 
@@ -216,6 +323,15 @@ struct ExternalConnectionsView: View {
         .padding(16)
         .frame(maxWidth: .infinity, minHeight: 200, alignment: .topLeading)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func filterTint(_ item: ExternalConnectionFilter) -> Color {
+        switch item {
+        case .all: return .cyan
+        case .live: return .green
+        case .attention: return .orange
+        case .stale: return .yellow
+        }
     }
 
     private func readinessBadge(_ title: String, _ value: String, ready: Bool) -> some View {

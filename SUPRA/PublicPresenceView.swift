@@ -99,6 +99,8 @@ struct PublicPresenceView: View {
             ForEach(channels) { channel in
                 let descriptor = ExternalConnectorCatalog.descriptor(id: channel.id)
                 let status = descriptor?.status ?? .planned
+                let freshness = descriptor.map { ExternalConnectionProofLedger.freshness(for: $0) }
+                let age = ExternalConnectionProofLedger.ageLabel(for: channel.id)
 
                 VStack(alignment: .leading, spacing: 11) {
                     HStack {
@@ -120,9 +122,25 @@ struct PublicPresenceView: View {
 
                     Divider()
 
-                    Text(status.rawValue)
-                        .font(.caption2.weight(.heavy))
-                        .foregroundStyle(status.tint)
+                    HStack(spacing: 7) {
+                        Text(status.rawValue)
+                            .font(.caption2.weight(.heavy))
+                            .foregroundStyle(status.tint)
+
+                        if status == .connected, let freshness {
+                            Text(freshness.rawValue)
+                                .font(.caption2.weight(.heavy))
+                                .foregroundStyle(freshness.tint)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 3)
+                                .background(freshness.tint.opacity(0.10), in: Capsule())
+                            if let age {
+                                Text(age)
+                                    .font(.caption2.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
 
                     if let descriptor {
                         Label(descriptor.officialRoute, systemImage: "link")
