@@ -478,7 +478,7 @@ struct SupraControlCenterView: View {
                     title: "Build Status",
                     value: installProof.displayStatus,
                     systemImage: "hammer.fill",
-                    healthy: installProof.isCurrent
+                    healthy: installProof.isOperational
                 )
                 summaryCard(
                     title: "Last Refresh",
@@ -724,7 +724,7 @@ struct SupraControlCenterView: View {
                 liveHealthCard(
                     "Installed build",
                     installProof.installedShortSHA,
-                    healthy: installProof.isCurrent
+                    healthy: installProof.isOperational
                 )
                 liveHealthCard(
                     "In flight",
@@ -944,6 +944,8 @@ private struct SUPRALocalInstallProof {
         let fm = FileManager.default
         let embeddedSourceSHA = Bundle.main
             .object(forInfoDictionaryKey: "SUPRASourceSHA") as? String ?? ""
+        let localValidatedBuild = Bundle.main
+            .object(forInfoDictionaryKey: "SUPRALocalBuild") as? Bool ?? false
 
         var projection: [String: Any] = [:]
         if let appSupport = fm.urls(
@@ -973,6 +975,8 @@ private struct SUPRALocalInstallProof {
         let proofStatus: String
         if installed.isEmpty {
             proofStatus = "UNAVAILABLE"
+        } else if localValidatedBuild {
+            proofStatus = "LOCAL_VALIDATED"
         } else if !projectedInstalled.isEmpty && projectedInstalled != installed {
             proofStatus = "DRIFT"
         } else {
@@ -999,8 +1003,13 @@ private struct SUPRALocalInstallProof {
             )
     }
 
+    var isOperational: Bool {
+        isCurrent || status == "LOCAL_VALIDATED"
+    }
+
     var displayStatus: String {
         if isCurrent { return "Current" }
+        if status == "LOCAL_VALIDATED" { return "Local validated" }
         if status == "UNAVAILABLE" { return "Unproven" }
         if status == "DRIFT" { return "Drift" }
         return "Behind"
