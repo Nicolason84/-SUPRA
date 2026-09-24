@@ -3277,9 +3277,6 @@ final class SUPRAExecutiveStore: ObservableObject {
                 throw URLError(.cannotParseResponse)
             }
 
-            let missionEvidence =
-                SUPRAMissionEvidenceLoader.loadRequiredEvidence()
-
             // SUPRA_MISSION_EVIDENCE_POLICY_V2_BEGIN
             //
             // Historical mission evidence remains reusable, but it must not
@@ -3298,6 +3295,11 @@ final class SUPRAExecutiveStore: ObservableObject {
             if normalizedPrompt.contains("REQUIRE_STATUS_EVIDENCE=TRUE") {
                 requiredMissionEvidence.insert("STATUS")
             }
+
+            let missionEvidence =
+                requiredMissionEvidence.isEmpty
+                ? []
+                : SUPRAMissionEvidenceLoader.loadRequiredEvidence()
 
             let loadedMissionEvidence = Set(
                 missionEvidence.map(\.evidenceId)
