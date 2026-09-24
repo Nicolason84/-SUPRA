@@ -786,13 +786,32 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     // durable execution identities (Executive + ojO Media). Older
                     // helper/subpart receipts remain history and must not reappear
                     // as present blockers.
-                    let currentGrandePhaseIDs = Set(
-                        SUPRAGrandeMissionRunner.shared.phases.map(\.id)
-                    )
-                    grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
+                    let runner = SUPRAGrandeMissionRunner.shared
+                    let currentGrandePhaseIDs = Set(runner.phases.map(\.id))
+                    let activeGrandePhaseID = runner.isRunning
+                        ? runner.activePhaseID
+                        : nil
+
+                    let admittedGrandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
                             || $0.id.hasPrefix("EXECUTIVE_OBJECTIVE_")
                             || $0.id.hasPrefix("OJO_MEDIA_")
+                    }
+
+                    grandeProcesses = admittedGrandeProcesses.filter { process in
+                        guard currentGrandePhaseIDs.contains(process.id) else {
+                            return true
+                        }
+
+                        // A persisted phase request is not proof of live execution.
+                        // Keep terminal receipts observable, but expose an INBOX-only
+                        // canonical phase as in-flight only while the runner says that
+                        // exact phase is the currently admitted execution.
+                        if process.stage == .inFlight {
+                            return process.id == activeGrandePhaseID
+                        }
+
+                        return true
                     }
                     self.sourceLabel = root.path + " + GRANDE_MISSION"
                 } else {
