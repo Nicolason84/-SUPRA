@@ -541,9 +541,24 @@ struct OJOPrivateControlView: View {
         }()
         nextHumanAction = humanAction ?? "NONE"
 
+        let directBridgeLive =
+            runtimeState == "CONNECTED"
+            || runtimeState == "PASS"
+        let effectiveBridgeLive = liveStore.bridgeAvailable || directBridgeLive
+        let effectiveState = effectiveBridgeLive
+            ? (liveStore.bridgeAvailable ? liveStore.momentumLabel : "CLEAR")
+            : "OFFLINE"
+        let effectiveMomentum = effectiveBridgeLive
+            ? (
+                liveStore.bridgeAvailable
+                    ? liveStore.momentumDetail
+                    : "Bridge transport live; process mailbox telemetry unavailable."
+            )
+            : "Bridge transport unavailable."
+
         output = """
-        CURRENT_STATE=\(liveStore.momentumLabel)
-        MOMENTUM=\(liveStore.momentumDetail)
+        CURRENT_STATE=\(effectiveState)
+        MOMENTUM=\(effectiveMomentum)
         LAST_MATERIAL_CHANGE=\(lastMaterialChange)
         CURRENT_MISSION=\(liveStore.processes.first(where: { $0.id.hasPrefix("0") })?.title ?? "NONE")
         TOP_BOTTLENECK=\(topBottleneck)
@@ -554,7 +569,7 @@ struct OJOPrivateControlView: View {
         DRIFT=\(liveStore.driftCount)
         NEXT_MACHINE_ACTION=\(nextMachineAction)
         NEXT_HUMAN_ACTION=\(nextHumanAction)
-        EVIDENCE_REFS=SHARED_SUPRA_PROCESS_OBSERVATORY_STORE
+        EVIDENCE_REFS=DIRECT_BRIDGE_HEALTH+SHARED_SUPRA_PROCESS_OBSERVATORY_STORE
         """
         lastQuery = .now
         if liveStore.bridgeAvailable {

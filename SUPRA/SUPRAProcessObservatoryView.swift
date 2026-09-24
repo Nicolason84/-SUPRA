@@ -60,13 +60,17 @@ struct SUPRAProcessObservatoryView: View {
             Toggle("Live", isOn: $store.isLive)
                 .toggleStyle(.switch)
             Button("Refresh", systemImage: "arrow.clockwise") {
-                store.refresh()
+                store.refresh(force: true)
+                Task { await store.refreshTransportHealth() }
             }
             Button("Select Bridge…", systemImage: "folder.badge.gearshape") {
                 store.selectBridgeRoot()
             }
         }
-        .task { store.start() }
+        .task {
+            store.start()
+            await store.refreshTransportHealth()
+        }
     }
 
     private var header: some View {
@@ -650,6 +654,24 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         refreshTask = nil
     }
 
+    func refreshTransportHealth() async {
+        let liveTransport = await probeLiveBridgeHealth()
+        guard !Task.isCancelled else { return }
+
+        if liveTransport {
+            bridgeAvailable = true
+            if sourceLabel == "INITIALIZING"
+                || sourceLabel.contains("UNAVAILABLE")
+                || sourceLabel.contains("ACCESS REQUIRED")
+                || sourceLabel.contains("ACCESS FAILED") {
+                sourceLabel = "LIVE BRIDGE HTTP · process telemetry partial"
+            }
+            if processes.isEmpty {
+                applyProcesses([])
+            }
+        }
+    }
+
     func refresh(force: Bool = false) {
         if refreshTask != nil {
             guard force else { return }
@@ -667,8 +689,28 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
 
         guard let access = resolveBridgeAccess() else {
             scanGeneration &+= 1
+            let generation = scanGeneration
             let hasSavedBookmark = UserDefaults.standard.data(forKey: bookmarkKey) != nil
-            clearBridgeState(label: hasSavedBookmark ? "SAVED BRIDGE UNAVAILABLE" : "BRIDGE ACCESS REQUIRED")
+            let fallbackLabel = hasSavedBookmark
+                ? "SAVED PROCESS MAILBOX UNAVAILABLE"
+                : "PROCESS MAILBOX ACCESS UNAVAILABLE"
+
+            refreshTask = Swift.Task { [weak self] in
+                guard let self else { return }
+                let liveTransport = await self.probeLiveBridgeHealth()
+                guard generation == self.scanGeneration,
+                      !Swift.Task.isCancelled
+                else { return }
+
+                self.refreshTask = nil
+                if liveTransport {
+                    self.bridgeAvailable = true
+                    self.sourceLabel = "LIVE BRIDGE HTTP · " + fallbackLabel
+                    self.applyProcesses([])
+                } else {
+                    self.clearBridgeState(label: fallbackLabel)
+                }
+            }
             return
         }
 
@@ -692,6 +734,18 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 }
             }
 
+            guard let self else { return }
+
+            let liveTransport = await self.probeLiveBridgeHealth()
+            guard generation == self.scanGeneration,
+                  !Swift.Task.isCancelled
+            else { return }
+
+            if liveTransport {
+                self.bridgeAvailable = true
+                self.sourceLabel = "LIVE BRIDGE HTTP · TELEMETRY SCANNING"
+            }
+
             let snapshot = await scanner.scan(root: root)
 
             let grandeRoot = FileManager.default.homeDirectoryForCurrentUser
@@ -701,7 +755,6 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 )
             let grandeSnapshot = await scanner.scan(root: grandeRoot)
 
-            guard let self else { return }
             guard generation == self.scanGeneration else { return }
 
             self.refreshTask = nil
@@ -735,9 +788,16 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 }
                 self.applyProcesses(mergedProcesses)
             } else {
-                self.clearBridgeState(
-                    label: snapshot.unavailableReason ?? "LOCAL BRIDGE UNAVAILABLE"
-                )
+                let liveTransport = await self.probeLiveBridgeHealth()
+                if liveTransport {
+                    self.bridgeAvailable = true
+                    self.sourceLabel = "LIVE BRIDGE HTTP · " + (snapshot.unavailableReason ?? "PROCESS TELEMETRY UNAVAILABLE")
+                    self.applyProcesses([])
+                } else {
+                    self.clearBridgeState(
+                        label: snapshot.unavailableReason ?? "LOCAL BRIDGE UNAVAILABLE"
+                    )
+                }
             }
         }
     }
@@ -886,10 +946,24 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
     }
 
     private func resolveBridgeAccess() -> SUPRABridgeAccess? {
+        // Canonical local bridge mailbox takes precedence over a stale bookmark
+        // left by a previous signed bundle. No write is performed here.
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        let canonicalMailbox = home.appendingPathComponent(
+            "Library/CloudStorage/GoogleDrive-nicolas.alonsof84@gmail.com/Mon Drive/SUPRA_IMAC_MEMORY_GATEWAY/REMOTE",
+            isDirectory: true
+        )
+        if isBridgeRoot(canonicalMailbox) {
+            return SUPRABridgeAccess(url: canonicalMailbox, requiresSecurityScope: false)
+        }
+
         if let bookmarkedBridgeRoot {
             return SUPRABridgeAccess(url: bookmarkedBridgeRoot, requiresSecurityScope: true)
         }
 
+        // Canonical local bridge mailbox: observation must recover automatically
+        // after rebuild/reinstall instead of depending on a stale sandbox bookmark.
+        // This is read-only discovery of the EXISTING bridge; it creates nothing.
         guard let resources = Bundle.main.resourceURL else { return nil }
         let packagedCandidates = [
             resources.appendingPathComponent("SOL_BRIDGE", isDirectory: true),
@@ -911,6 +985,15 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
         var directoryFlag = ObjCBool(false)
         return fileManager.fileExists(atPath: url.path, isDirectory: &directoryFlag)
             && directoryFlag.boolValue
+    }
+
+    private func probeLiveBridgeHealth() async -> Bool {
+        do {
+            try await SUPRAChatRuntimeAdapter().checkHealth()
+            return true
+        } catch {
+            return false
+        }
     }
 
     private func clearBridgeState(label: String) {
