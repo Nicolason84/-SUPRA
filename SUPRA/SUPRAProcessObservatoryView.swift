@@ -791,6 +791,7 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     let activeGrandePhaseID = runner.isRunning
                         ? runner.activePhaseID
                         : nil
+                    let activeMediaObjectiveID = SUPRAMediaHeroRouter.shared.activeObjectiveID
 
                     let admittedGrandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
@@ -799,16 +800,19 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     }
 
                     grandeProcesses = admittedGrandeProcesses.filter { process in
-                        guard currentGrandePhaseIDs.contains(process.id) else {
+                        guard process.stage == .inFlight else {
                             return true
                         }
 
-                        // A persisted phase request is not proof of live execution.
+                        // Persisted requests prove admission, not liveness.
                         // Keep terminal receipts observable, but expose an INBOX-only
-                        // canonical phase as in-flight only while the runner says that
-                        // exact phase is the currently admitted execution.
-                        if process.stage == .inFlight {
+                        // process as live only while its existing execution owner says
+                        // that exact identity is currently active.
+                        if currentGrandePhaseIDs.contains(process.id) {
                             return process.id == activeGrandePhaseID
+                        }
+                        if process.id.hasPrefix("OJO_MEDIA_") {
+                            return process.id == activeMediaObjectiveID
                         }
 
                         return true
