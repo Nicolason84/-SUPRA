@@ -361,12 +361,14 @@ struct SUPRAMediaUniversalView: View {
         HStack(spacing: 10) {
             TextField("YouTube, web or media URL…", text: $address)
                 .textFieldStyle(.roundedBorder)
+                .accessibilityIdentifier("media-source-address")
                 .onSubmit(resolveAddress)
 
             Button("Load", systemImage: "arrow.right.circle.fill") {
                 resolveAddress()
             }
             .buttonStyle(.borderedProminent)
+            .accessibilityIdentifier("media-source-load")
 
             Button("Clipboard", systemImage: "doc.on.clipboard") {
                 if let string = NSPasteboard.general.string(forType: .string) {
@@ -484,6 +486,8 @@ struct SUPRAMediaUniversalView: View {
                         .background(.quaternary, in: RoundedRectangle(cornerRadius: 14))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("media-action-" + action.rawValue.lowercased())
+                    .accessibilityLabel(action.title)
                     .disabled(sourceURL == nil || activeAction != nil)
                 }
             }
