@@ -554,11 +554,15 @@ struct SupraControlCenterView: View {
                             } else {
                                 Image(systemName: "hammer.fill")
                             }
-                            Text(versionRefreshBusy ? "Release in progress…" : "Build Release + Relaunch")
+                            Text(
+                                installProof.status == "LOCAL_VALIDATED"
+                                    ? "Canonical promotion pending"
+                                    : (versionRefreshBusy ? "Release in progress…" : "Build Release + Relaunch")
+                            )
                         }
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(versionRefreshBusy)
+                    .disabled(versionRefreshBusy || installProof.status == "LOCAL_VALIDATED")
                 }
 
                 HStack(spacing: 8) {
