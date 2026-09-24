@@ -169,6 +169,7 @@ struct SUPRAOJOHomeView: View {
     @State private var inspectorVisible = false
     @State private var paletteVisible = false
     @State private var railCompact = false
+    @State private var systemDetailsVisible = false
     @State private var spatialImmersion = true
     @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
@@ -594,9 +595,11 @@ struct SUPRAOJOHomeView: View {
 
             Spacer()
 
-            statusPill("CANON LIVE", symbol: "checkmark.seal.fill")
-            statusPill("BUILD-GATED", symbol: "hammer.fill")
-            statusPill("CIRCULAR", symbol: "arrow.triangle.2.circlepath")
+            if systemDetailsVisible {
+                statusPill("CANON LIVE", symbol: "checkmark.seal.fill")
+                statusPill("BUILD-GATED", symbol: "hammer.fill")
+                statusPill("CIRCULAR", symbol: "arrow.triangle.2.circlepath")
+            }
 
             Button {
                 mediaRouter.present(
@@ -618,41 +621,55 @@ struct SUPRAOJOHomeView: View {
             .keyboardShortcut("m", modifiers: [.command, .shift])
 
             Button {
-                paletteVisible = true
+                withAnimation(.snappy(duration: 0.22)) {
+                    systemDetailsVisible.toggle()
+                }
             } label: {
-                Image(systemName: "command")
+                Image(systemName: systemDetailsVisible ? "info.circle.fill" : "info.circle")
                     .frame(width: 28, height: 28)
             }
             .buttonStyle(.plain)
-            .help("Universe command palette")
-            .keyboardShortcut("k", modifiers: [.command])
+            .help(systemDetailsVisible ? "Hide system details" : "Show system details")
+            .accessibilityIdentifier("supra-system-details-toggle")
 
-            Button {
-                inspectorVisible.toggle()
-            } label: {
-                Image(systemName: inspectorVisible ? "sidebar.right" : "sidebar.trailing")
-                    .frame(width: 28, height: 28)
-            }
-            .buttonStyle(.plain)
-            .help("Toggle universe inspector")
+            if systemDetailsVisible {
+                Button {
+                    paletteVisible = true
+                } label: {
+                    Image(systemName: "command")
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.plain)
+                .help("Universe command palette")
+                .keyboardShortcut("k", modifiers: [.command])
 
-            Button {
-                spatialImmersion.toggle()
-            } label: {
-                Image(systemName: spatialImmersion ? "viewfinder.circle.fill" : "viewfinder.circle")
-                    .frame(width: 28, height: 28)
-            }
-            .buttonStyle(.plain)
-            .help(spatialImmersion ? "Disable augmented spatial HUD" : "Enable augmented spatial HUD")
+                Button {
+                    inspectorVisible.toggle()
+                } label: {
+                    Image(systemName: inspectorVisible ? "sidebar.right" : "sidebar.trailing")
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.plain)
+                .help("Toggle universe inspector")
 
-            Button {
-                NSApp.keyWindow?.toggleFullScreen(nil)
-            } label: {
-                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                    .frame(width: 28, height: 28)
+                Button {
+                    spatialImmersion.toggle()
+                } label: {
+                    Image(systemName: spatialImmersion ? "viewfinder.circle.fill" : "viewfinder.circle")
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.plain)
+                .help(spatialImmersion ? "Disable augmented spatial HUD" : "Enable augmented spatial HUD")
+
+                Button {
+                    NSApp.keyWindow?.toggleFullScreen(nil)
+                } label: {
+                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        .frame(width: 28, height: 28)
+                }
+                .buttonStyle(.plain)
+                .help("Toggle fullscreen")
             }
-            .buttonStyle(.plain)
-            .help("Toggle fullscreen")
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
@@ -710,7 +727,7 @@ struct SUPRAOJOHomeView: View {
             .id(universe)
             .transition(.opacity.combined(with: .scale(scale: 0.995)))
 
-            if spatialImmersion {
+            if systemDetailsVisible && spatialImmersion {
                 spatialHUD(universe)
                     .transition(.opacity)
             }
@@ -925,24 +942,29 @@ struct SUPRAOJOHomeView: View {
     }
 
     private var circulationDock: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 7) {
-                Label("CIRCULATION", systemImage: "arrow.triangle.2.circlepath")
-                    .font(.caption2.weight(.heavy))
-                    .tracking(1.1)
-                    .foregroundStyle(selection.accent)
+        HStack(spacing: 8) {
+            Label("CIRCULATION", systemImage: "arrow.triangle.2.circlepath")
+                .font(.caption2.weight(.heavy))
+                .tracking(1.1)
+                .foregroundStyle(selection.accent)
 
-                ForEach(Array(circulationStages.enumerated()), id: \.offset) { index, stage in
-                    if index > 0 {
-                        Image(systemName: "chevron.right")
-                            .font(.caption2.weight(.bold))
-                            .foregroundStyle(.tertiary)
+            if systemDetailsVisible {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 7) {
+                        ForEach(Array(circulationStages.enumerated()), id: \.offset) { index, stage in
+                            if index > 0 {
+                                Image(systemName: "chevron.right")
+                                    .font(.caption2.weight(.bold))
+                                    .foregroundStyle(.tertiary)
+                            }
+
+                            Text(stage)
+                                .font(.caption2.weight(.bold))
+                                .foregroundStyle(index == circulationStages.count - 1 ? selection.accent : .secondary)
+                        }
                     }
-
-                    Text(stage)
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(index == circulationStages.count - 1 ? selection.accent : .secondary)
                 }
+                .scrollIndicators(.hidden)
 
                 Spacer(minLength: 12)
 
@@ -950,11 +972,22 @@ struct SUPRAOJOHomeView: View {
                     .font(.caption2.weight(.heavy))
                     .tracking(0.8)
                     .foregroundStyle(.secondary)
+            } else {
+                Text(selection.circulation)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+
+                Spacer(minLength: 12)
+
+                Text("DETAILS ON DEMAND")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(0.8)
+                    .foregroundStyle(.tertiary)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 9)
         }
-        .scrollIndicators(.hidden)
+        .padding(.horizontal, 16)
+        .padding(.vertical, systemDetailsVisible ? 9 : 7)
         .glassEffect(.regular, in: Rectangle())
     }
 
