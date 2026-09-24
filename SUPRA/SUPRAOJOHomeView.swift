@@ -163,6 +163,22 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
     }
 }
 
+private enum SUPRAUniverseDrilldown: String, CaseIterable, Identifiable {
+    case evidence = "Evidence"
+    case lineage = "Lineage"
+    case architecture = "Architecture"
+
+    var id: String { rawValue }
+
+    var symbol: String {
+        switch self {
+        case .evidence: return "checkmark.seal.fill"
+        case .lineage: return "point.3.connected.trianglepath.dotted"
+        case .architecture: return "square.3.layers.3d"
+        }
+    }
+}
+
 struct SUPRAOJOHomeView: View {
     @ObservedObject private var mediaRouter = SUPRAMediaHeroRouter.shared
     @State private var selection: SUPRAUniverse = .supra
@@ -172,6 +188,7 @@ struct SUPRAOJOHomeView: View {
     @State private var spatialImmersion = false
     @State private var deckDetailsVisible = false
     @State private var circulationExpanded = false
+    @State private var activeDrilldown: SUPRAUniverseDrilldown? = nil
     @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
     private let circulationStages = [
@@ -244,6 +261,7 @@ struct SUPRAOJOHomeView: View {
                 applyAdaptiveChrome(for: newSelection)
                 deckDetailsVisible = false
                 circulationExpanded = false
+                activeDrilldown = nil
             }
         }
         .animation(.snappy(duration: 0.28), value: selection)
@@ -686,50 +704,237 @@ struct SUPRAOJOHomeView: View {
 
     @ViewBuilder
     private func universeSurface(_ universe: SUPRAUniverse) -> some View {
-        ZStack {
-            universe.accent.opacity(0.018)
+        VStack(spacing: 0) {
+            universeHierarchy(universe)
 
-            Group {
-                switch universe {
-                case .france:
-                    FranceOrganismNativeView()
-                case .chat:
-                    SUPRAChatView()
-                case .media:
-                    if let context = mediaHeroRouter.context {
-                        SUPRAMediaUniversalView(context: context)
-                    } else {
-                        SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
+            Rectangle()
+                .fill(.white.opacity(0.055))
+                .frame(height: 1)
+
+            ZStack {
+                universe.accent.opacity(0.018)
+
+                Group {
+                    switch universe {
+                    case .france:
+                        FranceOrganismNativeView()
+                    case .chat:
+                        SUPRAChatView()
+                    case .media:
+                        if let context = mediaHeroRouter.context {
+                            SUPRAMediaUniversalView(context: context)
+                        } else {
+                            SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
+                        }
+                    case .cannonico:
+                        ContentView()
+                    case .missions:
+                        MissionCenterView()
+                    case .organization:
+                        OrganizationPeopleView()
+                    case .connections:
+                        ExternalConnectionsView()
+                    case .inpi:
+                        INPIUniverseView()
+                    case .publicPresence:
+                        PublicPresenceView()
+                    case .runtime:
+                        SUPRAProcessObservatoryView()
+                    case .ojo:
+                        OJOPrivateControlView()
+                    case .supra:
+                        SupraControlCenterView()
+                    case .control:
+                        DecisionInboxView()
                     }
-                case .cannonico:
-                    ContentView()
-                case .missions:
-                    MissionCenterView()
-                case .organization:
-                    OrganizationPeopleView()
-                case .connections:
-                    ExternalConnectionsView()
-                case .inpi:
-                    INPIUniverseView()
-                case .publicPresence:
-                    PublicPresenceView()
-                case .runtime:
-                    SUPRAProcessObservatoryView()
-                case .ojo:
-                    OJOPrivateControlView()
-                case .supra:
-                    SupraControlCenterView()
-                case .control:
-                    DecisionInboxView()
+                }
+                .id(universe)
+                .transition(.opacity.combined(with: .scale(scale: 0.995)))
+
+                if spatialImmersion {
+                    spatialHUD(universe)
+                        .transition(.opacity)
                 }
             }
-            .id(universe)
-            .transition(.opacity.combined(with: .scale(scale: 0.995)))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
 
-            if spatialImmersion {
-                spatialHUD(universe)
-                    .transition(.opacity)
+    private func universeHierarchy(_ universe: SUPRAUniverse) -> some View {
+        VStack(spacing: 9) {
+            HStack(alignment: .top, spacing: 9) {
+                hierarchyCard(
+                    title: "NOW",
+                    symbol: "circle.fill",
+                    text: universe.subtitle,
+                    universe: universe,
+                    identifier: "supra-hierarchy-now"
+                )
+
+                hierarchyCard(
+                    title: "MATTERS",
+                    symbol: "scope",
+                    text: universe.scope,
+                    universe: universe,
+                    identifier: "supra-hierarchy-matters"
+                )
+
+                hierarchyCard(
+                    title: "ACTION",
+                    symbol: "arrow.right.circle.fill",
+                    text: primaryAction(for: universe),
+                    universe: universe,
+                    identifier: "supra-hierarchy-action"
+                )
             }
+
+            HStack(spacing: 8) {
+                Label("DEEP DIVE", systemImage: "square.stack.3d.down.right")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(1.0)
+                    .foregroundStyle(.secondary)
+
+                ForEach(SUPRAUniverseDrilldown.allCases) { drilldown in
+                    Button {
+                        withAnimation(.snappy(duration: 0.20)) {
+                            activeDrilldown = activeDrilldown == drilldown ? nil : drilldown
+                        }
+                    } label: {
+                        Label(drilldown.rawValue, systemImage: drilldown.symbol)
+                            .font(.caption2.weight(.bold))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(activeDrilldown == drilldown ? universe.accent : .secondary)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(
+                        (activeDrilldown == drilldown ? universe.accent.opacity(0.12) : Color.primary.opacity(0.035)),
+                        in: Capsule()
+                    )
+                    .accessibilityIdentifier("supra-drilldown-\(drilldown.rawValue.lowercased())")
+                }
+
+                Spacer(minLength: 0)
+
+                Text(activeDrilldown == nil ? "DETAILS ON DEMAND" : "FOCUSED DETAIL")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(0.8)
+                    .foregroundStyle(.tertiary)
+            }
+
+            if let activeDrilldown {
+                drilldownPanel(activeDrilldown, universe: universe)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(.black.opacity(0.018))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("supra-universe-hierarchy")
+    }
+
+    private func hierarchyCard(
+        title: String,
+        symbol: String,
+        text: String,
+        universe: SUPRAUniverse,
+        identifier: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label(title, systemImage: symbol)
+                .font(.caption2.weight(.heavy))
+                .tracking(1.1)
+                .foregroundStyle(universe.accent)
+
+            Text(text)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.primary)
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, minHeight: 66, alignment: .topLeading)
+        .padding(11)
+        .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(.white.opacity(0.045), lineWidth: 1)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(identifier)
+    }
+
+    private func drilldownPanel(_ drilldown: SUPRAUniverseDrilldown, universe: SUPRAUniverse) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: drilldown.symbol)
+                .font(.headline)
+                .foregroundStyle(universe.accent)
+                .frame(width: 24)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(drilldown.rawValue.uppercased())
+                    .font(.caption2.weight(.heavy))
+                    .tracking(1.0)
+                    .foregroundStyle(universe.accent)
+
+                Text(drilldownText(drilldown, universe: universe))
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .textSelection(.enabled)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(11)
+        .background(universe.accent.opacity(0.055), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .accessibilityIdentifier("supra-drilldown-panel")
+    }
+
+    private func primaryAction(for universe: SUPRAUniverse) -> String {
+        switch universe {
+        case .france: return "Investigate the next territorial signal in the existing workspace."
+        case .chat: return "Continue the conversation and convert intent into a bounded runtime move."
+        case .media: return "Open the relevant source, verify it, and return useful evidence to memory."
+        case .cannonico: return "Inspect canonical truth and contradictions before any authority change."
+        case .missions: return "Advance the next bounded mission and require a material result."
+        case .organization: return "Resolve ownership, role or capacity before assigning execution."
+        case .connections: return "Close the next connection gap without bypassing governance."
+        case .inpi: return "Verify official corporate evidence before legal or commercial use."
+        case .publicPresence: return "Turn a verified signal into the next governed public action."
+        case .runtime: return "Inspect the next operational exception before changing runtime state."
+        case .ojo: return "Review context, attention and the human gate before a consequential decision."
+        case .supra: return "Synthesize the next executive move from proof, constraints and authority."
+        case .control: return "Resolve the next decision or exception through evidence and authority."
+        }
+    }
+
+    private func drilldownText(_ drilldown: SUPRAUniverseDrilldown, universe: SUPRAUniverse) -> String {
+        switch drilldown {
+        case .evidence:
+            return "Proof before claim. Use the materialized evidence owned by this universe; interface state is orientation, not a PASS. Human gate: \(universe.humanGate)."
+        case .lineage:
+            return "\(universe.circulation). Result must preserve provenance and return to Memory → Canon whenever the contract requires it."
+        case .architecture:
+            return "Existing owner: \(architectureOwner(for: universe)). Alonso layer: \(universe.alonsoLevel). Reuse the owner; do not create a parallel engine."
+        }
+    }
+
+    private func architectureOwner(for universe: SUPRAUniverse) -> String {
+        switch universe {
+        case .france: return "FranceOrganismNativeView"
+        case .chat: return "SUPRAChatView"
+        case .media: return "SUPRAMediaUniversalView"
+        case .cannonico: return "ContentView / CAnnoNico"
+        case .missions: return "MissionCenterView"
+        case .organization: return "OrganizationPeopleView"
+        case .connections: return "ExternalConnectionsView"
+        case .inpi: return "INPIUniverseView"
+        case .publicPresence: return "PublicPresenceView"
+        case .runtime: return "SUPRAProcessObservatoryView"
+        case .ojo: return "OJOPrivateControlView"
+        case .supra: return "SupraControlCenterView"
+        case .control: return "DecisionInboxView"
         }
     }
 
