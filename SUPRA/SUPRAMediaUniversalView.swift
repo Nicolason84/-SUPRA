@@ -45,10 +45,17 @@ final class SUPRAMediaHeroRouter: ObservableObject {
     static let shared = SUPRAMediaHeroRouter()
     @Published var context: SUPRAMediaHeroContext?
     @Published private(set) var liveSourceURL: URL?
+    @Published private(set) var activeObjectiveID: String?
 
     func present(_ context: SUPRAMediaHeroContext) { self.context = context }
     func dismiss() { context = nil }
     func publishSource(_ url: URL?) { liveSourceURL = url }
+    func beginObjective(_ id: String) { activeObjectiveID = id }
+    func finishObjective(_ id: String) {
+        if activeObjectiveID == id {
+            activeObjectiveID = nil
+        }
+    }
 }
 
 private enum SUPRAMediaProvider: String {
@@ -904,14 +911,19 @@ struct SUPRAMediaUniversalView: View {
     private func runAction(_ action: SUPRAMediaRuntimeAction) async {
         guard let sourceURL, activeAction == nil else { return }
 
+        let objectiveID = makeMediaObjectiveID(action)
         let originConversationID = SUPRAConversationLineage.canonicalID()
         activeAction = action
+        heroRouter.beginObjective(objectiveID)
         runtimeActionLabel = action.rawValue
         runtimeState = "RUNNING"
         runtimeOutput = ""
         lastError = nil
         liveStore.refresh(force: true)
-        defer { activeAction = nil }
+        defer {
+            activeAction = nil
+            heroRouter.finishObjective(objectiveID)
+        }
 
         let mediaState = mediaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let uscrcCanonState = uscrcProofGraphReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
@@ -998,8 +1010,6 @@ struct SUPRAMediaUniversalView: View {
         MEMORY_RETURN_CANDIDATE
         NEXT_ACTION
         """
-
-        let objectiveID = makeMediaObjectiveID(action)
 
         do {
             runtimeState = "RECOVERING"
