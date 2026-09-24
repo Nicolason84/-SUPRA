@@ -10,11 +10,13 @@ private enum ExternalConnectionFilter: String, CaseIterable, Identifiable {
 }
 
 struct ExternalConnectionsView: View {
+    @Environment(\.supraHierarchyFocusRequest) private var focusRequest
     @Environment(\.openURL) private var openURL
     @State private var xReadReady = false
     @State private var inpiReady = false
     @State private var readinessCheckedAt: Date?
     @State private var filter: ExternalConnectionFilter = .all
+
 
     private let columns = [
         GridItem(.adaptive(minimum: 270, maximum: 390), spacing: 14)
@@ -59,6 +61,10 @@ struct ExternalConnectionsView: View {
         }
         .task {
             refreshRuntimeReadiness()
+            focusNativeRequest()
+        }
+        .onChange(of: focusRequest?.id) { _, _ in
+            focusNativeRequest()
         }
         .background(
             LinearGradient(
@@ -387,6 +393,12 @@ struct ExternalConnectionsView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
         .background(.quaternary, in: Capsule())
+    }
+
+    private func focusNativeRequest() {
+        guard focusRequest?.target == .connectionsAttention else { return }
+        filter = .attention
+        refreshRuntimeReadiness()
     }
 
     private func refreshRuntimeReadiness() {

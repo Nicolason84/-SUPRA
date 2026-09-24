@@ -44,9 +44,11 @@ struct SUPRAMediaHeroContext: Identifiable, Equatable {
 final class SUPRAMediaHeroRouter: ObservableObject {
     static let shared = SUPRAMediaHeroRouter()
     @Published var context: SUPRAMediaHeroContext?
+    @Published private(set) var liveSourceURL: URL?
 
     func present(_ context: SUPRAMediaHeroContext) { self.context = context }
     func dismiss() { context = nil }
+    func publishSource(_ url: URL?) { liveSourceURL = url }
 }
 
 private enum SUPRAMediaProvider: String {
@@ -202,6 +204,7 @@ private enum SUPRAMediaRuntimeAction: String, CaseIterable, Identifiable {
 }
 
 struct SUPRAMediaUniversalView: View {
+    @Environment(\.supraHierarchyFocusRequest) private var focusRequest
     @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
     @ObservedObject private var heroRouter = SUPRAMediaHeroRouter.shared
 
@@ -213,6 +216,8 @@ struct SUPRAMediaUniversalView: View {
     @State private var runtimeActionLabel = "NONE"
     @State private var lastError: String?
     @State private var activeAction: SUPRAMediaRuntimeAction?
+    @State private var emphasizedTarget: SUPRAHierarchyFocusTarget?
+    @FocusState private var sourceFieldFocused: Bool
 
     private let runtime = SUPRAChatRuntimeAdapter()
     private let integration = SUPRACAnnoNicoIntegration.snapshot()
@@ -316,6 +321,13 @@ struct SUPRAMediaUniversalView: View {
                 hero
                 sourceControls
                 runtimeActions
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(
+                                emphasizedTarget == .mediaActions ? Color.purple.opacity(0.65) : .clear,
+                                lineWidth: 2
+                            )
+                    }
 
                 HStack(alignment: .top, spacing: 16) {
                     mediaStage
@@ -323,6 +335,13 @@ struct SUPRAMediaUniversalView: View {
 
                     contextRail
                         .frame(width: 330)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(
+                                    emphasizedTarget == .mediaEvidence ? Color.purple.opacity(0.65) : .clear,
+                                    lineWidth: 2
+                                )
+                        }
                 }
                 if !runtimeOutput.isEmpty || lastError != nil {
                     runtimeCard
@@ -345,6 +364,14 @@ struct SUPRAMediaUniversalView: View {
         .task {
             liveStore.start()
             liveStore.refresh(force: true)
+            heroRouter.publishSource(sourceURL)
+            focusNativeRequest()
+        }
+        .onChange(of: sourceURL) { _, newURL in
+            heroRouter.publishSource(newURL)
+        }
+        .onChange(of: focusRequest?.id) { _, _ in
+            focusNativeRequest()
         }
     }
 
@@ -398,6 +425,7 @@ struct SUPRAMediaUniversalView: View {
         HStack(spacing: 10) {
             TextField("YouTube, web or media URL…", text: $address)
                 .textFieldStyle(.roundedBorder)
+                .focused($sourceFieldFocused)
                 .accessibilityIdentifier("media-source-address")
                 .onSubmit(resolveAddress)
 
@@ -438,6 +466,15 @@ struct SUPRAMediaUniversalView: View {
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
+        }
+        .padding(6)
+        .background(
+            emphasizedTarget == .mediaSource ? Color.purple.opacity(0.08) : Color.clear,
+            in: RoundedRectangle(cornerRadius: 12)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(emphasizedTarget == .mediaSource ? Color.purple.opacity(0.55) : .clear, lineWidth: 1)
         }
     }
 
@@ -531,6 +568,28 @@ struct SUPRAMediaUniversalView: View {
         }
         .padding(16)
         .supraCard(radius: 18, strokeOpacity: 0.07)
+    }
+
+    private func focusNativeRequest() {
+        guard let target = focusRequest?.target else { return }
+        switch target {
+        case .mediaSource:
+            emphasizedTarget = .mediaSource
+            sourceFieldFocused = true
+        case .mediaActions:
+            emphasizedTarget = .mediaActions
+        case .mediaEvidence:
+            emphasizedTarget = .mediaEvidence
+        default:
+            return
+        }
+
+        let captured = focusRequest?.id
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            guard captured == focusRequest?.id else { return }
+            emphasizedTarget = nil
+        }
     }
 
     private var contextRail: some View {
