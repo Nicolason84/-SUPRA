@@ -166,7 +166,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
 struct SUPRAOJOHomeView: View {
     @ObservedObject private var mediaRouter = SUPRAMediaHeroRouter.shared
     @State private var selection: SUPRAUniverse = .supra
-    @State private var inspectorVisible = true
+    @State private var inspectorVisible = false
     @State private var paletteVisible = false
     @State private var railCompact = false
     @State private var spatialImmersion = true
@@ -237,11 +237,36 @@ struct SUPRAOJOHomeView: View {
             guard context != nil else { return }
             selection = .media
         }
+        .onChange(of: selection) { _, newSelection in
+            withAnimation(.snappy(duration: 0.24)) {
+                applyAdaptiveChrome(for: newSelection)
+            }
+        }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
         .animation(.easeInOut(duration: 0.35), value: spatialImmersion)
         .task {
+            applyAdaptiveChrome(for: selection)
             SUPRAGrandeMissionRunner.shared.startIfNeeded()
+        }
+    }
+
+    private func applyAdaptiveChrome(for universe: SUPRAUniverse) {
+        switch universe {
+        case .media, .chat, .france, .publicPresence:
+            // Focus: maximize the working surface.
+            railCompact = true
+            inspectorVisible = false
+
+        case .supra, .ojo, .missions, .organization:
+            // Executive: keep navigation context, remove passive metadata.
+            railCompact = false
+            inspectorVisible = false
+
+        case .connections, .cannonico, .inpi, .runtime, .control:
+            // Inspect: keep evidence metadata without sacrificing the center.
+            railCompact = true
+            inspectorVisible = true
         }
     }
 
