@@ -333,6 +333,14 @@ struct SupraControlCenterView: View {
         let command = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !command.isEmpty else { return }
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
+        SUPRAConversationLineage.append(
+            role: .user,
+            mode: .ask,
+            content: command,
+            originConversationID: originConversationID
+        )
+
         commandBusy = true
         commandError = nil
         activeCommandText = command
@@ -385,11 +393,14 @@ struct SupraControlCenterView: View {
 
             let result = try await missionRunner.executeExecutiveObjective(
                 objective: command,
-                runtimePrompt: prompt
+                runtimePrompt: prompt,
+                originConversationID: originConversationID
             )
 
             commandOutput = """
             OBJECTIVE_ID=\(result.objectiveID)
+            ORIGIN_CONVERSATION_ID=\(result.originConversationID)
+            ORIGIN_CHAT=\(result.originConversationID)
             RUNTIME_ADMISSION=\(result.admissionPath)
             RECEIPT=\(result.receiptPath)
             STATUS=\(result.status)
@@ -397,6 +408,13 @@ struct SupraControlCenterView: View {
 
             \(result.response)
             """
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: result.originConversationID
+            )
 
             if override == nil {
                 commandText = ""
@@ -408,26 +426,60 @@ struct SupraControlCenterView: View {
                 commandOutput = """
                 STATUS=STANDBY
                 OBJECTIVE_ID=\(!standbyObjectiveID.isEmpty ? standbyObjectiveID : (missionRunner.activeExecutiveObjectiveID ?? "UNPROVEN"))
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
                 ACTION_NICOLAS=NONE
                 NEXT=Resume or Abort
                 """
             case .abort:
                 commandOutput = """
                 STATUS=ABORTED
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
                 ACTION_NICOLAS=NONE
                 NEXT=Ready for a new objective
                 """
             case .none:
-                commandOutput = "STATUS=CANCELLED"
+                commandOutput = """
+                STATUS=CANCELLED
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                """
             }
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: originConversationID
+            )
         } catch {
             if liveStore.bridgeAvailable {
                 commandError = "Last execution ended without a proven result: \(error.localizedDescription)"
-                commandOutput = "SUPRA ready. Bridge is connected; the failed or aborted execution is preserved as historical evidence."
+                commandOutput = """
+                STATUS=ERROR
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                BRIDGE=CONNECTED
+                DETAIL=\(error.localizedDescription)
+                """
             } else {
                 commandError = error.localizedDescription
-                commandOutput = "SUPRA bridge is currently unavailable."
+                commandOutput = """
+                STATUS=ERROR
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                BRIDGE=UNAVAILABLE
+                DETAIL=\(error.localizedDescription)
+                """
             }
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: originConversationID
+            )
         }
     }
 

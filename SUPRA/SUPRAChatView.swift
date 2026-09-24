@@ -17,17 +17,62 @@ struct ChatMessage: Identifiable, Equatable, Codable {
     let role: Role
     let mode: ChatMode
     let content: String
+    let originConversationID: String?
 
     init(
         id: UUID = UUID(),
         role: Role,
         mode: ChatMode,
-        content: String
+        content: String,
+        originConversationID: String? = nil
     ) {
         self.id = id
         self.role = role
         self.mode = mode
         self.content = content
+        self.originConversationID = originConversationID
+    }
+}
+
+@MainActor
+enum SUPRAConversationLineage {
+    static let conversationIDKey = "supra.chat.origin_conversation_id.v1"
+    static let messagesKey = "supra.chat.messages.v1"
+
+    static func canonicalID() -> String {
+        let defaults = UserDefaults.standard
+        if let existing = defaults.string(forKey: conversationIDKey)?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !existing.isEmpty {
+            return existing
+        }
+
+        let created = "SUPRA_CONVERSATION_" + UUID().uuidString.uppercased()
+        defaults.set(created, forKey: conversationIDKey)
+        return created
+    }
+
+    static func append(
+        role: ChatMessage.Role,
+        mode: ChatMode,
+        content: String,
+        originConversationID: String
+    ) {
+        let defaults = UserDefaults.standard
+        let current = defaults.string(forKey: messagesKey) ?? "[]"
+        let data = current.data(using: .utf8) ?? Data()
+        var messages = (try? JSONDecoder().decode([ChatMessage].self, from: data)) ?? []
+        messages.append(
+            ChatMessage(
+                role: role,
+                mode: mode,
+                content: content,
+                originConversationID: originConversationID
+            )
+        )
+        guard let encoded = try? JSONEncoder().encode(messages),
+              let json = String(data: encoded, encoding: .utf8) else { return }
+        defaults.set(json, forKey: messagesKey)
     }
 }
 
@@ -120,7 +165,10 @@ struct SUPRAChatView: View {
         }
         .background(Color(nsColor: .windowBackgroundColor))
         .navigationTitle("SUPRA Chat")
-        .onAppear(perform: checkRuntimeHealth)
+        .onAppear {
+            _ = SUPRAConversationLineage.canonicalID()
+            checkRuntimeHealth()
+        }
         .onDisappear {
             // Navigation between universes must not erase or cancel chat work.
             // Draft + conversation persist via AppStorage.
@@ -325,11 +373,13 @@ struct SUPRAChatView: View {
         let submittedPrompt = trimmedPrompt
         let submittedMode = mode
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         appendMessage(
             ChatMessage(
                 role: .user,
                 mode: submittedMode,
-                content: submittedPrompt
+                content: submittedPrompt,
+                originConversationID: originConversationID
             )
         )
         prompt = ""
@@ -346,7 +396,8 @@ struct SUPRAChatView: View {
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
-                        content: response
+                        content: response,
+                        originConversationID: originConversationID
                     )
                 )
                 executionState = .success
@@ -358,7 +409,8 @@ struct SUPRAChatView: View {
                     ChatMessage(
                         role: .runtime,
                         mode: submittedMode,
-                        content: "Erreur runtime : \(detail)"
+                        content: "Erreur runtime : \(detail)",
+                        originConversationID: originConversationID
                     )
                 )
                 executionState = .error(detail)

@@ -305,11 +305,15 @@ struct GrandeMissionHumanGateView: View {
         do {
             try await runtime.checkHealth()
 
+            let originConversationID = SUPRAConversationLineage.canonicalID()
             let prompt = """
             GRANDE_MISSION_HUMAN_GATE_PACKET
             AUTHORITY=NICOLAS
             READ_ONLY=YES
             MISSION_ID=\(runner.missionID)
+            ORIGIN_CONVERSATION_ID=\(originConversationID)
+            ORIGIN_CHAT=\(originConversationID)
+            ORIGIN_CHAT_EXACT_REQUIRED=YES
             PHASE_ID=\(phase.id)
             PHASE_TITLE=\(phase.title)
             PHASE_OBJECTIVE=\(phase.objective)
@@ -391,12 +395,28 @@ struct GrandeMissionHumanGateView: View {
         submissionMessage = nil
 
         do {
+            let originConversationID = SUPRAConversationLineage.canonicalID()
             try await runner.submitHumanDecision(
                 phaseID: phaseID,
                 decision: answer
             )
 
-            if runner.receiptStatus(for: phaseID) == "PASS" {
+            SUPRAConversationLineage.append(
+                role: .user,
+                mode: .ask,
+                content: "HUMAN_GATE_DECISION PHASE_ID=\(phaseID)\n\(answer)",
+                originConversationID: originConversationID
+            )
+
+            let resumedStatus = runner.receiptStatus(for: phaseID) ?? "UNPROVEN"
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: "HUMAN_GATE_RESUME PHASE_ID=\(phaseID) ORIGIN_CONVERSATION_ID=\(originConversationID) STATUS=\(resumedStatus)",
+                originConversationID: originConversationID
+            )
+
+            if resumedStatus == "PASS" {
                 submissionMessage = "Decision accepted. Mission resumed and this phase passed."
                 runner.clearHumanGatePacket(phaseID: phaseID)
                 decisionDraft = ""

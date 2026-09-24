@@ -20,6 +20,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let finishedAt: String
         let status: String
         let response: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct HumanDecisionRecord: Codable, Sendable {
@@ -29,6 +31,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let decidedAt: String
         let authority: String
         let decision: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct HumanGatePacketRecord: Codable, Sendable {
@@ -38,6 +42,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let receiptFinishedAt: String
         let createdAt: String
         let packet: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct ExecutiveObjectiveResult: Sendable {
@@ -47,6 +53,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let status: String
         let response: String
         let humanGateRequired: Bool
+        let originConversationID: String
     }
 
     enum ExecutiveInterruptionIntent: String, Sendable {
@@ -112,8 +119,10 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     func executeExecutiveObjective(
         objective: String,
-        runtimePrompt: String
+        runtimePrompt: String,
+        originConversationID: String? = nil
     ) async throws -> ExecutiveObjectiveResult {
+        let originConversationID = originConversationID ?? SUPRAConversationLineage.canonicalID()
         let trimmed = objective.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             throw NSError(
@@ -155,6 +164,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             "schema": "SUPRA_EXECUTIVE_OBJECTIVE_REQUEST_V1",
             "mission_id": objectiveID,
             "objective_id": objectiveID,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "authority": "NICOLAS",
             "mode": "EXECUTE_NOT_REINVESTIGATE",
             "started_at": startedAt,
@@ -174,8 +185,11 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             let correlatedPrompt = """
             EXECUTIVE_OBJECTIVE
             OBJECTIVE_ID=\(objectiveID)
+            ORIGIN_CONVERSATION_ID=\(originConversationID)
+            ORIGIN_CHAT=\(originConversationID)
             RUNTIME_ADMISSION=\(admissionURL.path)
             RUNTIME_CORRELATION_REQUIRED=YES
+            ORIGIN_CHAT_EXACT_REQUIRED=YES
 
             \(runtimePrompt)
 
@@ -232,6 +246,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -260,7 +276,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 receiptPath: receiptURL.path,
                 status: status,
                 response: normalized,
-                humanGateRequired: humanGateRequired
+                humanGateRequired: humanGateRequired,
+                originConversationID: originConversationID
             )
         } catch is CancellationError {
             let finishedAt = iso.string(from: Date())
@@ -269,6 +286,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -295,6 +314,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -447,13 +468,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     ) throws {
         try prepareDirectories()
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let record = HumanGatePacketRecord(
             schema: "SUPRA_GRANDE_MISSION_HUMAN_GATE_PACKET_V1",
             missionID: missionID,
             phaseID: phaseID,
             receiptFinishedAt: receiptFinishedAt,
             createdAt: iso.string(from: Date()),
-            packet: String(packet.prefix(24_000))
+            packet: String(packet.prefix(24_000)),
+            origin_conversation_id: originConversationID,
+            origin_chat: originConversationID
         )
 
         let data = try JSONEncoder().encode(record)
@@ -483,13 +507,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
         try prepareDirectories()
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let record = HumanDecisionRecord(
             schema: "SUPRA_GRANDE_MISSION_HUMAN_DECISION_V1",
             missionID: missionID,
             phaseID: phaseID,
             decidedAt: iso.string(from: Date()),
             authority: "NICOLAS",
-            decision: String(trimmed.prefix(8_000))
+            decision: String(trimmed.prefix(8_000)),
+            origin_conversation_id: originConversationID,
+            origin_chat: originConversationID
         )
 
         let data = try JSONEncoder().encode(record)
@@ -586,6 +613,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                         status = "UNPROVEN"
                     }
 
+                    let originConversationID = SUPRAConversationLineage.canonicalID()
                     let receipt = PhaseReceipt(
                         schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
                         missionID: missionID,
@@ -594,7 +622,9 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                         startedAt: startedAt,
                         finishedAt: finishedAt,
                         status: status,
-                        response: response
+                        response: response,
+                        origin_conversation_id: originConversationID,
+                        origin_chat: originConversationID
                     )
 
                     try writeReceipt(receipt)
@@ -700,11 +730,14 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         phase: Phase,
         startedAt: String
     ) throws {
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_PHASE_REQUEST_V1",
             "mission_id": missionID,
             "phase_id": phase.id,
             "phase_title": phase.title,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "started_at": startedAt,
             "authority": "NICOLAS",
             "mode": "EXECUTE_NOT_REINVESTIGATE",
@@ -750,9 +783,12 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             ]
         }
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_STATE_V1",
             "mission_id": missionID,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "authority": "NICOLAS",
             "current_phase": currentPhase,
             "status": status,
@@ -775,6 +811,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     private func promptForPhase(
         _ phase: Phase
     ) -> String {
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let decision = humanDecision(for: phase.id)?.decision
         let decisionBlock: String
 
@@ -801,6 +838,9 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         MISSION_ID=\(missionID)
         PHASE_ID=\(phase.id)
         PHASE_TITLE=\(phase.title)
+        ORIGIN_CONVERSATION_ID=\(originConversationID)
+        ORIGIN_CHAT=\(originConversationID)
+        ORIGIN_CHAT_EXACT_REQUIRED=YES
         MODE=EXECUTE_NOT_REINVESTIGATE
         EXECUTION_PROFILE=FAST_SAFE
         MEMORY_FIRST=YES
