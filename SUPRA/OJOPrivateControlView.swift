@@ -331,6 +331,7 @@ struct OJOPrivateControlView: View {
                 .supraCard(radius: 16)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("ojo-open-media-hero")
         }
     }
 

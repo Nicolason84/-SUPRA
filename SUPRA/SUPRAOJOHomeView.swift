@@ -519,6 +519,7 @@ struct SUPRAOJOHomeView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("supra-universe-\(universe.rawValue)")
         .background(
             universe == selection
                 ? universe.accent.opacity(isCore ? 0.14 : 0.075)
