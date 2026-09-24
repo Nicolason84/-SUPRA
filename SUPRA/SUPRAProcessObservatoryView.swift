@@ -779,6 +779,7 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
             if snapshot.bridgeAvailable {
                 self.bridgeAvailable = true
 
+                let activeMediaObjectiveID = SUPRAMediaHeroRouter.shared.activeObjectiveID
                 let grandeProcesses: [SUPRAObservedProcess]
                 if grandeSnapshot?.bridgeAvailable == true {
                     // SUPRA_GRANDE_MISSION_V1 is a long-lived evidence folder.
@@ -791,7 +792,6 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     let activeGrandePhaseID = runner.isRunning
                         ? runner.activePhaseID
                         : nil
-                    let activeMediaObjectiveID = SUPRAMediaHeroRouter.shared.activeObjectiveID
 
                     let admittedGrandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
@@ -823,8 +823,17 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                     self.sourceLabel = root.path
                 }
 
+                let bridgeProcesses = snapshot.processes.filter { process in
+                    guard process.stage == .inFlight,
+                          process.id.hasPrefix("OJO_MEDIA_")
+                    else {
+                        return true
+                    }
+                    return process.id == activeMediaObjectiveID
+                }
+
                 var seen = Set<String>()
-                let mergedProcesses = (grandeProcesses + snapshot.processes).filter {
+                let mergedProcesses = (grandeProcesses + bridgeProcesses).filter {
                     seen.insert($0.id).inserted
                 }
                 self.applyProcesses(mergedProcesses)
