@@ -28,6 +28,15 @@ enum SUPRACAnnoNicoIntegration {
     static let totalSystemTwinMapSource =
         "/Users/nicolasalonso/NOVA_OS/CANNONICO_ALL_SYSTEM_FILE_TWIN_SIDECAR_PARKING_V1/SIDECAR_PARKING/TWIN_MAP.json"
 
+    static let uscrcProofGraphCanonSource =
+        "/Users/nicolasalonso/NOVA_OS/_CANNONICO_MEMORY/uscrc_proofgraph_canon_v1/canon/USCRC_PROOFGRAPH_CANON_V1.json"
+
+    static let uscrcGoldenPathSource =
+        "/Users/nicolasalonso/NOVA_OS/_SINGLEGOLDENPATH/uscrc/uscrc_latest.json"
+
+    static let proofGraphRuntimeSource =
+        "/Users/nicolasalonso/NOVA_OS/TUV5_PROOFGRAPH_RUNTIME"
+
     static func recoveredReference(
         id: String,
         role: String,
@@ -47,6 +56,24 @@ enum SUPRACAnnoNicoIntegration {
         )
     }
 
+    static func partialReference(
+        id: String,
+        role: String,
+        inputs: [String],
+        outputs: [String],
+        capabilities: [String]
+    ) -> CAnnoNicoSourceReference {
+        CAnnoNicoSourceReference(
+            id: id,
+            role: role,
+            path: nil,
+            state: .partial,
+            inputs: inputs,
+            outputs: outputs,
+            capabilities: capabilities
+        )
+    }
+
     static func snapshot() -> CAnnoNicoIntegrationSnapshot {
         CAnnoNicoIntegrationSnapshot(
             references: [
@@ -59,6 +86,53 @@ enum SUPRACAnnoNicoIntegration {
                 VideoSwapAdapter(
                     sourcePath: videoSwapSource
                 ).snapshot(),
+                recoveredReference(
+                    id: "uscrc.proofgraph.canon",
+                    role: "READ_ONLY_USCRC_PROOFGRAPH_CANON",
+                    path: uscrcProofGraphCanonSource,
+                    inputs: ["media_source_identity", "proof_queries", "lineage_queries"],
+                    outputs: ["uscrc_canon_refs", "proof_refs", "provenance_refs"],
+                    capabilities: [
+                        "READ_EXISTING_USCRC_PROOFGRAPH",
+                        "PRESERVE_SOURCE_IDENTITY",
+                        "NO_PARALLEL_PROOFCHAIN"
+                    ]
+                ),
+                recoveredReference(
+                    id: "uscrc.goldenpath",
+                    role: "READ_ONLY_USCRC_CONTINUITY",
+                    path: uscrcGoldenPathSource,
+                    inputs: ["continuity_queries", "integrity_queries"],
+                    outputs: ["continuity_state", "truth_route", "ui_to_truth_rule"],
+                    capabilities: [
+                        "READ_EXISTING_USCRC_CONTINUITY",
+                        "VERIFY_CONTINUITY_STATE",
+                        "NO_USCRC_RECREATION"
+                    ]
+                ),
+                recoveredReference(
+                    id: "proofgraph.runtime",
+                    role: "READ_ONLY_PROOFGRAPH_RUNTIME",
+                    path: proofGraphRuntimeSource,
+                    inputs: ["evidence_queries", "lineage_queries", "proof_queries"],
+                    outputs: ["proof_nodes", "proof_edges", "proof_refs", "snapshot_refs"],
+                    capabilities: [
+                        "READ_EXISTING_PROOFGRAPH_RUNTIME",
+                        "RESOLVE_EXISTING_PROOF_LINEAGE",
+                        "NO_PROOFGRAPH_REBUILD"
+                    ]
+                ),
+                partialReference(
+                    id: "smca.media.coherence",
+                    role: "SPEC_ONLY_STRUCTURAL_MEDIA_COHERENCE",
+                    inputs: ["media_hash", "metadata", "structural_observations"],
+                    outputs: ["structural_flags", "coherence_indicator", "report_ref"],
+                    capabilities: [
+                        "STRUCTURAL_ANALYSIS_SPEC_ONLY",
+                        "MCC_RUNTIME_UNPROVEN",
+                        "NO_TRUTH_OR_AUTHENTICITY_SCORE"
+                    ]
+                ),
                 recoveredReference(
                     id: "twin.registry",
                     role: "READ_ONLY_TWIN_REGISTRY",
