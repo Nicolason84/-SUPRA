@@ -9,6 +9,8 @@ private struct PublicChannel: Identifiable {
 }
 
 struct PublicPresenceView: View {
+    @State private var selectedChannel: PublicChannel?
+
     private let channels: [PublicChannel] = [
         .init(id: "linkedin", name: "LinkedIn", role: "Founder + company + B2B authority", symbol: "person.text.rectangle.fill", priority: "P1"),
         .init(id: "x", name: "X", role: "Realtime intelligence + technical voice", symbol: "text.bubble.fill", priority: "P1"),
@@ -45,6 +47,9 @@ struct PublicPresenceView: View {
                 endPoint: .bottomTrailing
             )
         )
+        .sheet(item: $selectedChannel) { channel in
+            channelDetail(channel)
+        }
     }
 
     private var hero: some View {
@@ -102,60 +107,166 @@ struct PublicPresenceView: View {
                 let freshness = descriptor.map { ExternalConnectionProofLedger.freshness(for: $0) }
                 let age = ExternalConnectionProofLedger.ageLabel(for: channel.id)
 
-                VStack(alignment: .leading, spacing: 11) {
-                    HStack {
-                        Image(systemName: channel.symbol)
-                            .font(.title2)
-                            .foregroundStyle(status.tint)
-                        Spacer()
-                        Text(channel.priority)
-                            .font(.caption2.weight(.heavy))
-                            .foregroundStyle(.secondary)
-                    }
-
-                    Text(channel.name)
-                        .font(.headline)
-
-                    Text(channel.role)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-
-                    Divider()
-
-                    HStack(spacing: 7) {
-                        Text(status.rawValue)
-                            .font(.caption2.weight(.heavy))
-                            .foregroundStyle(status.tint)
-
-                        if status == .connected, let freshness {
-                            Text(freshness.rawValue)
+                Button {
+                    selectedChannel = channel
+                } label: {
+                    VStack(alignment: .leading, spacing: 11) {
+                        HStack {
+                            Image(systemName: channel.symbol)
+                                .font(.title2)
+                                .foregroundStyle(status.tint)
+                            Spacer()
+                            Text(channel.priority)
                                 .font(.caption2.weight(.heavy))
-                                .foregroundStyle(freshness.tint)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 3)
-                                .background(freshness.tint.opacity(0.10), in: Capsule())
-                            if let age {
-                                Text(age)
-                                    .font(.caption2.monospacedDigit())
-                                    .foregroundStyle(.secondary)
+                                .foregroundStyle(.secondary)
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.bold))
+                                .foregroundStyle(.tertiary)
+                        }
+
+                        Text(channel.name)
+                            .font(.headline)
+
+                        Text(channel.role)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+
+                        Divider()
+
+                        HStack(spacing: 7) {
+                            Text(status.rawValue)
+                                .font(.caption2.weight(.heavy))
+                                .foregroundStyle(status.tint)
+
+                            if status == .connected, let freshness {
+                                Text(freshness.rawValue)
+                                    .font(.caption2.weight(.heavy))
+                                    .foregroundStyle(freshness.tint)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 3)
+                                    .background(freshness.tint.opacity(0.10), in: Capsule())
+                                if let age {
+                                    Text(age)
+                                        .font(.caption2.monospacedDigit())
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
-                    }
 
-                    if let descriptor {
-                        Label(descriptor.officialRoute, systemImage: "link")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                        if let descriptor {
+                            Label(descriptor.officialRoute, systemImage: "link")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
 
-                        Label(descriptor.humanGate, systemImage: "person.badge.key.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.orange)
+                            Label(descriptor.humanGate, systemImage: "person.badge.key.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
+                        }
                     }
+                    .padding(17)
+                    .frame(maxWidth: .infinity, minHeight: 150, alignment: .topLeading)
+                    .contentShape(Rectangle())
                 }
-                .padding(17)
-                .frame(maxWidth: .infinity, minHeight: 150, alignment: .topLeading)
+                .buttonStyle(.plain)
                 .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18))
             }
+        }
+    }
+
+    private func channelDetail(_ channel: PublicChannel) -> some View {
+        let descriptor = ExternalConnectorCatalog.descriptor(id: channel.id)
+        let status = descriptor?.status ?? .planned
+        let freshness = descriptor.map { ExternalConnectionProofLedger.freshness(for: $0) }
+        let age = ExternalConnectionProofLedger.ageLabel(for: channel.id)
+
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack(alignment: .top, spacing: 16) {
+                    Image(systemName: channel.symbol)
+                        .font(.system(size: 34, weight: .semibold))
+                        .foregroundStyle(status.tint)
+                        .frame(width: 58, height: 58)
+                        .background(status.tint.opacity(0.10), in: RoundedRectangle(cornerRadius: 16))
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(channel.name)
+                            .font(.title.bold())
+                        Text(channel.role)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    Text(status.rawValue)
+                        .font(.caption.weight(.heavy))
+                        .foregroundStyle(status.tint)
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 6)
+                        .background(status.tint.opacity(0.10), in: Capsule())
+                }
+
+                if let descriptor {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label(descriptor.detail, systemImage: "scope")
+                        Label(descriptor.officialRoute, systemImage: "link")
+                        Label(descriptor.humanGate, systemImage: "person.badge.key.fill")
+                            .foregroundStyle(.orange)
+                        if status == .connected, let freshness {
+                            Label("Proof \(freshness.rawValue)\(age.map { " · \($0)" } ?? "")", systemImage: "checkmark.seal.fill")
+                                .foregroundStyle(freshness.tint)
+                        }
+                    }
+                    .font(.callout)
+                }
+
+                Divider()
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("What SUPRA adds")
+                        .font(.headline)
+                    Label("Connection truth + proof freshness instead of a blind external link", systemImage: "checkmark.shield.fill")
+                    Label("Mission / product / evidence / lead / memory lineage when source objects exist", systemImage: "point.3.connected.trianglepath.dotted")
+                    Label("Engagement and results return to Evidence → Memory → CAnnoNico", systemImage: "arrow.triangle.2.circlepath")
+                    Label("Publication and destructive actions stay human-gated", systemImage: "person.badge.key.fill")
+                }
+                .font(.callout)
+
+                if channel.id == "youtube" {
+                    Divider()
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("YouTube · Media Hero contract")
+                            .font(.headline)
+                        Text("SUPRA should not merely reopen youtube.com. The useful target is contextual playback with transcript/metadata, source + product + mission lineage, evidence, notes, related assets, comments/engagement and memory return.")
+                            .foregroundStyle(.secondary)
+                        if status != .connected {
+                            Label("No fake player: YouTube is not connected, and no canonical media item is selected.", systemImage: "exclamationmark.triangle.fill")
+                                .font(.callout.weight(.semibold))
+                                .foregroundStyle(.orange)
+                        }
+
+                        Button {
+                            SUPRAMediaHeroRouter.shared.present(
+                                SUPRAMediaHeroContext(
+                                    objectID: "PUBLIC_PRESENCE_YOUTUBE",
+                                    objectType: "PUBLIC_PRESENCE_CHANNEL",
+                                    title: "YouTube",
+                                    subtitle: "Public Presence · Media Hero",
+                                    origin: "PublicPresence",
+                                    lineageRefs: [
+                                        "connector:youtube",
+                                        "surface:public_presence"
+                                    ]
+                                )
+                            )
+                        } label: {
+                            Label("Open contextual Media Hero", systemImage: "play.rectangle.on.rectangle.fill")
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                }
+            }
+            .padding(26)
+            .frame(minWidth: 620, idealWidth: 760, maxWidth: 860, alignment: .leading)
         }
     }
 

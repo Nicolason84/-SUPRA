@@ -4,6 +4,7 @@ import AppKit
 enum SUPRAUniverse: String, CaseIterable, Identifiable {
     case france
     case chat
+    case media
     case cannonico
     case missions
     case organization
@@ -21,6 +22,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "France"
         case .chat: return "Chat"
+        case .media: return "Media"
         case .cannonico: return "CAnnoNico"
         case .missions: return "Missions"
         case .organization: return "Organization"
@@ -38,6 +40,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "Territoire vivant"
         case .chat: return "Conversation directe"
+        case .media: return "Media Hero · source · preuve · lineage"
         case .cannonico: return "Mémoire · canon · provenance"
         case .missions: return "Missions parallèles"
         case .organization: return "People · départements · autorité"
@@ -55,6 +58,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "map.fill"
         case .chat: return "bubble.left.and.bubble.right.fill"
+        case .media: return "play.rectangle.on.rectangle.fill"
         case .cannonico: return "point.3.connected.trianglepath.dotted"
         case .missions: return "scope"
         case .organization: return "person.3.fill"
@@ -72,6 +76,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return .cyan
         case .chat: return .mint
+        case .media: return .purple
         case .cannonico: return .indigo
         case .missions: return .orange
         case .organization: return .green
@@ -87,18 +92,19 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
 
     var alonsoLevel: String {
         switch self {
-        case .france: return "L5 · WORLD / MISSIONS"
-        case .chat: return "L6 · HUMAN GATE"
-        case .cannonico: return "L4 · MEMORY / KNOWLEDGE"
-        case .missions: return "L5 · MISSIONS E2E"
-        case .organization: return "L6–L7 · PEOPLE / GOVERNANCE"
-        case .connections: return "L3–L6 · EXTERNAL CONNECTIVITY"
-        case .inpi: return "L4–L6 · LEGAL / EVIDENCE"
-        case .publicPresence: return "L5–L6 · MARKET / EXPERIENCE"
+        case .france: return "L5 · KNOWLEDGE / WORLD"
+        case .chat: return "L6 · EXPERIENCE / HUMAN INTERFACE"
+        case .media: return "L6 · EXPERIENCE / MEDIA PROJECTION"
+        case .cannonico: return "L4–L5 · MEMORY / KNOWLEDGE"
+        case .missions: return "L7 · EXECUTIVE ACTION / E2E"
+        case .organization: return "L6–L7 · EXPERIENCE / AUTHORITY"
+        case .connections: return "L3–L5 · RUNTIME / KNOWLEDGE"
+        case .inpi: return "L5 · KNOWLEDGE / EVIDENCE"
+        case .publicPresence: return "L6 · EXPERIENCE / MARKET"
         case .runtime: return "L3 · RUNTIME"
-        case .ojo: return "L6 · EXPERIENCE"
-        case .supra: return "L7 · EXECUTIVE / AUTONOMY"
-        case .control: return "L6 · AUTHORITY / EVIDENCE"
+        case .ojo: return "L6 · EXPERIENCE / HUMAN GATE"
+        case .supra: return "L7 · EXECUTIVE ACTION"
+        case .control: return "L7 · EXECUTIVE ACTION / AUTHORITY"
         }
     }
 
@@ -106,6 +112,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "World → Evidence → Mission"
         case .chat: return "Human → Intent → Runtime"
+        case .media: return "Source → Evidence → Memory → Canon"
         case .cannonico: return "Memory → Provenance → Canon"
         case .missions: return "Decision → Mission → Result"
         case .organization: return "Need → Role → Capacity → Result"
@@ -123,6 +130,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "Territory, institutions, enterprises and real-world signals."
         case .chat: return "Direct conversational control surface over the existing runtime."
+        case .media: return "Universal contextual media surface over existing source, evidence, memory and canon owners."
         case .cannonico: return "Canonical memory, lineage, contradictions and knowledge integrity."
         case .missions: return "Parallel bounded execution with evidence-return contracts."
         case .organization: return "Departments, people, digital workforce and decision rights."
@@ -140,6 +148,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "External commitments / publication"
         case .chat: return "High-impact execution"
+        case .media: return "Canonical write / public action / source mutation"
         case .cannonico: return "Canonical authority changes"
         case .missions: return "Irreversible or high-impact actions"
         case .organization: return "Hiring / contracts / authority"
@@ -160,13 +169,14 @@ struct SUPRAOJOHomeView: View {
     @State private var paletteVisible = false
     @State private var railCompact = false
     @State private var spatialImmersion = true
+    @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
     private let circulationStages = [
         "WORLD", "OBSERVE", "EVIDENCE", "DECIDE", "MISSION",
         "EXECUTE", "RESULT", "LEARN", "MEMORY", "CANON"
     ]
 
-    private let primaryUniverses: [SUPRAUniverse] = [.supra, .ojo, .publicPresence]
+    private let primaryUniverses: [SUPRAUniverse] = [.supra, .ojo, .media, .publicPresence]
 
     private var secondaryUniverses: [SUPRAUniverse] {
         SUPRAUniverse.allCases.filter { !primaryUniverses.contains($0) }
@@ -214,6 +224,10 @@ struct SUPRAOJOHomeView: View {
         .frame(minWidth: 1180, minHeight: 760)
         .sheet(isPresented: $paletteVisible) {
             commandPalette
+        }
+        .sheet(item: $mediaHeroRouter.context) { context in
+            SUPRAMediaUniversalView(context: context)
+                .frame(minWidth: 1180, minHeight: 760)
         }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
@@ -612,6 +626,8 @@ struct SUPRAOJOHomeView: View {
                     FranceOrganismNativeView()
                 case .chat:
                     SUPRAChatView()
+                case .media:
+                    SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
                 case .cannonico:
                     ContentView()
                 case .missions:
@@ -650,7 +666,7 @@ struct SUPRAOJOHomeView: View {
                 inspectorHero
 
                 inspectorBlock(
-                    title: "ALONSO GATE",
+                    title: "ALONSO LAYER",
                     value: selection.alonsoLevel,
                     symbol: "triangle.fill",
                     tint: selection.accent
@@ -677,35 +693,139 @@ struct SUPRAOJOHomeView: View {
                     tint: .orange
                 )
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("PYRAMIDE ALONSO")
-                        .font(.caption2.weight(.heavy))
-                        .tracking(1.3)
-                        .foregroundStyle(.secondary)
-
-                    ForEach(1...7, id: \.self) { level in
-                        HStack(spacing: 9) {
-                            Circle()
-                                .fill(levelTint(level))
-                                .frame(width: 7, height: 7)
-                                .shadow(color: levelTint(level).opacity(0.55), radius: 5)
-                            Text("L\(level)")
-                                .font(.caption.weight(.bold))
-                                .frame(width: 25, alignment: .leading)
-                            Rectangle()
-                                .fill(levelTint(level).opacity(0.22))
-                                .frame(height: 4)
-                                .clipShape(Capsule())
-                        }
-                    }
+                if selection == .supra {
+                    alonsoPyramidCard
                 }
-                .padding(16)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
             .padding(14)
         }
         .scrollIndicators(.hidden)
         .background(.black.opacity(0.025))
+    }
+
+    private var alonsoPyramidCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top, spacing: 10) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("PYRAMIDE ALONSO")
+                        .font(.caption2.weight(.heavy))
+                        .tracking(1.3)
+                    Text("GLOBAL · SYSTEM-WIDE PROGRESSION LAW")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Text("PROMOTION MIN 0.92")
+                    .font(.caption2.weight(.heavy))
+                    .foregroundStyle(selection.accent)
+                    .padding(.horizontal, 9)
+                    .padding(.vertical, 5)
+                    .background(selection.accent.opacity(0.10), in: Capsule())
+            }
+
+            Text("Upper layers never compensate for a broken lower layer. No level is marked PASS here without live evidence.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            ForEach(1...7, id: \.self) { level in
+                HStack(alignment: .top, spacing: 10) {
+                    Text("L\(level)")
+                        .font(.caption.weight(.heavy))
+                        .foregroundStyle(selection.accent)
+                        .frame(width: 26, alignment: .leading)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(alonsoLevelTitle(level))
+                            .font(.caption.weight(.bold))
+                        Text(alonsoLevelContract(level))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("EXISTING ANCHORS · \(alonsoLevelAnchors(level))")
+                            .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(.tertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(10)
+                .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+
+            Divider()
+
+            Label("ASCEND only after proof · stability · control · recoverability", systemImage: "arrow.up.circle.fill")
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(.secondary)
+
+            Label("COHERENCE < 0.92 → REMEDIATION · NO AUTOMATIC PROMOTION", systemImage: "exclamationmark.triangle.fill")
+                .font(.caption2.weight(.heavy))
+                .foregroundStyle(.orange)
+
+            Label("FAIL → DESCEND_ONE_LEVEL · PROOF > CLAIM · REALITY > PROJECTION", systemImage: "arrow.down.circle.fill")
+                .font(.caption2.weight(.heavy))
+                .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func alonsoLevelTitle(_ level: Int) -> String {
+        switch level {
+        case 1: return "FOUNDATION"
+        case 2: return "BUILD"
+        case 3: return "RUNTIME"
+        case 4: return "MEMORY"
+        case 5: return "KNOWLEDGE"
+        case 6: return "EXPERIENCE"
+        case 7: return "EXECUTIVE ACTION"
+        default: return "UNKNOWN"
+        }
+    }
+
+    private func alonsoLevelContract(_ level: Int) -> String {
+        switch level {
+        case 1:
+            return "identity · authority · legal ability · hardware/OS/storage/network · basic truth"
+        case 2:
+            return "recover + compose existing capabilities · smallest necessary implementation · no equivalent reconstruction"
+        case 3:
+            return "real executable path · dependency path · rollback · observability"
+        case 4:
+            return "lineage · history · prior evidence · contradictions · no-loss patrimony"
+        case 5:
+            return "facts · inferences · unknowns · models · evidence quality"
+        case 6:
+            return "human usability · understandable proposition · fair interaction · human gate"
+        case 7:
+            return "decision · execution · result · proof · memory return · canon return · controlled self-evolution"
+        default:
+            return "unmapped"
+        }
+    }
+
+    private func alonsoLevelAnchors(_ level: Int) -> String {
+        switch level {
+        case 1:
+            return "Environment Twin · Total System/File Twin · Storage Twin"
+        case 2:
+            return "Twin Factory V1 · Universal Twin Contract · build/toolchain"
+        case 3:
+            return "Runtime · Event Bus · Gabriel workers · bridges"
+        case 4:
+            return "Puchero · CAnnoNico · SUPRA Memory V5"
+        case 5:
+            return "Knowledge/Company/People/Market/Opportunity/Evidence Twins · Atlas"
+        case 6:
+            return "Subject/Human/Media Twins · ojO · Chat"
+        case 7:
+            return "Case Twin · Decision Twin · Missions · Control · SUPRA"
+        default:
+            return "unmapped"
+        }
     }
 
     private var inspectorHero: some View {
@@ -745,14 +865,6 @@ struct SUPRAOJOHomeView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
-    private func levelTint(_ level: Int) -> Color {
-        let digits = selection.alonsoLevel.compactMap { $0.wholeNumberValue }
-        if digits.contains(level) {
-            return selection.accent
-        }
-        return .secondary.opacity(0.30)
     }
 
     private var circulationDock: some View {

@@ -310,6 +310,27 @@ struct OJOPrivateControlView: View {
                 "NEXT_THREE_MOVES",
                 .plan
             )
+
+            Button {
+                openMediaHero()
+            } label: {
+                VStack(alignment: .leading, spacing: 8) {
+                    Image(systemName: "play.rectangle.on.rectangle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.purple)
+                    Text("Open Media Hero")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text("Context → source → evidence → lineage → memory return.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
+                .supraCard(radius: 16)
+            }
+            .buttonStyle(.plain)
         }
     }
 
@@ -385,6 +406,26 @@ struct OJOPrivateControlView: View {
         }
         .buttonStyle(.plain)
         .disabled(isBusy)
+    }
+
+    private func openMediaHero() {
+        var seen = Set<String>()
+        let lineageRefs = liveStore.processes
+            .filter { $0.stage != .historical }
+            .prefix(4)
+            .flatMap { $0.proofRefs.prefix(3) }
+            .filter { seen.insert($0).inserted }
+
+        SUPRAMediaHeroRouter.shared.present(
+            SUPRAMediaHeroContext(
+                objectID: "OJO_PRIVATE_" + tab.rawValue.uppercased().replacingOccurrences(of: " ", with: "_"),
+                objectType: "OJO_PRIVATE_CONTEXT",
+                title: "ŒIL · " + tab.rawValue,
+                subtitle: lastMaterialChange,
+                origin: "ojO",
+                lineageRefs: Array(lineageRefs.prefix(12))
+            )
+        )
     }
 
     private var runtimeTint: Color {
