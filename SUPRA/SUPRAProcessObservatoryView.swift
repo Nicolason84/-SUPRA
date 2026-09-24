@@ -2,6 +2,7 @@ import SwiftUI
 import AppKit
 import Combine
 import Foundation
+import Darwin
 
 struct SUPRAProcessObservatoryView: View {
     @ObservedObject private var store = SUPRAProcessObservatoryStore.shared
@@ -766,15 +767,17 @@ final class SUPRAProcessObservatoryStore: ObservableObject {
                 let grandeProcesses: [SUPRAObservedProcess]
                 if grandeSnapshot?.bridgeAvailable == true {
                     // SUPRA_GRANDE_MISSION_V1 is a long-lived evidence folder.
-                    // Only the ten canonical phases of the CURRENT runner are
-                    // live mission processes. Older helper/subpart receipts stay
-                    // on disk as history but must not reappear as present blockers.
+                    // Keep only CURRENT canonical phases plus explicitly admitted
+                    // durable execution identities (Executive + ojO Media). Older
+                    // helper/subpart receipts remain history and must not reappear
+                    // as present blockers.
                     let currentGrandePhaseIDs = Set(
                         SUPRAGrandeMissionRunner.shared.phases.map(\.id)
                     )
                     grandeProcesses = (grandeSnapshot?.processes ?? []).filter {
                         currentGrandePhaseIDs.contains($0.id)
                             || $0.id.hasPrefix("EXECUTIVE_OBJECTIVE_")
+                            || $0.id.hasPrefix("OJO_MEDIA_")
                     }
                     self.sourceLabel = root.path + " + GRANDE_MISSION"
                 } else {
@@ -1089,43 +1092,91 @@ private actor SUPRAProcessObservatoryScanner {
             .generationIdentifierKey
         ]
 
-        var enumerationError: Error?
-        guard let enumerator = fileManager.enumerator(
-            at: directory,
-            includingPropertiesForKeys: Array(keys),
-            options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants],
-            errorHandler: { _, error in
-                enumerationError = error
-                return false
-            }
-        ) else {
+        let listed: [URL]
+        do {
+            listed = try fileManager.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+            )
+        } catch {
             return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
         }
 
-        var files: [SUPRAObservedFile] = []
-        files.reserveCapacity(min(maxDirectoryEntries, 1_024))
-        var visitedEntries = 0
+        guard listed.count <= maxDirectoryEntries else {
+            return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
+        }
 
-        while let object = enumerator.nextObject() {
+        // FileProvider metadata is the expensive operation. Reduce the mailbox
+        // to one preferred artifact per process BEFORE asking Google Drive for
+        // metadata. This keeps live observation bounded even when OUTBOX grows
+        // into the thousands.
+        var preferredByID: [String: URL] = [:]
+        preferredByID.reserveCapacity(min(listed.count, maxProcessIDs * 2))
+
+        for url in listed {
             if Swift.Task.isCancelled { return .cancelled }
-            guard let url = object as? URL else { continue }
-
-            visitedEntries += 1
-            guard visitedEntries <= maxDirectoryEntries else {
-                return .failure("BRIDGE DIRECTORY ENTRY LIMIT EXCEEDED")
-            }
 
             let lowerName = url.lastPathComponent.lowercased()
             let accepted: Bool
             if result {
-                accepted = lowerName.hasSuffix(".json") || lowerName.hasSuffix(".result.txt")
+                accepted = lowerName.hasSuffix(".result.json")
+                    || lowerName.hasSuffix(".result.txt")
+                    || (lowerName.hasSuffix(".json") && !lowerName.hasSuffix(".json.gdoc"))
             } else {
-                // The mailbox consumer executes raw JSON files only. A Google
-                // Docs FileProvider stub ending in .json.gdoc is not an
-                // executable mission and must never appear as IN_FLIGHT.
+                // Google Docs stubs are not executable missions.
                 accepted = lowerName.hasSuffix(".json")
+                    && !lowerName.hasSuffix(".json.gdoc")
             }
             guard accepted else { continue }
+
+            let id = normalizedID(url.lastPathComponent)
+            if let current = preferredByID[id] {
+                // Prefer a hydrated/local artifact over a dataless FileProvider
+                // placeholder. A .result.txt twin is often local while the JSON
+                // twin is cloud-only; opening the latter would silently trigger
+                // network hydration and can freeze the live observatory.
+                let candidateDataless = isDataless(url)
+                let currentDataless = isDataless(current)
+
+                if candidateDataless != currentDataless {
+                    if !candidateDataless {
+                        preferredByID[id] = url
+                    }
+                } else {
+                    let currentName = current.lastPathComponent.lowercased()
+                    let candidateIsJSON = lowerName.hasSuffix(".result.json")
+                        || (lowerName.hasSuffix(".json") && !lowerName.hasSuffix(".result.txt"))
+                    let currentIsJSON = currentName.hasSuffix(".result.json")
+                        || (currentName.hasSuffix(".json") && !currentName.hasSuffix(".result.txt"))
+
+                    if candidateIsJSON && !currentIsJSON {
+                        preferredByID[id] = url
+                    } else if candidateIsJSON == currentIsJSON,
+                              url.lastPathComponent < current.lastPathComponent {
+                        preferredByID[id] = url
+                    }
+                }
+            } else {
+                preferredByID[id] = url
+            }
+        }
+
+        let selectedIDs = preferredByID.keys.sorted { lhs, rhs in
+            let lhsDate = inferredDate(from: lhs) ?? .distantPast
+            let rhsDate = inferredDate(from: rhs) ?? .distantPast
+            if lhsDate != rhsDate { return lhsDate > rhsDate }
+            return lhs > rhs
+        }
+        .prefix(maxProcessIDs)
+
+        var files: [SUPRAObservedFile] = []
+        files.reserveCapacity(selectedIDs.count)
+        var metadataFailures = 0
+
+        for id in selectedIDs {
+            if Swift.Task.isCancelled { return .cancelled }
+            guard let url = preferredByID[id] else { continue }
 
             do {
                 let values = try url.resourceValues(forKeys: keys)
@@ -1133,26 +1184,28 @@ private actor SUPRAProcessObservatoryScanner {
 
                 files.append(
                     SUPRAObservedFile(
-                        id: normalizedID(url.lastPathComponent),
+                        id: id,
                         url: url,
-                        modifiedAt: values.contentModificationDate,
+                        modifiedAt: values.contentModificationDate ?? inferredDate(from: id),
                         fileSize: values.fileSize,
                         resourceIdentifier: values.fileResourceIdentifier.map {
                             String(reflecting: $0)
                         },
                         fileContentIdentifier: values.fileContentIdentifier,
                         generationIdentifier: generationToken(values.generationIdentifier),
+                        isDataless: isDataless(url),
                         result: result
                     )
                 )
             } catch {
-                return .failure("BRIDGE FILE METADATA READ FAILED")
+                // One broken FileProvider stub must not take the whole bridge
+                // offline. Omit only that artifact and keep the scan truthful.
+                metadataFailures += 1
             }
         }
 
-        if Swift.Task.isCancelled { return .cancelled }
-        if enumerationError != nil {
-            return .failure("BRIDGE DIRECTORY ENUMERATION FAILED")
+        if files.isEmpty, !selectedIDs.isEmpty, metadataFailures == selectedIDs.count {
+            return .failure("BRIDGE FILE METADATA READ FAILED")
         }
 
         return .success(files)
@@ -1220,7 +1273,9 @@ private actor SUPRAProcessObservatoryScanner {
 
             let hasInbox = input != nil
             let hasOutput = output != nil
+            let contentDeferred = output?.isDataless == true
             let hasValidResult = parsed != nil
+            let hasObservableResult = hasOutput && (hasValidResult || contentDeferred)
             let started = inferredDate(from: id) ?? input?.modifiedAt ?? output?.modifiedAt ?? .now
             let age = max(0, Date().timeIntervalSince(started))
             let expiredExecutiveAdmission =
@@ -1230,13 +1285,20 @@ private actor SUPRAProcessObservatoryScanner {
                 && age >= executiveAdmissionGrace
             let stage = expiredExecutiveAdmission
                 ? SUPRAProcessStage.historical
-                : stage(hasInbox: hasInbox, hasOutput: hasOutput, parsed: parsed, age: age)
+                : stage(
+                    hasInbox: hasInbox,
+                    hasOutput: hasOutput,
+                    parsed: parsed,
+                    contentDeferred: contentDeferred,
+                    age: age
+                )
             let drift = expiredExecutiveAdmission
                 ? SUPRAProcessDrift.none
                 : drift(
                     hasInbox: hasInbox,
                     hasOutput: hasOutput,
                     hasValidResult: hasValidResult,
+                    contentDeferred: contentDeferred,
                     age: age
                 )
 
@@ -1244,7 +1306,7 @@ private actor SUPRAProcessObservatoryScanner {
                 SUPRAObservedProcess(
                     id: id,
                     title: title(for: id),
-                    hasResult: hasValidResult,
+                    hasResult: hasObservableResult,
                     stage: stage,
                     startedAt: started,
                     ageSeconds: age,
@@ -1254,12 +1316,16 @@ private actor SUPRAProcessObservatoryScanner {
                     statusText: expiredExecutiveAdmission
                         ? "Historical unresolved executive admission · no receipt after bounded runtime + grace"
                         : (
-                            hasOutput && parsed == nil
-                                ? invalidResultStatus(
-                                    output,
-                                    aggregateBudgetLimited: aggregateBudgetLimitedIDs.contains(id)
+                            contentDeferred
+                                ? "OUTBOX receipt present · cloud content not hydrated"
+                                : (
+                                    hasOutput && parsed == nil
+                                        ? invalidResultStatus(
+                                            output,
+                                            aggregateBudgetLimited: aggregateBudgetLimitedIDs.contains(id)
+                                        )
+                                        : parsed?.status
                                 )
-                                : parsed?.status
                         ),
                     actionNicolas: parsed?.actionNicolas,
                     f2StatusAfter: parsed?.f2StatusAfter,
@@ -1314,8 +1380,9 @@ private actor SUPRAProcessObservatoryScanner {
         inbox: [String: SUPRAObservedFile],
         outbox: [String: SUPRAObservedFile]
     ) -> Date {
-        let inputDate = inbox[id]?.modifiedAt ?? .distantPast
-        let outputDate = outbox[id]?.modifiedAt ?? .distantPast
+        let inferred = inferredDate(from: id) ?? .distantPast
+        let inputDate = inbox[id]?.modifiedAt ?? inferred
+        let outputDate = outbox[id]?.modifiedAt ?? inferred
         return max(inputDate, outputDate)
     }
 
@@ -1360,6 +1427,13 @@ private actor SUPRAProcessObservatoryScanner {
         if Swift.Task.isCancelled { return nil }
 
         let cacheKey = file.url.path
+
+        // Never hydrate a cloud-only FileProvider placeholder just to paint the
+        // observatory. Presence is observable from metadata; content parsing is
+        // deferred until the provider has a local copy.
+        if file.isDataless {
+            return nil
+        }
 
         if let generationIdentifier = file.generationIdentifier,
            let cached = parsedCache[cacheKey],
@@ -1534,9 +1608,12 @@ private actor SUPRAProcessObservatoryScanner {
         hasInbox: Bool,
         hasOutput: Bool,
         parsed: SUPRAParsedResult?,
+        contentDeferred: Bool,
         age: TimeInterval
     ) -> SUPRAProcessStage {
-        if hasOutput && parsed == nil { return .anomaly }
+        if hasOutput && parsed == nil {
+            return contentDeferred ? .materialized : .anomaly
+        }
         // A valid OUTBOX receipt may legitimately outlive a consumed/archived INBOX request.
         // Treat it by its receipt status below instead of fabricating drift.
         // An abandoned INBOX item older than seven days is historical evidence,
@@ -1592,9 +1669,10 @@ private actor SUPRAProcessObservatoryScanner {
         hasInbox: Bool,
         hasOutput: Bool,
         hasValidResult: Bool,
+        contentDeferred: Bool,
         age: TimeInterval
     ) -> SUPRAProcessDrift {
-        if hasOutput && !hasValidResult { return .anomaly }
+        if hasOutput && !hasValidResult && !contentDeferred { return .anomaly }
         // Missing INBOX is expected after successful mailbox consumption.
         // A valid OUTBOX receipt is evidence of completion, not drift.
         guard hasInbox && !hasOutput else { return .none }
@@ -1676,6 +1754,17 @@ private actor SUPRAProcessObservatoryScanner {
     private func string(_ value: Any?) -> String? {
         guard let value else { return nil }
         return value as? String ?? String(describing: value)
+    }
+
+    private func isDataless(_ url: URL) -> Bool {
+        var fileStat = stat()
+        let result = url.path.withCString { lstat($0, &fileStat) }
+        guard result == 0 else { return false }
+
+        // macOS SF_DATALESS: FileProvider placeholder with no local data blocks.
+        // Checking the flag is metadata-only and does not trigger hydration.
+        let sfDataless: UInt32 = 0x40000000
+        return (fileStat.st_flags & sfDataless) != 0
     }
 
     private func isDirectory(_ url: URL) -> Bool {
@@ -1771,6 +1860,7 @@ private struct SUPRAObservedFile: Sendable {
     let resourceIdentifier: String?
     let fileContentIdentifier: Int64?
     let generationIdentifier: Data?
+    let isDataless: Bool
     let result: Bool
 }
 

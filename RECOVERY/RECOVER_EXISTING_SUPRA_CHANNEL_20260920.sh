@@ -4,7 +4,7 @@ set -euo pipefail
 say(){ printf '\n[%s] %s\n' "$(date '+%H:%M:%S')" "$*"; }
 die(){ printf '\nSTATUS=FAIL_BOUNDED\nBLOCKER=%s\n' "$1"; exit "${2:-1}"; }
 
-LABEL="com.novaera.sol-github-bridge"
+LABEL="com.novaera.supra.bridge-watcher"
 PLIST="$HOME/Library/LaunchAgents/${LABEL}.plist"
 BRIDGE_ROOT="$HOME/NOVA_OS/SUPRA_CHATGPT_APP_BRIDGE_V1"
 BRIDGE_SH="$BRIDGE_ROOT/bridge.sh"

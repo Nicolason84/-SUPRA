@@ -245,21 +245,26 @@ struct PublicPresenceView: View {
                         }
 
                         Button {
-                            SUPRAMediaHeroRouter.shared.present(
-                                SUPRAMediaHeroContext(
-                                    objectID: "PUBLIC_PRESENCE_YOUTUBE",
-                                    objectType: "PUBLIC_PRESENCE_CHANNEL",
-                                    title: "YouTube",
-                                    subtitle: "Public Presence · Media Hero",
-                                    origin: "PublicPresence",
-                                    lineageRefs: [
-                                        "connector:youtube",
-                                        "surface:public_presence"
-                                    ]
+                            selectedChannel = nil
+                            Task { @MainActor in
+                                try? await Task.sleep(for: .milliseconds(180))
+                                SUPRAMediaHeroRouter.shared.present(
+                                    SUPRAMediaHeroContext(
+                                        objectID: "PUBLIC_CHANNEL_YOUTUBE",
+                                        objectType: "EXTERNAL_CHANNEL",
+                                        title: channel.name,
+                                        subtitle: channel.role,
+                                        origin: "PublicPresenceView",
+                                        lineageRefs: [
+                                            "PUBLIC_PRESENCE",
+                                            "EXTERNAL_CONNECTOR:youtube",
+                                            "EVIDENCE→MEMORY→CANNONICO"
+                                        ]
+                                    )
                                 )
-                            )
+                            }
                         } label: {
-                            Label("Open contextual Media Hero", systemImage: "play.rectangle.on.rectangle.fill")
+                            Label("Open ojO Universal Media · contextual", systemImage: "play.rectangle.on.rectangle.fill")
                         }
                         .buttonStyle(.borderedProminent)
                     }

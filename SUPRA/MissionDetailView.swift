@@ -8,7 +8,7 @@ struct MissionDetailView: View {
             VStack(alignment: .leading, spacing: 26) {
                 header
 
-                if mission.status == .blocked {
+                if mission.status == .blocked && mission.category == "System Consolidation" {
                     GrandeMissionHumanGateView()
                 }
 

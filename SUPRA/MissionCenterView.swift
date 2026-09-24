@@ -39,6 +39,7 @@ struct MissionCenterView: View {
         }
         .task {
             store.load()
+            selectCurrentMissionIfNeeded()
             while !Task.isCancelled {
                 let runner = SUPRAGrandeMissionRunner.shared
 
@@ -53,8 +54,18 @@ struct MissionCenterView: View {
 
                 try? await Task.sleep(nanoseconds: delay)
                 store.refresh()
+                selectCurrentMissionIfNeeded()
             }
         }
+    }
+
+    private func selectCurrentMissionIfNeeded() {
+        guard selection == nil
+            || !store.visibleMissions.contains(where: { $0.id == selection })
+        else {
+            return
+        }
+        selection = store.visibleMissions.first?.id
     }
 
     @ToolbarContentBuilder

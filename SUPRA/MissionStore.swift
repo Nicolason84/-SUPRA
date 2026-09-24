@@ -47,8 +47,9 @@ final class MissionStore: ObservableObject {
         liveStore.start()
 
         let operational = makeGrandeMission(from: runner)
+        let executiveObjective = loadLatestExecutiveObjective(from: runner)
         let historical = loadPersistedMissionPatrimony(excluding: operational.id)
-        missions = [operational] + historical
+        missions = (executiveObjective.map { [$0] } ?? []) + [operational] + historical
 
         runner.startIfNeeded()
 
@@ -72,6 +73,114 @@ final class MissionStore: ObservableObject {
         activeSort = sort
     }
 
+
+    private func loadLatestExecutiveObjective(from runner: SUPRAGrandeMissionRunner) -> Mission? {
+        let fm = FileManager.default
+        guard let urls = try? fm.contentsOfDirectory(
+            at: runner.outboxURL,
+            includingPropertiesForKeys: [.contentModificationDateKey, .isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return nil
+        }
+
+        let resultURLs = urls
+            .filter { $0.lastPathComponent.hasPrefix("EXECUTIVE_OBJECTIVE_") && $0.lastPathComponent.hasSuffix(".result.json") }
+            .sorted {
+                let l = (try? $0.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                let r = (try? $1.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                return l > r
+            }
+
+        guard let url = resultURLs.first,
+              let data = try? Data(contentsOf: url, options: [.mappedIfSafe]),
+              let raw = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        else {
+            return nil
+        }
+
+        let objectiveID = stringValue(raw["objective_id"] ?? raw["mission_id"])
+        guard !objectiveID.isEmpty else { return nil }
+
+        let objective = stringValue(raw["objective"])
+        let statusRaw = stringValue(raw["status"]).uppercased()
+        let response = stringValue(raw["response"])
+        let started = dateValue(raw["started_at"]) ?? .distantPast
+        let finished = dateValue(raw["finished_at"]) ?? started
+        let missionName = objective
+            .components(separatedBy: .newlines)
+            .first(where: { $0.hasPrefix("MISSION=") })
+            .map { String($0.dropFirst("MISSION=".count)) }
+            ?? objectiveID
+
+        let status: Mission.Status = switch statusRaw {
+        case "PASS", "COMPLETED", "SUCCESS": .completed
+        case "ERROR", "FAILED", "BLOCKED", "UNPROVEN": .blocked
+        default: .active
+        }
+
+        let taskStatus: Mission.Task.Status = switch status {
+        case .completed: .completed
+        case .blocked: .blocked
+        default: .inProgress
+        }
+
+        let summary = objective
+            .components(separatedBy: .newlines)
+            .first(where: { $0.hasPrefix("PRIMARY_OBJECTIVE=") })
+            .map { _ in "Executive objective admitted through the existing SUPRA runtime. Current state comes from the latest durable result receipt." }
+            ?? "Executive objective admitted through the existing SUPRA runtime. Current state comes from the latest durable result receipt."
+
+        let current = [
+            statusRaw.isEmpty ? "STATUS=UNKNOWN" : "STATUS=\(statusRaw)",
+            response.isEmpty ? nil : response,
+            "RESULT=\(url.lastPathComponent)"
+        ]
+        .compactMap { $0 }
+        .joined(separator: " · ")
+
+        return Mission(
+            id: stableUUID(objectiveID),
+            title: missionName,
+            status: status,
+            priority: .critical,
+            category: "Executive Objective",
+            owner: "SUPRA · Authority Nicolas",
+            dueDate: nil,
+            progress: status == .completed ? 1 : 0,
+            summary: summary,
+            objectives: [
+                Mission.Objective(
+                    id: stableUUID("objective-" + objectiveID),
+                    title: missionName,
+                    isCompleted: status == .completed
+                )
+            ],
+            tasks: [
+                Mission.Task(
+                    id: stableUUID("task-" + objectiveID),
+                    title: "Runtime execution",
+                    status: taskStatus
+                )
+            ],
+            dependencies: [
+                Mission.Dependency(
+                    id: stableUUID("dep-" + objectiveID),
+                    title: stringValue(raw["runtime_route"]).isEmpty ? "Existing SUPRA runtime" : stringValue(raw["runtime_route"]),
+                    status: status == .blocked ? "FAILED / BLOCKED" : "OBSERVED"
+                )
+            ],
+            timeline: [
+                Mission.TimelineEntry(
+                    id: stableUUID("timeline-" + objectiveID),
+                    date: finished,
+                    title: status == .blocked ? "Executive objective failed" : "Executive objective result",
+                    detail: current
+                )
+            ],
+            currentStatus: current
+        )
+    }
 
     private func loadPersistedMissionPatrimony(excluding operationalID: UUID) -> [Mission] {
         let fm = FileManager.default
@@ -452,13 +561,20 @@ final class MissionStore: ObservableObject {
         visibleMissions = filtered.sorted { lhs, rhs in
             switch activeSort {
             case .dueDate:
-                (lhs.dueDate ?? .distantFuture) < (rhs.dueDate ?? .distantFuture)
+                let lhsDue = lhs.dueDate ?? .distantFuture
+                let rhsDue = rhs.dueDate ?? .distantFuture
+                if lhsDue != rhsDue {
+                    return lhsDue < rhsDue
+                }
+                let lhsActivity = lhs.timeline.first?.date ?? .distantPast
+                let rhsActivity = rhs.timeline.first?.date ?? .distantPast
+                return lhsActivity > rhsActivity
             case .priority:
-                priorityRank(lhs.priority) < priorityRank(rhs.priority)
+                return priorityRank(lhs.priority) < priorityRank(rhs.priority)
             case .progress:
-                lhs.progress > rhs.progress
+                return lhs.progress > rhs.progress
             case .title:
-                lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
+                return lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
             }
         }
     }

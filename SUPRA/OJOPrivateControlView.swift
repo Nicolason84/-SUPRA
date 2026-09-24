@@ -8,6 +8,7 @@ enum OJOPrivateTab: String, CaseIterable, Identifiable {
     case decisions = "Decisions"
     case connections = "Connections"
     case context = "Private context"
+    case media = "Media"
     case signals = "Signals"
 
     var id: Self { self }
@@ -21,6 +22,7 @@ enum OJOPrivateTab: String, CaseIterable, Identifiable {
         case .decisions: "gauge.with.dots.needle.50percent"
         case .connections: "point.3.connected.trianglepath.dotted"
         case .context: "brain.head.profile"
+        case .media: "play.rectangle.on.rectangle.fill"
         case .signals: "waveform.path.ecg"
         }
     }
@@ -98,7 +100,7 @@ struct OJOPrivateControlView: View {
             ForEach(OJOPrivateTab.allCases) { item in
                 Button {
                     tab = item
-                    if item != .signals {
+                    if item != .signals && item != .media {
                         Task { await queryForTab(item) }
                     }
                 } label: {
@@ -236,6 +238,9 @@ struct OJOPrivateControlView: View {
                     .frame(minHeight: 680)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
             }
+        } else if tab == .media {
+            SUPRAMediaUniversalView()
+                .frame(minHeight: 760)
         } else {
             VStack(alignment: .leading, spacing: 16) {
                 actionStrip
@@ -355,6 +360,27 @@ struct OJOPrivateControlView: View {
                 .font(.callout.monospaced())
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let detectedMediaURL {
+                Divider()
+                Button {
+                    SUPRAMediaHeroRouter.shared.present(
+                        SUPRAMediaHeroContext(
+                            objectID: "OJO_RESULT_\(tab.id.rawValue.uppercased())",
+                            objectType: "OJO_RUNTIME_RESULT",
+                            title: tab.rawValue,
+                            subtitle: "Detected source from the current private runtime result",
+                            sourceURL: detectedMediaURL,
+                            origin: "OJOPrivateControlView",
+                            lineageRefs: ["OJO_PRIVATE", "TAB:\(tab.rawValue)", "RUNTIME_RESULT"],
+                            initialNote: "Source detected from ojO runtime output; content remains unproven until observed."
+                        )
+                    )
+                } label: {
+                    Label("Open detected source in Media Hero", systemImage: "play.rectangle.on.rectangle.fill")
+                }
+                .buttonStyle(.borderedProminent)
+            }
         }
         .padding(20)
         .supraCard()
@@ -429,6 +455,19 @@ struct OJOPrivateControlView: View {
         )
     }
 
+    private var detectedMediaURL: URL? {
+        let separators = CharacterSet.whitespacesAndNewlines
+        for raw in output.components(separatedBy: separators) {
+            let candidate = raw.trimmingCharacters(
+                in: CharacterSet(charactersIn: "()[]{}<>\"'.,;:")
+            )
+            guard candidate.hasPrefix("https://") || candidate.hasPrefix("http://"),
+                  let url = URL(string: candidate) else { continue }
+            return url
+        }
+        return nil
+    }
+
     private var runtimeTint: Color {
         switch runtimeState {
         case "CONNECTED", "PASS": .green
@@ -466,6 +505,7 @@ struct OJOPrivateControlView: View {
         case .decisions: "PRIVATE_DECISIONS"
         case .connections: "PRIVATE_CONNECTION_STATE"
         case .context: "PRIVATE_CONTEXT_STATE"
+        case .media: "MEDIA_CONTEXT"
         case .signals: "SIGNALS"
         }
 

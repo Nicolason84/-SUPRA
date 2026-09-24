@@ -611,7 +611,7 @@ struct ContentView: View {
         if gabrielBusy { return "Gabriel conduit trois missions en parallèle." }
         if store.chatBusy { return "SUPRA analyse les preuves." }
         if !operationalDecisionCandidates.isEmpty { return "Examiner la première décision prioritaire." }
-        return "Laisser SUPRA poursuivre l’autopilot."
+        return "Créer ou poursuivre une mission explicite. Aucun autopilot implicite."
     }
 
     @ViewBuilder
@@ -913,6 +913,12 @@ struct ContentView: View {
             Label("Spine", systemImage: "point.3.connected.trianglepath.dotted")
                 .tag("spine")
 
+            Label("Library", systemImage: "building.columns.fill")
+                .tag("library")
+
+            Label("LABS", systemImage: "flask.fill")
+                .tag("labs")
+
             DisclosureGroup(isExpanded: $sidebarAdvancedExpanded) {
                 ForEach(store.model.sections) { section in
                     Label {
@@ -1008,6 +1014,12 @@ struct ContentView: View {
         case "spine":
             spinePage
 
+        case "library":
+            SUPRALibraryProjectionView()
+
+        case "labs":
+            SUPRALabsProjectionView()
+
         case "actions":
             actionCenterPage
 
@@ -1060,12 +1072,7 @@ struct ContentView: View {
             )
 
         case "memory":
-            sourcePage(
-                title: "Memory",
-                subtitle: "Index mémoire et registre des ressources",
-                icon: "brain",
-                matching: ["IMAC_MEMORY_INDEX", "RESOURCE_REGISTRY"]
-            )
+            SUPRAMemoryProjectionView()
 
         case "interface":
             interfacePage
