@@ -1,0 +1,102 @@
+--- a/supra_chatgpt_app_bridge.py
++++ b/supra_chatgpt_app_bridge.py
+@@ -3242,6 +3242,47 @@
+             raise OpenCodeAdapterError("OPENCODE_HTTP_%s" % exc.code, raw)
+         except Exception as exc:
+             raise OpenCodeAdapterError("OPENCODE_CONNECTION", str(exc))
++
++    def _tool_ids_path(self):
++        if not self.directory:
++            return "/experimental/tool/ids"
++        return "/experimental/tool/ids?directory=" + urllib.parse.quote(self.directory, safe="")
++
++    def _message_body(self, message):
++        body = {
++            "agent": self.agent,
++            "model": {
++                "providerID": self.provider_id,
++                "modelID": self.model,
++            },
++            "parts": [{"type": "text", "text": message}],
++        }
++        hard_no_tools = any(
++            line.strip().upper() == "NO_TOOLS=YES"
++            for line in str(message).splitlines()
++        )
++        if not hard_no_tools:
++            return body
++
++        tool_ids = self._get_json(
++            self._tool_ids_path(),
++            timeout=OPENCODE_READ_TIMEOUT,
++        )
++        if isinstance(tool_ids, dict):
++            tool_ids = tool_ids.get("data", tool_ids.get("tools", tool_ids.get("ids")))
++        if not isinstance(tool_ids, list):
++            raise OpenCodeAdapterError(
++                "NO_TOOLS_POLICY_UNPROVEN",
++                "OpenCode tool id inventory unavailable; refusing NO_TOOLS mission",
++            )
++        normalized = [str(tool_id).strip() for tool_id in tool_ids if str(tool_id).strip()]
++        if not normalized:
++            raise OpenCodeAdapterError(
++                "NO_TOOLS_POLICY_UNPROVEN",
++                "OpenCode tool id inventory empty; refusing NO_TOOLS mission",
++            )
++        body["tools"] = {tool_id: False for tool_id in sorted(set(normalized))}
++        return body
+ 
+     @staticmethod
+     def _assistant_snapshot(messages):
+@@ -3341,14 +3382,7 @@
+ 
+     def _exchange_async(self, session_id, message, state_callback=None):
+         """Submit without holding an HTTP request open, then collect the session result."""
+-        message_body = {
+-            "agent": self.agent,
+-            "model": {
+-                "providerID": self.provider_id,
+-                "modelID": self.model,
+-            },
+-            "parts": [{"type": "text", "text": message}],
+-        }
++        message_body = self._message_body(message)
+         # Reused sessions may already contain completed assistant replies.
+         # Freeze a baseline BEFORE submitting this prompt so collection below
+         # can only observe messages created by this turn.
+@@ -3598,16 +3632,7 @@
+             session_callback(session_id)
+ 
+         # 2. Send message with explicit agent + model (POST /session/:id/message)
+-        message_body = {
+-            "agent": self.agent,
+-            "model": {
+-                "providerID": self.provider_id,
+-                "modelID": self.model,
+-            },
+-            "parts": [
+-                {"type": "text", "text": message},
+-            ],
+-        }
++        message_body = self._message_body(message)
+         try:
+             reply = self._exchange_async(session_id, message, state_callback=state_callback)
+         except OpenCodeAdapterError as exc:
+@@ -3663,16 +3688,7 @@
+         started = time.time()
+         if state_callback:
+             state_callback("WORKING")
+-        message_body = {
+-            "agent": self.agent,
+-            "model": {
+-                "providerID": self.provider_id,
+-                "modelID": self.model,
+-            },
+-            "parts": [
+-                {"type": "text", "text": message},
+-            ],
+-        }
++        message_body = self._message_body(message)
+         try:
+             reply = self._exchange_async(session_id, message, state_callback=state_callback)
+         except OpenCodeAdapterError as exc:

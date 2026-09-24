@@ -260,6 +260,18 @@ struct SUPRAMediaUniversalView: View {
         integration.references.first(where: { $0.id == "proofgraph.runtime" })
     }
 
+    private var uscrcProofGraphProofReference: CAnnoNicoSourceReference? {
+        integration.references.first(where: { $0.id == "uscrc.proofgraph.proof" })
+    }
+
+    private var proofGraphRuntimeStateReference: CAnnoNicoSourceReference? {
+        integration.references.first(where: { $0.id == "proofgraph.runtime.state" })
+    }
+
+    private var proofGraphRuntimeHealthReference: CAnnoNicoSourceReference? {
+        integration.references.first(where: { $0.id == "proofgraph.runtime.health" })
+    }
+
     private var smcaReference: CAnnoNicoSourceReference? {
         integration.references.first(where: { $0.id == "smca.media.coherence" })
     }
@@ -274,6 +286,9 @@ struct SUPRAMediaUniversalView: View {
             "uscrc.proofgraph.canon",
             "uscrc.goldenpath",
             "proofgraph.runtime",
+            "uscrc.proofgraph.proof",
+            "proofgraph.runtime.state",
+            "proofgraph.runtime.health",
             "smca.media.coherence",
             "atlas.runtime",
             "twin.registry",
@@ -586,6 +601,18 @@ struct SUPRAMediaUniversalView: View {
                     proofGraphRuntimeReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
                 )
                 truthRow(
+                    "USCRC canon proof",
+                    uscrcProofGraphProofReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+                )
+                truthRow(
+                    "ProofGraph state",
+                    proofGraphRuntimeStateReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+                )
+                truthRow(
+                    "ProofGraph health",
+                    proofGraphRuntimeHealthReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+                )
+                truthRow(
                     "SMCA / MCC runtime",
                     smcaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
                 )
@@ -831,6 +858,9 @@ struct SUPRAMediaUniversalView: View {
         let uscrcCanonState = uscrcProofGraphReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let uscrcContinuityState = uscrcContinuityReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let proofGraphRuntimeState = proofGraphRuntimeReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+        let uscrcProofState = uscrcProofGraphProofReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+        let proofGraphStateState = proofGraphRuntimeStateReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
+        let proofGraphHealthState = proofGraphRuntimeHealthReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let smcaState = smcaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let youtubeState = youtubeDescriptor?.status.rawValue ?? "UNPROVEN"
         let noteValue = note.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -865,6 +895,9 @@ struct SUPRAMediaUniversalView: View {
         USCRC_PROOFGRAPH_CANON=\(uscrcCanonState)
         USCRC_CONTINUITY=\(uscrcContinuityState)
         PROOFGRAPH_RUNTIME=\(proofGraphRuntimeState)
+        USCRC_PROOFGRAPH_CANON_PROOF=\(uscrcProofState)
+        PROOFGRAPH_RUNTIME_STATE=\(proofGraphStateState)
+        PROOFGRAPH_RUNTIME_HEALTH=\(proofGraphHealthState)
         SMCA_MCC_RUNTIME=\(smcaState)
         HUMAN_NOTE=\(noteValue.isEmpty ? "NONE" : noteValue)
         OJO_OBJECT_ID=\(heroContext?.objectID ?? "UNSCOPED")

@@ -37,6 +37,15 @@ enum SUPRACAnnoNicoIntegration {
     static let proofGraphRuntimeSource =
         "/Users/nicolasalonso/NOVA_OS/TUV5_PROOFGRAPH_RUNTIME"
 
+    static let uscrcProofGraphProofSource =
+        "/Users/nicolasalonso/NOVA_OS/_CANNONICO_MEMORY/uscrc_proofgraph_canon_v1/proofs/proof_uscrc_proofgraph_canon_v1.json"
+
+    static let proofGraphRuntimeStateSource =
+        "/Users/nicolasalonso/NOVA_OS/TUV5_PROOFGRAPH_RUNTIME/state/proofgraph_runtime_state.json"
+
+    static let proofGraphRuntimeHealthSource =
+        "/Users/nicolasalonso/NOVA_OS/TUV5_PROOFGRAPH_RUNTIME/health/health_latest.json"
+
     static func recoveredReference(
         id: String,
         role: String,
@@ -120,6 +129,39 @@ enum SUPRACAnnoNicoIntegration {
                         "READ_EXISTING_PROOFGRAPH_RUNTIME",
                         "RESOLVE_EXISTING_PROOF_LINEAGE",
                         "NO_PROOFGRAPH_REBUILD"
+                    ]
+                ),
+                recoveredReference(
+                    id: "uscrc.proofgraph.proof",
+                    role: "READ_ONLY_USCRC_PROOFGRAPH_CANON_PROOF",
+                    path: uscrcProofGraphProofSource,
+                    inputs: ["proof_queries", "integrity_queries"],
+                    outputs: ["canon_proof", "source_refs", "integrity_refs"],
+                    capabilities: [
+                        "READ_EXISTING_CANON_PROOF",
+                        "NO_PROOF_REGENERATION"
+                    ]
+                ),
+                recoveredReference(
+                    id: "proofgraph.runtime.state",
+                    role: "READ_ONLY_PROOFGRAPH_RUNTIME_STATE",
+                    path: proofGraphRuntimeStateSource,
+                    inputs: ["runtime_state_queries"],
+                    outputs: ["runtime_status", "runtime_summary"],
+                    capabilities: [
+                        "READ_EXISTING_PROOFGRAPH_STATE",
+                        "NO_RUNTIME_REBUILD"
+                    ]
+                ),
+                recoveredReference(
+                    id: "proofgraph.runtime.health",
+                    role: "READ_ONLY_PROOFGRAPH_RUNTIME_HEALTH",
+                    path: proofGraphRuntimeHealthSource,
+                    inputs: ["runtime_health_queries"],
+                    outputs: ["status", "nodes", "edges", "proofs", "snapshots"],
+                    capabilities: [
+                        "READ_EXISTING_PROOFGRAPH_HEALTH",
+                        "NO_HEALTH_RECOMPUTE"
                     ]
                 ),
                 partialReference(
