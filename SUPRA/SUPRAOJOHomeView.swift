@@ -225,9 +225,9 @@ struct SUPRAOJOHomeView: View {
         .sheet(isPresented: $paletteVisible) {
             commandPalette
         }
-        .sheet(item: $mediaHeroRouter.context) { context in
-            SUPRAMediaUniversalView(context: context)
-                .frame(minWidth: 1180, minHeight: 760)
+        .onReceive(mediaHeroRouter.$context) { context in
+            guard context != nil else { return }
+            selection = .media
         }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
@@ -628,7 +628,11 @@ struct SUPRAOJOHomeView: View {
                 case .chat:
                     SUPRAChatView()
                 case .media:
-                    SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
+                    if let context = mediaHeroRouter.context {
+                        SUPRAMediaUniversalView(context: context)
+                    } else {
+                        SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
+                    }
                 case .cannonico:
                     ContentView()
                 case .missions:
