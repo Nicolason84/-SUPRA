@@ -209,11 +209,20 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "SUPRA IS EXECUTING THROUGH THE EXISTING RUNTIME..."
             ].contains(upper)
 
+            let explicitMaterialResult =
+                upper.contains("EXECUTION_VERDICT=MATERIAL_RESULT")
+                || upper.contains("STATUS=PASS")
+            let explicitUnproven =
+                upper.contains("EXECUTION_VERDICT=UNPROVEN")
+                || upper.contains("STATUS=UNPROVEN")
+
             let status: String
             if humanGateRequired {
                 status = "BLOCKED"
-            } else if !normalized.isEmpty && !runningOnly {
+            } else if explicitMaterialResult && !runningOnly {
                 status = "PASS"
+            } else if explicitUnproven || normalized.isEmpty || runningOnly {
+                status = "UNPROVEN"
             } else {
                 status = "UNPROVEN"
             }

@@ -1,0 +1,119 @@
+{
+  "schema": "LIVE_STATE_SEMANTICS_V3",
+  "generated_at": "2026-09-24T10:15:25.850629+00:00",
+  "authority": "NICOLAS",
+  "allowed_states": [
+    "LIVE_PROVEN",
+    "LIVE_PARTIAL",
+    "CACHE_VALID",
+    "STALE",
+    "HISTORICAL",
+    "DECLARED",
+    "UNPROVEN",
+    "BLOCKED",
+    "OFFLINE"
+  ],
+  "required_material_fields": [
+    "source",
+    "source_ref",
+    "observed_at",
+    "effective_at",
+    "freshness",
+    "authority",
+    "evidence_refs"
+  ],
+  "states": {
+    "LIVE_PROVEN": {
+      "meaning": "Direct current observation with authoritative source and evidence lineage.",
+      "requires": [
+        "direct_observation",
+        "authoritative_source",
+        "freshness_within_policy",
+        "evidence_refs"
+      ]
+    },
+    "LIVE_PARTIAL": {
+      "meaning": "Direct current observation exists but does not prove the complete material state.",
+      "requires": [
+        "direct_observation",
+        "explicit_missing_dimensions"
+      ]
+    },
+    "CACHE_VALID": {
+      "meaning": "No direct current observation; authoritative cached state is still within its declared freshness policy.",
+      "requires": [
+        "cache_source",
+        "freshness_policy",
+        "not_expired"
+      ]
+    },
+    "STALE": {
+      "meaning": "Previously observed state exists but is outside its freshness policy.",
+      "requires": [
+        "prior_observation",
+        "expired_freshness"
+      ]
+    },
+    "HISTORICAL": {
+      "meaning": "Evidence is intentionally past-state and must not define current health.",
+      "requires": [
+        "historical_scope"
+      ]
+    },
+    "DECLARED": {
+      "meaning": "Contract, catalog or configured intent exists without current execution proof.",
+      "requires": [
+        "declaration_source"
+      ]
+    },
+    "UNPROVEN": {
+      "meaning": "Available evidence is insufficient to choose a stronger truth state.",
+      "requires": [
+        "explicit_evidence_gap"
+      ]
+    },
+    "BLOCKED": {
+      "meaning": "A proven blocker prevents the governed workflow from progressing.",
+      "requires": [
+        "blocker_ref",
+        "next_gate_or_action"
+      ]
+    },
+    "OFFLINE": {
+      "meaning": "A current connectivity/availability probe proves the target unavailable.",
+      "requires": [
+        "current_probe",
+        "failure_evidence"
+      ]
+    }
+  },
+  "resolution_order": [
+    "authority_scope",
+    "evidence_lineage",
+    "directness",
+    "freshness",
+    "timestamp"
+  ],
+  "conflict_rules": [
+    "A newer timestamp MUST NOT override a complete authoritative receipt chain by itself.",
+    "Direct live proof may supersede cache only within the same authority scope.",
+    "Static UI, registry, catalog or configuration is DECLARED unless direct evidence proves a live state.",
+    "If two sources of equal authority materially conflict and lineage cannot resolve them, state becomes UNPROVEN and both are preserved."
+  ],
+  "split_brain_rule": {
+    "case": "SUPRA_GRANDE_MISSION_V1_HOME_VS_CONTAINER",
+    "container_state": "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "container_proof": "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/OUTBOX/01_RECOVER_TOTAL_REPERTORY.result.json",
+    "home_shadow_state": "/Users/nicolasalonso/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "decision": "CONTAINER_CHAIN_IS_CURRENT_WORK_AUTHORITY",
+    "reason": "Container has material PASS phase receipt chain through completion; later home rerun failed phase01 and produced no matching home phase01 receipt.",
+    "home_state_disposition": "SHADOW_INCOMPLETE_PRESERVE_DO_NOT_DELETE"
+  },
+  "evidence_refs": [
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+    "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/OUTBOX/01_RECOVER_TOTAL_REPERTORY.result.json",
+    "/Users/nicolasalonso/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json"
+  ]
+}

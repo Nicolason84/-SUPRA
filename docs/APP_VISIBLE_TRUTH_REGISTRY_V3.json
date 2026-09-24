@@ -1,0 +1,378 @@
+{
+  "schema": "APP_VISIBLE_TRUTH_REGISTRY_V3",
+  "generated_at": "2026-09-24T10:15:25.850629+00:00",
+  "authority": "NICOLAS",
+  "canonical_mission_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+  "responsibility_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+  "truth_states_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/LIVE_STATE_SEMANTICS_V3.json",
+  "rule": "NO_STATIC_OR_CATALOG_STATE_MAY_MASQUERADE_AS_LIVE",
+  "entries": [
+    {
+      "surface": "France",
+      "owns": [
+        "external_world",
+        "territory",
+        "institutions",
+        "real_world_signals"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "NOVA_ERA",
+      "owns": [
+        "living_company_organism",
+        "ecosystem_graph",
+        "global_momentum",
+        "company_state"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "ojO",
+      "owns": [
+        "nicolas_private_control",
+        "needs_nicolas",
+        "machine_can_continue",
+        "private_context"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "SUPRA",
+      "owns": [
+        "intelligence",
+        "orchestration",
+        "bounded_execution",
+        "synthesis"
+      ],
+      "truth_state": "LIVE_PARTIAL",
+      "live_claim": true,
+      "source": "DIRECT_BRIDGE_HEALTH",
+      "source_ref": "http://127.0.0.1:18765/health",
+      "observed_at": "2026-09-24T10:15:25.850629+00:00",
+      "effective_at": "2026-09-21",
+      "freshness": "DIRECT_AT_GENERATION",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+        "http://127.0.0.1:18765/health"
+      ]
+    },
+    {
+      "surface": "CAnnoNico",
+      "owns": [
+        "memory",
+        "evidence",
+        "provenance",
+        "lineage",
+        "conflicts",
+        "freezes",
+        "search"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Missions",
+      "owns": [
+        "mission_lifecycle",
+        "phase_state",
+        "progress",
+        "blockers",
+        "resume_retry"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Runtime",
+      "owns": [
+        "bridge",
+        "processes",
+        "workers",
+        "execution_health",
+        "drift",
+        "throughput",
+        "momentum"
+      ],
+      "truth_state": "LIVE_PARTIAL",
+      "live_claim": true,
+      "source": "DIRECT_BRIDGE_HEALTH",
+      "source_ref": "http://127.0.0.1:18765/health",
+      "observed_at": "2026-09-24T10:15:25.850629+00:00",
+      "effective_at": "2026-09-21",
+      "freshness": "DIRECT_AT_GENERATION",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+        "http://127.0.0.1:18765/health"
+      ]
+    },
+    {
+      "surface": "Control",
+      "owns": [
+        "decisions",
+        "approvals",
+        "authority_gates",
+        "exceptions"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Organization",
+      "owns": [
+        "departments",
+        "people",
+        "roles",
+        "capacity",
+        "workload",
+        "hiring_gates"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Connections",
+      "owns": [
+        "accounts",
+        "auth",
+        "scope",
+        "freshness",
+        "credential_health",
+        "connector_events"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "INPI",
+      "owns": [
+        "rne",
+        "accounts",
+        "acts",
+        "trademarks",
+        "patents",
+        "designs",
+        "watchlists",
+        "filings"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Public Presence",
+      "owns": [
+        "social_channels",
+        "content_pipeline",
+        "engagement",
+        "leads",
+        "reputation"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Chat",
+      "owns": [
+        "ask",
+        "plan",
+        "direct_runtime_conversation"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Library_Patrimony",
+      "owns": [
+        "digital_capital",
+        "product_lineage",
+        "commercial_lineage",
+        "documents",
+        "history"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "surface": "Finance",
+      "owns": [
+        "bank",
+        "cash",
+        "receivables",
+        "payables",
+        "accounting",
+        "tax",
+        "procurement",
+        "cards",
+        "investments",
+        "phi_internal"
+      ],
+      "truth_state": "DECLARED",
+      "live_claim": false,
+      "source": "CANONICAL_SURFACE_RESPONSIBILITY_V3",
+      "source_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+      "observed_at": null,
+      "effective_at": "2026-09-21",
+      "freshness": "NOT_LIVE_OBSERVED",
+      "authority": "NICOLAS",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    }
+  ],
+  "split_brain_evidence": {
+    "canonical_candidate": {
+      "path": "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+      "status": "PASS",
+      "current_phase": "COMPLETE",
+      "proof_chain": "PHASE_RECEIPTS_PRESENT",
+      "phase01_receipt": "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/OUTBOX/01_RECOVER_TOTAL_REPERTORY.result.json",
+      "phase01_status": "PASS"
+    },
+    "shadow_incomplete": {
+      "path": "/Users/nicolasalonso/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+      "status": "ERROR",
+      "current_phase": "01_RECOVER_TOTAL_REPERTORY",
+      "proof_chain": "PHASE01_RECEIPT_ABSENT",
+      "detail": "Bridge indisponible : The network connection was lost."
+    },
+    "resolution": "EVIDENCE_CHAIN_AND_AUTHORITY_BEAT_TIMESTAMP_ALONE",
+    "canonical_for_current_work": "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "shadow_preserved": true
+  },
+  "evidence_refs": [
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+    "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/OUTBOX/01_RECOVER_TOTAL_REPERTORY.result.json",
+    "/Users/nicolasalonso/NOVA_OS/SUPRA_GRANDE_MISSION_V1/STATE.json",
+    "/Users/nicolasalonso/Library/Containers/com.nicolasalonso.SUPRA/Data/NOVA_OS/SUPRA_GRANDE_MISSION_V1/OUTBOX/EXECUTIVE_OBJECTIVE_20260924_115802_4AD02A5F.currentness.json"
+  ]
+}
