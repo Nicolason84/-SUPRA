@@ -169,7 +169,9 @@ struct SUPRAOJOHomeView: View {
     @State private var inspectorVisible = false
     @State private var paletteVisible = false
     @State private var railCompact = false
-    @State private var spatialImmersion = true
+    @State private var spatialImmersion = false
+    @State private var deckDetailsVisible = false
+    @State private var circulationExpanded = false
     @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
     private let circulationStages = [
@@ -240,6 +242,8 @@ struct SUPRAOJOHomeView: View {
         .onChange(of: selection) { _, newSelection in
             withAnimation(.snappy(duration: 0.24)) {
                 applyAdaptiveChrome(for: newSelection)
+                deckDetailsVisible = false
+                circulationExpanded = false
             }
         }
         .animation(.snappy(duration: 0.28), value: selection)
@@ -571,101 +575,113 @@ struct SUPRAOJOHomeView: View {
     }
 
     private var commandDeck: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 7) {
-                    Text(selection.title.uppercased())
-                        .font(.caption.weight(.heavy))
-                        .tracking(1.6)
-                        .foregroundStyle(selection.accent)
+        VStack(spacing: 0) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 7) {
+                        Text(selection.title.uppercased())
+                            .font(.caption.weight(.heavy))
+                            .tracking(1.6)
+                            .foregroundStyle(selection.accent)
 
-                    Text("/")
-                        .foregroundStyle(.tertiary)
+                        Text("CURRENT")
+                            .font(.caption2.weight(.semibold))
+                            .tracking(1.0)
+                            .foregroundStyle(.secondary)
+                    }
 
-                    Text("LIVE UNIVERSE")
-                        .font(.caption2.weight(.semibold))
-                        .tracking(1.1)
-                        .foregroundStyle(.secondary)
+                    Text(selection.subtitle)
+                        .font(.title3.weight(.semibold))
                 }
 
-                Text(selection.subtitle)
-                    .font(.title3.weight(.semibold))
-            }
+                Spacer()
 
-            Spacer()
-
-            statusPill("CANON LIVE", symbol: "checkmark.seal.fill")
-            statusPill("BUILD-GATED", symbol: "hammer.fill")
-            statusPill("CIRCULAR", symbol: "arrow.triangle.2.circlepath")
-
-            Button {
-                mediaRouter.present(
-                    SUPRAMediaHeroContext(
-                        objectID: "UNIVERSE_\(selection.rawValue.uppercased())",
-                        objectType: "SUPRA_UNIVERSE",
-                        title: selection.title,
-                        subtitle: selection.subtitle,
-                        origin: "SUPRAOJOHomeView",
-                        lineageRefs: [selection.alonsoLevel, selection.circulation]
+                Button {
+                    mediaRouter.present(
+                        SUPRAMediaHeroContext(
+                            objectID: "UNIVERSE_\(selection.rawValue.uppercased())",
+                            objectType: "SUPRA_UNIVERSE",
+                            title: selection.title,
+                            subtitle: selection.subtitle,
+                            origin: "SUPRAOJOHomeView",
+                            lineageRefs: [selection.alonsoLevel, selection.circulation]
+                        )
                     )
-                )
-            } label: {
-                Image(systemName: "play.rectangle.on.rectangle.fill")
-                    .frame(width: 28, height: 28)
-            }
-            .buttonStyle(.plain)
-            .help("Open contextual Media Hero")
-            .keyboardShortcut("m", modifiers: [.command, .shift])
+                } label: {
+                    Label("Media", systemImage: "play.rectangle.on.rectangle.fill")
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("supra-command-media")
+                .help("Open contextual Media Hero")
+                .keyboardShortcut("m", modifiers: [.command, .shift])
 
-            Button {
-                paletteVisible = true
-            } label: {
-                Image(systemName: "command")
-                    .frame(width: 28, height: 28)
-            }
-            .buttonStyle(.plain)
-            .help("Universe command palette")
-            .keyboardShortcut("k", modifiers: [.command])
+                Button {
+                    paletteVisible = true
+                } label: {
+                    Label("Commands", systemImage: "command")
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("supra-command-palette")
+                .help("Universe command palette")
+                .keyboardShortcut("k", modifiers: [.command])
 
-            Button {
-                inspectorVisible.toggle()
-            } label: {
-                Image(systemName: inspectorVisible ? "sidebar.right" : "sidebar.trailing")
-                    .frame(width: 28, height: 28)
+                Button {
+                    withAnimation(.snappy(duration: 0.22)) {
+                        deckDetailsVisible.toggle()
+                    }
+                } label: {
+                    Label(deckDetailsVisible ? "Less" : "Details", systemImage: deckDetailsVisible ? "chevron.up" : "chevron.down")
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("supra-command-details")
             }
-            .buttonStyle(.plain)
-            .help("Toggle universe inspector")
+            .padding(.horizontal, 18)
+            .padding(.vertical, 10)
 
-            Button {
-                spatialImmersion.toggle()
-            } label: {
-                Image(systemName: spatialImmersion ? "viewfinder.circle.fill" : "viewfinder.circle")
-                    .frame(width: 28, height: 28)
-            }
-            .buttonStyle(.plain)
-            .help(spatialImmersion ? "Disable augmented spatial HUD" : "Enable augmented spatial HUD")
+            if deckDetailsVisible {
+                Divider()
 
-            Button {
-                NSApp.keyWindow?.toggleFullScreen(nil)
-            } label: {
-                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                    .frame(width: 28, height: 28)
+                HStack(spacing: 14) {
+                    Label(selection.alonsoLevel, systemImage: "triangle.fill")
+                        .foregroundStyle(selection.accent)
+
+                    Label(selection.circulation, systemImage: "arrow.triangle.2.circlepath")
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+
+                    Spacer(minLength: 12)
+
+                    Button {
+                        inspectorVisible.toggle()
+                    } label: {
+                        Label("Inspector", systemImage: inspectorVisible ? "sidebar.right" : "sidebar.trailing")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("supra-command-inspector")
+
+                    Button {
+                        spatialImmersion.toggle()
+                    } label: {
+                        Label("HUD", systemImage: spatialImmersion ? "viewfinder.circle.fill" : "viewfinder.circle")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("supra-command-hud")
+
+                    Button {
+                        NSApp.keyWindow?.toggleFullScreen(nil)
+                    } label: {
+                        Label("Full screen", systemImage: "arrow.up.left.and.arrow.down.right")
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("supra-command-fullscreen")
+                }
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 18)
+                .padding(.vertical, 9)
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
-            .buttonStyle(.plain)
-            .help("Toggle fullscreen")
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 12)
         .glassEffect(.regular, in: Rectangle())
-    }
-
-    private func statusPill(_ text: String, symbol: String) -> some View {
-        Label(text, systemImage: symbol)
-            .font(.caption2.weight(.bold))
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .glassEffect(.regular, in: Capsule())
     }
 
     @ViewBuilder
@@ -925,36 +941,68 @@ struct SUPRAOJOHomeView: View {
     }
 
     private var circulationDock: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 7) {
-                Label("CIRCULATION", systemImage: "arrow.triangle.2.circlepath")
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                Label("FLOW", systemImage: "arrow.triangle.2.circlepath")
                     .font(.caption2.weight(.heavy))
-                    .tracking(1.1)
+                    .tracking(1.0)
                     .foregroundStyle(selection.accent)
 
-                ForEach(Array(circulationStages.enumerated()), id: \.offset) { index, stage in
-                    if index > 0 {
-                        Image(systemName: "chevron.right")
-                            .font(.caption2.weight(.bold))
-                            .foregroundStyle(.tertiary)
-                    }
-
-                    Text(stage)
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(index == circulationStages.count - 1 ? selection.accent : .secondary)
-                }
+                Text(selection.circulation)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
 
                 Spacer(minLength: 12)
 
-                Text("RESULT → MEMORY RETURN REQUIRED")
-                    .font(.caption2.weight(.heavy))
-                    .tracking(0.8)
-                    .foregroundStyle(.secondary)
+                Button {
+                    withAnimation(.snappy(duration: 0.22)) {
+                        circulationExpanded.toggle()
+                    }
+                } label: {
+                    Label(
+                        circulationExpanded ? "Less" : "Full flow",
+                        systemImage: circulationExpanded ? "chevron.down" : "chevron.up"
+                    )
+                }
+                .buttonStyle(.plain)
+                .font(.caption2.weight(.semibold))
+                .accessibilityIdentifier("supra-circulation-disclosure")
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 9)
+            .padding(.vertical, 7)
+
+            if circulationExpanded {
+                Divider()
+
+                ScrollView(.horizontal) {
+                    HStack(spacing: 7) {
+                        ForEach(Array(circulationStages.enumerated()), id: \.offset) { index, stage in
+                            if index > 0 {
+                                Image(systemName: "chevron.right")
+                                    .font(.caption2.weight(.bold))
+                                    .foregroundStyle(.tertiary)
+                            }
+
+                            Text(stage)
+                                .font(.caption2.weight(.bold))
+                                .foregroundStyle(index == circulationStages.count - 1 ? selection.accent : .secondary)
+                        }
+
+                        Spacer(minLength: 12)
+
+                        Text("RESULT → MEMORY RETURN REQUIRED")
+                            .font(.caption2.weight(.heavy))
+                            .tracking(0.8)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                }
+                .scrollIndicators(.hidden)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
-        .scrollIndicators(.hidden)
         .glassEffect(.regular, in: Rectangle())
     }
 
