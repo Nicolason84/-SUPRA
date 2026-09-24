@@ -53,8 +53,55 @@ enum ExternalConnectionProofLedger {
         "supabase": audit("supabase", "Account linked; no accessible operational project returned")
     ]
 
+    private static func projectedProofs() -> [String: ExternalConnectionProof] {
+        let fm = FileManager.default
+        guard let appSupport = fm.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first else {
+            return [:]
+        }
+
+        let url = appSupport
+            .appendingPathComponent("SUPRA", isDirectory: true)
+            .appendingPathComponent("Projection", isDirectory: true)
+            .appendingPathComponent("EXTERNAL_CONNECTION_LIVE_PROOFS_V1.json")
+
+        guard let data = try? Data(contentsOf: url, options: [.mappedIfSafe]),
+              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              root["schema"] as? String == "EXTERNAL_CONNECTION_LIVE_PROOFS_V1",
+              let observedRaw = root["observed_at"] as? String,
+              let observedAt = ISO8601DateFormatter().date(from: observedRaw),
+              let rows = root["proofs"] as? [[String: Any]]
+        else {
+            return [:]
+        }
+
+        let source = root["source"] as? String ?? "LIVE_CONNECTOR_READ_PROBES"
+        var result: [String: ExternalConnectionProof] = [:]
+
+        for row in rows {
+            guard let id = row["id"] as? String,
+                  let evidence = row["evidence"] as? String,
+                  !id.isEmpty,
+                  !evidence.isEmpty
+            else {
+                continue
+            }
+
+            result[id] = ExternalConnectionProof(
+                id: id,
+                observedAt: observedAt,
+                evidence: evidence,
+                source: source
+            )
+        }
+
+        return result
+    }
+
     static func proof(for id: String) -> ExternalConnectionProof? {
-        all[id]
+        projectedProofs()[id] ?? all[id]
     }
 
     static func freshness(

@@ -10,6 +10,7 @@ private enum ExternalConnectionFilter: String, CaseIterable, Identifiable {
 }
 
 struct ExternalConnectionsView: View {
+    @Environment(\.openURL) private var openURL
     @State private var xReadReady = false
     @State private var inpiReady = false
     @State private var readinessCheckedAt: Date?
@@ -234,6 +235,12 @@ struct ExternalConnectionsView: View {
         let proof = ExternalConnectionProofLedger.proof(for: connector.id)
         let freshness = ExternalConnectionProofLedger.freshness(for: connector)
         let age = ExternalConnectionProofLedger.ageLabel(for: connector.id)
+        let displayedStatus = connector.status == .connected
+            ? freshness.rawValue
+            : connector.status.rawValue
+        let displayedTint = connector.status == .connected
+            ? freshness.tint
+            : connector.status.tint
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 11) {
@@ -257,12 +264,12 @@ struct ExternalConnectionsView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 5) {
-                    Text(connector.status.rawValue)
+                    Text(displayedStatus)
                         .font(.caption2.weight(.heavy))
-                        .foregroundStyle(connector.status.tint)
+                        .foregroundStyle(displayedTint)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
-                        .background(connector.status.tint.opacity(0.10), in: Capsule())
+                        .background(displayedTint.opacity(0.10), in: Capsule())
 
                     if connector.status == .connected {
                         HStack(spacing: 5) {
@@ -319,10 +326,41 @@ struct ExternalConnectionsView: View {
             } else if connector.id == "inpi-rne" || connector.id == "inpi-ip" {
                 readinessBadge("LOCAL INPI", inpiReady ? "READY" : "MISSING", ready: inpiReady)
             }
+
+            if let url = setupURL(for: connector.id) {
+                Button {
+                    openURL(url)
+                } label: {
+                    Label(
+                        connector.status == .connected ? "Open provider" : "Configure",
+                        systemImage: "arrow.up.right.square"
+                    )
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, minHeight: 200, alignment: .topLeading)
         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
+    private func setupURL(for id: String) -> URL? {
+        let raw: String? = switch id {
+        case "x": "https://developer.x.com/"
+        case "inpi-rne", "inpi-ip": "https://data.inpi.fr/"
+        case "instagram", "whatsapp": "https://developers.facebook.com/"
+        case "youtube": "https://console.cloud.google.com/apis/library/youtube.googleapis.com"
+        case "gbp": "https://console.cloud.google.com/"
+        case "stripe": "https://dashboard.stripe.com/apikeys"
+        case "docusign": "https://developers.docusign.com/"
+        case "dgfip": "https://api.gouv.fr/"
+        case "urssaf": "https://portailapi.urssaf.fr/"
+        case "tamarind": "https://www.tamarind.bio/"
+        default: nil
+        }
+        guard let raw else { return nil }
+        return URL(string: raw)
     }
 
     private func filterTint(_ item: ExternalConnectionFilter) -> Color {

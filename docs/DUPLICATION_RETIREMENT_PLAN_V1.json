@@ -1,0 +1,256 @@
+{
+  "schema": "DUPLICATION_RETIREMENT_PLAN_V1",
+  "generated_at": "2026-09-24T10:15:25.850629+00:00",
+  "authority": "NICOLAS",
+  "source_matrix_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+  "canonical_mission_ref": "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md",
+  "policy": {
+    "single_writer": true,
+    "destructive_delete_allowed": false,
+    "parity_before_retirement": true,
+    "preserve_history": true,
+    "rollback_required": true
+  },
+  "items": [
+    {
+      "id": "DUP-01",
+      "current": "SUPRA Quick Action Decision Inbox",
+      "canonical_target": "Control",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-02",
+      "current": "SUPRA Quick Action Mission Center",
+      "canonical_target": "Missions",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-03",
+      "current": "SUPRA Quick Action Runtime Monitor",
+      "canonical_target": "Runtime",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-04",
+      "current": "SUPRA Quick Action SUPRA Chat",
+      "canonical_target": "Chat",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-05",
+      "current": "SUPRA Quick Action Evidence Explorer",
+      "canonical_target": "CAnnoNico",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-06",
+      "current": "SUPRA Quick Action Capability Browser",
+      "canonical_target": "CAnnoNico/Library_Patrimony",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-07",
+      "current": "CAnnoNico internal Decision Inbox",
+      "canonical_target": "Control",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-08",
+      "current": "CAnnoNico internal Chat SUPRA",
+      "canonical_target": "Chat",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-09",
+      "current": "CAnnoNico Gabriel/workers",
+      "canonical_target": "Missions/Runtime",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-10",
+      "current": "CAnnoNico System Integrity",
+      "canonical_target": "Runtime",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    },
+    {
+      "id": "DUP-11",
+      "current": "SUPRA standalone Executive Dashboard",
+      "canonical_target": "NOVA_ERA living organism + ojO private lens",
+      "state": "PROPOSED_NOT_RETIRED",
+      "action": "FUSE_OR_RETIRE_AFTER_PARITY",
+      "destructive_delete": false,
+      "retirement_authorized": false,
+      "preconditions": [
+        "capability_and_information_parity_proven",
+        "all_current_routes_migrated_or_forwarded",
+        "no_unique_evidence_or_authority_lost",
+        "rollback_path_recorded",
+        "post_migration_observation_pass"
+      ],
+      "rollback": "Restore previous surface/route from preserved artifact or routing configuration.",
+      "evidence_refs": [
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+        "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+      ]
+    }
+  ],
+  "acceptance": {
+    "zero_destructive_retirements": true,
+    "all_items_require_parity": true,
+    "all_items_have_rollback": true
+  },
+  "evidence_refs": [
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/CANONICAL_SURFACE_RESPONSIBILITY_V3.json",
+    "/Users/nicolasalonso/NOVA_DEV/SUPRA_EXECUTIVE_PROOF_GATE_CLOSURE_V1_TMP/docs/MISSION_NOVA_ERA_EXECUTIVE_ORGANISM_V3_20260921.md"
+  ]
+}

@@ -185,12 +185,14 @@ struct OJOPrivateControlView: View {
                 Spacer()
 
                 Button {
-                    Task { await query(kind: "PRIVATE_EXECUTIVE_NOW", mode: .ask) }
+                    liveStore.refresh(force: true)
+                    refreshFromLiveStore()
+                    runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : runtimeState
+                    lastError = liveStore.bridgeAvailable ? nil : lastError
                 } label: {
-                    Label(isBusy ? "Refreshing…" : "Refresh now", systemImage: "arrow.clockwise")
+                    Label("Refresh now", systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(isBusy)
             }
 
             HStack(spacing: 10) {
@@ -313,6 +315,28 @@ struct OJOPrivateControlView: View {
                 "NEXT_THREE_MOVES",
                 .plan
             )
+
+            Button {
+                openMediaHero()
+            } label: {
+                VStack(alignment: .leading, spacing: 8) {
+                    Image(systemName: "play.rectangle.on.rectangle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.purple)
+                    Text("Open Media Hero")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text("Context → source → evidence → lineage → memory return.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
+                .supraCard(radius: 16)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("ojo-open-media-hero")
         }
     }
 
@@ -409,6 +433,26 @@ struct OJOPrivateControlView: View {
         }
         .buttonStyle(.plain)
         .disabled(isBusy)
+    }
+
+    private func openMediaHero() {
+        var seen = Set<String>()
+        let lineageRefs = liveStore.processes
+            .filter { $0.stage != .historical }
+            .prefix(4)
+            .flatMap { $0.proofRefs.prefix(3) }
+            .filter { seen.insert($0).inserted }
+
+        SUPRAMediaHeroRouter.shared.present(
+            SUPRAMediaHeroContext(
+                objectID: "OJO_PRIVATE_" + tab.rawValue.uppercased().replacingOccurrences(of: " ", with: "_"),
+                objectType: "OJO_PRIVATE_CONTEXT",
+                title: "ŒIL · " + tab.rawValue,
+                subtitle: lastMaterialChange,
+                origin: "ojO",
+                lineageRefs: Array(lineageRefs.prefix(12))
+            )
+        )
     }
 
     private var detectedMediaURL: URL? {
@@ -520,13 +564,33 @@ struct OJOPrivateControlView: View {
             NEXT_HUMAN_ACTION=
             EVIDENCE_REFS=
             """
-            output = try await runtime.execute(prompt: prompt, mode: mode)
+            let execution = Task<String, Error> { @MainActor in
+                try await runtime.execute(prompt: prompt, mode: mode)
+            }
+            let watchdog = Task {
+                try? await Task.sleep(nanoseconds: 15_000_000_000)
+                if !Task.isCancelled {
+                    execution.cancel()
+                }
+            }
+            defer { watchdog.cancel() }
+
+            output = try await execution.value
             runtimeState = "PASS"
             lastQuery = .now
             parseExecutiveFields(output)
+        } catch is CancellationError {
+            liveStore.refresh(force: true)
+            refreshFromLiveStore()
+            runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : "ERROR"
+            lastError = liveStore.bridgeAvailable
+                ? nil
+                : "Private runtime timed out and no live bridge state is available."
         } catch {
-            runtimeState = "ERROR"
-            lastError = error.localizedDescription
+            liveStore.refresh(force: true)
+            refreshFromLiveStore()
+            runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : "ERROR"
+            lastError = liveStore.bridgeAvailable ? nil : error.localizedDescription
         }
 
         isBusy = false
@@ -559,9 +623,24 @@ struct OJOPrivateControlView: View {
         }()
         nextHumanAction = humanAction ?? "NONE"
 
+        let directBridgeLive =
+            runtimeState == "CONNECTED"
+            || runtimeState == "PASS"
+        let effectiveBridgeLive = liveStore.bridgeAvailable || directBridgeLive
+        let effectiveState = effectiveBridgeLive
+            ? (liveStore.bridgeAvailable ? liveStore.momentumLabel : "CLEAR")
+            : "OFFLINE"
+        let effectiveMomentum = effectiveBridgeLive
+            ? (
+                liveStore.bridgeAvailable
+                    ? liveStore.momentumDetail
+                    : "Bridge transport live; process mailbox telemetry unavailable."
+            )
+            : "Bridge transport unavailable."
+
         output = """
-        CURRENT_STATE=\(liveStore.momentumLabel)
-        MOMENTUM=\(liveStore.momentumDetail)
+        CURRENT_STATE=\(effectiveState)
+        MOMENTUM=\(effectiveMomentum)
         LAST_MATERIAL_CHANGE=\(lastMaterialChange)
         CURRENT_MISSION=\(liveStore.processes.first(where: { $0.id.hasPrefix("0") })?.title ?? "NONE")
         TOP_BOTTLENECK=\(topBottleneck)
@@ -572,7 +651,7 @@ struct OJOPrivateControlView: View {
         DRIFT=\(liveStore.driftCount)
         NEXT_MACHINE_ACTION=\(nextMachineAction)
         NEXT_HUMAN_ACTION=\(nextHumanAction)
-        EVIDENCE_REFS=SHARED_SUPRA_PROCESS_OBSERVATORY_STORE
+        EVIDENCE_REFS=DIRECT_BRIDGE_HEALTH+SHARED_SUPRA_PROCESS_OBSERVATORY_STORE
         """
         lastQuery = .now
         if liveStore.bridgeAvailable {

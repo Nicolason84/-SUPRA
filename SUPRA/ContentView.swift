@@ -70,9 +70,15 @@ nonisolated enum SUPRATerminalMegabusBridge {
     }
 
     static func status() -> String {
-        FileManager.default.fileExists(
-            atPath: terminalRegistryURL.path
-        ) ? "CONNECTED" : "OFFLINE"
+        guard let data = try? Data(contentsOf: terminalRegistryURL, options: [.mappedIfSafe]),
+              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              root["schema"] as? String == "SUPRA_TERMINAL_REGISTRY_V1",
+              let terminals = root["terminals"] as? [[String: Any]],
+              !terminals.isEmpty
+        else {
+            return "UNPROVEN"
+        }
+        return "CONNECTED"
     }
 
     static func registerSUPRAAndGabriel() {
@@ -692,7 +698,14 @@ struct ContentView: View {
                     Text("Entrées filtrées · circulation fermée · sorties tracées · purge contrôlée.").foregroundStyle(.secondary)
                 }
                 Spacer()
-                Label("CIRCUIT CLOSED", systemImage: "lock.shield.fill").font(.caption.weight(.black)).foregroundStyle(.green)
+                Label(
+                    "\(cannonicoRecoveredReferences.count)/\(cannonicoIntegrationSnapshot.references.count) SOURCES RECOVERED",
+                    systemImage: cannonicoPendingReferences.isEmpty
+                        ? "checkmark.shield.fill"
+                        : "exclamationmark.triangle.fill"
+                )
+                .font(.caption.weight(.black))
+                .foregroundStyle(cannonicoPendingReferences.isEmpty ? .green : .orange)
             }
             ZStack {
                 Circle().stroke(.secondary.opacity(0.20), lineWidth: 26).frame(width: 350, height: 350)
@@ -729,16 +742,16 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
                 Button {
-                    filteredInputStatus = "REVALIDATING"
-                    Task {
-                        await store.sendChat("CANNONICO INPUT FILTER. Accepte uniquement les entrées avec type, source, autorité, lineage et contrat I/O. Rejette toute entrée ambiguë, dupliquée, non prouvée ou non autorisée.")
-                        filteredInputStatus = "FILTERED"
-                    }
+                    let snapshot = SUPRACAnnoNicoIntegration.snapshot()
+                    let recovered = snapshot.references.filter { $0.state == .recovered }.count
+                    filteredInputStatus = "\(recovered)/\(snapshot.references.count) RECOVERED"
+                    terminalMegabusStatus = SUPRATerminalMegabusBridge.status()
+                    systemIntegrity = SUPRASystemIntegrityLoader.load()
+                    gabrielSnapshot = SUPRAGabrielConductorRuntime.load()
                 } label: {
-                    Label("Revalidate inputs", systemImage: "line.3.horizontal.decrease.circle")
+                    Label("Revalidate locally", systemImage: "line.3.horizontal.decrease.circle")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(store.chatBusy)
                 Spacer()
                 VStack(alignment: .trailing, spacing: 5) {
                     Label(
@@ -806,7 +819,14 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 14) {
             structureCard("SUPRA", role: "Autorité finale", status: "ROOT", symbol: "cpu.fill")
             structureCard("Gabriel", role: "Conduite des missions", status: gabrielSnapshot.status, symbol: "circle.hexagongrid.fill")
-            structureCard("CAnnoNico", role: "Contrats, modules, lineage", status: "ACTIVE", symbol: "atom")
+            structureCard(
+                "CAnnoNico",
+                role: "Contrats, modules, lineage",
+                status: cannonicoPendingReferences.isEmpty
+                    ? "RECOVERED"
+                    : "\(cannonicoRecoveredReferences.count)/\(cannonicoIntegrationSnapshot.references.count) RECOVERED",
+                symbol: "atom"
+            )
             structureCard(
                 "CAnnoNico sources · Puchero · Twins · Atlas · Media",
                 role: "Sources read-only et capacités réelles",
@@ -3264,9 +3284,6 @@ final class SUPRAExecutiveStore: ObservableObject {
                 throw URLError(.cannotParseResponse)
             }
 
-            let missionEvidence =
-                SUPRAMissionEvidenceLoader.loadRequiredEvidence()
-
             // SUPRA_MISSION_EVIDENCE_POLICY_V2_BEGIN
             //
             // Historical mission evidence remains reusable, but it must not
@@ -3285,6 +3302,11 @@ final class SUPRAExecutiveStore: ObservableObject {
             if normalizedPrompt.contains("REQUIRE_STATUS_EVIDENCE=TRUE") {
                 requiredMissionEvidence.insert("STATUS")
             }
+
+            let missionEvidence =
+                requiredMissionEvidence.isEmpty
+                ? []
+                : SUPRAMissionEvidenceLoader.loadRequiredEvidence()
 
             let loadedMissionEvidence = Set(
                 missionEvidence.map(\.evidenceId)

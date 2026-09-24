@@ -20,6 +20,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let finishedAt: String
         let status: String
         let response: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct HumanDecisionRecord: Codable, Sendable {
@@ -29,6 +31,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let decidedAt: String
         let authority: String
         let decision: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct HumanGatePacketRecord: Codable, Sendable {
@@ -38,6 +42,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let receiptFinishedAt: String
         let createdAt: String
         let packet: String
+        let origin_conversation_id: String?
+        let origin_chat: String?
     }
 
     struct ExecutiveObjectiveResult: Sendable {
@@ -47,11 +53,232 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         let status: String
         let response: String
         let humanGateRequired: Bool
+        let originConversationID: String
     }
 
     enum ExecutiveInterruptionIntent: String, Sendable {
         case standby = "STANDBY"
         case abort = "ABORTED"
+    }
+
+    private func microMissionResponsibilityLevel(in text: String) -> Int? {
+        let prefix = "RESPONSIBILITY_LEVEL=L"
+        for rawLine in text.split(whereSeparator: \.isNewline) {
+            let line = String(rawLine)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .uppercased()
+            guard line.hasPrefix(prefix) else { continue }
+            let suffix = line.dropFirst(prefix.count)
+            guard let first = suffix.first,
+                  let level = Int(String(first)),
+                  (1...7).contains(level)
+            else { continue }
+            if suffix.count == 1 { return level }
+            let next = suffix[suffix.index(after: suffix.startIndex)]
+            if next == "_" || next == " " || next == "|" {
+                return level
+            }
+        }
+        return nil
+    }
+
+    private func microMissionActionID(in text: String) -> String? {
+        for rawLine in text.split(whereSeparator: \.isNewline) {
+            let line = String(rawLine).trimmingCharacters(in: .whitespacesAndNewlines)
+            guard line.uppercased().hasPrefix("ACTION_CENTER_ACTION_ID=") else { continue }
+            let value = line.split(separator: "=", maxSplits: 1).dropFirst().first.map(String.init) ?? ""
+            let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            return trimmed.isEmpty ? nil : trimmed
+        }
+        return nil
+    }
+
+    private func executiveContractValue(
+        _ key: String,
+        in text: String
+    ) -> String? {
+        let wanted = key.uppercased()
+        var payload = text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        let payloadLines = payload.components(separatedBy: .newlines)
+        if payloadLines.count >= 3,
+           payloadLines.first?.hasPrefix("```") == true,
+           payloadLines.last?.trimmingCharacters(in: .whitespacesAndNewlines) == "```" {
+            payload = payloadLines.dropFirst().dropLast().joined(separator: "\n")
+        }
+
+        if let data = payload.data(using: .utf8),
+           let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            for (rawKey, rawValue) in object where rawKey.uppercased() == wanted {
+                return String(describing: rawValue)
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .uppercased()
+            }
+        }
+
+        let linePrefix = wanted + "="
+        let xmlOpen = "<" + wanted + ">"
+        let xmlClose = "</" + wanted + ">"
+
+        for rawLine in text.split(whereSeparator: \.isNewline) {
+            let line = String(rawLine).trimmingCharacters(in: .whitespacesAndNewlines)
+            let upper = line.uppercased()
+
+            if upper.hasPrefix(linePrefix) {
+                return String(line.dropFirst(linePrefix.count))
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .uppercased()
+            }
+
+            let compact = upper
+                .replacingOccurrences(of: " ", with: "")
+                .replacingOccurrences(of: "\t", with: "")
+            if compact.hasPrefix(xmlOpen),
+               compact.hasSuffix(xmlClose),
+               compact.count > xmlOpen.count + xmlClose.count {
+                return String(compact.dropFirst(xmlOpen.count).dropLast(xmlClose.count))
+            }
+        }
+
+        return nil
+    }
+
+    private func executeAllowlistedMicroAction(
+        actionID: String,
+        objectiveID: String
+    ) async throws -> String {
+        let manifest = try SUPRAActionRuntime.loadManifest()
+        guard let action = manifest.actions.first(where: { $0.id == actionID }) else {
+            throw NSError(
+                domain: "SUPRA.MicroMission",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Allowlisted action not found: \(actionID)"]
+            )
+        }
+
+        let output = try await Task.detached(priority: .userInitiated) {
+            try SUPRAActionRuntime.execute(action)
+        }.value
+
+        return """
+        STATUS=PASS
+        MICRO_MISSION_ROUTE=SUPRA_ACTION_CENTER_V1
+        ACTION_CENTER_ACTION_ID=\(actionID)
+        OBJECTIVE_ID=\(objectiveID)
+        \(output)
+        HUMAN_GATE_REQUIRED=NO
+        ACTION_NICOLAS=NONE
+        EXECUTION_VERDICT=MATERIAL_RESULT
+        """
+    }
+
+    private struct MicroActionBackupSnapshot: Sendable {
+        let path: String
+        let existed: Bool
+        let data: Data?
+    }
+
+    private func microMissionExpectedFailureCode(in text: String) -> Int32? {
+        guard let raw = executiveContractValue("EXPECTED_FAILURE_CODE", in: text) else {
+            return nil
+        }
+        return Int32(raw)
+    }
+
+    private func executeVerifiedRollbackMicroAction(
+        actionID: String,
+        objectiveID: String,
+        expectedFailureCode: Int32
+    ) async throws -> String {
+        let manifest = try SUPRAActionRuntime.loadManifest()
+        guard let action = manifest.actions.first(where: { $0.id == actionID }) else {
+            throw NSError(
+                domain: "SUPRA.MicroMission",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Allowlisted action not found: \(actionID)"]
+            )
+        }
+
+        try SUPRAActionRuntime.verify(action)
+        guard !action.backupPaths.isEmpty else {
+            throw NSError(
+                domain: "SUPRA.MicroMission",
+                code: 412,
+                userInfo: [NSLocalizedDescriptionKey: "L4 rollback verification requires explicit backup paths."]
+            )
+        }
+
+        let fileManager = FileManager.default
+        let before: [MicroActionBackupSnapshot] = try action.backupPaths.map { rawPath in
+            let url = URL(fileURLWithPath: rawPath).resolvingSymlinksInPath()
+            let existed = fileManager.fileExists(atPath: url.path)
+            return MicroActionBackupSnapshot(
+                path: url.path,
+                existed: existed,
+                data: existed ? try Data(contentsOf: url) : nil
+            )
+        }
+
+        do {
+            _ = try await Task.detached(priority: .userInitiated) {
+                try SUPRAActionRuntime.execute(action)
+            }.value
+            throw NSError(
+                domain: "SUPRA.MicroMission",
+                code: 409,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "L4 expected failure code \(expectedFailureCode), but the action succeeded."
+                ]
+            )
+        } catch let actionError as SUPRAActionError {
+            guard case .executionFailed(let actualCode) = actionError,
+                  actualCode == expectedFailureCode else {
+                throw actionError
+            }
+        }
+
+        for snapshot in before {
+            let existsAfter = fileManager.fileExists(atPath: snapshot.path)
+            guard existsAfter == snapshot.existed else {
+                throw NSError(
+                    domain: "SUPRA.MicroMission",
+                    code: 500,
+                    userInfo: [
+                        NSLocalizedDescriptionKey:
+                            "L4 rollback verification failed for \(snapshot.path): existence mismatch."
+                    ]
+                )
+            }
+            if snapshot.existed {
+                let afterData = try Data(contentsOf: URL(fileURLWithPath: snapshot.path))
+                guard afterData == snapshot.data else {
+                    throw NSError(
+                        domain: "SUPRA.MicroMission",
+                        code: 501,
+                        userInfo: [
+                            NSLocalizedDescriptionKey:
+                                "L4 rollback verification failed for \(snapshot.path): content mismatch."
+                        ]
+                    )
+                }
+            }
+        }
+
+        return """
+        STATUS=PASS
+        MICRO_MISSION_ROUTE=SUPRA_ACTION_CENTER_V1
+        ACTION_CENTER_ACTION_ID=\(actionID)
+        OBJECTIVE_ID=\(objectiveID)
+        RESPONSIBILITY_LEVEL=L4_VERIFY_ROLLBACK
+        EXPECTED_FAILURE_CODE=\(expectedFailureCode)
+        L4_ROLLBACK_VERIFIED=YES
+        RESTORE_MATCH=YES
+        VERIFIED_BACKUP_PATHS=\(before.count)
+        HUMAN_GATE_REQUIRED=NO
+        ACTION_NICOLAS=NONE
+        EXECUTION_VERDICT=MATERIAL_RESULT
+        """
     }
 
     @Published private(set) var isRunning = false
@@ -112,8 +339,10 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
     func executeExecutiveObjective(
         objective: String,
-        runtimePrompt: String
+        runtimePrompt: String,
+        originConversationID: String? = nil
     ) async throws -> ExecutiveObjectiveResult {
+        let originConversationID = originConversationID ?? SUPRAConversationLineage.canonicalID()
         let trimmed = objective.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             throw NSError(
@@ -133,6 +362,13 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 ]
             )
         }
+
+        let microMissionText = trimmed + "\n" + runtimePrompt
+        let microResponsibilityLevel = microMissionResponsibilityLevel(in: microMissionText)
+        let actionCenterMicroMission = (microResponsibilityLevel ?? 0) >= 3
+        let runtimeRoute = actionCenterMicroMission
+            ? "SUPRAExecutiveStore->SUPRAActionRuntime"
+            : "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode"
 
         try prepareDirectories()
 
@@ -155,11 +391,13 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             "schema": "SUPRA_EXECUTIVE_OBJECTIVE_REQUEST_V1",
             "mission_id": objectiveID,
             "objective_id": objectiveID,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "authority": "NICOLAS",
             "mode": "EXECUTE_NOT_REINVESTIGATE",
             "started_at": startedAt,
             "objective": trimmed,
-            "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode"
+            "runtime_route": runtimeRoute
         ]
 
         let requestData = try JSONSerialization.data(
@@ -169,13 +407,47 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         try requestData.write(to: admissionURL, options: .atomic)
 
         do {
-            try await runtime.checkHealth()
+            let response: String
 
-            let correlatedPrompt = """
+            if actionCenterMicroMission {
+                guard microMissionText.uppercased().contains("AUTO_EXECUTE_ALLOWLISTED_ACTION=YES") else {
+                    throw NSError(
+                        domain: "SUPRA.MicroMission",
+                        code: 403,
+                        userInfo: [NSLocalizedDescriptionKey: "L3+ requires AUTO_EXECUTE_ALLOWLISTED_ACTION=YES."]
+                    )
+                }
+                guard let actionID = microMissionActionID(in: microMissionText) else {
+                    throw NSError(
+                        domain: "SUPRA.MicroMission",
+                        code: 400,
+                        userInfo: [NSLocalizedDescriptionKey: "L3+ requires ACTION_CENTER_ACTION_ID=<allowlisted id>."]
+                    )
+                }
+                if microResponsibilityLevel == 4,
+                   let expectedFailureCode = microMissionExpectedFailureCode(in: microMissionText) {
+                    response = try await executeVerifiedRollbackMicroAction(
+                        actionID: actionID,
+                        objectiveID: objectiveID,
+                        expectedFailureCode: expectedFailureCode
+                    )
+                } else {
+                    response = try await executeAllowlistedMicroAction(
+                        actionID: actionID,
+                        objectiveID: objectiveID
+                    )
+                }
+            } else {
+                try await runtime.checkHealth()
+
+                let correlatedPrompt = """
             EXECUTIVE_OBJECTIVE
             OBJECTIVE_ID=\(objectiveID)
+            ORIGIN_CONVERSATION_ID=\(originConversationID)
+            ORIGIN_CHAT=\(originConversationID)
             RUNTIME_ADMISSION=\(admissionURL.path)
             RUNTIME_CORRELATION_REQUIRED=YES
+            ORIGIN_CHAT_EXACT_REQUIRED=YES
 
             \(runtimePrompt)
 
@@ -187,21 +459,37 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             EXECUTION_VERDICT=MATERIAL_RESULT|HUMAN_GATE|UNPROVEN
             """
 
-            let runtimeTask = Task<String, Error> {
-                try await runtime.execute(
-                    prompt: correlatedPrompt,
-                    mode: .ask
-                )
+                let effectiveMode: ChatMode =
+                    microResponsibilityLevel == nil ? .ask : .plan
+
+                let runtimeTask = Task<String, Error> {
+                    try await runtime.execute(
+                        prompt: correlatedPrompt,
+                        mode: effectiveMode
+                    )
+                }
+                executiveRuntimeTask = runtimeTask
+                response = try await runtimeTask.value
+                executiveRuntimeTask = nil
             }
-            executiveRuntimeTask = runtimeTask
-            let response = try await runtimeTask.value
-            executiveRuntimeTask = nil
 
             let normalized = response
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let upper = normalized.uppercased()
-            let humanGateRequired = upper.contains("HUMAN_GATE_REQUIRED=YES")
+            let contractCompact = upper
+                .replacingOccurrences(of: "\"", with: "")
+                .replacingOccurrences(of: " ", with: "")
+                .replacingOccurrences(of: "\t", with: "")
+            let contractFlat = contractCompact
+                .replacingOccurrences(of: "\n", with: "")
+                .replacingOccurrences(of: "\r", with: "")
+            let humanGateRequired =
+                upper.contains("HUMAN_GATE_REQUIRED=YES")
                 || upper.contains("EXECUTION_VERDICT=HUMAN_GATE")
+                || contractCompact.contains("HUMAN_GATE_REQUIRED:YES")
+                || contractCompact.contains("EXECUTION_VERDICT:HUMAN_GATE")
+                || contractFlat.contains("<HUMAN_GATE_REQUIRED>YES</HUMAN_GATE_REQUIRED>")
+                || contractFlat.contains("<EXECUTION_VERDICT>HUMAN_GATE</EXECUTION_VERDICT>")
             let runningOnly = [
                 "RUNNING",
                 "RUNNING...",
@@ -209,10 +497,27 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "SUPRA IS EXECUTING THROUGH THE EXISTING RUNTIME..."
             ].contains(upper)
 
+            let explicitMaterialResult =
+                upper.contains("EXECUTION_VERDICT=MATERIAL_RESULT")
+                || upper.contains("STATUS=PASS")
+                || contractCompact.contains("EXECUTION_VERDICT:MATERIAL_RESULT")
+                || contractCompact.contains("STATUS:PASS")
+                || contractFlat.contains("<EXECUTION_VERDICT>MATERIAL_RESULT</EXECUTION_VERDICT>")
+                || contractFlat.contains("<STATUS>PASS</STATUS>")
+            let explicitUnproven =
+                upper.contains("EXECUTION_VERDICT=UNPROVEN")
+                || upper.contains("STATUS=UNPROVEN")
+                || contractCompact.contains("EXECUTION_VERDICT:UNPROVEN")
+                || contractCompact.contains("STATUS:UNPROVEN")
+                || contractFlat.contains("<EXECUTION_VERDICT>UNPROVEN</EXECUTION_VERDICT>")
+                || contractFlat.contains("<STATUS>UNPROVEN</STATUS>")
+
             let status: String
             if humanGateRequired {
                 status = "BLOCKED"
-            } else if !normalized.isEmpty && !runningOnly {
+            } else if explicitUnproven || normalized.isEmpty || runningOnly {
+                status = "UNPROVEN"
+            } else if explicitMaterialResult && !runningOnly {
                 status = "PASS"
             } else {
                 status = "UNPROVEN"
@@ -223,6 +528,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -230,7 +537,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "human_gate_required": humanGateRequired ? "YES" : "NO",
                 "objective": trimmed,
                 "runtime_admission": admissionURL.path,
-                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "runtime_route": runtimeRoute,
                 "response": normalized,
                 "proof_refs": [
                     admissionURL.path,
@@ -251,7 +558,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 receiptPath: receiptURL.path,
                 status: status,
                 response: normalized,
-                humanGateRequired: humanGateRequired
+                humanGateRequired: humanGateRequired,
+                originConversationID: originConversationID
             )
         } catch is CancellationError {
             let finishedAt = iso.string(from: Date())
@@ -260,6 +568,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -268,7 +578,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "human_gate_required": "NO",
                 "objective": trimmed,
                 "runtime_admission": admissionURL.path,
-                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "runtime_route": runtimeRoute,
                 "response": "Execution interrupted by Nicolas: \(intent.rawValue)",
                 "proof_refs": [admissionURL.path, receiptURL.path],
                 "action_nicolas": "NONE"
@@ -286,6 +596,8 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "schema": "SUPRA_EXECUTIVE_OBJECTIVE_RECEIPT_V1",
                 "mission_id": objectiveID,
                 "objective_id": objectiveID,
+                "origin_conversation_id": originConversationID,
+                "origin_chat": originConversationID,
                 "authority": "NICOLAS",
                 "started_at": startedAt,
                 "finished_at": finishedAt,
@@ -293,7 +605,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                 "human_gate_required": "NO",
                 "objective": trimmed,
                 "runtime_admission": admissionURL.path,
-                "runtime_route": "SUPRAChatRuntimeAdapter->SUPRAExecutiveStore->/v1/chat/OpenCode",
+                "runtime_route": runtimeRoute,
                 "response": error.localizedDescription,
                 "proof_refs": [admissionURL.path],
                 "action_nicolas": "NONE"
@@ -438,13 +750,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     ) throws {
         try prepareDirectories()
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let record = HumanGatePacketRecord(
             schema: "SUPRA_GRANDE_MISSION_HUMAN_GATE_PACKET_V1",
             missionID: missionID,
             phaseID: phaseID,
             receiptFinishedAt: receiptFinishedAt,
             createdAt: iso.string(from: Date()),
-            packet: String(packet.prefix(24_000))
+            packet: String(packet.prefix(24_000)),
+            origin_conversation_id: originConversationID,
+            origin_chat: originConversationID
         )
 
         let data = try JSONEncoder().encode(record)
@@ -474,13 +789,16 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
 
         try prepareDirectories()
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let record = HumanDecisionRecord(
             schema: "SUPRA_GRANDE_MISSION_HUMAN_DECISION_V1",
             missionID: missionID,
             phaseID: phaseID,
             decidedAt: iso.string(from: Date()),
             authority: "NICOLAS",
-            decision: String(trimmed.prefix(8_000))
+            decision: String(trimmed.prefix(8_000)),
+            origin_conversation_id: originConversationID,
+            origin_chat: originConversationID
         )
 
         let data = try JSONEncoder().encode(record)
@@ -577,6 +895,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                         status = "UNPROVEN"
                     }
 
+                    let originConversationID = SUPRAConversationLineage.canonicalID()
                     let receipt = PhaseReceipt(
                         schema: "SUPRA_GRANDE_MISSION_PHASE_RECEIPT_V1",
                         missionID: missionID,
@@ -585,7 +904,9 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
                         startedAt: startedAt,
                         finishedAt: finishedAt,
                         status: status,
-                        response: response
+                        response: response,
+                        origin_conversation_id: originConversationID,
+                        origin_chat: originConversationID
                     )
 
                     try writeReceipt(receipt)
@@ -691,11 +1012,14 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         phase: Phase,
         startedAt: String
     ) throws {
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_PHASE_REQUEST_V1",
             "mission_id": missionID,
             "phase_id": phase.id,
             "phase_title": phase.title,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "started_at": startedAt,
             "authority": "NICOLAS",
             "mode": "EXECUTE_NOT_REINVESTIGATE",
@@ -741,9 +1065,12 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
             ]
         }
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let object: [String: Any] = [
             "schema": "SUPRA_GRANDE_MISSION_STATE_V1",
             "mission_id": missionID,
+            "origin_conversation_id": originConversationID,
+            "origin_chat": originConversationID,
             "authority": "NICOLAS",
             "current_phase": currentPhase,
             "status": status,
@@ -766,6 +1093,7 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
     private func promptForPhase(
         _ phase: Phase
     ) -> String {
+        let originConversationID = SUPRAConversationLineage.canonicalID()
         let decision = humanDecision(for: phase.id)?.decision
         let decisionBlock: String
 
@@ -792,6 +1120,9 @@ final class SUPRAGrandeMissionRunner: ObservableObject {
         MISSION_ID=\(missionID)
         PHASE_ID=\(phase.id)
         PHASE_TITLE=\(phase.title)
+        ORIGIN_CONVERSATION_ID=\(originConversationID)
+        ORIGIN_CHAT=\(originConversationID)
+        ORIGIN_CHAT_EXACT_REQUIRED=YES
         MODE=EXECUTE_NOT_REINVESTIGATE
         EXECUTION_PROFILE=FAST_SAFE
         MEMORY_FIRST=YES

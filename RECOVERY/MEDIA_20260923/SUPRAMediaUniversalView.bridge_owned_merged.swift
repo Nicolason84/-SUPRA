@@ -182,8 +182,6 @@ private enum SUPRAMediaRuntimeAction: String, CaseIterable, Identifiable {
             Build a bounded evidence packet from what is actually accessible.
             For every material claim, return provenance or mark EVIDENCE_NEEDED.
             Preserve the original source identity and do not silently transform a user note into fact.
-            Reuse the existing ProofGraph and USCRC owners when they are RECOVERED; do not create a parallel proof chain.
-            If SMCA / Media Coherence Check is only PARTIAL or runtime is unproven, report MCC_RUNTIME_UNPROVEN instead of simulating structural analysis.
             """
         case .lineage:
             return """
@@ -248,34 +246,6 @@ struct SUPRAMediaUniversalView: View {
         integration.references.first(where: { $0.id == "video.swap" })
     }
 
-    private var uscrcProofGraphReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "uscrc.proofgraph.canon" })
-    }
-
-    private var uscrcContinuityReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "uscrc.goldenpath" })
-    }
-
-    private var proofGraphRuntimeReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "proofgraph.runtime" })
-    }
-
-    private var uscrcProofGraphProofReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "uscrc.proofgraph.proof" })
-    }
-
-    private var proofGraphRuntimeStateReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "proofgraph.runtime.state" })
-    }
-
-    private var proofGraphRuntimeHealthReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "proofgraph.runtime.health" })
-    }
-
-    private var smcaReference: CAnnoNicoSourceReference? {
-        integration.references.first(where: { $0.id == "smca.media.coherence" })
-    }
-
     private var youtubeDescriptor: ExternalConnectorDescriptor? {
         ExternalConnectorCatalog.descriptor(id: "youtube")
     }
@@ -283,13 +253,6 @@ struct SUPRAMediaUniversalView: View {
     private var canonicalReferences: [CAnnoNicoSourceReference] {
         let rank = [
             "puchero.memory",
-            "uscrc.proofgraph.canon",
-            "uscrc.goldenpath",
-            "proofgraph.runtime",
-            "uscrc.proofgraph.proof",
-            "proofgraph.runtime.state",
-            "proofgraph.runtime.health",
-            "smca.media.coherence",
             "atlas.runtime",
             "twin.registry",
             "twin.environment.fabric",
@@ -398,14 +361,12 @@ struct SUPRAMediaUniversalView: View {
         HStack(spacing: 10) {
             TextField("YouTube, web or media URL…", text: $address)
                 .textFieldStyle(.roundedBorder)
-                .accessibilityIdentifier("media-source-address")
                 .onSubmit(resolveAddress)
 
             Button("Load", systemImage: "arrow.right.circle.fill") {
                 resolveAddress()
             }
             .buttonStyle(.borderedProminent)
-            .accessibilityIdentifier("media-source-load")
 
             Button("Clipboard", systemImage: "doc.on.clipboard") {
                 if let string = NSPasteboard.general.string(forType: .string) {
@@ -523,8 +484,6 @@ struct SUPRAMediaUniversalView: View {
                         .background(.quaternary, in: RoundedRectangle(cornerRadius: 14))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityIdentifier("media-action-" + action.rawValue.lowercased())
-                    .accessibilityLabel(action.title)
                     .disabled(sourceURL == nil || activeAction != nil)
                 }
             }
@@ -584,42 +543,11 @@ struct SUPRAMediaUniversalView: View {
                     truthRow("YouTube", "UNPROVEN")
                 }
 
-                truthRow(
-                    "Media render",
-                    mediaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "USCRC · ProofGraph canon",
-                    uscrcProofGraphReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "USCRC continuity",
-                    uscrcContinuityReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "ProofGraph runtime",
-                    proofGraphRuntimeReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "USCRC canon proof",
-                    uscrcProofGraphProofReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "ProofGraph state",
-                    proofGraphRuntimeStateReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "ProofGraph health",
-                    proofGraphRuntimeHealthReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                truthRow(
-                    "SMCA / MCC runtime",
-                    smcaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-                )
-                Text("SMCA/MCC remains structural-analysis only; PARTIAL means the specification is known but executable runtime is not proven.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                if let mediaReference {
+                    truthRow("Media capability", mediaReference.state.rawValue.uppercased())
+                } else {
+                    truthRow("Media capability", "UNRESOLVED")
+                }
             }
 
             contextBlock("LIVE OJO CONTEXT", symbol: "dot.radiowaves.left.and.right") {
@@ -790,7 +718,6 @@ struct SUPRAMediaUniversalView: View {
         }
         if upper.contains("UNPROVEN")
             || upper.contains("UNRESOLVED")
-            || upper.contains("PARTIAL")
             || upper.contains("STALE")
             || upper.contains("BLOCK") {
             return .orange
@@ -845,7 +772,6 @@ struct SUPRAMediaUniversalView: View {
     private func runAction(_ action: SUPRAMediaRuntimeAction) async {
         guard let sourceURL, activeAction == nil else { return }
 
-        let originConversationID = SUPRAConversationLineage.canonicalID()
         activeAction = action
         runtimeActionLabel = action.rawValue
         runtimeState = "RUNNING"
@@ -855,13 +781,6 @@ struct SUPRAMediaUniversalView: View {
         defer { activeAction = nil }
 
         let mediaState = mediaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let uscrcCanonState = uscrcProofGraphReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let uscrcContinuityState = uscrcContinuityReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let proofGraphRuntimeState = proofGraphRuntimeReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let uscrcProofState = uscrcProofGraphProofReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let proofGraphStateState = proofGraphRuntimeStateReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let proofGraphHealthState = proofGraphRuntimeHealthReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
-        let smcaState = smcaReference?.state.rawValue.uppercased() ?? "UNRESOLVED"
         let youtubeState = youtubeDescriptor?.status.rawValue ?? "UNPROVEN"
         let noteValue = note.trimmingCharacters(in: .whitespacesAndNewlines)
         let processContext = liveProcesses.map {
@@ -869,10 +788,7 @@ struct SUPRAMediaUniversalView: View {
             return "\($0.id)|stage=\($0.stage.label)|status=\($0.statusText ?? "UNKNOWN")|proof=\(proof.isEmpty ? "NONE" : proof)"
         }.joined(separator: "\n")
         let canonContext = canonicalReferences.map {
-            let path = $0.path ?? "NONE"
-            let outputs = $0.outputs.joined(separator: ",")
-            let capabilities = $0.capabilities.joined(separator: ",")
-            return "\($0.id)|state=\($0.state.rawValue.uppercased())|role=\($0.role)|path=\(path)|outputs=\(outputs)|capabilities=\(capabilities)"
+            "\($0.id)|state=\($0.state.rawValue.uppercased())|role=\($0.role)|outputs=\($0.outputs.joined(separator: ","))"
         }.joined(separator: "\n")
 
         let prompt = """
@@ -880,9 +796,6 @@ struct SUPRAMediaUniversalView: View {
         AUTHORITY=NICOLAS
         ACTION=\(action.rawValue)
         INVOCATION_ORIGIN=\(invocationOrigin)
-        ORIGIN_CONVERSATION_ID=\(originConversationID)
-        ORIGIN_CHAT=\(originConversationID)
-        ORIGIN_CHAT_EXACT_REQUIRED=YES
         READ_EXISTING_FIRST=YES
         NO_PARALLEL_ENGINE=YES
 
@@ -891,14 +804,7 @@ struct SUPRAMediaUniversalView: View {
         SOURCE_PROVIDER=\(sourceProvider?.rawValue ?? "UNKNOWN")
         PROVIDER_GUARDRAIL=\(sourceProvider?.guardrail ?? "No provider-specific contract")
         YOUTUBE_CONNECTION=\(youtubeState)
-        MEDIA_RENDER_CAPABILITY=\(mediaState)
-        USCRC_PROOFGRAPH_CANON=\(uscrcCanonState)
-        USCRC_CONTINUITY=\(uscrcContinuityState)
-        PROOFGRAPH_RUNTIME=\(proofGraphRuntimeState)
-        USCRC_PROOFGRAPH_CANON_PROOF=\(uscrcProofState)
-        PROOFGRAPH_RUNTIME_STATE=\(proofGraphStateState)
-        PROOFGRAPH_RUNTIME_HEALTH=\(proofGraphHealthState)
-        SMCA_MCC_RUNTIME=\(smcaState)
+        MEDIA_CAPABILITY=\(mediaState)
         HUMAN_NOTE=\(noteValue.isEmpty ? "NONE" : noteValue)
         OJO_OBJECT_ID=\(heroContext?.objectID ?? "UNSCOPED")
         OJO_OBJECT_TYPE=\(heroContext?.objectType ?? "UNSCOPED")
@@ -918,11 +824,7 @@ struct SUPRAMediaUniversalView: View {
         - Treat the URL as source identity, not proof that media contents were observed.
         - Do not claim you watched, transcribed or verified media content unless runtime evidence proves it.
         - Never claim playback, transcript, metadata, comments, engagement or semantics unless actually accessible and evidenced.
-        - RENDER is not STRUCTURAL_ANALYSIS. A rendered source is never automatically SMCA/MCC-analysed.
-        - Reuse existing USCRC, ProofGraph, Puchero, Atlas, Twins, VideoSwap, Evidence and Memory owners when present.
-        - If USCRC / ProofGraph is RECOVERED, resolve lineage against it before proposing any new proof object.
-        - If SMCA_MCC_RUNTIME is PARTIAL or UNRESOLVED, return MCC_RUNTIME_UNPROVEN and EVIDENCE_NEEDED; never fabricate a coherence result.
-        - A coherence indicator is structural only; never call it truth_score or authenticity_score.
+        - Reuse existing Puchero, Atlas, Twins, VideoSwap, Evidence and Memory owners when present.
         - No silent canonical write, no invented relation, no authority mutation.
         - USER_NOTE remains attributed to Nicolas unless independently evidenced.
 
@@ -949,32 +851,16 @@ struct SUPRAMediaUniversalView: View {
 
             let correlatedPrompt = """
             MEDIA_OBJECTIVE_ID=\(objectiveID)
-            ORIGIN_CONVERSATION_ID=\(originConversationID)
-            ORIGIN_CHAT=\(originConversationID)
             MATERIALIZE_VIA_EXISTING_BRIDGE=YES
             RUNTIME_CORRELATION_REQUIRED=YES
 
             \(prompt)
             """
-
-            SUPRAConversationLineage.append(
-                role: .user,
-                mode: action.mode,
-                content: "MEDIA_ACTION=\(action.rawValue)\nSOURCE=\(sourceURL.absoluteString)",
-                originConversationID: originConversationID
-            )
-
             let response = try await runtime.execute(
                 prompt: correlatedPrompt,
                 mode: action.mode
             )
             runtimeOutput = response
-            SUPRAConversationLineage.append(
-                role: .runtime,
-                mode: action.mode,
-                content: "MEDIA_OBJECTIVE_ID=\(objectiveID)\nORIGIN_CONVERSATION_ID=\(originConversationID)\n\(response)",
-                originConversationID: originConversationID
-            )
             runtimeState = action == .memoryReturn ? "PREPARED" : "COMPLETE"
             liveStore.refresh(force: true)
         } catch {

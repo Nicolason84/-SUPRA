@@ -4,6 +4,7 @@ import AppKit
 struct SupraControlCenterView: View {
     @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
     @State private var installProof = SUPRALocalInstallProof.load()
+    @State private var p1ContractProof = SUPRAP1ContractProof.load()
     @State private var commandText = ""
     @State private var commandOutput = "SUPRA ready. Type an objective or continue from the current proven state."
     @State private var commandBusy = false
@@ -28,6 +29,7 @@ struct SupraControlCenterView: View {
                     Button("Refresh data", systemImage: "arrow.clockwise") {
                         liveStore.refresh(force: true)
                         installProof = SUPRALocalInstallProof.load()
+                        p1ContractProof = SUPRAP1ContractProof.load()
                     }
 
                     Button {
@@ -49,9 +51,20 @@ struct SupraControlCenterView: View {
             liveStore.start()
             liveStore.refresh(force: true)
             installProof = SUPRALocalInstallProof.load()
+            p1ContractProof = SUPRAP1ContractProof.load()
+            if liveStore.bridgeAvailable {
+                commandError = nil
+            }
             // UI lifecycle is observation-only. Durable executive objectives are
             // admitted only by an explicit Execute/Resume action from Nicolas.
             // This prevents launch/relaunch from manufacturing duplicate missions.
+        }
+        .onReceive(liveStore.$bridgeAvailable) { available in
+            guard available else { return }
+            commandError = nil
+            if commandOutput == "SUPRA runtime did not return a proven result." {
+                commandOutput = "SUPRA ready. Existing bridge connected. Previous failed or aborted run preserved as historical evidence."
+            }
         }
     }
 
@@ -320,6 +333,14 @@ struct SupraControlCenterView: View {
         let command = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !command.isEmpty else { return }
 
+        let originConversationID = SUPRAConversationLineage.canonicalID()
+        SUPRAConversationLineage.append(
+            role: .user,
+            mode: .ask,
+            content: command,
+            originConversationID: originConversationID
+        )
+
         commandBusy = true
         commandError = nil
         activeCommandText = command
@@ -372,11 +393,14 @@ struct SupraControlCenterView: View {
 
             let result = try await missionRunner.executeExecutiveObjective(
                 objective: command,
-                runtimePrompt: prompt
+                runtimePrompt: prompt,
+                originConversationID: originConversationID
             )
 
             commandOutput = """
             OBJECTIVE_ID=\(result.objectiveID)
+            ORIGIN_CONVERSATION_ID=\(result.originConversationID)
+            ORIGIN_CHAT=\(result.originConversationID)
             RUNTIME_ADMISSION=\(result.admissionPath)
             RECEIPT=\(result.receiptPath)
             STATUS=\(result.status)
@@ -384,6 +408,13 @@ struct SupraControlCenterView: View {
 
             \(result.response)
             """
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: result.originConversationID
+            )
 
             if override == nil {
                 commandText = ""
@@ -395,21 +426,60 @@ struct SupraControlCenterView: View {
                 commandOutput = """
                 STATUS=STANDBY
                 OBJECTIVE_ID=\(!standbyObjectiveID.isEmpty ? standbyObjectiveID : (missionRunner.activeExecutiveObjectiveID ?? "UNPROVEN"))
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
                 ACTION_NICOLAS=NONE
                 NEXT=Resume or Abort
                 """
             case .abort:
                 commandOutput = """
                 STATUS=ABORTED
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
                 ACTION_NICOLAS=NONE
                 NEXT=Ready for a new objective
                 """
             case .none:
-                commandOutput = "STATUS=CANCELLED"
+                commandOutput = """
+                STATUS=CANCELLED
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                """
             }
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: originConversationID
+            )
         } catch {
-            commandError = error.localizedDescription
-            commandOutput = "SUPRA runtime did not return a proven result."
+            if liveStore.bridgeAvailable {
+                commandError = "Last execution ended without a proven result: \(error.localizedDescription)"
+                commandOutput = """
+                STATUS=ERROR
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                BRIDGE=CONNECTED
+                DETAIL=\(error.localizedDescription)
+                """
+            } else {
+                commandError = error.localizedDescription
+                commandOutput = """
+                STATUS=ERROR
+                ORIGIN_CONVERSATION_ID=\(originConversationID)
+                ORIGIN_CHAT=\(originConversationID)
+                BRIDGE=UNAVAILABLE
+                DETAIL=\(error.localizedDescription)
+                """
+            }
+
+            SUPRAConversationLineage.append(
+                role: .runtime,
+                mode: .ask,
+                content: commandOutput,
+                originConversationID: originConversationID
+            )
         }
     }
 
@@ -460,7 +530,7 @@ struct SupraControlCenterView: View {
                     title: "Build Status",
                     value: installProof.displayStatus,
                     systemImage: "hammer.fill",
-                    healthy: installProof.isCurrent
+                    healthy: installProof.isOperational
                 )
                 summaryCard(
                     title: "Last Refresh",
@@ -536,11 +606,15 @@ struct SupraControlCenterView: View {
                             } else {
                                 Image(systemName: "hammer.fill")
                             }
-                            Text(versionRefreshBusy ? "Release in progress…" : "Build Release + Relaunch")
+                            Text(
+                                installProof.status == "LOCAL_VALIDATED"
+                                    ? "Canonical promotion pending"
+                                    : (versionRefreshBusy ? "Release in progress…" : "Build Release + Relaunch")
+                            )
                         }
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(versionRefreshBusy)
+                    .disabled(versionRefreshBusy || installProof.status == "LOCAL_VALIDATED")
                 }
 
                 HStack(spacing: 8) {
@@ -706,7 +780,7 @@ struct SupraControlCenterView: View {
                 liveHealthCard(
                     "Installed build",
                     installProof.installedShortSHA,
-                    healthy: installProof.isCurrent
+                    healthy: installProof.isOperational
                 )
                 liveHealthCard(
                     "In flight",
@@ -722,6 +796,21 @@ struct SupraControlCenterView: View {
                     "Canonical instance",
                     installProof.canonicalInstanceLabel,
                     healthy: installProof.nativeInstanceCount == 1
+                )
+                liveHealthCard(
+                    "P1 contracts",
+                    p1ContractProof.contractsLabel,
+                    healthy: p1ContractProof.isComplete
+                )
+                liveHealthCard(
+                    "Truth semantics",
+                    p1ContractProof.truthStatesLabel,
+                    healthy: p1ContractProof.truthStatesCount == 9
+                )
+                liveHealthCard(
+                    "Retirement plan",
+                    p1ContractProof.retirementLabel,
+                    healthy: p1ContractProof.retirementIsGated
                 )
             }
         }
@@ -815,6 +904,90 @@ struct SupraControlCenterView: View {
 }
 
 
+private struct SUPRAP1ContractProof {
+    let validContractCount: Int
+    let truthStatesCount: Int
+    let retirementItemCount: Int
+    let retirementIsGated: Bool
+
+    static func load() -> SUPRAP1ContractProof {
+        let fm = FileManager.default
+        guard let appSupport = fm.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first else {
+            return .empty
+        }
+
+        let root = appSupport
+            .appendingPathComponent("SUPRA", isDirectory: true)
+            .appendingPathComponent("Projection", isDirectory: true)
+
+        func object(_ name: String) -> [String: Any]? {
+            let url = root.appendingPathComponent(name)
+            guard let data = try? Data(contentsOf: url, options: [.mappedIfSafe]),
+                  let value = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+            else {
+                return nil
+            }
+            return value
+        }
+
+        let appTruth = object("APP_VISIBLE_TRUTH_REGISTRY_V3.json")
+        let semantics = object("LIVE_STATE_SEMANTICS_V3.json")
+        let retirement = object("DUPLICATION_RETIREMENT_PLAN_V1.json")
+
+        let appTruthValid =
+            appTruth?["schema"] as? String == "APP_VISIBLE_TRUTH_REGISTRY_V3"
+        let semanticsValid =
+            semantics?["schema"] as? String == "LIVE_STATE_SEMANTICS_V3"
+        let retirementValid =
+            retirement?["schema"] as? String == "DUPLICATION_RETIREMENT_PLAN_V1"
+
+        let validContractCount = [
+            appTruthValid,
+            semanticsValid,
+            retirementValid
+        ].filter { $0 }.count
+
+        let truthStatesCount =
+            (semantics?["allowed_states"] as? [Any])?.count ?? 0
+        let retirementItems =
+            retirement?["items"] as? [[String: Any]] ?? []
+        let retirementIsGated = retirementValid
+            && retirementItems.allSatisfy { item in
+                (item["destructive_delete"] as? Bool) == false
+                    && (item["retirement_authorized"] as? Bool) == false
+                    && ((item["preconditions"] as? [String]) ?? [])
+                        .contains("capability_and_information_parity_proven")
+                    && !((item["rollback"] as? String) ?? "").isEmpty
+            }
+
+        return SUPRAP1ContractProof(
+            validContractCount: validContractCount,
+            truthStatesCount: truthStatesCount,
+            retirementItemCount: retirementItems.count,
+            retirementIsGated: retirementIsGated
+        )
+    }
+
+    private static let empty = SUPRAP1ContractProof(
+        validContractCount: 0,
+        truthStatesCount: 0,
+        retirementItemCount: 0,
+        retirementIsGated: false
+    )
+
+    var isComplete: Bool { validContractCount == 3 }
+    var contractsLabel: String { "\(validContractCount)/3 projected" }
+    var truthStatesLabel: String { "\(truthStatesCount) states" }
+    var retirementLabel: String {
+        retirementIsGated
+            ? "\(retirementItemCount) gated"
+            : "\(retirementItemCount) unproven"
+    }
+}
+
 private struct SUPRALocalInstallProof {
     let status: String
     let installedSourceSHA: String
@@ -827,6 +1000,8 @@ private struct SUPRALocalInstallProof {
         let fm = FileManager.default
         let embeddedSourceSHA = Bundle.main
             .object(forInfoDictionaryKey: "SUPRASourceSHA") as? String ?? ""
+        let localValidatedBuild = Bundle.main
+            .object(forInfoDictionaryKey: "SUPRALocalBuild") as? Bool ?? false
 
         var projection: [String: Any] = [:]
         if let appSupport = fm.urls(
@@ -856,6 +1031,8 @@ private struct SUPRALocalInstallProof {
         let proofStatus: String
         if installed.isEmpty {
             proofStatus = "UNAVAILABLE"
+        } else if localValidatedBuild {
+            proofStatus = "LOCAL_VALIDATED"
         } else if !projectedInstalled.isEmpty && projectedInstalled != installed {
             proofStatus = "DRIFT"
         } else {
@@ -882,8 +1059,13 @@ private struct SUPRALocalInstallProof {
             )
     }
 
+    var isOperational: Bool {
+        isCurrent || status == "LOCAL_VALIDATED"
+    }
+
     var displayStatus: String {
         if isCurrent { return "Current" }
+        if status == "LOCAL_VALIDATED" { return "Local validated" }
         if status == "UNAVAILABLE" { return "Unproven" }
         if status == "DRIFT" { return "Drift" }
         return "Behind"

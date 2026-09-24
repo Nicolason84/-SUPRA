@@ -4,6 +4,7 @@ import AppKit
 enum SUPRAUniverse: String, CaseIterable, Identifiable {
     case france
     case chat
+    case media
     case cannonico
     case missions
     case organization
@@ -21,6 +22,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "France"
         case .chat: return "Chat"
+        case .media: return "Media"
         case .cannonico: return "CAnnoNico"
         case .missions: return "Missions"
         case .organization: return "Organization"
@@ -38,6 +40,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "Territoire vivant"
         case .chat: return "Conversation directe"
+        case .media: return "Media Hero · source · preuve · lineage"
         case .cannonico: return "Mémoire · canon · provenance"
         case .missions: return "Missions parallèles"
         case .organization: return "People · départements · autorité"
@@ -55,6 +58,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "map.fill"
         case .chat: return "bubble.left.and.bubble.right.fill"
+        case .media: return "play.rectangle.on.rectangle.fill"
         case .cannonico: return "point.3.connected.trianglepath.dotted"
         case .missions: return "scope"
         case .organization: return "person.3.fill"
@@ -72,6 +76,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return .cyan
         case .chat: return .mint
+        case .media: return .purple
         case .cannonico: return .indigo
         case .missions: return .orange
         case .organization: return .green
@@ -89,6 +94,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "L5 · KNOWLEDGE / WORLD"
         case .chat: return "L6 · EXPERIENCE / HUMAN INTERFACE"
+        case .media: return "L6 · EXPERIENCE / MEDIA PROJECTION"
         case .cannonico: return "L4–L5 · MEMORY / KNOWLEDGE"
         case .missions: return "L7 · EXECUTIVE ACTION / E2E"
         case .organization: return "L6–L7 · EXPERIENCE / AUTHORITY"
@@ -106,6 +112,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "World → Evidence → Mission"
         case .chat: return "Human → Intent → Runtime"
+        case .media: return "Source → Evidence → Memory → Canon"
         case .cannonico: return "Memory → Provenance → Canon"
         case .missions: return "Decision → Mission → Result"
         case .organization: return "Need → Role → Capacity → Result"
@@ -123,6 +130,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "Territory, institutions, enterprises and real-world signals."
         case .chat: return "Direct conversational control surface over the existing runtime."
+        case .media: return "Universal contextual media surface over existing source, evidence, memory and canon owners."
         case .cannonico: return "Canonical memory, lineage, contradictions and knowledge integrity."
         case .missions: return "Parallel bounded execution with evidence-return contracts."
         case .organization: return "Departments, people, digital workforce and decision rights."
@@ -140,6 +148,7 @@ enum SUPRAUniverse: String, CaseIterable, Identifiable {
         switch self {
         case .france: return "External commitments / publication"
         case .chat: return "High-impact execution"
+        case .media: return "Canonical write / public action / source mutation"
         case .cannonico: return "Canonical authority changes"
         case .missions: return "Irreversible or high-impact actions"
         case .organization: return "Hiring / contracts / authority"
@@ -161,13 +170,14 @@ struct SUPRAOJOHomeView: View {
     @State private var paletteVisible = false
     @State private var railCompact = false
     @State private var spatialImmersion = true
+    @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
     private let circulationStages = [
         "WORLD", "OBSERVE", "EVIDENCE", "DECIDE", "MISSION",
         "EXECUTE", "RESULT", "LEARN", "MEMORY", "CANON"
     ]
 
-    private let primaryUniverses: [SUPRAUniverse] = [.supra, .ojo, .publicPresence]
+    private let primaryUniverses: [SUPRAUniverse] = [.supra, .ojo, .media, .publicPresence]
 
     private var secondaryUniverses: [SUPRAUniverse] {
         SUPRAUniverse.allCases.filter { !primaryUniverses.contains($0) }
@@ -222,6 +232,10 @@ struct SUPRAOJOHomeView: View {
         .frame(minWidth: 1180, minHeight: 760)
         .sheet(isPresented: $paletteVisible) {
             commandPalette
+        }
+        .onReceive(mediaHeroRouter.$context) { context in
+            guard context != nil else { return }
+            selection = .media
         }
         .animation(.snappy(duration: 0.28), value: selection)
         .animation(.snappy(duration: 0.24), value: inspectorVisible)
@@ -513,6 +527,7 @@ struct SUPRAOJOHomeView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("supra-universe-\(universe.rawValue)")
         .background(
             universe == selection
                 ? universe.accent.opacity(isCore ? 0.14 : 0.075)
@@ -639,6 +654,12 @@ struct SUPRAOJOHomeView: View {
                     FranceOrganismNativeView()
                 case .chat:
                     SUPRAChatView()
+                case .media:
+                    if let context = mediaHeroRouter.context {
+                        SUPRAMediaUniversalView(context: context)
+                    } else {
+                        SUPRAMediaUniversalView(origin: "SUPRA_UNIVERSE")
+                    }
                 case .cannonico:
                     ContentView()
                 case .missions:
