@@ -183,12 +183,14 @@ struct OJOPrivateControlView: View {
                 Spacer()
 
                 Button {
-                    Task { await query(kind: "PRIVATE_EXECUTIVE_NOW", mode: .ask) }
+                    liveStore.refresh(force: true)
+                    refreshFromLiveStore()
+                    runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : runtimeState
+                    lastError = liveStore.bridgeAvailable ? nil : lastError
                 } label: {
-                    Label(isBusy ? "Refreshing…" : "Refresh now", systemImage: "arrow.clockwise")
+                    Label("Refresh now", systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(isBusy)
             }
 
             HStack(spacing: 10) {
@@ -480,13 +482,33 @@ struct OJOPrivateControlView: View {
             NEXT_HUMAN_ACTION=
             EVIDENCE_REFS=
             """
-            output = try await runtime.execute(prompt: prompt, mode: mode)
+            let execution = Task<String, Error> { @MainActor in
+                try await runtime.execute(prompt: prompt, mode: mode)
+            }
+            let watchdog = Task {
+                try? await Task.sleep(nanoseconds: 15_000_000_000)
+                if !Task.isCancelled {
+                    execution.cancel()
+                }
+            }
+            defer { watchdog.cancel() }
+
+            output = try await execution.value
             runtimeState = "PASS"
             lastQuery = .now
             parseExecutiveFields(output)
+        } catch is CancellationError {
+            liveStore.refresh(force: true)
+            refreshFromLiveStore()
+            runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : "ERROR"
+            lastError = liveStore.bridgeAvailable
+                ? nil
+                : "Private runtime timed out and no live bridge state is available."
         } catch {
-            runtimeState = "ERROR"
-            lastError = error.localizedDescription
+            liveStore.refresh(force: true)
+            refreshFromLiveStore()
+            runtimeState = liveStore.bridgeAvailable ? "CONNECTED" : "ERROR"
+            lastError = liveStore.bridgeAvailable ? nil : error.localizedDescription
         }
 
         isBusy = false

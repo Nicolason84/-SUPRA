@@ -70,9 +70,15 @@ nonisolated enum SUPRATerminalMegabusBridge {
     }
 
     static func status() -> String {
-        FileManager.default.fileExists(
-            atPath: terminalRegistryURL.path
-        ) ? "CONNECTED" : "OFFLINE"
+        guard let data = try? Data(contentsOf: terminalRegistryURL, options: [.mappedIfSafe]),
+              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              root["schema"] as? String == "SUPRA_TERMINAL_REGISTRY_V1",
+              let terminals = root["terminals"] as? [[String: Any]],
+              !terminals.isEmpty
+        else {
+            return "UNPROVEN"
+        }
+        return "CONNECTED"
     }
 
     static func registerSUPRAAndGabriel() {
@@ -692,7 +698,14 @@ struct ContentView: View {
                     Text("Entrées filtrées · circulation fermée · sorties tracées · purge contrôlée.").foregroundStyle(.secondary)
                 }
                 Spacer()
-                Label("CIRCUIT CLOSED", systemImage: "lock.shield.fill").font(.caption.weight(.black)).foregroundStyle(.green)
+                Label(
+                    "\(cannonicoRecoveredReferences.count)/\(cannonicoIntegrationSnapshot.references.count) SOURCES RECOVERED",
+                    systemImage: cannonicoPendingReferences.isEmpty
+                        ? "checkmark.shield.fill"
+                        : "exclamationmark.triangle.fill"
+                )
+                .font(.caption.weight(.black))
+                .foregroundStyle(cannonicoPendingReferences.isEmpty ? .green : .orange)
             }
             ZStack {
                 Circle().stroke(.secondary.opacity(0.20), lineWidth: 26).frame(width: 350, height: 350)
@@ -729,16 +742,16 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
                 Button {
-                    filteredInputStatus = "REVALIDATING"
-                    Task {
-                        await store.sendChat("CANNONICO INPUT FILTER. Accepte uniquement les entrées avec type, source, autorité, lineage et contrat I/O. Rejette toute entrée ambiguë, dupliquée, non prouvée ou non autorisée.")
-                        filteredInputStatus = "FILTERED"
-                    }
+                    let snapshot = SUPRACAnnoNicoIntegration.snapshot()
+                    let recovered = snapshot.references.filter { $0.state == .recovered }.count
+                    filteredInputStatus = "\(recovered)/\(snapshot.references.count) RECOVERED"
+                    terminalMegabusStatus = SUPRATerminalMegabusBridge.status()
+                    systemIntegrity = SUPRASystemIntegrityLoader.load()
+                    gabrielSnapshot = SUPRAGabrielConductorRuntime.load()
                 } label: {
-                    Label("Revalidate inputs", systemImage: "line.3.horizontal.decrease.circle")
+                    Label("Revalidate locally", systemImage: "line.3.horizontal.decrease.circle")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(store.chatBusy)
                 Spacer()
                 VStack(alignment: .trailing, spacing: 5) {
                     Label(
@@ -806,8 +819,20 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 14) {
             structureCard("SUPRA", role: "Autorité finale", status: "ROOT", symbol: "cpu.fill")
             structureCard("Gabriel", role: "Conduite des missions", status: gabrielSnapshot.status, symbol: "circle.hexagongrid.fill")
-            structureCard("CAnnoNico", role: "Contrats, modules, lineage", status: "ACTIVE", symbol: "atom")
-            structureCard("PUCHERO · NICO_APP · VIDEO_SWAP", role: "Sources et capacités réelles", status: "3/3", symbol: "square.grid.3x3.fill")
+            structureCard(
+                "CAnnoNico",
+                role: "Contrats, modules, lineage",
+                status: cannonicoPendingReferences.isEmpty
+                    ? "RECOVERED"
+                    : "\(cannonicoRecoveredReferences.count)/\(cannonicoIntegrationSnapshot.references.count) RECOVERED",
+                symbol: "atom"
+            )
+            structureCard(
+                "CAnnoNico sources · Puchero · Twins · Atlas · Media",
+                role: "Sources read-only et capacités réelles",
+                status: "\(cannonicoRecoveredReferences.count)/\(cannonicoIntegrationSnapshot.references.count) RECOVERED",
+                symbol: "square.grid.3x3.fill"
+            )
         }
     }
 
@@ -881,6 +906,12 @@ struct ContentView: View {
                 Image(systemName: "checkmark.shield.fill")
             }
             .tag("integrity")
+
+            Label("Memory", systemImage: "brain.head.profile")
+                .tag("memory")
+
+            Label("Spine", systemImage: "point.3.connected.trianglepath.dotted")
+                .tag("spine")
 
             DisclosureGroup(isExpanded: $sidebarAdvancedExpanded) {
                 ForEach(store.model.sections) { section in
@@ -974,6 +1005,9 @@ struct ContentView: View {
         case "integrity":
             systemIntegrityPage
 
+        case "spine":
+            spinePage
+
         case "actions":
             actionCenterPage
 
@@ -1042,6 +1076,156 @@ struct ContentView: View {
     }
 
 
+
+
+    private var spinePage: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                structureHero(
+                    "COLONNE VERTÉBRALE",
+                    title: "Truth circulates. Memory preserves. Twins project. Missions act.",
+                    subtitle: "Projection des capacités déjà présentes : aucune nouvelle autorité, aucun nouveau moteur, aucune vérité parallèle.",
+                    symbol: "point.3.connected.trianglepath.dotted"
+                )
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Label("Canonical circulation", systemImage: "arrow.triangle.2.circlepath")
+                        .font(.title3.bold())
+                    Text("TRUTH → MEMORY → RECOVER → REUSE → COMPOSE / FUSE → TWINS → DECIDE → MISSION → EXECUTE → RESULT → LEARN → CANNONICO → NEXT DECISION")
+                        .font(.system(.body, design: .monospaced).weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    HStack(spacing: 10) {
+                        Button {
+                            selection = "memory"
+                        } label: {
+                            Label("Open Memory", systemImage: "brain.head.profile")
+                        }
+                        .buttonStyle(.borderedProminent)
+
+                        Button {
+                            selection = "atlas"
+                        } label: {
+                            Label("Open Atlas", systemImage: "square.stack.3d.up")
+                        }
+                        .buttonStyle(.bordered)
+
+                        Button {
+                            selection = "decisions"
+                        } label: {
+                            Label("Decision Inbox", systemImage: "rectangle.3.group.fill")
+                        }
+                        .buttonStyle(.bordered)
+
+                        Spacer()
+                    }
+                }
+                .padding(20)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
+
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 250), spacing: 16)], spacing: 16) {
+                    ForEach(cannonicoIntegrationSnapshot.references, id: \.id) { reference in
+                        structureCard(
+                            reference.id,
+                            role: reference.role,
+                            status: reference.state.rawValue.uppercased(),
+                            symbol: reference.id == "puchero.memory" ? "brain.fill" : "shippingbox.fill"
+                        )
+                    }
+                    structureCard(
+                        "Gabriel",
+                        role: "Mission conductor / governed worker routing",
+                        status: gabrielSnapshot.status,
+                        symbol: "circle.hexagongrid.fill"
+                    )
+                    structureCard(
+                        "Memory objects",
+                        role: "Current model projection — proof still source-bound",
+                        status: store.model.metrics.memoryObjects.formatted(),
+                        symbol: "memorychip.fill"
+                    )
+                }
+
+                VStack(alignment: .leading, spacing: 14) {
+                    HStack {
+                        Label("Twin fabric", systemImage: "square.stack.3d.up.fill")
+                            .font(.title3.bold())
+                        Spacer()
+                        Text("PROVE LIVE PER MISSION")
+                            .font(.caption2.weight(.heavy))
+                            .foregroundStyle(.orange)
+                    }
+
+                    Text("Twins are projections, never competing truth stores. They consume canonical owners and return evidence, learning and decisions to the same circulation.")
+                        .foregroundStyle(.secondary)
+
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 280), spacing: 12)], spacing: 12) {
+                        spineTwinCard(
+                            "L1 · Environment fabric",
+                            "Environment · Total System / File · Storage",
+                            "FOUNDATION PROJECTION"
+                        )
+                        spineTwinCard(
+                            "L4–L5 · Knowledge fabric",
+                            "Knowledge · Company · People · Market · Opportunity · Evidence · Capital / Investment · Bank · M&A · Legal · Operations",
+                            "MEMORY / KNOWLEDGE PROJECTION"
+                        )
+                        spineTwinCard(
+                            "L6 · Human / Media fabric",
+                            "Subject · Human · Media · ojO",
+                            "EXPERIENCE PROJECTION"
+                        )
+                        spineTwinCard(
+                            "L7 · Decision fabric",
+                            "Case · Decision · Mission",
+                            "EXECUTIVE PROJECTION"
+                        )
+                    }
+                }
+                .padding(20)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Label("Puchero contract", systemImage: "brain.fill")
+                        .font(.title3.bold())
+                    Text("Puchero = fusion / circulation / memory-lineage process. CAnnoNico remains canonical memory and provenance authority. Twins remain specialized projections. No private truth.")
+                        .foregroundStyle(.secondary)
+                    Text("Current installed adapter is READ_ONLY_MEMORY_AND_LINEAGE: existing memory + proof lineage + no data duplication.")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                }
+                .padding(20)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22))
+            }
+            .padding(26)
+            .frame(maxWidth: 1500, alignment: .leading)
+            .frame(maxWidth: .infinity)
+        }
+        .background(structureBackground)
+    }
+
+    private func spineTwinCard(_ title: String, _ contents: String, _ status: String) -> some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                Spacer()
+                Text(status)
+                    .font(.caption2.weight(.heavy))
+                    .foregroundStyle(.secondary)
+            }
+            Text(contents)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Label("Canonical owners first · evidence return required", systemImage: "checkmark.shield.fill")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, minHeight: 132, alignment: .topLeading)
+        .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 16))
+    }
 
 
     // SUPRA_OPERATIONAL_WORKSPACE_V1_BEGIN

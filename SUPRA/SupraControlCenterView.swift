@@ -52,9 +52,19 @@ struct SupraControlCenterView: View {
             liveStore.refresh(force: true)
             installProof = SUPRALocalInstallProof.load()
             p1ContractProof = SUPRAP1ContractProof.load()
+            if liveStore.bridgeAvailable {
+                commandError = nil
+            }
             // UI lifecycle is observation-only. Durable executive objectives are
             // admitted only by an explicit Execute/Resume action from Nicolas.
             // This prevents launch/relaunch from manufacturing duplicate missions.
+        }
+        .onReceive(liveStore.$bridgeAvailable) { available in
+            guard available else { return }
+            commandError = nil
+            if commandOutput == "SUPRA runtime did not return a proven result." {
+                commandOutput = "SUPRA ready. Existing bridge connected. Previous failed or aborted run preserved as historical evidence."
+            }
         }
     }
 
@@ -411,8 +421,13 @@ struct SupraControlCenterView: View {
                 commandOutput = "STATUS=CANCELLED"
             }
         } catch {
-            commandError = error.localizedDescription
-            commandOutput = "SUPRA runtime did not return a proven result."
+            if liveStore.bridgeAvailable {
+                commandError = "Last execution ended without a proven result: \(error.localizedDescription)"
+                commandOutput = "SUPRA ready. Bridge is connected; the failed or aborted execution is preserved as historical evidence."
+            } else {
+                commandError = error.localizedDescription
+                commandOutput = "SUPRA bridge is currently unavailable."
+            }
         }
     }
 
