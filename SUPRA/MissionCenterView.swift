@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct MissionCenterView: View {
+    @Environment(\.supraHierarchyFocusRequest) private var focusRequest
     @StateObject private var store = MissionStore()
     @ObservedObject private var runner = SUPRAGrandeMissionRunner.shared
     @State private var selection: Mission.ID?
+
 
     var body: some View {
         NavigationSplitView {
@@ -40,6 +42,7 @@ struct MissionCenterView: View {
         .task {
             store.load()
             selectCurrentMissionIfNeeded()
+            focusNativeRequest()
             while !Task.isCancelled {
                 let runner = SUPRAGrandeMissionRunner.shared
 
@@ -57,6 +60,18 @@ struct MissionCenterView: View {
                 selectCurrentMissionIfNeeded()
             }
         }
+        .onChange(of: focusRequest?.id) { _, _ in
+            focusNativeRequest()
+        }
+    }
+
+    private func focusNativeRequest() {
+        guard focusRequest?.target == .missionCurrent else { return }
+        store.query = ""
+        store.activeFilter = .all
+        store.refresh()
+        selection = store.visibleMissions.first(where: { $0.status == .blocked || $0.status == .active })?.id
+            ?? store.visibleMissions.first?.id
     }
 
     private func selectCurrentMissionIfNeeded() {

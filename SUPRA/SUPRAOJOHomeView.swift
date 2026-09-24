@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import CAnnoNicoContracts
 
 enum SUPRAUniverse: String, CaseIterable, Identifiable {
     case france
@@ -179,8 +180,49 @@ private enum SUPRAUniverseDrilldown: String, CaseIterable, Identifiable {
     }
 }
 
+enum SUPRAHierarchyFocusTarget: Equatable {
+    case missionCurrent
+    case connectionsAttention
+    case runtimeBottleneck
+    case cannonicoGap
+    case mediaSource
+    case mediaActions
+    case mediaEvidence
+}
+
+struct SUPRAHierarchyFocusRequest: Equatable, Identifiable {
+    let id: UUID
+    let target: SUPRAHierarchyFocusTarget
+
+    init(_ target: SUPRAHierarchyFocusTarget) {
+        self.id = UUID()
+        self.target = target
+    }
+}
+
+private struct SUPRAHierarchyFocusRequestKey: EnvironmentKey {
+    static let defaultValue: SUPRAHierarchyFocusRequest? = nil
+}
+
+extension EnvironmentValues {
+    var supraHierarchyFocusRequest: SUPRAHierarchyFocusRequest? {
+        get { self[SUPRAHierarchyFocusRequestKey.self] }
+        set { self[SUPRAHierarchyFocusRequestKey.self] = newValue }
+    }
+}
+
+private struct SUPRAUniverseSemanticProjection {
+    let now: String
+    let matters: String
+    let action: String
+    let actionStatus: String
+    let actionTarget: SUPRAHierarchyFocusTarget?
+}
+
 struct SUPRAOJOHomeView: View {
     @ObservedObject private var mediaRouter = SUPRAMediaHeroRouter.shared
+    @ObservedObject private var liveStore = SUPRAProcessObservatoryStore.shared
+    @ObservedObject private var missionRunner = SUPRAGrandeMissionRunner.shared
     @State private var selection: SUPRAUniverse = .supra
     @State private var inspectorVisible = false
     @State private var paletteVisible = false
@@ -189,6 +231,7 @@ struct SUPRAOJOHomeView: View {
     @State private var deckDetailsVisible = false
     @State private var circulationExpanded = false
     @State private var activeDrilldown: SUPRAUniverseDrilldown? = nil
+    @State private var nativeFocusRequest: SUPRAHierarchyFocusRequest? = nil
     @ObservedObject private var mediaHeroRouter = SUPRAMediaHeroRouter.shared
 
     private let circulationStages = [
@@ -269,6 +312,9 @@ struct SUPRAOJOHomeView: View {
         .animation(.easeInOut(duration: 0.35), value: spatialImmersion)
         .task {
             applyAdaptiveChrome(for: selection)
+            liveStore.start()
+            liveStore.refresh(force: true)
+            await liveStore.refreshTransportHealth()
             SUPRAGrandeMissionRunner.shared.startIfNeeded()
         }
     }
@@ -748,6 +794,7 @@ struct SUPRAOJOHomeView: View {
                         DecisionInboxView()
                     }
                 }
+                .environment(\.supraHierarchyFocusRequest, nativeFocusRequest)
                 .id(universe)
                 .transition(.opacity.combined(with: .scale(scale: 0.995)))
 
@@ -761,12 +808,14 @@ struct SUPRAOJOHomeView: View {
     }
 
     private func universeHierarchy(_ universe: SUPRAUniverse) -> some View {
-        VStack(spacing: 9) {
+        let semantic = semanticProjection(for: universe)
+
+        return VStack(spacing: 9) {
             HStack(alignment: .top, spacing: 9) {
                 hierarchyCard(
                     title: "NOW",
                     symbol: "circle.fill",
-                    text: universe.subtitle,
+                    text: semantic.now,
                     universe: universe,
                     identifier: "supra-hierarchy-now"
                 )
@@ -774,18 +823,12 @@ struct SUPRAOJOHomeView: View {
                 hierarchyCard(
                     title: "MATTERS",
                     symbol: "scope",
-                    text: universe.scope,
+                    text: semantic.matters,
                     universe: universe,
                     identifier: "supra-hierarchy-matters"
                 )
 
-                hierarchyCard(
-                    title: "ACTION",
-                    symbol: "arrow.right.circle.fill",
-                    text: primaryAction(for: universe),
-                    universe: universe,
-                    identifier: "supra-hierarchy-action"
-                )
+                actionHierarchyCard(semantic: semantic, universe: universe)
             }
 
             HStack(spacing: 8) {
@@ -816,7 +859,7 @@ struct SUPRAOJOHomeView: View {
 
                 Spacer(minLength: 0)
 
-                Text(activeDrilldown == nil ? "DETAILS ON DEMAND" : "FOCUSED DETAIL")
+                Text(activeDrilldown == nil ? "DETAILS ON DEMAND" : "NATIVE ROUTE READY")
                     .font(.caption2.weight(.heavy))
                     .tracking(0.8)
                     .foregroundStyle(.tertiary)
@@ -853,7 +896,7 @@ struct SUPRAOJOHomeView: View {
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .frame(maxWidth: .infinity, minHeight: 66, alignment: .topLeading)
+        .frame(maxWidth: .infinity, minHeight: 78, alignment: .topLeading)
         .padding(11)
         .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .overlay {
@@ -862,6 +905,68 @@ struct SUPRAOJOHomeView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier(identifier)
+    }
+
+    @ViewBuilder
+    private func actionHierarchyCard(
+        semantic: SUPRAUniverseSemanticProjection,
+        universe: SUPRAUniverse
+    ) -> some View {
+        if let target = semantic.actionTarget {
+            Button {
+                routeToNative(target)
+            } label: {
+                actionHierarchyContent(semantic: semantic, universe: universe)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("supra-hierarchy-action-button")
+            .accessibilityLabel("ACTION, \(semantic.action)")
+        } else {
+            actionHierarchyContent(semantic: semantic, universe: universe)
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier("supra-hierarchy-action")
+        }
+    }
+
+    private func actionHierarchyContent(
+        semantic: SUPRAUniverseSemanticProjection,
+        universe: SUPRAUniverse
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Label("ACTION", systemImage: "arrow.right.circle.fill")
+                    .font(.caption2.weight(.heavy))
+                    .tracking(1.1)
+                    .foregroundStyle(universe.accent)
+
+                Spacer(minLength: 4)
+
+                Text(semantic.actionStatus)
+                    .font(.system(size: 9, weight: .heavy, design: .rounded))
+                    .foregroundStyle(semantic.actionTarget == nil ? .secondary : universe.accent)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background((semantic.actionTarget == nil ? Color.secondary : universe.accent).opacity(0.10), in: Capsule())
+            }
+
+            Text(semantic.action)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.primary)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text("\(universe.alonsoLevel) · Gate: \(universe.humanGate)")
+                .font(.system(size: 9, weight: .semibold, design: .rounded))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, minHeight: 78, alignment: .topLeading)
+        .padding(11)
+        .background(.primary.opacity(0.035), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke((semantic.actionTarget == nil ? Color.white : universe.accent).opacity(0.09), lineWidth: 1)
+        }
     }
 
     private func drilldownPanel(_ drilldown: SUPRAUniverseDrilldown, universe: SUPRAUniverse) -> some View {
@@ -885,38 +990,280 @@ struct SUPRAOJOHomeView: View {
             }
 
             Spacer(minLength: 0)
+
+            if drilldown == .architecture {
+                Button {
+                    withAnimation(.snappy(duration: 0.2)) {
+                        inspectorVisible = true
+                    }
+                } label: {
+                    Label("Show owner", systemImage: "sidebar.right")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .accessibilityIdentifier("supra-drilldown-native-architecture")
+            } else if let target = nativeDrilldownTarget(drilldown, universe: universe) {
+                Button {
+                    routeToNative(target)
+                } label: {
+                    Label(nativeDrilldownLabel(drilldown), systemImage: "arrow.up.right.square")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .accessibilityIdentifier("supra-drilldown-native-\(drilldown.rawValue.lowercased())")
+            }
         }
         .padding(11)
         .background(universe.accent.opacity(0.055), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .accessibilityIdentifier("supra-drilldown-panel")
     }
 
-    private func primaryAction(for universe: SUPRAUniverse) -> String {
+    private func semanticProjection(for universe: SUPRAUniverse) -> SUPRAUniverseSemanticProjection {
+        let runner = missionRunner
+        let bridge = liveStore.bridgeAvailable ? "bridge connected" : "bridge unavailable"
+        let bottleneck = liveStore.processes.first(where: \.isBottleneck)
+        let inFlight = liveStore.processes.first(where: { $0.stage == .inFlight })
+        let canonical = SUPRACAnnoNicoIntegration.snapshot()
+        let recovered = canonical.references.filter { $0.state == .recovered }
+        let unresolved = canonical.references.filter { $0.state != .recovered }
+        let attention = ExternalConnectorCatalog.attentionCount
+        let fresh = ExternalConnectionProofLedger.liveCount
+        let stale = ExternalConnectionProofLedger.staleCount
+        let publicConnectors = ExternalConnectorCatalog.all.filter { $0.family == "Public Presence" }
+        let publicAttention = publicConnectors.filter(requiresConnectionAttention).count
+        let publicFresh = publicConnectors.filter { ExternalConnectionProofLedger.freshness(for: $0) == .live }.count
+        let inpiConnectors = ExternalConnectorCatalog.all.filter { $0.id == "inpi-rne" || $0.id == "inpi-ip" }
+        let inpiAttention = inpiConnectors.filter(requiresConnectionAttention).count
+        let source = mediaHeroRouter.liveSourceURL
+
         switch universe {
-        case .france: return "Investigate the next territorial signal in the existing workspace."
-        case .chat: return "Continue the conversation and convert intent into a bounded runtime move."
-        case .media: return "Open the relevant source, verify it, and return useful evidence to memory."
-        case .cannonico: return "Inspect canonical truth and contradictions before any authority change."
-        case .missions: return "Advance the next bounded mission and require a material result."
-        case .organization: return "Resolve ownership, role or capacity before assigning execution."
-        case .connections: return "Close the next connection gap without bypassing governance."
-        case .inpi: return "Verify official corporate evidence before legal or commercial use."
-        case .publicPresence: return "Turn a verified signal into the next governed public action."
-        case .runtime: return "Inspect the next operational exception before changing runtime state."
-        case .ojo: return "Review context, attention and the human gate before a consequential decision."
-        case .supra: return "Synthesize the next executive move from proof, constraints and authority."
-        case .control: return "Resolve the next decision or exception through evidence and authority."
+        case .supra:
+            if let bottleneck {
+                return .init(
+                    now: "\(liveStore.inFlightCount) in flight · \(liveStore.bottleneckCount) bottleneck · \(liveStore.driftCount) drift · \(bridge)",
+                    matters: "\(bottleneck.title) is blocking forward motion. Materialized receipts remain preserved.",
+                    action: "Inspect \(bottleneck.title) in the existing Process Observatory before any higher-authority move.",
+                    actionStatus: "BLOCKING",
+                    actionTarget: .runtimeBottleneck
+                )
+            }
+            return .init(
+                now: "\(liveStore.inFlightCount) in flight · \(liveStore.materializedCount) materialized · \(bridge)",
+                matters: liveStore.momentumDetail,
+                action: liveStore.bridgeAvailable ? "No action required." : "Recover observation through the existing bridge; do not create a replacement.",
+                actionStatus: liveStore.bridgeAvailable ? "NO ACTION" : "ATTENTION",
+                actionTarget: liveStore.bridgeAvailable ? nil : .runtimeBottleneck
+            )
+
+        case .missions:
+            let phase = runner.activePhaseID ?? inFlight?.id ?? "NONE"
+            let humanGate = runner.isAwaitingHumanDecision
+            let running = runner.isRunning || runner.isStandby
+            return .init(
+                now: humanGate ? "Human gate waiting · current mission \(phase)" : (running ? "Mission active · \(phase)" : "No admitted mission currently executing"),
+                matters: runner.lastError ?? (humanGate ? "Execution is intentionally paused for Nicolas; no authority is bypassed." : "Mission state comes from durable runner receipts and the existing Mission Store."),
+                action: humanGate ? "Open the current mission and resolve the explicit human gate." : (running ? "Open the current mission and inspect its latest durable result." : "No action required."),
+                actionStatus: humanGate ? "HUMAN GATE" : (running ? "RUNNING" : "NO ACTION"),
+                actionTarget: (humanGate || running) ? .missionCurrent : nil
+            )
+
+        case .connections:
+            return .init(
+                now: "\(fresh) fresh proof · \(stale) stale · \(attention) routes need attention",
+                matters: attention > 0 ? "Authentication, approval and provider gaps remain separate from CONNECTED proof; governance is not bypassed." : "All catalogued connection routes are currently clear of declared auth/approval/provider gaps.",
+                action: attention > 0 ? "Open ATTENTION and resolve the next governed connection gap through its existing provider route." : "No action required.",
+                actionStatus: attention > 0 ? "ATTENTION" : "NO ACTION",
+                actionTarget: attention > 0 ? .connectionsAttention : nil
+            )
+
+        case .runtime:
+            if let bottleneck {
+                return .init(
+                    now: "\(liveStore.momentumLabel) · \(liveStore.inFlightCount) in flight · \(liveStore.bottleneckCount) bottleneck · \(liveStore.driftCount) drift",
+                    matters: "\(bottleneck.title) is the current runtime bottleneck; owner evidence remains in Process Observatory.",
+                    action: "Open the current bottleneck and inspect its materialized receipt/proof before changing runtime state.",
+                    actionStatus: "BLOCKING",
+                    actionTarget: .runtimeBottleneck
+                )
+            }
+            return .init(
+                now: "\(liveStore.momentumLabel) · \(liveStore.inFlightCount) in flight · \(liveStore.driftCount) drift · closure \(Int(liveStore.observableClosure * 100))%",
+                matters: liveStore.momentumDetail,
+                action: (inFlight != nil || liveStore.driftCount > 0) ? "Inspect the current live process before any runtime change." : "No action required.",
+                actionStatus: (inFlight != nil || liveStore.driftCount > 0) ? "INSPECT" : "NO ACTION",
+                actionTarget: (inFlight != nil || liveStore.driftCount > 0) ? .runtimeBottleneck : nil
+            )
+
+        case .cannonico:
+            let nextGap = unresolved.first?.id ?? "NONE"
+            return .init(
+                now: "\(recovered.count)/\(canonical.references.count) canonical sources recovered · \(unresolved.count) unresolved",
+                matters: unresolved.isEmpty ? "Canonical references are recovered; no parallel memory or proof owner is required." : "\(nextGap) is not fully recovered. Existing recovered references remain usable and authoritative for their scope.",
+                action: unresolved.isEmpty ? "No action required." : "Open the existing CAnnoNico Spine and inspect \(nextGap); do not create or rewrite canon.",
+                actionStatus: unresolved.isEmpty ? "NO ACTION" : "GAP",
+                actionTarget: unresolved.isEmpty ? nil : .cannonicoGap
+            )
+
+        case .media:
+            let hasSource = source != nil
+            return .init(
+                now: hasSource ? "Source selected · runtime \(liveStore.momentumLabel) · \(recovered.count)/\(canonical.references.count) canon refs recovered" : "No media source selected · runtime \(liveStore.momentumLabel)",
+                matters: hasSource ? "The source stays authoritative; Media adds context, evidence and lineage without inventing transcript or metadata." : "No media claim can be evidenced until a source identity is selected in the native Media owner.",
+                action: hasSource ? "Use the existing Media runtime actions on the selected source." : "Select a source in Media; do not infer content before evidence exists.",
+                actionStatus: hasSource ? "READY" : "SOURCE NEEDED",
+                actionTarget: hasSource ? .mediaActions : .mediaSource
+            )
+
+        case .chat:
+            return .init(
+                now: "\(bridge) · runtime \(liveStore.momentumLabel)",
+                matters: liveStore.bridgeAvailable ? "Conversation can use the existing private runtime path; high-impact execution remains gated." : "Chat cannot claim live runtime execution while the existing bridge is unavailable.",
+                action: liveStore.bridgeAvailable ? "No action required." : "Inspect the existing runtime bridge; do not create a new bridge.",
+                actionStatus: liveStore.bridgeAvailable ? "NO ACTION" : "ATTENTION",
+                actionTarget: liveStore.bridgeAvailable ? nil : .runtimeBottleneck
+            )
+
+        case .inpi:
+            return .init(
+                now: "\(inpiConnectors.count) official INPI routes · \(inpiAttention) require auth/config",
+                matters: "Official-data readiness and legal filing authority are separate; filings and fees remain human-gated.",
+                action: inpiAttention > 0 ? "Open the INPI connection routes and resolve official access readiness only." : "No action required.",
+                actionStatus: inpiAttention > 0 ? "ATTENTION" : "NO ACTION",
+                actionTarget: inpiAttention > 0 ? .connectionsAttention : nil
+            )
+
+        case .publicPresence:
+            return .init(
+                now: "\(publicFresh) public routes with fresh proof · \(publicAttention) need attention",
+                matters: "Public publishing remains distinct from read/analysis proof; material public writes stay gated.",
+                action: publicAttention > 0 ? "Open Connections ATTENTION for the next public-presence gap; do not publish from UX hierarchy." : "No action required.",
+                actionStatus: publicAttention > 0 ? "ATTENTION" : "NO ACTION",
+                actionTarget: publicAttention > 0 ? .connectionsAttention : nil
+            )
+
+        case .ojo:
+            let gate = runner.isAwaitingHumanDecision
+            return .init(
+                now: gate ? "Nicolas human gate waiting · runtime \(liveStore.momentumLabel)" : "Human gate clear · runtime \(liveStore.momentumLabel)",
+                matters: gate ? "A consequential decision is intentionally waiting for Nicolas; SUPRA must not self-authorize it." : "No explicit Nicolas gate is currently waiting in the Grande Mission runner.",
+                action: gate ? "Open the current mission and review the exact decision/evidence request." : "No action required.",
+                actionStatus: gate ? "HUMAN GATE" : "NO ACTION",
+                actionTarget: gate ? .missionCurrent : nil
+            )
+
+        case .control:
+            let gate = runner.isAwaitingHumanDecision
+            if gate {
+                return .init(
+                    now: "1 human gate waiting · \(liveStore.bottleneckCount) runtime bottleneck",
+                    matters: "Authority is paused at an explicit decision boundary; no silent mutation is permitted.",
+                    action: "Open the current mission and resolve only the explicit gated decision.",
+                    actionStatus: "HUMAN GATE",
+                    actionTarget: .missionCurrent
+                )
+            }
+            if liveStore.bottleneckCount > 0 {
+                return .init(
+                    now: "No human gate waiting · \(liveStore.bottleneckCount) runtime bottleneck",
+                    matters: "The blocker is operational, not an authority request; do not manufacture a human decision.",
+                    action: "Inspect the current runtime bottleneck; keep authority unchanged.",
+                    actionStatus: "INSPECT",
+                    actionTarget: .runtimeBottleneck
+                )
+            }
+            return .init(now: "No human gate waiting · no live runtime blocker", matters: "Control has no justified exception to escalate.", action: "No action required.", actionStatus: "NO ACTION", actionTarget: nil)
+
+        case .organization:
+            return .init(
+                now: "No shared live organization exception surfaced",
+                matters: "People, role and authority remain owned by Organization; the shell does not invent staffing state.",
+                action: "No action required.",
+                actionStatus: "NO ACTION",
+                actionTarget: nil
+            )
+
+        case .france:
+            return .init(
+                now: "No shared live territorial exception surfaced",
+                matters: "France remains the owner of territorial signals; the shell does not synthesize an unproven event.",
+                action: "No action required.",
+                actionStatus: "NO ACTION",
+                actionTarget: nil
+            )
+        }
+    }
+
+    private func requiresConnectionAttention(_ connector: ExternalConnectorDescriptor) -> Bool {
+        connector.status == .authRequired
+            || connector.status == .approvalRequired
+            || connector.status == .providerRequired
+            || connector.status == .blocked
+    }
+
+    private func routeToNative(_ target: SUPRAHierarchyFocusTarget) {
+        switch target {
+        case .missionCurrent:
+            selection = .missions
+        case .connectionsAttention:
+            selection = .connections
+        case .runtimeBottleneck:
+            selection = .runtime
+        case .cannonicoGap:
+            selection = .cannonico
+        case .mediaSource, .mediaActions, .mediaEvidence:
+            selection = .media
+        }
+        nativeFocusRequest = SUPRAHierarchyFocusRequest(target)
+    }
+
+    private func nativeDrilldownTarget(
+        _ drilldown: SUPRAUniverseDrilldown,
+        universe: SUPRAUniverse
+    ) -> SUPRAHierarchyFocusTarget? {
+        switch drilldown {
+        case .architecture:
+            return nil
+        case .lineage:
+            return .cannonicoGap
+        case .evidence:
+            switch universe {
+            case .media: return .mediaEvidence
+            case .connections, .publicPresence, .inpi: return .connectionsAttention
+            case .cannonico: return .cannonicoGap
+            case .missions: return .missionCurrent
+            case .runtime, .supra, .control, .ojo, .chat: return .runtimeBottleneck
+            case .france, .organization: return .cannonicoGap
+            }
+        }
+    }
+
+    private func nativeDrilldownLabel(_ drilldown: SUPRAUniverseDrilldown) -> String {
+        switch drilldown {
+        case .evidence: return "Open native proof"
+        case .lineage: return "Open native lineage"
+        case .architecture: return "Show owner"
         }
     }
 
     private func drilldownText(_ drilldown: SUPRAUniverseDrilldown, universe: SUPRAUniverse) -> String {
+        let canonical = SUPRACAnnoNicoIntegration.snapshot()
+        let recovered = canonical.references.filter { $0.state == .recovered }.count
         switch drilldown {
         case .evidence:
-            return "Proof before claim. Use the materialized evidence owned by this universe; interface state is orientation, not a PASS. Human gate: \(universe.humanGate)."
+            switch universe {
+            case .connections, .publicPresence, .inpi:
+                return "Native connection proof: \(ExternalConnectionProofLedger.liveCount) fresh · \(ExternalConnectionProofLedger.staleCount) stale · \(ExternalConnectorCatalog.attentionCount) attention. Open the owner; do not copy proof here."
+            case .cannonico:
+                return "Native CAnnoNico references: \(recovered)/\(canonical.references.count) recovered. Open the Spine/reference object; paths and states remain the proof source."
+            case .media:
+                return "Media proof remains in the native Media context rail and runtime receipt. Source identity is not proof of observed contents."
+            default:
+                return "Runtime proof remains in Process Observatory / durable receipts: \(liveStore.materializedCount) materialized · \(liveStore.bottleneckCount) bottleneck · \(liveStore.driftCount) drift."
+            }
         case .lineage:
-            return "\(universe.circulation). Result must preserve provenance and return to Memory → Canon whenever the contract requires it."
+            return "\(universe.circulation). Open native CAnnoNico lineage; the shell keeps only this route and does not duplicate the graph."
         case .architecture:
-            return "Existing owner: \(architectureOwner(for: universe)). Alonso layer: \(universe.alonsoLevel). Reuse the owner; do not create a parallel engine."
+            return "Existing owner: \(architectureOwner(for: universe)). Alonso layer: \(universe.alonsoLevel). Reuse the owner/capability/runtime; UX4 adds no authority."
         }
     }
 

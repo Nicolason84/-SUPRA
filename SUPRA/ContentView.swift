@@ -450,6 +450,7 @@ enum SUPRAHumanStage: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
+    @Environment(\.supraHierarchyFocusRequest) private var focusRequest
     @StateObject private var store = SUPRAExecutiveStore()
     @State private var selection: SUPRASection.ID? = "workspace"
     @State private var chatDraft = ""
@@ -477,6 +478,7 @@ struct ContentView: View {
     @State private var autonomousLastProcessedReply = ""
     @State private var technicalDisclosureExpanded = false
     @State private var terminalMegabusStatus = "OFFLINE"
+
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -517,6 +519,10 @@ struct ContentView: View {
             // Observation/load must not silently launch autonomous work.
             // Autopilot remains available only through an explicit mission or command.
             gabrielSnapshot = SUPRAGabrielConductorRuntime.load()
+            focusNativeRequest()
+        }
+        .onChange(of: focusRequest?.id) { _, _ in
+            focusNativeRequest()
         }
         .onChange(of: operationalDecisionCandidates.count) { _, _ in
             autonomousHumanGateEnabled = hasAuthorizedHumanGate
@@ -995,6 +1001,13 @@ struct ContentView: View {
         .navigationTitle("SUPRA")
     }
 
+
+    private func focusNativeRequest() {
+        guard focusRequest?.target == .cannonicoGap else { return }
+        selection = "spine"
+        structureMode = .arbo
+        columnVisibility = .all
+    }
 
     @ViewBuilder
     private var detail: some View {

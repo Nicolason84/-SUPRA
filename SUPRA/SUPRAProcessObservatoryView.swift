@@ -5,8 +5,10 @@ import Foundation
 import Darwin
 
 struct SUPRAProcessObservatoryView: View {
+    @Environment(\.supraHierarchyFocusRequest) private var focusRequest
     @ObservedObject private var store = SUPRAProcessObservatoryStore.shared
     @State private var selectedID: String?
+
 
     private var selected: SUPRAObservedProcess? {
         if let selectedID,
@@ -70,8 +72,21 @@ struct SUPRAProcessObservatoryView: View {
         }
         .task {
             store.start()
+            store.refresh(force: true)
             await store.refreshTransportHealth()
+            focusNativeRequest()
         }
+        .onChange(of: focusRequest?.id) { _, _ in
+            focusNativeRequest()
+        }
+    }
+
+    private func focusNativeRequest() {
+        guard focusRequest?.target == .runtimeBottleneck else { return }
+        store.refresh(force: true)
+        selectedID = store.processes.first(where: \.isBottleneck)?.id
+            ?? store.processes.first(where: { $0.stage == .inFlight })?.id
+            ?? store.processes.first?.id
     }
 
     private var header: some View {
